@@ -18,6 +18,7 @@ from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
 
 import feedparser
 import time, socket
+from urllib2 import ProxyHandler
 
 from DateTime import DateTime
 
@@ -73,9 +74,10 @@ class RSSFeed(object):
     # TODO: discuss whether we want an increasing update time here, probably not though
     FAILURE_DELAY = 10  # time in minutes after which we retry to load it after a failure
     
-    def __init__(self, url, timeout):
+    def __init__(self, url, timeout, handlers=[]):
         self.url = url
         self.timeout = timeout
+        self.handlers = []
         
         self._items = []
         self._title = ""
@@ -137,7 +139,7 @@ class RSSFeed(object):
         if url!='':
             self._last_update_time_in_minutes = time.time()/60
             self._last_update_time = DateTime()
-            d = feedparser.parse(url)
+            d = feedparser.parse(url, handlers=self.handlers)
             if d.bozo==1:
                 self._loaded = True # we tried at least but have a failed load
                 self._failed = True
@@ -250,7 +252,11 @@ class Renderer(base.DeferredRenderer):
         feed = FEED_DATA.get(self.data.url,None)
         if feed is None:
             # create it
-            feed = FEED_DATA[self.data.url] = RSSFeed(self.data.url,self.data.timeout)
+            handlers = []
+            html_proxy = getToolByName(self.context, 'portal_properties').site_properties.getProperty('html_proxy', None)
+            if html_proxy is not None:
+                handlers.append(ProxyHandler({'http':html_proxy}))
+            feed = FEED_DATA[self.data.url] = RSSFeed(self.data.url,self.data.timeout,handlers=handlers)
         return feed
         
     @property
