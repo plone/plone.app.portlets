@@ -8,6 +8,11 @@ plone.app.portlets UNRELEASED
 
 plone.app.portlets 1.0.6
 
+    - Do not link to news_listing from the news portlet: that template has
+      been removed from Plone. This fixes
+      http://dev.plone.org/plone/ticket/7872
+      [wichert]
+
     - Sort the languages in the language portlet using their native name.
       [wichert]
 
