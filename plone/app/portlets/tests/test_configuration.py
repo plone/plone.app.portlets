@@ -15,6 +15,7 @@ from Products.Five.browser import BrowserView
 
 from Products.GenericSetup.interfaces import IBody
 from Products.GenericSetup.context import TarballExportContext
+from Products.GenericSetup.tests.common import DummyImportContext
 
 from Products.PloneTestCase.layer import PloneSite
 from Testing import ZopeTestCase
@@ -36,6 +37,9 @@ from plone.app.portlets.interfaces import IColumn
 
 from plone.app.portlets.browser.adding import PortletAdding
 from plone.app.portlets.utils import assignment_mapping_from_key
+
+from plone.app.portlets.exportimport.portlets import importPortlets
+
 
 class DummyView(BrowserView):
     pass
@@ -134,6 +138,8 @@ class TestPortletGSLayer(TestPortletZCMLLayer):
         portal = app.plone
         
         portal_setup = portal.portal_setup
+        # wait a bit or we get duplicate ids on import
+        time.sleep(1)
         portal_setup.runAllImportStepsFromProfile('profile-plone.app.portlets:testing')
         
         transaction.commit()
@@ -221,6 +227,9 @@ class TestGenericSetup(PortletsTestCase):
         
     def testAssignmentRemoval(self):
         portal_setup = self.portal.portal_setup
+        
+        # wait a bit or we get duplicate ids on import
+        time.sleep(1)
         portal_setup.runAllImportStepsFromProfile('profile-plone.app.portlets:testing')
 
         mapping = assignment_mapping_from_key(self.portal,
@@ -245,6 +254,78 @@ class TestGenericSetup(PortletsTestCase):
         # and should have got rid of it again
         self.assertEqual(mapping.get('test.portlet7', None), None)
 
+    def testAssignmentPurging(self):
+        # initially there should be 3 assignments on the root
+        mapping = assignment_mapping_from_key(self.portal,
+            manager_name=u"test.testcolumn", category=CONTEXT_CATEGORY, key="/")
+        self.assertEquals(3, len(mapping))
+
+        context = DummyImportContext(self.portal, purge=False)
+        context._files['portlets.xml'] = """<?xml version="1.0"?>
+            <portlets>
+                <assignment
+                    manager="test.testcolumn" 
+                    category="context"
+                    key="/"
+                    purge="True"
+                    />
+            </portlets>
+        """
+        importPortlets(context)
+
+        # now they should be gone
+        mapping = assignment_mapping_from_key(self.portal,
+            manager_name=u"test.testcolumn", category=CONTEXT_CATEGORY, key="/")
+        self.assertEquals(0, len(mapping))
+
+        # group assignments should still be there
+        mapping = assignment_mapping_from_key(self.portal,
+            manager_name=u"test.testcolumn", category=GROUP_CATEGORY, key="Reviewers")
+        self.assertEquals(1, len(mapping))
+
+        # and be purgable
+        context = DummyImportContext(self.portal, purge=False)
+        context._files['portlets.xml'] = """<?xml version="1.0"?>
+            <portlets>
+                <assignment
+                    manager="test.testcolumn" 
+                    category="group"
+                    key="Reviewers"
+                    purge="True"
+                    />
+            </portlets>
+        """
+        importPortlets(context)
+
+        # now they should be gone
+        mapping = assignment_mapping_from_key(self.portal,
+            manager_name=u"test.testcolumn", category=GROUP_CATEGORY, key="Reviewers")
+        self.assertEquals(0, len(mapping))
+
+        # also content type assignments should still be there
+        mapping = assignment_mapping_from_key(self.portal,
+            manager_name=u"test.testcolumn", category=CONTENT_TYPE_CATEGORY, key="Folder")
+        self.assertEquals(2, len(mapping))
+
+        # and be purgable
+        context = DummyImportContext(self.portal, purge=False)
+        context._files['portlets.xml'] = """<?xml version="1.0"?>
+            <portlets>
+                <assignment
+                    manager="test.testcolumn" 
+                    category="content_type"
+                    key="Folder"
+                    purge="True"
+                    />
+            </portlets>
+        """
+        importPortlets(context)
+
+        # now they should be gone
+        mapping = assignment_mapping_from_key(self.portal,
+            manager_name=u"test.testcolumn", category=CONTENT_TYPE_CATEGORY, key="Folder")
+        self.assertEquals(0, len(mapping))
+
     def testBlacklisting(self):
         news = self.portal.news
         manager = getUtility(IPortletManager, name=u"test.testcolumn")
@@ -254,7 +335,7 @@ class TestGenericSetup(PortletsTestCase):
         self.assertEquals(False, assignable.getBlacklistStatus(GROUP_CATEGORY))
         self.assertEquals(None, assignable.getBlacklistStatus(CONTENT_TYPE_CATEGORY))
 
-    def testPurge(self):
+    def testPurgeMethod(self):
         sm = getSiteManager()
         context = TarballExportContext(self.portal.portal_setup)
         handler = getMultiAdapter((sm, context), IBody, name=u'plone.portlets')
@@ -262,7 +343,66 @@ class TestGenericSetup(PortletsTestCase):
         
         manager = queryUtility(IPortletManager, name=u"test.testcolumn")
         self.assertEquals(None, manager)
-        
+
+    def testPurge(self):
+        manager = queryUtility(IPortletManager, name=u"test.testcolumn")
+        self.assertNotEquals(None, manager)
+
+        context = DummyImportContext(self.portal, purge=False)
+        context._files['portlets.xml'] = """<?xml version="1.0"?>
+            <portlets purge="True">
+            </portlets>
+        """
+        importPortlets(context)
+
+        manager = queryUtility(IPortletManager, name=u"test.testcolumn")
+        self.assertEquals(None, manager)
+
+    def testManagerRemove(self):
+        manager = queryUtility(IPortletManager, name=u"test.testcolumn")
+        self.assertNotEquals(None, manager)
+
+        context = DummyImportContext(self.portal, purge=False)
+        context._files['portlets.xml'] = """<?xml version="1.0"?>
+            <portlets>
+                <portletmanager 
+                    name="test.testcolumn" 
+                    remove="True"
+                    />
+            </portlets>
+        """
+        importPortlets(context)
+
+        manager = queryUtility(IPortletManager, name=u"test.testcolumn")
+        self.assertEquals(None, manager)
+
+    def testManagerPurge(self):
+        context = DummyImportContext(self.portal, purge=False)
+        context._files['portlets.xml'] = """<?xml version="1.0"?>
+            <portlets>
+                <portletmanager 
+                    name="test.testcolumn" 
+                    purge="True"
+                    />
+            </portlets>
+        """
+        importPortlets(context)
+
+        self.assertRaises(KeyError,
+                          assignment_mapping_from_key,
+                          self.portal, manager_name=u"test.testcolumn",
+                          category=GROUP_CATEGORY, key="Reviewers")
+
+        self.assertRaises(KeyError,
+                          assignment_mapping_from_key,
+                          self.portal, manager_name=u"test.testcolumn",
+                          category=CONTENT_TYPE_CATEGORY, key="Folder")
+
+        # context assignment at the root are purged as well
+        mapping = assignment_mapping_from_key(self.portal,
+            manager_name=u"test.testcolumn", category=CONTEXT_CATEGORY, key="/")
+        self.assertEquals(0, len(mapping))
+
     def testExport(self):
         sm = getSiteManager()
         context = TarballExportContext(self.portal.portal_setup)

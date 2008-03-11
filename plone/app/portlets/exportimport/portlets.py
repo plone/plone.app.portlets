@@ -188,7 +188,10 @@ class PortletsXMLAdapter(XMLAdapterBase):
         self._logger.info('Portlets imported')
 
     def _initProvider(self, node):
-        if self.environ.shouldPurge():
+        purge = self.environ.shouldPurge()
+        if node.hasAttribute('purge'):
+            purge = self._convertToBoolean(node.getAttribute('purge'))
+        if purge:
             self._purgePortlets()
         self._initPortlets(node)
     
@@ -197,7 +200,8 @@ class PortletsXMLAdapter(XMLAdapterBase):
     # 
 
     def _purgePortlets(self):
-        """Unregister all portlet managers and portlet types
+        """Unregister all portlet managers and portlet types, and remove
+        portlets assigned to the site root
         """
         
         # Purge portlet types
@@ -260,25 +264,45 @@ class PortletsXMLAdapter(XMLAdapterBase):
     def _initPortletManagerNode(self, node):
         """Create a portlet manager from a node
         """
-        registeredPortletManagers = [r.name for r in self.context.registeredUtilities()
-                                        if r.provided.isOrExtends(IPortletManager)]
-        managerClass = node.getAttribute('class')
-        if managerClass:
-            manager = _resolveDottedName(managerClass)()
-        else:
-            manager = PortletManager()
-        
         name = str(node.getAttribute('name'))
         
-        managerType = node.getAttribute('type')
-        if managerType:
-             alsoProvides(manager, _resolveDottedName(managerType))
-        
-        manager[USER_CATEGORY] = PortletCategoryMapping()
-        manager[GROUP_CATEGORY] = PortletCategoryMapping()
-        manager[CONTENT_TYPE_CATEGORY] = PortletCategoryMapping()
-        
+        if node.hasAttribute('remove'):
+            if self._convertToBoolean(node.getAttribute('remove')):
+                self.context.unregisterUtility(provided=IPortletManager,
+                                               name=name)
+                return
+
+        if node.hasAttribute('purge'):
+            if self._convertToBoolean(node.getAttribute('purge')):
+                manager = getUtility(IPortletManager, name=name)
+                # remove global assignments
+                for category in manager.keys():
+                    for portlet in manager[category].keys():
+                        del manager[category][portlet]
+                # remove assignments from root
+                site = self.environ.getSite()
+                mapping = queryMultiAdapter((site, manager), IPortletAssignmentMapping)
+                for portlet in mapping.keys():
+                    del mapping[portlet]
+                return
+
+        registeredPortletManagers = [r.name for r in self.context.registeredUtilities()
+                                        if r.provided.isOrExtends(IPortletManager)]
         if name not in registeredPortletManagers:
+            managerClass = node.getAttribute('class')
+            if managerClass:
+                manager = _resolveDottedName(managerClass)()
+            else:
+                manager = PortletManager()
+        
+            managerType = node.getAttribute('type')
+            if managerType:
+                 alsoProvides(manager, _resolveDottedName(managerType))
+        
+            manager[USER_CATEGORY] = PortletCategoryMapping()
+            manager[GROUP_CATEGORY] = PortletCategoryMapping()
+            manager[CONTENT_TYPE_CATEGORY] = PortletCategoryMapping()
+        
             self.context.registerUtility(component=manager,
                                          provided=IPortletManager,
                                          name=name)
@@ -349,8 +373,11 @@ class PortletsXMLAdapter(XMLAdapterBase):
         manager = node.getAttribute('manager')
         category = node.getAttribute('category')
         key = node.getAttribute('key')
-        type_ = node.getAttribute('type')
         
+        purge = False
+        if node.hasAttribute('purge'):
+            purge = self._convertToBoolean(node.getAttribute('purge'))
+
         mapping = assignment_mapping_from_key(site, manager, category, key, create=True)
         
         # 2. Either find or create the assignment
@@ -364,6 +391,13 @@ class PortletsXMLAdapter(XMLAdapterBase):
             if assignment is not None:
                 del mapping[name]
             return
+
+        if purge:
+            for portlet in mapping.keys():
+                del mapping[portlet]
+            return
+
+        type_ = node.getAttribute('type')
 
         if assignment is None:
             portlet_factory = getUtility(IFactory, name=type_)
