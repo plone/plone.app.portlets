@@ -5,6 +5,10 @@ Changelog for plone.app.portlets
 
 plone.app.portlets UNRELEASED
 
+    - Allow non-ASCII object paths while calculating cache key for
+      portlets.  This fixes http://dev.plone.org/plone/ticket/7086
+      [nouri]
+
     - Make the language portlet handle languages without a native name
       correctly.
       [wichert]
