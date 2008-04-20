@@ -5,6 +5,10 @@ Changelog for plone.app.portlets
 
 plone.app.portlets UNRELEASED
 
+    - fixed bug #8025 so that these feeds now work, too (using a 
+      different field of the feed now)
+      [mrtopf]
+
     - label_group_members was used twice.  Renamed the second one to
       label_group_portlets (which is in plone.pot already).
       [maurits]
