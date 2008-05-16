@@ -230,12 +230,12 @@ class Renderer(base.DeferredRenderer):
     @property
     def initializing(self):
         """should return True if deferred template should be displayed"""
-	feed=self._getFeed()
-	if not feed.loaded:
-		return True
-	if feed.needs_update:
-		return True
-	return False
+        feed=self._getFeed()
+        if not feed.loaded:
+            return True
+        if feed.needs_update:
+            return True
+        return False
             
     def deferred_update(self):
         """refresh data for serving via KSS"""
