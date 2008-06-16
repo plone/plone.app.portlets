@@ -77,7 +77,7 @@ class RSSFeed(object):
     def __init__(self, url, timeout, handlers=[]):
         self.url = url
         self.timeout = timeout
-        self.handlers = tuple(handlers)
+        self.handlers = handlers
         
         self._items = []
         self._title = ""
