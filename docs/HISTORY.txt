@@ -2,6 +2,13 @@ Changelog for plone.app.portlets
 
     (name of developer listed in brackets)
 
+Plip 197: Add FeedParser as external requirement instead of shipping with it 
+----------------------------------------------------------------------------
+
+    - Removed portlets/feedparser.py.  Instead added FeedParser as
+      requirement in setup.py.
+
+
 plone.app.portlets 1.1.6 (Unreleased)
 
     - Fixed Review List template that was making a bad call to 
