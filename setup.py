@@ -18,7 +18,7 @@ plone.portlets, as well as a standard set of portlets that ship with Plone.
       keywords='portlets viewlets plone',
       author='Martin Aspeli',
       author_email='optilude@gmx.net',
-      url='http://svn.plone.org/svn/plone/plone.app.portlets',
+      url='http://pypi.python.org/pypi/plone.app.portlets',
       license='GPL',
       packages=find_packages(exclude=['ez_setup']),
       namespace_packages = ['plone', 'plone.app'],
@@ -26,9 +26,6 @@ plone.portlets, as well as a standard set of portlets that ship with Plone.
       zip_safe=False,
       install_requires=[
         'setuptools',
-        'plone.portlets >=1.1dev',
+        'plone.portlets',
       ],
-      entry_points="""
-      # -*- Entry points: -*-
-      """,
       )

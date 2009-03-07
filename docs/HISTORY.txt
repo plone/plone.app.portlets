@@ -1,45 +1,46 @@
-Changelog for plone.app.portlets
+Changelog
+=========
 
-    (name of developer listed in brackets)
+1.1.6 - 2009-03-07
+------------------
 
-plone.app.portlets 1.1.6 (Unreleased)
+- Fixed new portlet template footer so it will validate, fixes 
+  http://dev.plone.org/plone/ticket/8769 thanks to bandigarf
+  [calvinhp]
 
-    - Fixed new portlet template footer so it will validate, fixes 
-      http://dev.plone.org/plone/ticket/8769 thanks to bandigarf
-      [calvinhp]
+- Made the test independent of default content created in a site. This
+  allows them to pass in both Plone 3.x and 4.x.
+  [hannosch]
 
-    - Made the test independent of default content created in a site. This
-      allows them to pass in both Plone 3.x and 4.x.
-      [hannosch]
+- Added inherited portlets to manage view. This implements
+  http://dev.plone.org/plone/ticket/8426.
+  [malthe]
 
-    - Added inherited portlets to manage view. This implements
-      http://dev.plone.org/plone/ticket/8426.
-      [malthe]
-    
-    - Modified a macro call in portlets-pageform.pt for forwards
-      compatibility with Zope 2.12.
-      [davisagli]
+- Modified a macro call in portlets-pageform.pt for forwards
+  compatibility with Zope 2.12.
+  [davisagli]
 
-    - Fixed SyntaxErrors in test_cache and test_configuration.
-      [hannosch]
+- Fixed SyntaxErrors in test_cache and test_configuration.
+  [hannosch]
 
-    - Fixed Review List template that was making a bad call to 
-      pretty_title_or_id. This closes http://dev.plone.org/plone/ticket/8401.
-      [dunlapm]
+- Fixed Review List template that was making a bad call to 
+  pretty_title_or_id. This closes http://dev.plone.org/plone/ticket/8401.
+  [dunlapm]
 
-plone.app.portlets 1.1.5 (2008-08-18)
+1.1.5 - 2008-08-18
+------------------
 
-    - Refactored the review portlet a bit and added the review state dependent
-      color coding to it. This closes http://dev.plone.org/plone/ticket/6957.
-      [hannosch]
+- Refactored the review portlet a bit and added the review state dependent
+  color coding to it. This closes http://dev.plone.org/plone/ticket/6957.
+  [hannosch]
 
-    - Sort the addable portlets in the management screen by their title.
-      This closes http://dev.plone.org/plone/ticket/8227.
-      [hannosch]
+- Sort the addable portlets in the management screen by their title.
+  This closes http://dev.plone.org/plone/ticket/8227.
+  [hannosch]
 
-    - Disabled two tests for a not yet implemented feature regarding better
-      i18n support.
-      [hannosch]
+- Disabled two tests for a not yet implemented feature regarding better
+  i18n support.
+  [hannosch]
 
 
 plone.app.portlets 1.1.3 (2008-07-07)
