@@ -4,6 +4,8 @@ Changelog
 1.1.7 - unreleased
 ------------------
 
+- Fixed exportimport to support xml CDATA, thanks to lucie
+  [calvinhp]
 
 1.1.6 - 2009-03-07
 ------------------
