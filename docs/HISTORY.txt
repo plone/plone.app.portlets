@@ -1,6 +1,13 @@
 Changelog
 =========
 
+1.2.1 - unreleased
+-------------------
+
+- Some XHTML fixes to be also XHTML Strict compliant.
+  See http://dev.plone.org/plone/ticket/4379
+  [keul]
+
 1.2 - July 13, 2009
 -------------------
 
