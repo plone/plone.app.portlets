@@ -4,6 +4,10 @@ Changelog
 1.2.1 - unreleased
 -------------------
 
+- Added missing space to tooltip in the calendar portlet.
+  Fixes http://dev.plone.org/plone/ticket/9047
+  [lzdych]
+
 - Navigation(s) some time disappeared when dealing with multiple navigations 
   pointing to roots with common starting ids like: "abc", "abcde", "abcdefg".
   Thanks to keul for patch.
