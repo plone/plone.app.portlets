@@ -4,6 +4,12 @@ Changelog
 1.2.1 - unreleased
 -------------------
 
+- Navigation(s) some time disappeared when dealing with multiple navigations 
+  pointing to roots with common starting ids like: "abc", "abcde", "abcdefg".
+  Thanks to keul for patch.
+  Fixes http://dev.plone.org/plone/ticket/9405
+  [pelle]
+
 - Fixed base.Assignment - typo
   Fixes http://dev.plone.org/plone/ticket/9350
   [naro]
