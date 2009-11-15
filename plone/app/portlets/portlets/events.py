@@ -54,9 +54,8 @@ class Renderer(base.Renderer):
         self.navigation_root_url = portal_state.navigation_root_url()
         self.portal = portal_state.portal()
         self.navigation_root_path = portal_state.navigation_root_path()
-
-        self.have_events_folder = 'events' in getNavigationRootObject(self.context,         
-                                                                      self.portal).objectIds()
+        self.navigation_root_object = getNavigationRootObject(self.context, self.portal)
+        self.have_events_folder = 'events' in self.navigation_root_object.objectIds()
 
 
     @ram.cache(render_cachekey)
@@ -76,14 +75,16 @@ class Renderer(base.Renderer):
         else:
             return '%s/events_listing' % self.navigation_root_url
 
+    @memoize
     def prev_events_link(self):
+        # take care dont use self.portal here since support
+        # of INavigationRoot features likely will breake #9246 #9668
         if (self.have_events_folder and
-            'aggregator' in self.portal['events'].objectIds() and
-            'previous' in self.portal['events']['aggregator'].objectIds()):
+            'aggregator' in self.navigation_root_object['events'].objectIds() and
+            'previous' in self.navigation_root_object['events']['aggregator'].objectIds()):
             return '%s/events/aggregator/previous' % self.navigation_root_url
-            
         elif (self.have_events_folder and
-            'previous' in self.portal['events'].objectIds()):
+            'previous' in self.navigation_root_object['events'].objectIds()):
             return '%s/events/previous' % self.navigation_root_url
         else:
             return None

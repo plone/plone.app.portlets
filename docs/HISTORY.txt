@@ -4,6 +4,12 @@ Changelog
 1.2.1 - unreleased
 -------------------
 
+- Support local navigation root (INavigationRoot) for the previous 
+  events link in events portlet.
+  Fixes http://dev.plone.org/plone/ticket/9246 
+  http://dev.plone.org/plone/ticket/9668
+  [pelle]
+
 - Added missing space to tooltip in the calendar portlet.
   Fixes http://dev.plone.org/plone/ticket/9047
   [lzdych]
