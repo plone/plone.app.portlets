@@ -4,6 +4,11 @@ Changelog
 1.2.1 - unreleased
 -------------------
 
+- RSS portlet: accept the feedparser.CharacterEncodingOverride
+  exception when parsing the feed as it is just a warning: the parsed
+  entries will be there.
+  [maurits]
+
 - Support local navigation root (INavigationRoot) for the previous 
   events link in events portlet.
   Fixes http://dev.plone.org/plone/ticket/9246 
