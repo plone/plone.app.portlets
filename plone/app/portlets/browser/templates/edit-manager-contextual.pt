@@ -1,4 +1,4 @@
-<div class="portlets-manager" 
+<div class="portlets-manager"
      xmlns="http://www.w3.org/1999/xhtml"
      xmlns:tal="http://xml.zope.org/namespaces/tal"
      xmlns:metal="http://xml.zope.org/namespaces/metal"
@@ -25,7 +25,7 @@
         <span tal:omit-tag=""
               i18n:translate="label_portlets_parent_folders">
             Parent portlets:
-        </span> 
+        </span>
 
         <select name="context_status:int" size="1">
 

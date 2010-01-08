@@ -1,5 +1,5 @@
 <div metal:define-macro="portlet-add-form" class="section" i18n:domain="plone">
-    
+
     <form method="post" action="#"
           tal:attributes="action view/context_url">
         <input type="hidden" name="referer" tal:attributes="value view/referer" />
@@ -35,7 +35,7 @@
 
 <div metal:define-macro="current-portlets-list" class="portletAssignments"
     i18n:domain="plone">
-  
+
     <h4 i18n:translate="heading_portlets_assigned_here">
         Portlets assigned here
     </h4>
@@ -66,7 +66,7 @@
       <h4 i18n:translate="heading_inherited_portlets">
         Inherited portlets
       </h4>
-      
+
       <div class="managedPortlet inheritedPortlet" tal:repeat="portlet portlets">
         <div class="portletHeader">
           <a tal:omit-tag="not:portlet/editview"
@@ -75,5 +75,5 @@
         </div>
       </div>
     </tal:block>
-      
+
 </div>

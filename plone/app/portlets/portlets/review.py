@@ -15,7 +15,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 
 class IReviewPortlet(IPortletDataProvider):
-    
+
     pass
 
 class Assignment(base.Assignment):

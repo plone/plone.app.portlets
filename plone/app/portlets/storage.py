@@ -33,21 +33,21 @@ category_to_name = {
 class PortletAssignmentMapping(BaseMapping, SimpleItem):
     """A Zope 2 version of the default assignment mapping storage.
     """
-    
+
     @property
     def id(self):
         manager = self.__manager__
         category = self.__category__
         key = self.__name__
-        
+
         prefix = category_to_name.get(category, category)
         suffix = manager
-        
+
         if category != constants.CONTEXT_CATEGORY and key:
             suffix = "%s+%s" % (manager, key)
-        
+
         return "++%s++%s" % (prefix, suffix)
-    
+
     def __setitem__(self, key, assignment):
         BaseMapping.__setitem__(self, key, aq_base(assignment))
 
@@ -56,13 +56,13 @@ class UserPortletAssignmentMapping(PortletAssignmentMapping):
     """
 
     implements(IUserPortletAssignmentMapping)
-        
+
 class PortletAssignmentMappingTraverser(ItemTraverser):
     """A traverser for portlet assignment mappings, that is acqusition-aware
     """
     implements(IBrowserPublisher)
     adapts(IPortletAssignmentMapping, IDefaultBrowserLayer)
-    
+
     def publishTraverse(self, request, name):
         ob = ItemTraverser.publishTraverse(self, request, name)
         return ob.__of__(self.context)
@@ -70,52 +70,52 @@ class PortletAssignmentMappingTraverser(ItemTraverser):
 class PortletsNameChooser(NameChooser):
     """A name chooser for portlets
     """
-    
+
     implements(INameChooser)
-    
+
     def __init__(self, context):
         self.context = context
 
     def chooseName(self, name, object):
         """Choose a name based on a the portlet title
-        
+
         >>> from plone.app.portlets.storage import PortletAssignmentMapping
         >>> mapping = PortletAssignmentMapping()
-        
+
         >>> from zope.app.container.interfaces import INameChooser
         >>> chooser = INameChooser(mapping)
-        
+
         >>> from plone.app.portlets.portlets import base
         >>> class DummyAssignment(base.Assignment):
         ...     title = u""
-        
+
         >>> dummy = DummyAssignment()
         >>> dummy.title = u"A test title"
-        
+
         >>> chooser.chooseName(None, dummy)
         'a-test-title'
-        
+
         >>> chooser.chooseName(None, dummy)
         'a-test-title'
-        
+
         >>> mapping[u'a-test-title'] = dummy
         >>> chooser.chooseName(None, dummy)
         'a-test-title-1'
-        
+
         >>> dummy.title = 'RSS: http://plone.org'
         >>> chooser.chooseName(None, dummy)
         'RSS-http-plone.org'
-        
+
         >>> dummy.title = None
         >>> chooser.chooseName(None, dummy)
         'dummyassignment'
-        
+
         >>> mapping[u'dummyassignment'] = dummy
         >>> delattr(dummy, 'title')
         >>> chooser.chooseName(None, dummy)
         'dummyassignment-1'
-        
-        
+
+
         """
         container = self.context
 
@@ -124,7 +124,7 @@ class PortletsNameChooser(NameChooser):
 
         if not name:
             name = object.__class__.__name__
-            
+
         name = getUtility(IIDNormalizer).normalize(name)
 
         i = 0
@@ -132,6 +132,6 @@ class PortletsNameChooser(NameChooser):
         while new_name in container and i <= ATTEMPTS:
             i += 1
             new_name = "%s-%d" % (name, i)
-            
+
         self.checkName(new_name, object)
         return new_name

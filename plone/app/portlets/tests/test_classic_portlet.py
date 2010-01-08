@@ -28,8 +28,8 @@ class TestPortlet(PortletsTestCase):
 
     def testRegisteredInterfaces(self):
         portlet = getUtility(IPortletType, name='portlets.Classic')
-        registered_interfaces = [_getDottedName(i) for i in portlet.for_] 
-        registered_interfaces.sort() 
+        registered_interfaces = [_getDottedName(i) for i in portlet.for_]
+        registered_interfaces.sort()
         self.assertEquals(['plone.app.portlets.interfaces.IColumn',
           'plone.app.portlets.interfaces.IDashboard'],
           registered_interfaces)
