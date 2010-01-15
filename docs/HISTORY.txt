@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.2.1 January 15, 2010
-----------------------
+1.2.1 - January 15, 2010
+------------------------
 
 - RSS portlet: accept the feedparser.CharacterEncodingOverride
   exception when parsing the feed as it is just a warning: the parsed
