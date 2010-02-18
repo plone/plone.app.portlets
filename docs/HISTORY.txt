@@ -3,10 +3,9 @@ Changelog
 
 1.2.2 - Unreleased
 ------------------
-                  
 
-- Nothing changed yet.
-
+- Avoid ConstraintNotSatisfied-Error when GS-importing the default
+  navigation-portlet. Fixes https://dev.plone.org/plone/ticket/10232 [WouterVH]
 
 1.2.1 - January 15, 2010
 ------------------------

@@ -87,6 +87,19 @@
         name="test.portlet7"
         remove="" />
 
+    <assignment name="navigation"
+                category="context"
+                key="/"
+                manager="plone.leftcolumn"
+                type="portlets.Navigation">
+        <property name="name"/>
+        <property name="includeTop">False</property>
+        <property name="currentFolderOnly">False</property>
+        <property name="topLevel">0</property>
+        <property name="bottomLevel">0</property>
+        <property name="root"/>
+    </assignment>
+
     <blacklist
         manager="test.testcolumn"
         category="context"
