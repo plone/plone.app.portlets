@@ -5,7 +5,14 @@ Changelog
 ------------------
 
 - Avoid ConstraintNotSatisfied-Error when GS-importing the default
-  navigation-portlet. Fixes https://dev.plone.org/plone/ticket/10232 [WouterVH]
+  navigation-portlet. Fixes https://dev.plone.org/plone/ticket/10232
+  [WouterVH]
+
+- Backported a fix for the calendar portlet cache invalidation when
+  adding a new event in the last day of the month. This references
+  http://dev.plone.org/plone/ticket/10598.
+  [deo]
+
 
 1.2.1 - January 15, 2010
 ------------------------
