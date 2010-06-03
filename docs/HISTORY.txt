@@ -5,7 +5,7 @@ Changelog
 ------------------
 
 - Avoid ConstraintNotSatisfied-Error when GS-importing the default
-  navigation-portlet. Fixes https://dev.plone.org/plone/ticket/10232
+  navigation-portlet. Fixes http://dev.plone.org/plone/ticket/10232
   [WouterVH]
 
 - Backported a fix for the calendar portlet cache invalidation when
@@ -215,7 +215,7 @@ Changelog
   [maurits]
 
 - Removed last remains of caching for the navigation portlet.
-  This closes https://dev.plone.org/plone/ticket/7726.
+  This closes http://dev.plone.org/plone/ticket/7726.
   [hannosch]
 
 - Added first day of week to calendar portlet cache key.
@@ -405,7 +405,7 @@ Changelog
   [hannosch]
 
 - Fixed erroneous wording in add screen for classicportlet.
-  Fixes https://dev.plone.org/plone/ticket/6703
+  Fixes http://dev.plone.org/plone/ticket/6703
   [elvix]
 
 - Extended the portlet migration machinery to exclude the deprecated
