@@ -4,6 +4,12 @@ Changelog
 1.2.2 - Unreleased
 ------------------
 
+- Backportlet a fix for the manage-portlets view
+  for not showing inherited portlets that are blocked at an upper level.
+  This references 
+  https://dev.plone.org/plone/ticket/10426
+  [mr_savage]
+
 - Avoid ConstraintNotSatisfied-Error when GS-importing the default
   navigation-portlet. Fixes http://dev.plone.org/plone/ticket/10232
   [WouterVH]

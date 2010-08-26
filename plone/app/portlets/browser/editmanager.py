@@ -78,11 +78,6 @@ class EditPortletManagerRenderer(Explicit):
     def inherited_portlets(self):
         context = aq_inner(self.context)
 
-        assignable = getMultiAdapter(
-            (context, self.manager), ILocalPortletAssignmentManager)
-        if assignable.getBlacklistStatus(CONTEXT_CATEGORY):
-            return ()
-
         data = []
         while not IPloneSiteRoot.providedBy(context):
             if IAcquirer.providedBy(context):
@@ -96,6 +91,10 @@ class EditPortletManagerRenderer(Explicit):
                 assignments = view.getAssignmentsForManager(self.manager)
                 base_url = view.getAssignmentMappingUrl(self.manager)
                 data.extend(self.portlets_for_assignments(assignments, self.manager, base_url))
+                assignable = getMultiAdapter((context, self.manager), ILocalPortletAssignmentManager) 
+                if assignable.getBlacklistStatus(CONTEXT_CATEGORY): 
+                    # Current context has blocked inherited portlets, stop. 
+                    break
 
         return data
 
