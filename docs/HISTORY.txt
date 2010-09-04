@@ -19,6 +19,10 @@ Changelog
   http://dev.plone.org/plone/ticket/10598.
   [deo]
 
+- Made sure to not include the class attribute twice in the RSS
+  portlet template.
+  [deo]
+
 
 1.2.1 - January 15, 2010
 ------------------------
