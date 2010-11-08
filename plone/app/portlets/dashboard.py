@@ -10,6 +10,7 @@ from plone.portlets.constants import USER_CATEGORY
 
 from plone.app.portlets.interfaces import IDefaultDashboard
 from plone.app.portlets import portlets
+from plone.app.event.portlets import events
 
 from plone.app.portlets.storage import UserPortletAssignmentMapping
 
@@ -51,7 +52,7 @@ class DefaultDashboard(object):
 
     def __call__(self):
         return {
-            'plone.dashboard1' : (portlets.news.Assignment(), portlets.events.Assignment(),),
+            'plone.dashboard1' : (portlets.news.Assignment(), events.Assignment(),),
             'plone.dashboard2' : (portlets.recent.Assignment(),),
             'plone.dashboard3' : (),
             'plone.dashboard4' : (portlets.review.Assignment(),),

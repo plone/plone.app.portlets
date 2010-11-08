@@ -8,11 +8,11 @@ from plone.portlets.constants import CONTEXT_CATEGORY, USER_CATEGORY
 
 from plone.app.portlets.interfaces import IPortletPermissionChecker
 
-from plone.app.portlets.portlets import calendar
+from plone.app.event.portlets import calendar
+from plone.app.event.portlets import events
 from plone.app.portlets.portlets import classic
 from plone.app.portlets.portlets import login
 from plone.app.portlets.portlets import news
-from plone.app.portlets.portlets import events
 from plone.app.portlets.portlets import navigation
 from plone.app.portlets.portlets import recent
 from plone.app.portlets.portlets import review
