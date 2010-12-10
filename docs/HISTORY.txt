@@ -23,6 +23,10 @@ Changelog
   portlet template.
   [deo]
 
+- Fix RSS portlet breakage. The feedparser does not have a 'bozo' attribute
+  if libxml2 is not present on the system.
+  [stefan]
+
 
 1.2.1 - January 15, 2010
 ------------------------
