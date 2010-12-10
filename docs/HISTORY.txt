@@ -7,6 +7,10 @@ Changelog
 - Fixed exportimport to support xml CDATA, thanks to lucie
   [calvinhp]
 
+- Fix breakage in RSS portlet. Feedparser has no 'bozo' attribute if
+  libxml2 is not present on the system.
+  [stefan]
+
 1.1.6 - 2009-03-07
 ------------------
 

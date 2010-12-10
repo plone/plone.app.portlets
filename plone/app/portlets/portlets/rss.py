@@ -138,7 +138,7 @@ class RSSFeed(object):
             self._last_update_time_in_minutes = time.time()/60
             self._last_update_time = DateTime()
             d = feedparser.parse(url)
-            if d.bozo==1:
+            if getattr(d, 'bozo', 0) == 1:
                 self._loaded = True # we tried at least but have a failed load
                 self._failed = True
                 return False
