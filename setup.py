@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '2.0.2'
+version = '2.1.0'
 
 setup(name='plone.app.portlets',
       version=version,
@@ -56,7 +56,7 @@ setup(name='plone.app.portlets',
         'zope.schema',
         'zope.site',
         'zope.traversing',
-        'Plone',
+        'Products.CMFPlone',
         'Products.CMFCore',
         'Products.CMFDynamicViewFTI',
         'Products.GenericSetup',

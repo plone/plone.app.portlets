@@ -1,12 +1,35 @@
 Changelog
 =========
 
-2.0.2 - unreleased
+2.1.0 - (unreleased)
+--------------------
+
+- Depend on ``Products.CMFPlone`` instead of ``Plone``.
+  [elro]
+
+2.0.2 - 2010-12-23
 ------------------
+
+- Recover from parse error on ``updated`` date.
+  [malthe]
+
+- Display full creator name in review portlet.
+  [thomasdesvenain]
+
+- Do not display portlets add select list if it is empty.
+  [thomasdesvenain]
+
+- Recent items and Review list portlets title is got by a title attribute
+  on the renderer.
+  [thomasdesvenain]
 
 - Fix the IPortletDirective schema's default edit_permission to match
   the default that is actually supplied by the directive's implementation.
   [davisagli]
+
+- Fix RSS portlet edge case. The feedparser may not have a 'bozo' attribute
+  if libxml2 is not present on the system.
+  [stefan]
 
 2.0.1 - 2010-09-09
 ------------------

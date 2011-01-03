@@ -7,6 +7,7 @@ from zope.interface import implements, Interface
 from zope import schema
 
 from DateTime import DateTime
+from DateTime.interfaces import DateTimeError
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
 
 from plone.app.portlets import PloneMessageFactory as _
@@ -134,7 +135,7 @@ class RSSFeed(object):
             self._last_update_time_in_minutes = time.time()/60
             self._last_update_time = DateTime()
             d = feedparser.parse(url)
-            if d.bozo == 1 and not isinstance(d.get('bozo_exception'),
+            if getattr(d, 'bozo', 0) == 1 and not isinstance(d.get('bozo_exception'),
                                               ACCEPTED_FEEDPARSER_EXCEPTIONS):
                 self._loaded = True # we tried at least but have a failed load
                 self._failed = True
@@ -151,7 +152,13 @@ class RSSFeed(object):
                         'summary' : item.get('description',''),
                     }
                     if hasattr(item, "updated"):
-                        itemdict['updated']=DateTime(item.updated)
+                        try:
+                            itemdict['updated'] = DateTime(item.updated)
+                        except DateTimeError:
+                            # It's okay to drop it because in the
+                            # template, this is checked with
+                            # ``exists:``
+                            pass
                 except AttributeError:
                     continue
                 self._items.append(itemdict)
