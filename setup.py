@@ -27,6 +27,7 @@ setup(name='plone.app.portlets',
         'setuptools',
         'plone.portlets >=1.1dev',
         'feedparser',
+        'five.customerize',
         'plone.app.layout >= 1.2dev',
       ],
       entry_points="""

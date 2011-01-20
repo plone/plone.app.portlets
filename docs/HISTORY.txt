@@ -23,6 +23,9 @@ Changelog
   portlet template.
   [deo]
 
+- Fix #11409: use the TTW customized view name if any. 
+  [kiorky] 
+
 - Fix RSS portlet breakage. The feedparser does not have a 'bozo' attribute
   if libxml2 is not present on the system.
   [stefan]

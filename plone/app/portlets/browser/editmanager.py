@@ -1,3 +1,5 @@
+import logging
+
 from plone.memoize.view import memoize
 
 from plone.portlets.constants import CONTEXT_CATEGORY
@@ -91,9 +93,9 @@ class EditPortletManagerRenderer(Explicit):
                 assignments = view.getAssignmentsForManager(self.manager)
                 base_url = view.getAssignmentMappingUrl(self.manager)
                 data.extend(self.portlets_for_assignments(assignments, self.manager, base_url))
-                assignable = getMultiAdapter((context, self.manager), ILocalPortletAssignmentManager) 
-                if assignable.getBlacklistStatus(CONTEXT_CATEGORY): 
-                    # Current context has blocked inherited portlets, stop. 
+                assignable = getMultiAdapter((context, self.manager), ILocalPortletAssignmentManager)
+                if assignable.getBlacklistStatus(CONTEXT_CATEGORY):
+                    # Current context has blocked inherited portlets, stop.
                     break
 
         return data
@@ -220,6 +222,20 @@ class DashboardEditPortletManagerRenderer(EditPortletManagerRenderer):
     """Render a portlet manager in edit mode for the dashboard
     """
     adapts(Interface, IDefaultBrowserLayer, IManageDashboardPortletsView, IDashboard)
+
+    @property
+    def view_name(self):
+        name = self.__parent__.__name__
+        if not name:
+            # try to fallback on the 'name' attribute for
+            # TTW customized views, see #11409
+            try:
+                name = name = self.__parent__.name
+            except:
+                logging.getLogger('plone.app.portlets.browser').debug(
+                    'Cant get view name for %s' % self.__parent__
+                )
+        return name
 
 class ManagePortletAssignments(BrowserView):
     """Utility views for managing portlets for a particular column
