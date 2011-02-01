@@ -1,6 +1,12 @@
 Changelog
 =========
 
+2.1.2 - unreleased
+------------------
+
+- Moving calendar and events portlets to plone.app.event.
+  [thet]
+
 2.1.1 - 2011-01-03
 ------------------
 
