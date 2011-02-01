@@ -1,8 +1,8 @@
 Changelog
 =========
 
-2.1.0 - (unreleased)
---------------------
+2.1.1 - 2011-01-03
+------------------
 
 - Depend on ``Products.CMFPlone`` instead of ``Plone``.
   [elro]
@@ -30,6 +30,9 @@ Changelog
 - Fix RSS portlet edge case. The feedparser may not have a 'bozo' attribute
   if libxml2 is not present on the system.
   [stefan]
+
+- Fix #11409: use the TTW customized view name if any.
+  [kiorky]
 
 2.0.1 - 2010-09-09
 ------------------

@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '2.1.0'
+version = '2.1.1'
 
 setup(name='plone.app.portlets',
       version=version,
@@ -32,6 +32,7 @@ setup(name='plone.app.portlets',
       install_requires=[
         'setuptools',
         'five.formlib',
+        'five.customerize',
         'plone.i18n',
         'plone.memoize',
         'plone.portlets>=1.1',
