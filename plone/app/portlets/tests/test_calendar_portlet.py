@@ -81,6 +81,7 @@ class TestRenderer(PortletsTestCase):
     def test_event_created_last_day_of_month_invalidate_cache(self):
         # First render the calendar portlet when there's no events
         r = self.renderer(assignment=calendar.Assignment())
+        r = r.__of__(self.portal)
         html = r.render()
 
         # Now let's add a new event in the last day of the current month
@@ -99,6 +100,7 @@ class TestRenderer(PortletsTestCase):
 
         # Try to render the calendar portlet again, it must be different now
         r = self.renderer(assignment=calendar.Assignment())
+        r = r.__of__(self.portal)
         self.assertNotEqual(html, r.render(), "Cache key wasn't invalidated")
 
 
