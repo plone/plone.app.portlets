@@ -4,6 +4,11 @@ Changelog
 1.2.2 - Unreleased
 ------------------
 
+- Backport from 2.1.2: Be more graceful, when user doesn't belong to groups -
+  e.g. when user is defined in non-PAS based top-level acl_users folder.
+  Fixes http://dev.plone.org/plone/ticket/9929
+  [thet]
+
 - Added support for showing/hiding of all portlets (PLIP 9286).
   [igbun]
 
