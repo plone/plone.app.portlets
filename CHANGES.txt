@@ -7,9 +7,6 @@ Changelog
 - Enable managing portlets of default pages.
   This fixes http://dev.plone.org/plone/ticket/10672
   [fRiSi]
-  
-- Depend on ``Products.CMFPlone`` instead of ``Plone``.
-  [elro]
 
 2.0.2 - 2010-12-23
 ------------------
