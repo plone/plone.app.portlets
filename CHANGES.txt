@@ -1,8 +1,8 @@
 Changelog
 =========
 
-2.0.3 - (unreleased)
---------------------
+2.0.3 - 2011-04-01
+------------------
 
 - Enable managing portlets of default pages.
   This fixes http://dev.plone.org/plone/ticket/10672
