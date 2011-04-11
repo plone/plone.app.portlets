@@ -1,8 +1,14 @@
 Changelog
 =========
 
+
 2.0.4 - Unreleased
 ------------------
+
+- Add test ``testINavigationRootWithRelativeRootSet``.
+  Cfr. https://dev.plone.org/plone/ticket/8787
+  [anthonygerrard, WouterVH]
+
 
 2.0.3 - 2011-04-01
 ------------------

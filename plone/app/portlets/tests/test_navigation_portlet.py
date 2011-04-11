@@ -449,6 +449,20 @@ class TestRenderer(PortletsTestCase):
         root = view.getNavRoot()
         self.failIf(root is not None and len(tree['children']) > 0)
 
+    def testINavigationRootWithRelativeRootSet(self):
+        self.failIf(INavigationRoot.providedBy(self.portal.folder1))
+        self.portal.folder1.invokeFactory('Folder', 'folder1_1')
+        directlyProvides(self.portal.folder1, INavigationRoot)
+        self.failUnless(INavigationRoot.providedBy(self.portal.folder1))
+        self.portal.folder1.folder1_1.invokeFactory('Folder', 'folder1_1_1')
+        view = self.renderer(self.portal.folder1.folder1_1, assignment=navigation.Assignment(bottomLevel=0, topLevel=0, root='/folder1/folder1_1'))
+        tree = view.getNavTree()
+        self.failUnless(tree)
+        root = view.getNavRoot()
+        self.assertEqual(root.getId(), 'folder1_1')
+        self.assertEqual(len(tree['children']), 1)
+        self.assertEqual(tree['children'][0]['item'].getPath(), '/plone/folder1/folder1_1/folder1_1_1')
+
     def testImgConditionalOnTypeIcon(self):
         """The <img> element should not render if the content type has
         no icon expression"""
@@ -459,7 +473,7 @@ class TestRenderer(PortletsTestCase):
         view = self.renderer(self.portal)
         tree = view.getNavTree()
         self.failIf(tree['children'][3]['item_icon'].html_tag())
-        
+
     def testPortletsTitle(self):
         """If portlet's name is not explicitely specified we show 
            default fallback 'Navigation', translate it and hide it
