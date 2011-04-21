@@ -20,7 +20,7 @@
         description="Import portlet managers, types, assignments and blacklistings"
         handler=".portlets.importPortlets">
         <depends name="componentregistry"/>
-        <depends name="kss_mimetype"/>
+        <depends name="content"/>
     </genericsetup:importStep>
 
     <genericsetup:exportStep
