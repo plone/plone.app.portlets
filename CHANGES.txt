@@ -5,6 +5,10 @@ Changelog
 2.0.4 - Unreleased
 ------------------
 
+- Sort exported portlet types and portlet manager registrations by name to
+  avoid intermittent test failures.
+  [davisagli]
+
 - Let the portlets import step depend on the content import step
   again.  Refs http://dev.plone.org/plone/ticket/8350
   [maurits]
@@ -13,7 +17,7 @@ Changelog
   Cfr. https://dev.plone.org/plone/ticket/8787
   [anthonygerrard, WouterVH]
 
-- Fix cicular dependency in import steps.
+- Fix circular dependency in import steps.
   This partially fixes http://dev.plone.org/plone/ticket/8350
   [kiorky] 
 
