@@ -246,6 +246,16 @@ class TestRenderer(PortletsTestCase):
         self.failUnless(tree)
         self.assertEqual(len(tree['children']), 0)
 
+    def testIncludeTopWithoutNavigationRoot(self):
+        self.portal.folder2.invokeFactory('Folder', 'folder21')
+        self.portal.folder2.folder21.invokeFactory('Document', 'doc211')
+        view = self.renderer(self.portal.folder2.folder21,
+            assignment=navigation.Assignment(topLevel=0, root=None, includeTop=True))
+        tree = view.getNavTree()
+        self.failUnless(tree)
+        self.failUnless(view.root_is_portal())
+        self.assertEqual(len(tree['children']), 6)
+
     def testTopLevelWithNavigationRoot(self):
         self.portal.folder2.invokeFactory('Folder', 'folder21')
         self.portal.folder2.folder21.invokeFactory('Document', 'doc211')
@@ -459,9 +469,9 @@ class TestRenderer(PortletsTestCase):
         view = self.renderer(self.portal)
         tree = view.getNavTree()
         self.failIf(tree['children'][3]['item_icon'].html_tag())
-        
+
     def testPortletsTitle(self):
-        """If portlet's name is not explicitely specified we show 
+        """If portlet's name is not explicitely specified we show
            default fallback 'Navigation', translate it and hide it
            with CSS."""
         view = self.renderer(self.portal)
