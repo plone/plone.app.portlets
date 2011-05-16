@@ -1,3 +1,5 @@
+from operator import attrgetter
+
 from zope.interface import implements
 from zope.interface import Interface
 from zope.interface import alsoProvides
@@ -47,8 +49,10 @@ from plone.portlets.manager import PortletManager
 from plone.portlets.storage import PortletCategoryMapping
 from plone.portlets.registration import PortletType
 
+
 def dummyGetId():
     return ''
+
 
 HAS_BLACKLIST = True
 try:
@@ -57,6 +61,7 @@ except ImportError:
     HAS_BLACKLIST = False
 
 if HAS_BLACKLIST:
+
     class Blacklist(object):
         implements(IComponentsHandlerBlacklist)
 
@@ -175,7 +180,7 @@ class PropertyPortletAssignmentExportImportHandler(object):
         typecast = getattr(field, '_type', None)
         if typecast is not None:
             if not isinstance(typecast, (list, tuple)):
-                typecast = (typecast,)
+                typecast = (typecast, )
             for tc in reversed(typecast):
                 if callable(tc):
                     try:
@@ -184,6 +189,7 @@ class PropertyPortletAssignmentExportImportHandler(object):
                     except:
                         pass
         return value
+
 
 class PortletsXMLAdapter(XMLAdapterBase):
     """In- and exporter for a local portlet configuration
@@ -313,7 +319,7 @@ class PortletsXMLAdapter(XMLAdapterBase):
 
             managerType = node.getAttribute('type')
             if managerType:
-                 alsoProvides(manager, _resolveDottedName(managerType))
+                alsoProvides(manager, _resolveDottedName(managerType))
 
             manager[USER_CATEGORY] = PortletCategoryMapping()
             manager[GROUP_CATEGORY] = PortletCategoryMapping()
@@ -328,8 +334,8 @@ class PortletsXMLAdapter(XMLAdapterBase):
         """
         registeredPortletTypes = [
           r.name for r in self.context.registeredUtilities() \
-          if r.provided == IPortletType
-          ]
+                          if r.provided == IPortletType]
+
         addview = str(node.getAttribute('addview'))
         extend = node.hasAttribute('extend')
         purge = node.hasAttribute('purge')
@@ -348,19 +354,19 @@ class PortletsXMLAdapter(XMLAdapterBase):
             #and description if provided by the profile.
             portlet = queryUtility(IPortletType, name = addview)
             if str(node.getAttribute('title')):
-                 portlet.title = str(node.getAttribute('title'))
+                portlet.title = str(node.getAttribute('title'))
             if str(node.getAttribute('description')):
-                 portlet.description = str(node.getAttribute('description'))
+                portlet.description = str(node.getAttribute('description'))
             for_ = portlet.for_
             if for_ is None:
                 for_ = []
         else:
-             #Otherwise, create a new portlet type with the correct attributes.
-             portlet = PortletType()
-             portlet.title = str(node.getAttribute('title'))
-             portlet.description = str(node.getAttribute('description'))
-             portlet.addview = addview
-             for_ = []
+            #Otherwise, create a new portlet type with the correct attributes.
+            portlet = PortletType()
+            portlet.title = str(node.getAttribute('title'))
+            portlet.description = str(node.getAttribute('description'))
+            portlet.addview = addview
+            for_ = []
 
 
         #Process the node's child "for" nodes to add or remove portlet
@@ -388,7 +394,8 @@ class PortletsXMLAdapter(XMLAdapterBase):
         manager = node.getAttribute('manager')
         category = node.getAttribute('category')
         key = node.getAttribute('key')
-        #convert unicode to str as unicode paths are not allowed in restrictedTraverse called in assignment_mapping_from_key
+        # convert unicode to str as unicode paths are not allowed in
+        # restrictedTraverse called in assignment_mapping_from_key
         key = key.encode()
 
         purge = False
@@ -502,17 +509,17 @@ class PortletsXMLAdapter(XMLAdapterBase):
         portletManagerRegistrations = [r for r in self.context.registeredUtilities()
                                             if r.provided.isOrExtends(IPortletManager)]
 
-        portletSchemata = dict([(iface, name,) for name, iface in getUtilitiesFor(IPortletTypeInterface)])
+        portletSchemata = dict([(iface, name) for name, iface in getUtilitiesFor(IPortletTypeInterface)])
 
         # Export portlet manager registrations
 
-        for r in portletManagerRegistrations:
+        for r in sorted(portletManagerRegistrations, key=attrgetter('name')):
             fragment.appendChild(self._extractPortletManagerNode(r))
 
         # Export portlet type registrations
 
         for name, portletType in getUtilitiesFor(IPortletType):
-            if name in registeredPortletTypes:
+            if name in sorted(registeredPortletTypes):
                 fragment.appendChild(self._extractPortletNode(name, portletType))
 
         def extractMapping(manager_name, category, key, mapping):
@@ -542,7 +549,7 @@ class PortletsXMLAdapter(XMLAdapterBase):
                     fragment.appendChild(child)
 
         # Export assignments in the global categories
-        for category in (USER_CATEGORY, GROUP_CATEGORY, CONTENT_TYPE_CATEGORY,):
+        for category in (USER_CATEGORY, GROUP_CATEGORY, CONTENT_TYPE_CATEGORY):
             for manager_name, manager in getUtilitiesFor(IPortletManager):
                 for key, mapping in manager.get(category, {}).items():
                     mapping = mapping.__of__(site)
@@ -551,16 +558,16 @@ class PortletsXMLAdapter(XMLAdapterBase):
 
         # Export assignments at the root of the portal (only)
         for manager_name, manager in getUtilitiesFor(IPortletManager):
-             mapping = queryMultiAdapter((site, manager), IPortletAssignmentMapping)
-             mapping = mapping.__of__(site)
-             extractMapping(manager_name, CONTEXT_CATEGORY, u"/", mapping)
+            mapping = queryMultiAdapter((site, manager), IPortletAssignmentMapping)
+            mapping = mapping.__of__(site)
+            extractMapping(manager_name, CONTEXT_CATEGORY, u"/", mapping)
 
         # Export blacklistings in the portal root
         for manager_name, manager in getUtilitiesFor(IPortletManager):
             assignable = queryMultiAdapter((site, manager), ILocalPortletAssignmentManager)
             if assignable is None:
                 continue
-            for category in (USER_CATEGORY, GROUP_CATEGORY, CONTENT_TYPE_CATEGORY, CONTEXT_CATEGORY,):
+            for category in (USER_CATEGORY, GROUP_CATEGORY, CONTENT_TYPE_CATEGORY, CONTEXT_CATEGORY):
                 child = self._doc.createElement('blacklist')
                 child.setAttribute('manager', manager_name)
                 child.setAttribute('category', category)
@@ -649,9 +656,7 @@ class PortletsXMLAdapter(XMLAdapterBase):
 
         for subNode in node.childNodes:
             if subNode.nodeName.lower() == 'for':
-                interface_name = str(
-                  subNode.getAttribute('interface')
-                  )
+                interface_name = str(subNode.getAttribute('interface'))
                 if subNode.hasAttribute('remove'):
                     if interface_name in modified_for:
                         modified_for.remove(interface_name)
@@ -665,6 +670,7 @@ class PortletsXMLAdapter(XMLAdapterBase):
           if _resolveDottedName(name) is not None]
 
         return modified_for
+
 
 def importPortlets(context):
     """Import portlet managers and portlets
@@ -687,6 +693,7 @@ def importPortlets(context):
             importer.filename = filename # for error reporting
             importer.body = body
 
+
 def exportPortlets(context):
     """Export portlet managers and portlets
     """
@@ -707,13 +714,15 @@ def exportPortlets(context):
         if body is not None:
             context.writeDataFile(filename, body, exporter.mime_type)
 
+
 class InvalidPortletForDefinition(Exception):
 
-    message = """The following portlet definition is invalid:
-
-%s
-
-The 'for' attribute is not supported, use 'for' sub-elements instead. See http://plone.org/documentation/manual/upgrade-guide/version/upgrading-plone-3-x-to-4.0/updating-add-on-products-for-plone-4.0/portlets-generic-setup-syntax-changes for more information."""
+    message = """The following portlet definition is invalid: %s
+The 'for' attribute is not supported, use 'for' sub-elements instead.
+See http://plone.org/documentation/manual/upgrade-guide/version/\
+upgrading-plone-3-x-to-4.0/updating-add-on-products-for-plone-4.0/\
+portlets-generic-setup-syntax-changes for more information.
+"""
 
     def __init__(self, node):
         node = node.toxml()
