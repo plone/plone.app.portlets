@@ -120,7 +120,7 @@ class Renderer(base.Renderer):
 
     def title(self):
         return self.data.name or self.data.title
-        
+
     def hasName(self):
         return self.data.name
 
