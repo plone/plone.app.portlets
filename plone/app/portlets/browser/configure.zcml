@@ -141,6 +141,11 @@
         attribute="move_portlet_down"
         />
 
+      <browser:page
+        name="toggle-visibility"
+        attribute="toggle_visibility"
+        />
+
     </browser:pages>
 
     <!-- Adding view for portlet assignments -->
@@ -212,6 +217,14 @@
         name="inlineDeletePortlet"
         class=".kss.PortletManagerKSS"
         attribute="delete_portlet"
+        permission="plone.app.portlets.ManageOwnPortlets"
+        />
+
+    <browser:page
+        for="*"
+        name="togglePortletVisibility"
+        class=".kss.PortletManagerKSS"
+        attribute="toggle_visibility"
         permission="plone.app.portlets.ManageOwnPortlets"
         />
 
