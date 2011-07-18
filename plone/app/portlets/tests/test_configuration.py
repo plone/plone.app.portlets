@@ -473,6 +473,8 @@ class TestGenericSetup(PortletsTestCase):
 <portlets>
  <portletmanager name="test.testcolumn"
     type="plone.app.portlets.tests.test_configuration.ITestColumn"/>
+ <portletmanager name="test.testcolumn2"
+    type="plone.app.portlets.tests.test_configuration.ITestColumn"/>
  <portlet title="Test portlet" addview="portlets.test.Test"
     description="A test portlet"/>
  <assignment name="test.portlet6" category="group" key="Reviewers"
@@ -511,6 +513,15 @@ class TestGenericSetup(PortletsTestCase):
   <property name="test_tuple"/>
   <property name="test_text">Test pröp 1</property>
  </assignment>
+ <assignment name="navigation" category="context" key="/"
+    manager="test.testcolumn2" type="portlets.Navigation">
+  <property name="topLevel">0</property>
+  <property name="currentFolderOnly">False</property>
+  <property name="name"></property>
+  <property name="includeTop">False</property>
+  <property name="bottomLevel">0</property>
+  <property name="root"></property>
+ </assignment>
  <blacklist category="user" location="/" manager="test.testcolumn"
     status="acquire"/>
  <blacklist category="group" location="/" manager="test.testcolumn"
@@ -518,6 +529,14 @@ class TestGenericSetup(PortletsTestCase):
  <blacklist category="content_type" location="/" manager="test.testcolumn"
     status="block"/>
  <blacklist category="context" location="/" manager="test.testcolumn"
+    status="acquire"/>
+ <blacklist category="user" location="/" manager="test.testcolumn2"
+    status="acquire"/>
+ <blacklist category="group" location="/" manager="test.testcolumn2"
+    status="acquire"/>
+ <blacklist category="content_type" location="/" manager="test.testcolumn2"
+    status="acquire"/>
+ <blacklist category="context" location="/" manager="test.testcolumn2"
     status="acquire"/>
 </portlets>
 """
