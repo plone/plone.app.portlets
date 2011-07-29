@@ -294,7 +294,7 @@ class TestRenderer(PortletsTestCase):
         newObject=self.portal.folder1.restrictedTraverse('portal_factory/' + typeName + '/' + id)
         # Will raise a KeyError unless bug is fixed
         view = self.renderer(newObject, assignment=navigation.Assignment(topLevel=1))
-        tree = view.getNavTree()
+        view.getNavTree()
 
     def testShowAllParentsOverridesBottomLevel(self):
         view = self.renderer(self.portal.folder2.file21, assignment=navigation.Assignment(bottomLevel=1, topLevel=0))
@@ -463,16 +463,34 @@ class TestRenderer(PortletsTestCase):
         self.failIf(root is not None and len(tree['children']) > 0)
 
     def testINavigationRootWithRelativeRootSet(self):
+        """test that navigation portlet uses relative root set by user
+           even in INavigationRoot case.
+        """
         self.failIf(INavigationRoot.providedBy(self.portal.folder1))
-        self.portal.folder1.invokeFactory('Folder', 'folder1_1')
+
+        # make folder1 as navigation root
         directlyProvides(self.portal.folder1, INavigationRoot)
         self.failUnless(INavigationRoot.providedBy(self.portal.folder1))
+
+        # add two nested subfolders in folder1
+        self.portal.folder1.invokeFactory('Folder', 'folder1_1')
         self.portal.folder1.folder1_1.invokeFactory('Folder', 'folder1_1_1')
-        view = self.renderer(self.portal.folder1.folder1_1, assignment=navigation.Assignment(bottomLevel=0, topLevel=0, root='/folder1/folder1_1'))
-        tree = view.getNavTree()
+
+        # make a navigation portlet with navigation root set
+        assignment = navigation.Assignment(bottomLevel=0, topLevel=0,
+                root='/folder1/folder1_1')
+        portlet = self.renderer(self.portal.folder1.folder1_1,
+                assignment=assignment)
+
+        # check that portlet actually holds a tree
+        tree = portlet.getNavTree()
         self.failUnless(tree)
-        root = view.getNavRoot()
+
+        # check that portlet root is actually the one specified
+        root = portlet.getNavRoot()
         self.assertEqual(root.getId(), 'folder1_1')
+
+        # check that the portlet actually includes children
         self.assertEqual(len(tree['children']), 1)
         self.assertEqual(tree['children'][0]['item'].getPath(), '/plone/folder1/folder1_1/folder1_1_1')
 
@@ -492,7 +510,7 @@ class TestRenderer(PortletsTestCase):
            default fallback 'Navigation', translate it and hide it
            with CSS."""
         view = self.renderer(self.portal)
-        tree = view.getNavTree()
+        view.getNavTree()
         self.assertEqual(view.title(), "Navigation")
         self.failIf(view.hasName())
         view.data.name = 'New navigation title'
