@@ -469,10 +469,8 @@ class TestRenderer(PortletsTestCase):
                 root=None)
         portlet = self.renderer(self.portal.folder1, assignment=assignment)
 
-        # check there is no portlet root
-        root = portlet.getNavRoot()
-        self.failUnless(root is None)
-
+        # check there is no portlet
+        self.failIf(portlet.available)
 
     def testINavigationRootWithRelativeRootSet(self):
         """test that navigation portlet uses relative root set by user
@@ -493,6 +491,9 @@ class TestRenderer(PortletsTestCase):
                 root='/folder1/folder1_1')
         portlet = self.renderer(self.portal.folder1.folder1_1,
                 assignment=assignment)
+
+        # check there is a portlet
+        self.failUnless(portlet.available)
 
         # check that portlet root is actually the one specified
         root = portlet.getNavRoot()
