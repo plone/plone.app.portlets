@@ -451,16 +451,28 @@ class TestRenderer(PortletsTestCase):
         folder2_node = [n for n in tree['children'] if n['path'] == '/plone/folder2'][0]
         self.failIf(folder2_node['currentParent'])
 
-    def testINavigationRootAvailability(self):
+    def testPortletNotDisplayedOnINavigationRoot(self):
+        """test that navigation portlet does not show on INavigationRoot
+        folder
+        """
         self.failIf(INavigationRoot.providedBy(self.portal.folder1))
-        self.portal.folder1.invokeFactory('Folder', 'folder1_1')
+
+        # make folder1 as navigation root
         directlyProvides(self.portal.folder1, INavigationRoot)
         self.failUnless(INavigationRoot.providedBy(self.portal.folder1))
-        view = self.renderer(self.portal.folder1,
-            assignment=navigation.Assignment(bottomLevel=0, topLevel=1, root=None))
-        tree = view.getNavTree()
-        root = view.getNavRoot()
-        self.failIf(root is not None and len(tree['children']) > 0)
+
+        # add nested subfolder in folder1
+        self.portal.folder1.invokeFactory('Folder', 'folder1_1')
+
+        # make a navigation portlet
+        assignment = navigation.Assignment(bottomLevel=0, topLevel=1,
+                root=None)
+        portlet = self.renderer(self.portal.folder1, assignment=assignment)
+
+        # check there is no portlet root
+        root = portlet.getNavRoot()
+        self.failUnless(root is None)
+
 
     def testINavigationRootWithRelativeRootSet(self):
         """test that navigation portlet uses relative root set by user
@@ -482,15 +494,12 @@ class TestRenderer(PortletsTestCase):
         portlet = self.renderer(self.portal.folder1.folder1_1,
                 assignment=assignment)
 
-        # check that portlet actually holds a tree
-        tree = portlet.getNavTree()
-        self.failUnless(tree)
-
         # check that portlet root is actually the one specified
         root = portlet.getNavRoot()
         self.assertEqual(root.getId(), 'folder1_1')
 
-        # check that the portlet actually includes children
+        # check that portlet tree actually includes children
+        tree = portlet.getNavTree()
         self.assertEqual(len(tree['children']), 1)
         self.assertEqual(tree['children'][0]['item'].getPath(), '/plone/folder1/folder1_1/folder1_1_1')
 
