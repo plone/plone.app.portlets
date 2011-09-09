@@ -1,19 +1,29 @@
 Changelog
 =========
 
-2.2 - unreleased
-----------------
-
-- Moving calendar and events portlets to plone.app.event.
-  [thet]
-
-
-2.1.6 - Unreleased
+2.2.2 - Unreleased
 ------------------
 
-- Nothing changed yet.
+- Avoid empty <ul> tag in navigation_recurse.pt if bottomLevel is set.
+  [gaudenzius]
 
 
+2.2.1 - 2011-08-08
+------------------
+- Imporove tests readability. Merged from branches/2.1
+  [gotcha]
+  
+- 'placeholder' attribute for the search portlet's field instead of the custom
+  JS handling of the same functionality.
+  [spliter]
+
+2.2 - 2011-07-19
+----------------
+
+- Updated 'Advanced Search' link and form's action of the search portlet to
+  link to updated search results view at @@search.
+  [spliter]
+  
 2.1.5 - 2011-06-19
 ------------------
 
@@ -145,7 +155,7 @@ Changelog
 
 - Fix GS export of portlets assignments
   when property is a tuple or a list
-  https://dev.plone.org/plone/ticket/10530
+  http://dev.plone.org/plone/ticket/10530
   [macadames]
 
 - Remove deprecated use of tabindex.
