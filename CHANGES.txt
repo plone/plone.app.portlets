@@ -4,7 +4,8 @@ Changelog
 2.1.6 - Unreleased
 ------------------
 
-- Nothing changed yet.
+- Enable possibility to delete portlets with missing implementation
+  [do3cc]
 
 
 2.1.5 - 2011-06-19
