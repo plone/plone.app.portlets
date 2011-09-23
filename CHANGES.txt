@@ -4,6 +4,10 @@ Changelog
 2.0.5 - Unreleased
 ------------------
 
+- Fixed issue where the events, news and recent portlet would fail
+  with a setting of no items (zero) shown due to a catalog sorting
+  assertion.
+
 2.0.4 - 2011-05-12
 ------------------
 
