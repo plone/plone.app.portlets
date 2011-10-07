@@ -7,6 +7,10 @@ Changelog
 - Enable possibility to delete portlets with missing implementation
   [do3cc]
 
+- Replace use of deprecated skin template prefs_group_details with
+  @@usergroup-groupdetails.
+  [stefan]
+
 
 2.1.5 - 2011-06-19
 ------------------
