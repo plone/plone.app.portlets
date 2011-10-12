@@ -28,7 +28,7 @@
                          tal:condition="rootIsPortal"
                          i18n:translate="tabs_home">Home</span>
                    <tal:block condition="not:rootIsPortal">
-                        <img width="16" height="16" src="" tal:attributes="src view/root_icon" alt="root/Title" />
+                        <img width="16" height="16" src="" alt="" tal:attributes="src view/root_icon; alt root/Title" />
                         <span tal:replace="root/Title">Root item title</span>
                    </tal:block>
                    </a>
