@@ -1,11 +1,29 @@
 Changelog
 =========
 
-2.2.2 - Unreleased
+2.2.3 (unreleased)
 ------------------
+
+- Nothing changed yet.
+
+
+2.2.2 (2011-10-17)
+------------------
+
+- Fixed issue where the events, news and recent portlet would fail
+  with a setting of no items (zero) shown due to a catalog sorting
+  assertion.
+  [malthe]
 
 - Avoid empty <ul> tag in navigation_recurse.pt if bottomLevel is set.
   [gaudenzius]
+
+- Enable possibility to delete portlets with missing implementation 
+  [do3cc]
+
+- Replace use of deprecated skin template prefs_group_details with
+  @@usergroup-groupdetails.
+  [stefan]
 
 
 2.2.1 - 2011-08-08
