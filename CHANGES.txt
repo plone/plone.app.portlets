@@ -4,6 +4,10 @@ Changelog
 2.1.6 - Unreleased
 ------------------
 
+- Fixed the two high priority scenarios (global sections viewlet and nav 
+  portlet) of http://dev.plone.org/ticket/11189.
+  [fulv]
+
 - Enable possibility to delete portlets with missing implementation
   [do3cc]
 
