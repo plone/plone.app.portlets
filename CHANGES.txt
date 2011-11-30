@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.1.7 (unreleased)
+2.1.7 (2011-11-29)
 ------------------
 
 - Do not display 'Manage portlets' when using portal_factory.
