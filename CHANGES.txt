@@ -1,18 +1,51 @@
 Changelog
 =========
 
-2.2.2 - Unreleased
+2.2.4 (unreleased)
 ------------------
+
+- Nothing changed yet.
+
+
+2.2.3 (2011-11-24)
+------------------
+
+- Do not display 'Manage portlets' when using portal_factory.
+  https://dev.plone.org/ticket/12376
+  [runyaga]
+  
+- Fixed the two high priority scenarios (global sections viewlet and nav 
+  portlet) of http://dev.plone.org/ticket/11189.
+  [fulv]
+
+- Reverted commit 5cb41ffea to fix #12279 and added a test for it.
+  [zupo, jcerjak]
+
+
+2.2.2 (2011-10-17)
+------------------
+
+- Fixed issue where the events, news and recent portlet would fail
+  with a setting of no items (zero) shown due to a catalog sorting
+  assertion.
+  [malthe]
 
 - Avoid empty <ul> tag in navigation_recurse.pt if bottomLevel is set.
   [gaudenzius]
+
+- Enable possibility to delete portlets with missing implementation
+  [do3cc]
+
+- Replace use of deprecated skin template prefs_group_details with
+  @@usergroup-groupdetails.
+  [stefan]
 
 
 2.2.1 - 2011-08-08
 ------------------
 - Imporove tests readability. Merged from branches/2.1
   [gotcha]
-  
+
 - 'placeholder' attribute for the search portlet's field instead of the custom
   JS handling of the same functionality.
   [spliter]
@@ -23,7 +56,7 @@ Changelog
 - Updated 'Advanced Search' link and form's action of the search portlet to
   link to updated search results view at @@search.
   [spliter]
-  
+
 2.1.5 - 2011-06-19
 ------------------
 
