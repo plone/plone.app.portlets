@@ -4,8 +4,9 @@ Changelog
 2.1.8 (unreleased)
 ------------------
 
-- Changed the permission for members to be able to add portlets
-  to their dashboards. ( https://dev.plone.org/ticket/11174 )
+- (backported from 2.2.5) Changed the permission for members to be 
+  able to add portlets to their dashboards. 
+  ( https://dev.plone.org/ticket/11174 )
   [credits to buchi, applied and tests by frapell]
 
 
