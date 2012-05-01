@@ -3,7 +3,8 @@ from z3c.form import form
 from zope.component import getMultiAdapter
 from zope.interface import implements
 
-from Acquisition import aq_parent, aq_inner
+from Acquisition import aq_parent, aq_inner, aq_base
+from Acquisition.interfaces import IAcquirer
 
 from plone.app.portlets import PloneMessageFactory as _
 from plone.app.portlets.browser.interfaces import IPortletAddForm
@@ -24,6 +25,24 @@ class AddForm(form.AddForm):
     def __call__(self):
         IPortletPermissionChecker(aq_parent(aq_inner(self.context)))()
         return super(AddForm, self).__call__()
+
+    def create_assignment(self, data):
+        # subclassed addforms should create the actual Assignment instance and return it.
+        raise NotImplementedError()
+    
+    def create(self, data):
+        # adapted from plone.dexterity.browser.add.DefaultAddForm to make advanced fields like RelationField work.
+        content = self.create_assignment(data)
+        container = aq_inner(self.context)
+
+        # Acquisition wrap temporarily to satisfy things like vocabularies
+        # depending on tools
+        if IAcquirer.providedBy(content):
+            content = content.__of__(container)
+
+        form.applyChanges(self, content, data)
+
+        return aq_base(content)
 
     def nextURL(self):
         addview = aq_parent(aq_inner(self.context))
