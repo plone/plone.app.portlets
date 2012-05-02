@@ -45,6 +45,9 @@ class AddForm(form.AddForm):
         return aq_base(content)
 
     def nextURL(self):
+        referer = self.request.get('referer')
+        if referer:
+            return referer
         addview = aq_parent(aq_inner(self.context))
         context = aq_parent(aq_inner(addview))
         url = str(getMultiAdapter((context, self.request),
@@ -84,6 +87,9 @@ class EditForm(form.EditForm):
         return super(EditForm, self).__call__()
 
     def nextURL(self):
+        referer = self.request.get('referer')
+        if referer:
+            return referer
         editview = aq_parent(aq_inner(self.context))
         context = aq_parent(aq_inner(editview))
         url = str(getMultiAdapter((context, self.request),
