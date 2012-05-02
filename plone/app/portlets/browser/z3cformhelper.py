@@ -2,6 +2,7 @@ from z3c.form import button
 from z3c.form import form
 from zope.component import getMultiAdapter
 from zope.interface import implements
+from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 
 from Acquisition import aq_parent, aq_inner, aq_base
 from Acquisition.interfaces import IAcquirer
@@ -16,6 +17,8 @@ class AddForm(form.AddForm):
     implements(IPortletAddForm)
 
     label = _(u"Configure portlet")
+    
+    template = ViewPageTemplateFile('templates/z3cform-portlets-pageform.pt')
 
     def add(self, object):
         ob = self.context.add(object)
@@ -44,8 +47,11 @@ class AddForm(form.AddForm):
 
         return aq_base(content)
 
+    def referer(self):
+        return self.request.get('referer', '')
+
     def nextURL(self):
-        referer = self.request.get('referer')
+        referer = self.request.form.get('referer')
         if referer:
             return referer
         addview = aq_parent(aq_inner(self.context))
@@ -81,13 +87,18 @@ class EditForm(form.EditForm):
     implements(IPortletEditForm)
 
     label = _(u"Modify portlet")
+    
+    template = ViewPageTemplateFile('templates/z3cform-portlets-pageform.pt')
 
     def __call__(self):
         IPortletPermissionChecker(aq_parent(aq_inner(self.context)))()
         return super(EditForm, self).__call__()
 
+    def referer(self):
+        return self.request.get('referer', '')
+
     def nextURL(self):
-        referer = self.request.get('referer')
+        referer = self.request.form.get('referer')
         if referer:
             return referer
         editview = aq_parent(aq_inner(self.context))
