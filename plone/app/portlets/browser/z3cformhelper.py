@@ -2,8 +2,10 @@ from z3c.form import button
 from z3c.form import form
 from zope.component import getMultiAdapter
 from zope.interface import implements
+from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 
-from Acquisition import aq_parent, aq_inner
+from Acquisition import aq_parent, aq_inner, aq_base
+from Acquisition.interfaces import IAcquirer
 
 from plone.app.portlets import PloneMessageFactory as _
 from plone.app.portlets.browser.interfaces import IPortletAddForm
@@ -15,6 +17,8 @@ class AddForm(form.AddForm):
     implements(IPortletAddForm)
 
     label = _(u"Configure portlet")
+    
+    template = ViewPageTemplateFile('templates/z3cform-portlets-pageform.pt')
 
     def add(self, object):
         ob = self.context.add(object)
@@ -25,7 +29,31 @@ class AddForm(form.AddForm):
         IPortletPermissionChecker(aq_parent(aq_inner(self.context)))()
         return super(AddForm, self).__call__()
 
+    def create_assignment(self, data):
+        # subclassed addforms should create the actual Assignment instance and return it.
+        raise NotImplementedError()
+    
+    def create(self, data):
+        # adapted from plone.dexterity.browser.add.DefaultAddForm to make advanced fields like RelationField work.
+        content = self.create_assignment(data)
+        container = aq_inner(self.context)
+
+        # Acquisition wrap temporarily to satisfy things like vocabularies
+        # depending on tools
+        if IAcquirer.providedBy(content):
+            content = content.__of__(container)
+
+        form.applyChanges(self, content, data)
+
+        return aq_base(content)
+
+    def referer(self):
+        return self.request.get('referer', '')
+
     def nextURL(self):
+        referer = self.request.form.get('referer')
+        if referer:
+            return referer
         addview = aq_parent(aq_inner(self.context))
         context = aq_parent(aq_inner(addview))
         url = str(getMultiAdapter((context, self.request),
@@ -59,12 +87,20 @@ class EditForm(form.EditForm):
     implements(IPortletEditForm)
 
     label = _(u"Modify portlet")
+    
+    template = ViewPageTemplateFile('templates/z3cform-portlets-pageform.pt')
 
     def __call__(self):
         IPortletPermissionChecker(aq_parent(aq_inner(self.context)))()
         return super(EditForm, self).__call__()
 
+    def referer(self):
+        return self.request.get('referer', '')
+
     def nextURL(self):
+        referer = self.request.form.get('referer')
+        if referer:
+            return referer
         editview = aq_parent(aq_inner(self.context))
         context = aq_parent(aq_inner(editview))
         url = str(getMultiAdapter((context, self.request),
