@@ -10,6 +10,7 @@
         <span class="portletTopLeft"></span>
         <a href=""
            tal:attributes="href view/siteurl"
+           tal:omit-tag="not:view/siteurl"
            tal:content="view/title"
            class="tile">
             Tags
@@ -38,6 +39,7 @@
     </tal:rss>
     <dd class="portletFooter" tal:condition="view/feedAvailable">
         <a href=""
+           tal:condition="view/siteurl"
            tal:attributes="href view/siteurl"
            i18n:translate="box_morelink">
                 More&hellip;

@@ -166,8 +166,11 @@ class RSSFeed(object):
                 self._failed = True
                 return False
             self._title = d.feed.title
-            self._siteurl = d.feed.link
             self._items = []
+            try:
+                self._siteurl = d.feed.link
+            except AttributeError:
+                self._siteurl = ""
             for item in d['items']:
                 try:
                     itemdict = self._buildItemDict(item)
