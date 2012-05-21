@@ -39,6 +39,7 @@
     </tal:rss>
     <dd class="portletFooter" tal:condition="view/feedAvailable">
         <a href=""
+           tal:condition="view/siteurl"
            tal:attributes="href view/siteurl">
            <span class="hiddenStructure"><span tal:replace="view/title" /> - </span>
            <span i18n:translate="box_morelink">More&hellip;</span>
