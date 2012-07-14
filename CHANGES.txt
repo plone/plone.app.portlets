@@ -8,6 +8,17 @@ Changelog
   Don't use list as default parameter value.
   [kleist]
 
+- When navigation portlet has an explicit custom root set, clicking the portlet heading
+  goes to this content item instead of the global sitemap.
+  (Plone doesn't support section sitemaps) [miohtama]
+
+- If navigation portlet bottom level is set to a negative value, don't query navigation items at all,
+  only display portlet header and footer [miohtama]
+
+
+- In the portlet management interface display the assigned name of the navigation portlet if it
+  has one [miohtama]
+
 2.3a1 (2012-06-29)
 ------------------
 
