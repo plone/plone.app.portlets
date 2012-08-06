@@ -212,9 +212,23 @@ class TestRenderer(PortletsTestCase):
         tree = view.getNavTree()
         for child in tree['children']:
             if child['portal_type'] != 'Link':
-                self.failIf(child['item'].getRemoteUrl)
+                self.failIf(child['getRemoteUrl'])
             if child['Title'] == 'link1':
-                self.failUnlessEqual(child['item'].getRemoteUrl, 'http://plone.org')
+                self.failUnlessEqual(child['getRemoteUrl'], 'http://plone.org')
+                # as Creator, link1 should not use the remote Url
+                self.failIf(child['useRemoteUrl'])
+
+        self.portal.link1.setCreators(['some_other_user'])
+        self.portal.link1.reindexObject()
+        view = self.renderer(self.portal)
+        tree = view.getNavTree()
+        for child in tree['children']:
+            if child['portal_type'] != 'Link':
+                self.failIf(child['getRemoteUrl'])
+            if child['Title'] == 'link1':
+                self.failUnlessEqual(child['getRemoteUrl'], 'http://plone.org')
+                # as non-Creator user, link1 should use the remote Url
+                self.failUnless(child['useRemoteUrl'])
 
     def testNonStructuralFolderHidesChildren(self):
         # Make sure NonStructuralFolders act as if parentMetaTypesNotToQuery
@@ -313,6 +327,21 @@ class TestRenderer(PortletsTestCase):
         self.failUnless(tree)
         self.assertEqual(tree['children'][-1]['item'].getPath(), '/plone/folder2')
         self.assertEqual(len(tree['children'][-1]['children']), 0)
+
+    def testBottomLevelZeroNoLimit(self):
+        """Test that bottomLevel=0 means no limit for bottomLevel."""
+
+        # first we set a high integer as bottomLevel to simulate "no limit"
+        view = self.renderer(self.portal.folder2, assignment=navigation.Assignment(bottomLevel=99, topLevel=0))
+        tree = view.getNavTree()
+        self.failUnless(tree)
+        self.assertEqual(tree['children'][-1]['children'][0]['item'].getPath(), '/plone/folder2/doc21')
+
+        # now set bottomLevel to 0 -> outcome should be the same
+        view = self.renderer(self.portal.folder2, assignment=navigation.Assignment(bottomLevel=0, topLevel=0))
+        tree = view.getNavTree()
+        self.failUnless(tree)
+        self.assertEqual(tree['children'][-1]['children'][0]['item'].getPath(), '/plone/folder2/doc21')
 
     def testNoRootSet(self):
         view = self.renderer(self.portal.folder2.file21, assignment=navigation.Assignment(root='', topLevel=0))
