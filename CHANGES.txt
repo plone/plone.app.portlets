@@ -1,7 +1,69 @@
 Changelog
 =========
 
-2.2.2 - Unreleased
+2.3a2 (unreleased)
+------------------
+
+- portlets/login.py, portlets/navigation.py:
+  Don't use list as default parameter value.
+  [kleist]
+
+- refactory nested tal:conditions in ``navigation_recurse.pt``, merged into
+  one tal:condition in ul tag.
+  [saily]
+
+- Add link to @@manage-portlets to go up to the parent folder staying in manage-portlets view
+  [toutpt]
+
+
+2.3a1 (2012-06-29)
+------------------
+
+- Make it possible to create portlets using z3c.form.
+  [ggozad]
+
+2.2.6 (unreleased)
+------------------
+
+- Remove hard dependency on Archetypes.
+  [davisagli]
+
+- accessibility improvements for screen readers regarding "more" links, see https://dev.plone.org/ticket/11982
+  [rmattb, applied by polyester]
+
+2.2.5 (2012-05-07)
+------------------
+
+- Changed the permission for members to be able to add portlets
+  to their dashboards. ( https://dev.plone.org/ticket/11174 )
+  [credits to buchi and jstegle, applied and tests by frapell]
+
+
+2.2.4 (2012-04-15)
+------------------
+
+- Prevent buggy RSS feed to break page display.
+  [patch by dieter, applied by kleist]
+
+- Fix inherited local portlets for objects allowing locally-assigned
+  portlets which are contained by an object that does not. [mitchellrj]
+
+2.2.3 (2011-11-24)
+------------------
+
+- Do not display 'Manage portlets' when using portal_factory.
+  https://dev.plone.org/ticket/12376
+  [runyaga]
+
+- Fixed the two high priority scenarios (global sections viewlet and nav
+  portlet) of http://dev.plone.org/ticket/11189.
+  [fulv]
+
+- Reverted commit 5cb41ffea to fix #12279 and added a test for it.
+  [zupo, jcerjak]
+
+
+2.2.2 (2011-10-17)
 ------------------
 
 - Navigation portlet template renders a non-site navigation root content
@@ -16,7 +78,7 @@ Changelog
 - Avoid empty <ul> tag in navigation_recurse.pt if bottomLevel is set.
   [gaudenzius]
 
-- Enable possibility to delete portlets with missing implementation 
+- Enable possibility to delete portlets with missing implementation
   [do3cc]
 
 - Replace use of deprecated skin template prefs_group_details with
@@ -28,7 +90,7 @@ Changelog
 ------------------
 - Imporove tests readability. Merged from branches/2.1
   [gotcha]
-  
+
 - 'placeholder' attribute for the search portlet's field instead of the custom
   JS handling of the same functionality.
   [spliter]
@@ -39,7 +101,7 @@ Changelog
 - Updated 'Advanced Search' link and form's action of the search portlet to
   link to updated search results view at @@search.
   [spliter]
-  
+
 2.1.5 - 2011-06-19
 ------------------
 
