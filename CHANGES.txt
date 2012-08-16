@@ -4,6 +4,10 @@ Changelog
 2.3a2 (unreleased)
 ------------------
 
+- Navigation portlet template renders a non-site navigation root content
+  item with its apporpriate content icon, reserving the Plone site icon
+  CSS sprite for default use by a site only. [seanupton]
+
 - portlets/login.py, portlets/navigation.py:
   Don't use list as default parameter value.
   [kleist]
