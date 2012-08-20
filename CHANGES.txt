@@ -4,10 +4,6 @@ Changelog
 2.3a2 (unreleased)
 ------------------
 
-- Calendar portlet search URLs whitelist only Event portal_type in the
-  querystring, prevents non-event types from accidentally being
-  included in calendar results. [seanupton]
-
 - Navigation portlet template renders a non-site navigation root content
   item with its apporpriate content icon, reserving the Plone site icon
   CSS sprite for default use by a site only. [seanupton]
