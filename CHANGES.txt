@@ -4,9 +4,25 @@ Changelog
 2.3a2 (unreleased)
 ------------------
 
+- Calendar portlet search URLs whitelist only Event portal_type in the
+  querystring, prevents non-event types from accidentally being
+  included in calendar results. [seanupton]
+
+- Navigation portlet template renders a non-site navigation root content
+  item with its apporpriate content icon, reserving the Plone site icon
+  CSS sprite for default use by a site only. [seanupton]
+
 - portlets/login.py, portlets/navigation.py:
   Don't use list as default parameter value.
   [kleist]
+
+- refactory nested tal:conditions in ``navigation_recurse.pt``, merged into
+  one tal:condition in ul tag.
+  [saily]
+
+- Add link to @@manage-portlets to go up to the parent folder staying in manage-portlets view
+  [toutpt]
+
 
 2.3a1 (2012-06-29)
 ------------------
