@@ -9,6 +9,9 @@ Changelog
   ( https://dev.plone.org/ticket/11174 )
   [credits to buchi and jstegle, applied and tests by frapell]
 
+- Add link to @@manage-portlets to go up to the parent folder staying in
+  manage-portlets view
+  [toutpt]
 
 2.1.7 (2011-11-29)
 ------------------
