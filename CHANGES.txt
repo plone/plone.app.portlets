@@ -1,8 +1,42 @@
 Changelog
 =========
 
-2.3a2 (unreleased)
+2.3.2 (unreleased)
 ------------------
+
+- Inside Review portlet display footer link only to Reviewers.
+  Closes ticket https://dev.plone.org/ticket/6629
+  [vipod]
+
+- Use ``type`` instead of ``makeClass`` for Zope 4 compatibility.
+  [elro]
+
+2.3.1 (2012-08-29)
+------------------
+
+- Fix packaging error.
+  [esteele]
+
+2.3 (2012-08-29)
+----------------
+
+- Calendar portlet links to @@search (plone.app.search) view instead of
+  deprecated search.pt.
+  [seanupton]
+
+- When navigation portlet has an explicit custom root set, clicking the portlet heading
+  goes to this content item instead of the global sitemap.
+  (Plone doesn't support section sitemaps) [miohtama]
+
+- If navigation portlet bottom level is set to a negative value, don't query navigation items at all,
+  only display portlet header and footer [miohtama]
+
+- In the portlet management interface display the assigned name of the navigation portlet if it
+  has one [miohtama]
+
+- Calendar portlet search URLs whitelist only Event portal_type in the
+  querystring, prevents non-event types from accidentally being
+  included in calendar results. [seanupton]
 
 - Navigation portlet template renders a non-site navigation root content
   item with its apporpriate content icon, reserving the Plone site icon
@@ -18,7 +52,6 @@ Changelog
 
 - Add link to @@manage-portlets to go up to the parent folder staying in manage-portlets view
   [toutpt]
-
 
 2.3a1 (2012-06-29)
 ------------------
