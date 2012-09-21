@@ -272,6 +272,14 @@ class ContextualEditPortletManagerRenderer(EditPortletManagerRenderer):
         context = aq_inner(self.context)
 
         data = []
+
+        def is_visible(a):
+            try:
+                return IPortletAssignmentSettings(a).get('visible', True)
+            except TypeError:
+                # Assignment is broken
+                return False
+
         while not IPloneSiteRoot.providedBy(context):
             if IAcquirer.providedBy(context):
                 context = aq_parent(aq_inner(context))
@@ -282,7 +290,6 @@ class ContextualEditPortletManagerRenderer(EditPortletManagerRenderer):
             view = queryMultiAdapter((context, self.request), name=self.__parent__.__name__)
             if view is not None:
                 assignments = view.getAssignmentsForManager(self.manager)
-                is_visible = lambda a: IPortletAssignmentSettings(a).get('visible', True)
                 assignments_to_show = [a for a in assignments if is_visible(a)]
                 base_url = view.getAssignmentMappingUrl(self.manager)
                 data.extend(self.portlets_for_assignments(assignments_to_show, self.manager, base_url))

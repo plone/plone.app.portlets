@@ -62,8 +62,14 @@ class PortletManagerKSS(base):
                         info['manager'], info['category'], info['key'])
 
         IPortletPermissionChecker(assignments.__of__(aq_inner(self.context)))()
-
-        del assignments[info['name']]
+        
+        try:
+            del assignments[info['name']]
+        except AttributeError:
+            # When portlet object is broken, for example if product has been removed
+            assignments._order.remove(info['name'])
+            del assignments._data[info['name']]
+            
         return self._render_column(info, viewname)
 
     def toggle_visibility(self, portlethash, viewname):
