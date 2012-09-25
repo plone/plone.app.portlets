@@ -4,10 +4,12 @@ Changelog
 2.2.7 (unreleased)
 ------------------
 
+- Fix ManagePortletsViewlet to work with Plone 4+.
+  [elro]
+
 - Add link from @@manage-portlets to go up to the parent folder
   staying in manage-portlets view
   [toutpt]
-
 
 2.2.6 (2012-08-04)
 ------------------
