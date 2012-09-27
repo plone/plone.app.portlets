@@ -1,12 +1,24 @@
 Changelog
 =========
 
-2.3.2 (unreleased)
+2.3.3 (unreleased)
 ------------------
 
 - We can delete a portlet which product has been removed.
   Manage portlets page is not broken when an inherited portlet is broken.
   [thomasdesvenain]
+
+2.3.2 (2012-09-26)
+------------------
+
+- Fix ManagePortletsViewlet to work with KSS.
+  [elro]
+
+- Fix ManagePortletsViewlet to work with Plone 4+.
+  [elro]
+
+- Fix 'This portlet display a'.
+  [danjacka]
 
 - Reverted change: refactory nested tal:conditions in ``navigation_recurse.pt``, merged into
   one tal:condition in ul tag. 
