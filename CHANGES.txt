@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.3.6 (unreleased)
+2.3.6 (2012-10-11)
 ------------------
 
 - Allow for the root content item icon in the navigation portlet to be
