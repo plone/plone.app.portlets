@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '2.3.6.dev0'
+version = '2.4.0.dev0'
 
 setup(name='plone.app.portlets',
       version=version,
@@ -38,7 +38,6 @@ setup(name='plone.app.portlets',
         'plone.portlets>=1.1',
         'plone.app.form',
         'plone.app.i18n',
-        'plone.app.kss',
         'plone.app.layout >= 1.2dev',
         'plone.app.vocabularies',
         'transaction',

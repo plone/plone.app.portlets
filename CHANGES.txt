@@ -1,12 +1,19 @@
 Changelog
 =========
 
-2.3.6 (unreleased)
+2.4.0 (unreleased)
 ------------------
 
 - We can delete a portlet which product has been removed.
   Manage portlets page is not broken when an inherited portlet is broken.
   [thomasdesvenain]
+
+- Add ability to render only single portlet code with view.
+  Code basically copied from plone.app.kss
+  [vangheem]
+
+- Remove kss
+  [vangheem]
 
 - Allow for the root content item icon in the navigation portlet to be
   displayed with CSS or an img tag.
