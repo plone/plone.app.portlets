@@ -1,7 +1,13 @@
 Changelog
 =========
 
-2.4.0 (unreleased)
+2.4.1 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
+2.4.0 (2012-10-16)
 ------------------
 
 - We can delete a portlet which product has been removed.
