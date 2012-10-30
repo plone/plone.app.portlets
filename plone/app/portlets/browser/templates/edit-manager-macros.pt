@@ -66,7 +66,7 @@
                        i18n:translate="label_hide_item"
                        tal:attributes="href string:${portlet/hide_url}&amp;referer=${view/url_quote_referer}">Hide</a>
                     <a href="#" class="delete"
-                       title="Remove"
+                       title="Delete"
                        i18n:attributes="title"
                        tal:attributes="href string:${portlet/delete_url}&amp;referer=${view/url_quote_referer}">&times;</a>
                     </span>
