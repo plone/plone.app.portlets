@@ -4,7 +4,8 @@ Changelog
 2.4.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Navigation portlet: Add "section-XXX" class for the top node, useful for background colors/images.
+  [kleist]
 
 
 2.4.0 (2012-10-16)
