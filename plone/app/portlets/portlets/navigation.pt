@@ -16,11 +16,13 @@
     <dd class="portletItem lastItem">
         <ul class="navTree navTreeLevel0">
             <li tal:define="selectedClass view/root_item_class;
-                            li_class python:selectedClass and ' navTreeCurrentNode' or '';"
+                            li_class python:selectedClass and ' navTreeCurrentNode' or '';
+                            normalizeString nocall:context/plone_utils/normalizeString;
+                            section_title root/Title;
+                            section python:normalizeString(section_title);"
                 tal:condition="view/include_top"
-                tal:attributes="class string:navTreeItem navTreeTopNode${li_class}">
+                tal:attributes="class string:navTreeItem navTreeTopNode${li_class} section-${section}">
                 <div tal:define="rootIsPortal view/root_is_portal;
-                                 normalizeString nocall:context/plone_utils/normalizeString;
                                  root_icon view/root_icon;
                                  root_type root/portal_type;
                                  root_type_class python:'contenttype-' + normalizeString(root_type);
