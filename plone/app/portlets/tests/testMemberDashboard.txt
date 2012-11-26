@@ -1,7 +1,7 @@
 Setup::
 
-    >>> user1, pass1 = u'user1', 'pass1'
-    >>> user2, pass2 = u'user2', 'pass2'
+    >>> user1, pass1 = 'user1', 'pass1'
+    >>> user2, pass2 = 'user2', 'pass2'
     >>> uf = portal.acl_users
     >>> uf.userFolderAddUser(user1, pass1, ['Member'], [])
     >>> uf.userFolderAddUser(user2, pass2, ['Member'], [])
