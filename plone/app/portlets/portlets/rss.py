@@ -165,7 +165,10 @@ class RSSFeed(object):
                 self._loaded = True # we tried at least but have a failed load
                 self._failed = True
                 return False
-            self._title = d.feed.title
+            try:
+                self._title = d.feed.title
+            except AttributeError:
+                self._title = ""
             self._items = []
             try:
                 self._siteurl = d.feed.link
