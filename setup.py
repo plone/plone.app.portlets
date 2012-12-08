@@ -5,8 +5,8 @@ version = '2.4.1.dev0'
 setup(name='plone.app.portlets',
       version=version,
       description="Plone integration for the basic plone.portlets package",
-      long_description=open("README.txt").read() + "\n" +
-                       open("CHANGES.txt").read(),
+      long_description=open("README.rst").read() + "\n" +
+                       open("CHANGES.rst").read(),
       classifiers=[
           "Environment :: Web Environment",
           "Framework :: Plone",
