@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.3.7 (unreleased)
+2.3.7 (2012-12-14)
 ------------------
 
 - @@manage-portlets: Tooltip for X icon is "Remove", should be "Delete"
