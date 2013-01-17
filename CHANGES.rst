@@ -1,11 +1,27 @@
 Changelog
 =========
 
-2.4.1 (unreleased)
+2.4.2 (unreleased)
 ------------------
 
-- Navigation portlet: Add "section-XXX" class for the top node, useful for background colors/images.
+- Nothing changed yet.
+
+
+2.4.1 (2013-01-01)
+------------------
+
+- Navigation portlet: Add "section-XXX" class for the top node, useful for
+  background colors/images.
   [kleist]
+
+- Don't break if a feed does not have an "rel=alternate type=html" link. It is
+  possible for a valid Atom feed to omit a <link rel="alternate" type="html"
+  href="http://server.com"/> element which is available through the feedparser
+  object as a feed.link attribute. If the feed does not have this element then
+  the RSS portlet will throw an AttributeError which will propagate to the page
+  preventing the original page from rendering.  This changeset adds support for
+  such feeds.
+  [dokai]
 
 
 2.4.0 (2012-10-16)
@@ -57,14 +73,15 @@ Changelog
 - Fix 'This portlet display a'.
   [danjacka]
 
-- Reverted change: refactory nested tal:conditions in ``navigation_recurse.pt``, merged into
-  one tal:condition in ul tag. 
+- reverted change: refactory nested tal:conditions in
+  ``navigation_recurse.pt``, merged into one tal:condition in ul tag.
   [maartenkling]
 
 - Add contenttype class to the a tag, like navigation
   [maartenkling]
 
-- Don't break TinyMCE on editing parent-portlets (fixes http://dev.plone.org/ticket/12899)
+- Don't break TinyMCE on editing parent-portlets (fixes
+  http://dev.plone.org/ticket/12899)
   [pbauer]
 
 - Inside Review portlet display footer link only to Reviewers.
@@ -89,23 +106,28 @@ Changelog
   deprecated search.pt.
   [seanupton]
 
-- When navigation portlet has an explicit custom root set, clicking the portlet heading
-  goes to this content item instead of the global sitemap.
-  (Plone doesn't support section sitemaps) [miohtama]
+- When navigation portlet has an explicit custom root set, clicking the portlet
+  heading goes to this content item instead of the global sitemap.  (Plone
+  doesn't support section sitemaps)
+  [miohtama]
 
-- If navigation portlet bottom level is set to a negative value, don't query navigation items at all,
-  only display portlet header and footer [miohtama]
+- If navigation portlet bottom level is set to a negative value, don't query
+  navigation items at all, only display portlet header and footer
+  [miohtama]
 
-- In the portlet management interface display the assigned name of the navigation portlet if it
-  has one [miohtama]
+- In the portlet management interface display the assigned name of the
+  navigation portlet if it has one
+  [miohtama]
 
 - Calendar portlet search URLs whitelist only Event portal_type in the
   querystring, prevents non-event types from accidentally being
-  included in calendar results. [seanupton]
+  included in calendar results.
+  [seanupton]
 
 - Navigation portlet template renders a non-site navigation root content
   item with its apporpriate content icon, reserving the Plone site icon
-  CSS sprite for default use by a site only. [seanupton]
+  CSS sprite for default use by a site only.
+  [seanupton]
 
 - portlets/login.py, portlets/navigation.py:
   Don't use list as default parameter value.
@@ -115,7 +137,8 @@ Changelog
   one tal:condition in ul tag.
   [saily]
 
-- Add link to @@manage-portlets to go up to the parent folder staying in manage-portlets view
+- Add link to @@manage-portlets to go up to the parent folder staying in
+  manage-portlets viewlet
   [toutpt]
 
 2.3a1 (2012-06-29)
@@ -130,7 +153,8 @@ Changelog
 - Remove hard dependency on Archetypes.
   [davisagli]
 
-- accessibility improvements for screen readers regarding "more" links, see https://dev.plone.org/ticket/11982
+- accessibility improvements for screen readers regarding "more" links, see
+  https://dev.plone.org/ticket/11982
   [rmattb, applied by polyester]
 
 2.2.5 (2012-05-07)
@@ -148,7 +172,8 @@ Changelog
   [patch by dieter, applied by kleist]
 
 - Fix inherited local portlets for objects allowing locally-assigned
-  portlets which are contained by an object that does not. [mitchellrj]
+  portlets which are contained by an object that does not.
+  [mitchellrj]
 
 2.2.3 (2011-11-24)
 ------------------
