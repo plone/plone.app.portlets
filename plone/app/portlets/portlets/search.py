@@ -41,7 +41,7 @@ class Renderer(base.Renderer):
     def __init__(self, context, request, view, manager, data):
         base.Renderer.__init__(self, context, request, view, manager, data)
 
-        portal_state = getMultiAdapter((context, request), name=u'plone_portal_state')
+        portal_state = getMultiAdapter((context, request), name='plone_portal_state')
         self.navigation_root_url = portal_state.navigation_root_url()
 
     def enable_livesearch(self):

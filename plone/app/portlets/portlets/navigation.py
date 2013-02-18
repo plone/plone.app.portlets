@@ -201,7 +201,7 @@ class Renderer(base.Renderer):
         return ''
 
     def root_icon(self):
-        ploneview = getMultiAdapter((self.context, self.request), name=u'plone')
+        ploneview = getMultiAdapter((self.context, self.request), name='plone')
         icon = ploneview.getIcon(self.getNavRoot())
         return icon
 

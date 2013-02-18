@@ -37,7 +37,7 @@ class Renderer(base.Renderer):
     def anonymous(self):
         context = aq_inner(self.context)
         portal_state = getMultiAdapter((context, self.request),
-                                       name=u'plone_portal_state')
+                                       name='plone_portal_state')
         return portal_state.anonymous()
 
     @property
@@ -63,7 +63,7 @@ class Renderer(base.Renderer):
         context = aq_inner(self.context)
         workflow = getToolByName(context, 'portal_workflow')
 
-        plone_view = getMultiAdapter((context, self.request), name=u'plone')
+        plone_view = getMultiAdapter((context, self.request), name='plone')
         getMember = getToolByName(context, 'portal_membership').getMemberById
         getIcon = plone_view.getIcon
         toLocalizedTime = plone_view.toLocalizedTime

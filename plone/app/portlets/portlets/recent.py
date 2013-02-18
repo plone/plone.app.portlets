@@ -49,13 +49,13 @@ class Renderer(base.Renderer):
         base.Renderer.__init__(self, *args)
 
         context = aq_inner(self.context)
-        portal_state = getMultiAdapter((context, self.request), name=u'plone_portal_state')
+        portal_state = getMultiAdapter((context, self.request), name='plone_portal_state')
         self.anonymous = portal_state.anonymous()
         self.navigation_root_url = portal_state.navigation_root_url()
         self.typesToShow = portal_state.friendly_types()
         self.navigation_root_path = portal_state.navigation_root_path()
 
-        plone_tools = getMultiAdapter((context, self.request), name=u'plone_tools')
+        plone_tools = getMultiAdapter((context, self.request), name='plone_tools')
         self.catalog = plone_tools.catalog()
 
     @ram.cache(_render_cachekey)
