@@ -38,6 +38,8 @@ def portletDirective(_context, name, interface, assignment, renderer, addview,
     other generic code instantiate portlets.
     """
 
+    name = str(name)  # De-unicode
+
     # Register the portlet interface as named utility so that we can find it
     # again (in the GS handler)
 

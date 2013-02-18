@@ -440,6 +440,7 @@ class PortletsXMLAdapter(XMLAdapterBase):
         assignment = None
         name = node.getAttribute('name')
         if name:
+            name = str(name)
             assignment = mapping.get(name, None)
 
         if node.hasAttribute('remove'):
@@ -452,7 +453,7 @@ class PortletsXMLAdapter(XMLAdapterBase):
                 del mapping[portlet]
             return
 
-        type_ = node.getAttribute('type')
+        type_ = str(node.getAttribute('type'))
 
         if assignment is None:
             portlet_factory = getUtility(IFactory, name=type_)
