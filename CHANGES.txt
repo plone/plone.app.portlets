@@ -4,7 +4,9 @@ Changelog
 2.3.8 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Make sure a portlet name is not a unicode string. This prevents problems when
+  trying to use a portlet name in joined strings.
+  [wichert]
 
 
 2.3.7 (2012-12-14)

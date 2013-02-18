@@ -97,14 +97,14 @@ class INavigationPortlet(IPortletDataProvider):
 class Assignment(base.Assignment):
     implements(INavigationPortlet)
 
-    name = u""
+    name = ""
     root = None
     currentFolderOnly = False
     includeTop = False
     topLevel = 1
     bottomLevel = 0
 
-    def __init__(self, name=u"", root=None, currentFolderOnly=False, includeTop=False, topLevel=1, bottomLevel=0):
+    def __init__(self, name="", root=None, currentFolderOnly=False, includeTop=False, topLevel=1, bottomLevel=0):
         self.name = name
         self.root = root
         self.currentFolderOnly = currentFolderOnly
@@ -276,8 +276,8 @@ class AddForm(base.AddForm):
     description = _(u"This portlet displays a navigation tree.")
 
     def create(self, data):
-        return Assignment(name=data.get('name', u""),
-                          root=data.get('root', u""),
+        return Assignment(name=data.get('name', ""),
+                          root=data.get('root', ""),
                           currentFolderOnly=data.get('currentFolderOnly', False),
                           includeTop=data.get('includeTop', False),
                           topLevel=data.get('topLevel', 0),
