@@ -109,7 +109,7 @@ def portletDirective(_context, name, interface, assignment, renderer, addview,
     if editview is not None:
         page(_context,
              for_=interface,
-             name=u"edit",
+             name="edit",
              class_=editview,
              permission=edit_permission)
 

@@ -53,7 +53,7 @@ class Renderer(base.Renderer):
     def __init__(self, *args):
         base.Renderer.__init__(self, *args)
 
-        portal_state = getMultiAdapter((self.context, self.request), name=u'plone_portal_state')
+        portal_state = getMultiAdapter((self.context, self.request), name='plone_portal_state')
         self.navigation_root_url = portal_state.navigation_root_url()
         self.portal = portal_state.portal()
         self.navigation_root_path = portal_state.navigation_root_path()
