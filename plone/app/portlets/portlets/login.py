@@ -28,9 +28,9 @@ class Renderer(base.Renderer):
 
         self.membership = getToolByName(self.context, 'portal_membership')
 
-        self.context_state = getMultiAdapter((context, request), name=u'plone_context_state')
-        self.portal_state = getMultiAdapter((context, request), name=u'plone_portal_state')
-        self.pas_info = getMultiAdapter((context, request), name=u'pas_info')
+        self.context_state = getMultiAdapter((context, request), name='plone_context_state')
+        self.portal_state = getMultiAdapter((context, request), name='plone_portal_state')
+        self.pas_info = getMultiAdapter((context, request), name='pas_info')
 
     def show(self):
         if not self.portal_state.anonymous():

@@ -66,7 +66,7 @@ class Renderer(base.Renderer):
     def all_news_link(self):
         context = aq_inner(self.context)
         portal_state = getMultiAdapter((context, self.request),
-            name=u'plone_portal_state')
+            name='plone_portal_state')
         portal = portal_state.portal()
         if 'news' in getNavigationRootObject(context, portal).objectIds():
             return '%s/news' % portal_state.navigation_root_url()
@@ -77,7 +77,7 @@ class Renderer(base.Renderer):
         context = aq_inner(self.context)
         catalog = getToolByName(context, 'portal_catalog')
         portal_state = getMultiAdapter((context, self.request),
-            name=u'plone_portal_state')
+            name='plone_portal_state')
         path = portal_state.navigation_root_path()
         limit = self.data.count
         state = self.data.state

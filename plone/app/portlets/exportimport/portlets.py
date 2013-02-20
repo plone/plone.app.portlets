@@ -440,6 +440,7 @@ class PortletsXMLAdapter(XMLAdapterBase):
         assignment = None
         name = node.getAttribute('name')
         if name:
+            name = str(name)
             assignment = mapping.get(name, None)
 
         if node.hasAttribute('remove'):
@@ -452,7 +453,7 @@ class PortletsXMLAdapter(XMLAdapterBase):
                 del mapping[portlet]
             return
 
-        type_ = node.getAttribute('type')
+        type_ = str(node.getAttribute('type'))
 
         if assignment is None:
             portlet_factory = getUtility(IFactory, name=type_)
@@ -717,7 +718,7 @@ def importPortlets(context):
     # and slightly simplified. The main difference is the lookup of a named
     # adapter to make it possible to have more than one handler for the same
     # object, which in case of a component registry is crucial.
-    importer = queryMultiAdapter((sm, context), IBody, name=u'plone.portlets')
+    importer = queryMultiAdapter((sm, context), IBody, name='plone.portlets')
     if importer:
         filename = '%s%s' % (importer.name, importer.suffix)
         body = context.readDataFile(filename)
