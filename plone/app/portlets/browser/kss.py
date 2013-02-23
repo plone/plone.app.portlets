@@ -1,3 +1,4 @@
+from zope.container  import contained
 from zope.interface import implements
 from zope.component import getUtility, getMultiAdapter
 
@@ -63,7 +64,16 @@ class PortletManagerKSS(base):
 
         IPortletPermissionChecker(assignments.__of__(aq_inner(self.context)))()
 
+        # set fixing_up to True to let zope.container.contained
+        # know that our object doesn't have __name__ and __parent__
+        fixing_up = contained.fixing_up
+        contained.fixing_up = True
+
         del assignments[info['name']]
+
+        # revert our fixing_up customization
+        contained.fixing_up = fixing_up
+
         return self._render_column(info, viewname)
 
     def toggle_visibility(self, portlethash, viewname):

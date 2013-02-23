@@ -4,6 +4,9 @@ Changelog
 2.3.8 (unreleased)
 ------------------
 
+- Allow removal of broken portlet assignment via kss action.
+  [vipod]
+
 - Make sure a portlet name is not a unicode string. This prevents problems when
   trying to use a portlet name in joined strings.
   [wichert]
