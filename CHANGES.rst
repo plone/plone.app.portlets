@@ -4,6 +4,9 @@ Changelog
 2.4.2 (unreleased)
 ------------------
 
+- Make it possible to delete broken portlet assignment.
+  [vipod]
+
 - Make sure a portlet name is not a unicode string. This prevents problems when
   trying to use a portlet name in joined strings.
   [wichert]

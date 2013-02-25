@@ -12,6 +12,7 @@ from plone.portlets.interfaces import IPortletContext
 from plone.portlets.utils import hashPortletInfo
 from plone.portlets.utils import unhashPortletInfo
 
+from zope.container  import contained
 from zope.interface import implements, Interface
 from zope.component import adapts, getMultiAdapter, queryMultiAdapter, queryAdapter, getUtility
 from zope.contentprovider.interfaces import UpdateNotCalled
@@ -410,7 +411,17 @@ class ManagePortletAssignments(BrowserView):
         self.authorize()
         assignments = aq_inner(self.context)
         IPortletPermissionChecker(assignments)()
+
+        # set fixing_up to True to let zope.container.contained
+        # know that our object doesn't have __name__ and __parent__
+        fixing_up = contained.fixing_up
+        contained.fixing_up = True
+
         del assignments[name]
+
+        # revert our fixing_up customization
+        contained.fixing_up = fixing_up
+
         return self.finish_portlet_change()
 
     def _nextUrl(self):
