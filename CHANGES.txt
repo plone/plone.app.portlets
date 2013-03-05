@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.3.8 (unreleased)
+2.3.8 (2013-03-05)
 ------------------
 
 - Allow removal of broken portlet assignment via kss action.
