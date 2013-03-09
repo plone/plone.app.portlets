@@ -38,6 +38,10 @@ Changelog
 2.4.0 (2012-10-16)
 ------------------
 
+- We can delete a portlet which product has been removed.
+  Manage portlets page is not broken when an inherited portlet is broken.
+  [thomasdesvenain]
+
 - Add ability to render only single portlet code with view.
   Code basically copied from plone.app.kss
   [vangheem]
@@ -84,7 +88,7 @@ Changelog
   ``navigation_recurse.pt``, merged into one tal:condition in ul tag.
   [maartenkling]
 
-- add contenttype class to the a tag, like navigation
+- Add contenttype class to the a tag, like navigation
   [maartenkling]
 
 - Don't break TinyMCE on editing parent-portlets (fixes
