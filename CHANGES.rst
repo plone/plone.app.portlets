@@ -4,7 +4,7 @@ Changelog
 2.4.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fixed portal_calendar single type "links" in the calendar template. [dr460neye]
 
 
 2.4.2 (2013-03-05)
