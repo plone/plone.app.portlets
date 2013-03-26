@@ -26,7 +26,7 @@ from AccessControl import Unauthorized
 
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from Products.PythonScripts.standard import url_quote
+from Products.PythonScripts.standard import url_quote, url_unquote
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 
 from plone.app.portlets.browser.interfaces import IManageColumnPortletsView
@@ -419,7 +419,9 @@ class ManagePortletAssignments(BrowserView):
 
     def _nextUrl(self):
         referer = self.request.get('referer')
-        if not referer:
+        if referer:
+            referer = url_unquote(referer)
+        else:
             context = aq_parent(aq_inner(self.context))
             url = str(getMultiAdapter((context, self.request), name=u"absolute_url"))
             referer = '%s/@@manage-portlets' % (url,)
