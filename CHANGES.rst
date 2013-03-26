@@ -4,7 +4,8 @@ Changelog
 2.5a1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fixed redirection after changing a portlet.
+  [maurits]
 
 
 2.4.2 (2013-03-05)
