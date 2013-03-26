@@ -4,6 +4,9 @@ Changelog
 2.4.3 (unreleased)
 ------------------
 
+- Fixed redirection after changing a portlet.
+  [maurits]
+
 - Fixed portal_calendar single type "links" in the calendar template. [dr460neye]
 
 
