@@ -7,7 +7,8 @@ Changelog
 - Fixed redirection after changing a portlet.
   [maurits]
 
-- Fixed portal_calendar single type "links" in the calendar template. [dr460neye]
+- Fixed portal_calendar single type "links" in the calendar template. 
+  [dr460neye]
 
 
 2.4.2 (2013-03-05)
