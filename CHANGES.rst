@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.4.3 (unreleased)
+2.4.3 (2013-04-06)
 ------------------
 
 - Fixed redirection after changing a portlet.
