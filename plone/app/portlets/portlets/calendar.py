@@ -224,7 +224,10 @@ class Renderer(base.Renderer):
     def getReviewStateString(self):
         states = self.calendar.getCalendarStates()
         return ''.join(map(lambda x: 'review_state=%s&amp;' % self.url_quote_plus(x), states))
-
+    def getEventTypes(self):
+        types = self.calendar.getCalendarTypes()
+        return ''.join(map(lambda x: 'Type=%s&amp;' % self.url_quote_plus(x), types))
+        
     def getQueryString(self):
         request = self.request
         query_string = request.get('orig_query',
