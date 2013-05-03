@@ -13,14 +13,17 @@ class IClassicPortlet(IPortletDataProvider):
     """A portlet which can render a classic Plone portlet macro
     """
 
-    template = schema.ASCIILine(title=_(u'Template'),
-                            description=_(u'The template containing the portlet.'),
-                            required=True)
+    template = schema.ASCIILine(
+            title=_(u'Template'),
+            description=_(u'The template containing the portlet.'),
+            required=True)
 
-    macro = schema.ASCIILine(title=_(u'Macro'),
-                         description=_(u"The macro containing the portlet."),
-                         default='portlet',
-                         required=True)
+    macro = schema.ASCIILine(
+            title=_(u'Macro'),
+            description=_(u"The macro containing the portlet. "
+                           "Leave blank if there is no macro."),
+            default='portlet',
+            required=False)
 
 
 class Assignment(base.Assignment):

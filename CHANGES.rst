@@ -4,7 +4,9 @@ Changelog
 2.4.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Don't require a macro for classic portlets - rendering a browser view doesn't
+  need one.
+  [danjacka]
 
 
 2.4.3 (2013-04-06)
@@ -13,7 +15,7 @@ Changelog
 - Fixed redirection after changing a portlet.
   [maurits]
 
-- Fixed portal_calendar single type "links" in the calendar template. 
+- Fixed portal_calendar single type "links" in the calendar template.
   [dr460neye]
 
 
