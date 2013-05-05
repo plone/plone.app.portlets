@@ -8,6 +8,10 @@ Changelog
   need one.
   [danjacka]
 
+- Change class prefix for the top node from "section-" to "nav-section-"
+  to avoid clash with the body tag.
+  [kleist]
+
 
 2.4.3 (2013-04-06)
 ------------------
