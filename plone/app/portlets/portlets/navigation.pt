@@ -21,7 +21,7 @@
                             section_title root/Title;
                             section python:normalizeString(section_title);"
                 tal:condition="view/include_top"
-                tal:attributes="class string:navTreeItem navTreeTopNode${li_class} section-${section}">
+                tal:attributes="class string:navTreeItem navTreeTopNode${li_class} nav-section-${section}">
                 <div tal:define="rootIsPortal view/root_is_portal;
                                  root_icon view/root_icon;
                                  root_type root/portal_type;
