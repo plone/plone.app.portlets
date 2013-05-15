@@ -4,6 +4,9 @@ Changelog
 2.5a1 (unreleased)
 ------------------
 
+- fix z3cform support - respect referer
+  [tmog / sunew]
+
 - fix z3cform support - fix for vocabularies, lifted from
   p.dexterity addForm. 
   [tmog / sunew]
