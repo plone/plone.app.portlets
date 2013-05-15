@@ -4,6 +4,9 @@ Changelog
 2.4.4 (unreleased)
 ------------------
 
+- fix z3cform support - add status messages when redirecting
+  [sunew / tmog]
+
 - fix z3cform support - respect referer
   [tmog / sunew]
 

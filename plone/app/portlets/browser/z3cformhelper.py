@@ -15,6 +15,8 @@ from plone.app.portlets.browser.interfaces import IPortletAddForm
 from plone.app.portlets.browser.interfaces import IPortletEditForm
 from plone.app.portlets.interfaces import IPortletPermissionChecker
 
+from Products.statusmessages.interfaces import IStatusMessage
+
 class AddForm(form.AddForm):
     implements(IPortletAddForm)
 
@@ -122,8 +124,12 @@ class EditForm(form.EditForm):
         changes = self.applyChanges(data)
         if changes:
             self.status = "Changes saved"
+            IStatusMessage(self.request).addStatusMessage(_(u"Changes saved"),
+                                                          "info")
         else:
             self.status = "No changes"
+            IStatusMessage(self.request).addStatusMessage(_(u"No changes"),
+                                                          "info")
 
         nextURL = self.nextURL()
         if nextURL:
