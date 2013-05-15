@@ -2,14 +2,16 @@ from z3c.form import button
 from z3c.form import form
 from zope.component import getMultiAdapter
 from zope.interface import implements
+import zope.event
+import zope.lifecycleevent
 
-from Acquisition import aq_parent, aq_inner
+from Acquisition import aq_parent, aq_inner, aq_base
+from Acquisition.interfaces import IAcquirer
 
 from plone.app.portlets import PloneMessageFactory as _
 from plone.app.portlets.browser.interfaces import IPortletAddForm
 from plone.app.portlets.browser.interfaces import IPortletEditForm
 from plone.app.portlets.interfaces import IPortletPermissionChecker
-
 
 class AddForm(form.AddForm):
     implements(IPortletAddForm)
@@ -28,6 +30,22 @@ class AddForm(form.AddForm):
         IPortletPermissionChecker(aq_parent(aq_inner(self.context)))()
         return super(AddForm, self).__call__()
 
+    def createAndAdd(self, data):
+        obj = self.create(data)
+
+        # Acquisition wrap temporarily to satisfy things like vocabularies
+        # depending on tools
+        container = aq_inner(self.context)
+
+        if IAcquirer.providedBy(obj):
+            obj = obj.__of__(container)
+        form.applyChanges(self, obj, data)
+        obj = aq_base(obj)
+
+        zope.event.notify(zope.lifecycleevent.ObjectCreatedEvent(obj))
+        self.add(obj)
+        return obj
+    
     def nextURL(self):
         addview = aq_parent(aq_inner(self.context))
         context = aq_parent(aq_inner(addview))

@@ -4,6 +4,10 @@ Changelog
 2.4.4 (unreleased)
 ------------------
 
+- fix z3cform support - fix for vocabularies, lifted from
+  p.dexterity addForm. 
+  [tmog / sunew]
+
 - Don't require a macro for classic portlets - rendering a browser view doesn't
   need one.
   [danjacka]
