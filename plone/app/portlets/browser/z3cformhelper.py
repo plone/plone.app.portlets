@@ -5,6 +5,8 @@ from zope.interface import implements
 import zope.event
 import zope.lifecycleevent
 
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+
 from Acquisition import aq_parent, aq_inner, aq_base
 from Acquisition.interfaces import IAcquirer
 
@@ -16,6 +18,8 @@ from plone.app.portlets.interfaces import IPortletPermissionChecker
 class AddForm(form.AddForm):
     implements(IPortletAddForm)
 
+    template = ViewPageTemplateFile('templates/z3cform-portlets-pageform.pt')
+    
     label = _(u"Configure portlet")
 
     def add(self, object):
@@ -45,8 +49,14 @@ class AddForm(form.AddForm):
         zope.event.notify(zope.lifecycleevent.ObjectCreatedEvent(obj))
         self.add(obj)
         return obj
+
+    @property
+    def referer(self):
+        return self.request.get('referer', '')
     
     def nextURL(self):
+        if self.referer:
+            return self.referer
         addview = aq_parent(aq_inner(self.context))
         context = aq_parent(aq_inner(addview))
         url = str(getMultiAdapter((context, self.request),
@@ -79,6 +89,8 @@ class EditForm(form.EditForm):
 
     implements(IPortletEditForm)
 
+    template = ViewPageTemplateFile('templates/z3cform-portlets-pageform.pt')
+    
     label = _(u"Modify portlet")
 
     def __call__(self):
@@ -88,7 +100,13 @@ class EditForm(form.EditForm):
         IPortletPermissionChecker(aq_parent(aq_inner(self.context)))()
         return super(EditForm, self).__call__()
 
+    @property
+    def referer(self):
+        return self.request.get('referer', '')
+
     def nextURL(self):
+        if self.referer:
+            return self.referer
         editview = aq_parent(aq_inner(self.context))
         context = aq_parent(aq_inner(editview))
         url = str(getMultiAdapter((context, self.request),
