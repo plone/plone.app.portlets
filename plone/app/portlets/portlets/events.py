@@ -97,10 +97,11 @@ class Renderer(base.Renderer):
     def _data(self):
         context = aq_inner(self.context)
         catalog = getToolByName(context, 'portal_catalog')
+        calendar_details = getToolByName(context,'portal_calendar')
         limit = self.data.count
         state = self.data.state
         path = self.navigation_root_path
-        return catalog(portal_type='Event',
+        return catalog(portal_type=calendar_details.calendar_types ,
                        review_state=state,
                        end={'query': DateTime(),
                             'range': 'min'},
