@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '2.4.4.dev0'
+version = '2.4.4'
 
 setup(name='plone.app.portlets',
       version=version,

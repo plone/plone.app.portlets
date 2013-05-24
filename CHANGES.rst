@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.4.4 (unreleased)
+2.4.4 (2013-05-23)
 ------------------
 
 - Don't require a macro for classic portlets - rendering a browser view doesn't
