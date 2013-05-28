@@ -4,7 +4,8 @@ Changelog
 2.4.3 (unreleased)
 ------------------
 
-- Fixed portal_calendar single type "links" in the calendar template. [dr460neye]
+- Fixed calendar portlet from "Event" to portal_calendar types [dr460neye]
+- Fixed events.py to all portal_calendar types [dr460neye]
 
 
 2.4.2 (2013-03-05)
