@@ -33,31 +33,32 @@ Let's try to add a Calendar portlet and then remove it
     False
     >>> browser.getControl(name=':action',index=0).value = ['/++dashboard++plone.dashboard1+user1/+/portlets.Calendar']
     >>> browser.getForm(index=1).submit()
+    >>> browser.getControl('Save').click()  # This submits the now shown add form.
     >>> browser.open(portalURL+'/@@manage-dashboard')
-    >>> bool(re.search('\<\/span\>\s+Calendar\s+\<\/div\>', browser.contents))
+    >>> '/calendar/edit' in browser.contents
     True
     >>> browser.getControl(name="calendar-remove").click()
-    >>> bool(re.search('\<\/span\>\s+Calendar\s+\<\/div\>', browser.contents))
+    >>> '/calendar/edit' in browser.contents
     False
 
 Now, let's try to add a portlet using the addview
 
     >>> browser.open(portalURL+'/@@manage-dashboard')
     >>> browser.open(portalURL + "/++dashboard++plone.dashboard1+user1/+/portlets.Calendar?referer="+portalURL)
+    >>> browser.getControl('Save').click()  # This submits the now shown add form.
     >>> browser.open(portalURL+'/@@manage-dashboard')
-    >>> bool(re.search('\<\/span\>\s+Calendar\s+\<\/div\>', browser.contents))
+    >>> '/calendar/edit' in browser.contents
     True
     >>> browser.getControl(name="calendar-remove").click()
-    >>> bool(re.search('\<\/span\>\s+Calendar\s+\<\/div\>', browser.contents))
+    >>> '/calendar/edit' in browser.contents
     False
 
 Using the addview, let's see that we cannot add a portlet for another user
 
     >>> browser.open(portalURL+'/@@manage-dashboard')
     >>> browser.open(portalURL + "/++dashboard++plone.dashboard1+user2/+/portlets.Calendar?referer="+portalURL)
-    >>> browser.open(portalURL+'/@@manage-dashboard')
-    >>> bool(re.search('\<\/span\>\s+Calendar\s+\<\/div\>', browser.contents))
-    False
+    >>> "Insufficient Privileges" in browser.contents
+    True
 
     >>> browser.open(portalURL + '/logout')
 
@@ -92,5 +93,6 @@ those views
     >>> browser.open(portalURL + "/++contextportlets++plone.leftcolumn/+/portlets.Calendar")
     >>> "Insufficient Privileges" in browser.contents
     False
-    >>> bool(re.search('\<\/span\>\s+Calendar\s+\<\/div\>', browser.contents))
+    >>> browser.getControl('Save').click()  # This submits the now shown add form.
+    >>> '/calendar/edit' in browser.contents
     True
