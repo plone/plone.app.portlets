@@ -49,6 +49,9 @@ class PortletAssignmentMapping(BaseMapping, SimpleItem):
 
         return "++%s++%s" % (prefix, suffix)
 
+    def __getitem__(self, key):
+        return BaseMapping.__getitem__(self, key).__of__(self)
+
     def __setitem__(self, key, assignment):
         BaseMapping.__setitem__(self, key, aq_base(assignment))
 

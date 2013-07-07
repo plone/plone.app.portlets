@@ -4,6 +4,9 @@ Changelog
 2.5a1 (unreleased)
 ------------------
 
+- Acquisition-wrap portlet assignments retrieved from storage.
+  [davisagli]
+
 - fix z3cform support - add status messages when redirecting
   [sunew / tmog]
 
