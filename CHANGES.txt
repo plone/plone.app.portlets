@@ -4,7 +4,11 @@ Changelog
 2.3.9 (unreleased)
 ------------------
 
+- Acquisition-wrap portlet assignments retrieved from storage.
+  [davisagli]
+
 - Added portal_calendar types to the calendar portlet. Now each type is working if it's listet in portal_calendar. This fix is already migrated in 2.4.x[dr460neye]
+
 - Added portal_calendar types to the event portlet. Now each type is working if it's listet in portal_calendar. This fix is will be also migrated in 2.4.x[dr460neye]
 
 
