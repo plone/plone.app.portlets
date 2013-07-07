@@ -4,6 +4,9 @@ Changelog
 2.4.5 (unreleased)
 ------------------
 
+- Acquisition-wrap portlet assignments retrieved from storage.
+  [davisagli]
+
 - Fixed calendar portlet from "Event" to portal_calendar types 
   [dr460neye]
 
