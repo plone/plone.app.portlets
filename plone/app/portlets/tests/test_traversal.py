@@ -1,3 +1,4 @@
+from Acquisition import aq_base
 from Acquisition import aq_parent
 from AccessControl import Unauthorized
 
@@ -23,32 +24,35 @@ class TestTraversal(PortletsTestCase):
         setHooks()
         setSite(self.portal)
 
+    def _assertSameObject(self, a, b):
+        self.assertTrue(aq_base(a) is aq_base(b))
+
     def testContextNamespace(self):
         assignment = classic.Assignment()
         manager = getUtility(IPortletManager, name='plone.leftcolumn')
         mapping = self.folder.restrictedTraverse('++contextportlets++plone.leftcolumn')
         target = getMultiAdapter((self.folder, manager), IPortletAssignmentMapping)
-        self.failUnless(aq_parent(mapping) is self.folder)
+        self._assertSameObject(aq_parent(mapping), self.folder)
         mapping['foo'] = assignment
-        self.failUnless(target['foo'] is assignment)
+        self._assertSameObject(target['foo'], assignment)
         self.assertEquals('++contextportlets++plone.leftcolumn', mapping.id)
 
     def testDashboardNamespace(self):
         assignment = classic.Assignment()
         manager = getUtility(IPortletManager, name='plone.dashboard1')
         mapping = self.portal.restrictedTraverse('++dashboard++plone.dashboard1+' + user_name)
-        self.failUnless(aq_parent(mapping) is self.portal)
+        self._assertSameObject(aq_parent(mapping), self.portal)
         mapping['foo'] = assignment
-        self.failUnless(manager[USER_CATEGORY][user_name]['foo'] is assignment)
+        self._assertSameObject(manager[USER_CATEGORY][user_name]['foo'], assignment)
         self.assertEquals('++dashboard++plone.dashboard1+' + user_name, mapping.id)
 
     def testGroupDashboardNamespace(self):
         assignment = classic.Assignment()
         manager = getUtility(IPortletManager, name='plone.dashboard1')
         mapping = self.portal.restrictedTraverse('++groupdashboard++plone.dashboard1+Reviewers')
-        self.failUnless(aq_parent(mapping) is self.portal)
+        self._assertSameObject(aq_parent(mapping), self.portal)
         mapping['foo'] = assignment
-        self.failUnless(manager[GROUP_CATEGORY]['Reviewers']['foo'] is assignment)
+        self._assertSameObject(manager[GROUP_CATEGORY]['Reviewers']['foo'], assignment)
         self.assertEquals('++groupdashboard++plone.dashboard1+Reviewers', mapping.id)
 
     def testGroupDashboardNamespaceChecker(self):
@@ -68,18 +72,18 @@ class TestTraversal(PortletsTestCase):
         assignment = classic.Assignment()
         manager = getUtility(IPortletManager, name='plone.leftcolumn')
         mapping = self.portal.restrictedTraverse('++groupportlets++plone.leftcolumn+Reviewers')
-        self.failUnless(aq_parent(mapping) is self.portal)
+        self._assertSameObject(aq_parent(mapping), self.portal)
         mapping['foo'] = assignment
-        self.failUnless(manager[GROUP_CATEGORY]['Reviewers']['foo'] is assignment)
+        self._assertSameObject(manager[GROUP_CATEGORY]['Reviewers']['foo'], assignment)
         self.assertEquals('++groupportlets++plone.leftcolumn+Reviewers', mapping.id)
 
     def testContentTypeNamespace(self):
         assignment = classic.Assignment()
         manager = getUtility(IPortletManager, name='plone.leftcolumn')
         mapping = self.portal.restrictedTraverse('++contenttypeportlets++plone.leftcolumn+Image')
-        self.failUnless(aq_parent(mapping) is self.portal)
+        self._assertSameObject(aq_parent(mapping), self.portal)
         mapping['foo'] = assignment
-        self.failUnless(manager[CONTENT_TYPE_CATEGORY]['Image']['foo'] is assignment)
+        self._assertSameObject(manager[CONTENT_TYPE_CATEGORY]['Image']['foo'], assignment)
         self.assertEquals('++contenttypeportlets++plone.leftcolumn+Image', mapping.id)
 
 
