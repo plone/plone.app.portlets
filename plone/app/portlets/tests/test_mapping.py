@@ -60,7 +60,7 @@ class TestTraverser(PortletsTestCase):
 
     def testTraverseToName(self):
         obj = self.traverser.publishTraverse(self.folder.REQUEST, 'foo')
-        self.failUnless(aq_base(obj) is self.mapping['foo'])
+        self.failUnless(aq_base(obj) is aq_base(self.mapping['foo']))
         self.failUnless(obj.aq_parent is self.mapping)
 
     def testTraverseToView(self):
