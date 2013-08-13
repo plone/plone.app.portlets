@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.4.5 (unreleased)
+2.4.5 (2013-08-13)
 ------------------
 
 - Acquisition-wrap portlet assignments retrieved from storage.
