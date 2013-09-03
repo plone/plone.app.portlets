@@ -22,41 +22,40 @@ Login as the 'user1' user
 
 Go to the dashboard and check that portlets are addable here
 
-    >>> browser.getLink('Dashboard').click()
-    >>> browser.getLink('Edit').click()
+    >>> browser.open(portal.absolute_url()+'/@@manage-dashboard')
     >>> 'Add portlet' in browser.contents
     True
 
-Let's try to add a Calendar portlet and then remove it
+Let's try to add a Search portlet and then remove it
 
-    >>> bool(re.search('\<\/span\>\s+Calendar\s+\<\/div\>', browser.contents))
+    >>> bool(re.search('\<\/span\>\s+Search\s+\<\/div\>', browser.contents))
     False
-    >>> browser.getControl(name=':action',index=0).value = ['/++dashboard++plone.dashboard1+user1/+/portlets.Calendar']
+    >>> browser.getControl(name=':action',index=0).value = ['/++dashboard++plone.dashboard1+user1/+/portlets.Search']
     >>> browser.getForm(index=1).submit()
     >>> browser.getControl('Save').click()  # This submits the now shown add form.
     >>> browser.open(portalURL+'/@@manage-dashboard')
-    >>> '/calendar/edit' in browser.contents
+    >>> '/search/edit' in browser.contents
     True
-    >>> browser.getControl(name="calendar-remove").click()
-    >>> '/calendar/edit' in browser.contents
+    >>> browser.getControl(name="search-remove").click()
+    >>> '/search/edit' in browser.contents
     False
 
 Now, let's try to add a portlet using the addview
 
     >>> browser.open(portalURL+'/@@manage-dashboard')
-    >>> browser.open(portalURL + "/++dashboard++plone.dashboard1+user1/+/portlets.Calendar?referer="+portalURL)
+    >>> browser.open(portalURL + "/++dashboard++plone.dashboard1+user1/+/portlets.Search?referer="+portalURL)
     >>> browser.getControl('Save').click()  # This submits the now shown add form.
     >>> browser.open(portalURL+'/@@manage-dashboard')
-    >>> '/calendar/edit' in browser.contents
+    >>> '/search/edit' in browser.contents
     True
-    >>> browser.getControl(name="calendar-remove").click()
-    >>> '/calendar/edit' in browser.contents
+    >>> browser.getControl(name="search-remove").click()
+    >>> '/search/edit' in browser.contents
     False
 
 Using the addview, let's see that we cannot add a portlet for another user
 
     >>> browser.open(portalURL+'/@@manage-dashboard')
-    >>> browser.open(portalURL + "/++dashboard++plone.dashboard1+user2/+/portlets.Calendar?referer="+portalURL)
+    >>> browser.open(portalURL + "/++dashboard++plone.dashboard1+user2/+/portlets.Search?referer="+portalURL)
     >>> "Insufficient Privileges" in browser.contents
     True
 
@@ -68,7 +67,7 @@ Using the addview, let's see that we cannot add a portlet for another user
     >>> browser.getControl(name='submit').click()
 
     >>> browser.open(portalURL+'/@@manage-dashboard')
-    >>> bool(re.search('\<\/span\>\s+Calendar\s+\<\/div\>', browser.contents))
+    >>> bool(re.search('\<\/span\>\s+Search\s+\<\/div\>', browser.contents))
     False
 
 Now, we try to open the @@manage-portlets view and also try to call the addview
@@ -77,7 +76,7 @@ for a portlet. We shouldn't be able to do any of this
     >>> browser.open(portalURL+'/@@manage-portlets')
     >>> "Insufficient Privileges" in browser.contents
     True
-    >>> browser.open(portalURL + "/++contextportlets++plone.leftcolumn/+/portlets.Calendar")
+    >>> browser.open(portalURL + "/++contextportlets++plone.leftcolumn/+/portlets.Search")
     >>> "Insufficient Privileges" in browser.contents
     True
 
@@ -88,11 +87,11 @@ those views
     >>> browser.open(portalURL+'/@@manage-portlets')
     >>> "Insufficient Privileges" in browser.contents
     False
-    >>> bool(re.search('\<\/span\>\s+Calendar\s+\<\/div\>', browser.contents))
+    >>> bool(re.search('\<\/span\>\s+Search\s+\<\/div\>', browser.contents))
     False
-    >>> browser.open(portalURL + "/++contextportlets++plone.leftcolumn/+/portlets.Calendar")
+    >>> browser.open(portalURL + "/++contextportlets++plone.leftcolumn/+/portlets.Search")
     >>> "Insufficient Privileges" in browser.contents
     False
     >>> browser.getControl('Save').click()  # This submits the now shown add form.
-    >>> '/calendar/edit' in browser.contents
+    >>> '/search/edit' in browser.contents
     True
