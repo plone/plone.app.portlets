@@ -4,6 +4,10 @@ Changelog
 2.5a1 (unreleased)
 ------------------
 
+- Merge in changes from plone.app.event. portlets.Calendar and portlets.Events
+  are moved to plone.app.event, while here are still BBB imports from there.
+  [thet]
+
 - Acquisition-wrap portlet assignments retrieved from storage.
   [davisagli]
 
@@ -14,7 +18,7 @@ Changelog
   [tmog / sunew]
 
 - fix z3cform support - fix for vocabularies, lifted from
-  p.dexterity addForm. 
+  p.dexterity addForm.
   [tmog / sunew]
 
 - Don't require a macro for classic portlets - rendering a browser view doesn't
