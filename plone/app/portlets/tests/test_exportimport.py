@@ -50,11 +50,11 @@ class TestImportPortlets(PortletsExportImportTestCase):
 
     def test_removePortlet(self):
         self.failUnless(queryUtility(IPortletType,
-          name='portlets.Calendar') is not None)
+          name='portlets.News') is not None)
         self.assertEqual(True,
-          self.importer._removePortlet('portlets.Calendar'))
+          self.importer._removePortlet('portlets.News'))
         self.failUnless(queryUtility(IPortletType,
-          name='portlets.Calendar') is None)
+          name='portlets.News') is None)
         self.assertEqual(False, self.importer._removePortlet('foo'))
 
     def test_checkBasicPortletNodeErrors(self):

@@ -12,7 +12,7 @@ bug: 11409 test bits
 check the names for customized views are in place::
 
     >>> portal.manage_permission('Portlets: Manage own portlets', roles=['Manager'], acquire=0)
-    >>> portlet = getUtility(IPortletType, name='portlets.Events')
+    >>> portlet = getUtility(IPortletType, name='portlets.News')
     >>> col = getUtility(IPortletManager, name='plone.dashboard1')
     >>> view = portal.unrestrictedTraverse('@@manage-dashboard')
     >>> renderer = DashboardEditPortletManagerRenderer(self.portal, self.portal.REQUEST, view, col)
@@ -109,14 +109,14 @@ Now customize the manage dashboard view and check the name is in place too::
 Add a portlet in the dashboard and try to delete it::
 
     >>> browser.open(portal.absolute_url()+'/@@manage-dashboard')
-    >>> browser.getControl(name=':action',index=0).value = ['/++dashboard++plone.dashboard1+test_user_1_/+/portlets.Calendar']
+    >>> browser.getControl(name=':action',index=0).value = ['/++dashboard++plone.dashboard1+test_user_1_/+/portlets.Search']
     >>> browser.getForm(index=1).submit()
     >>> browser.getControl('Save').click()  # This submits the now shown add form.
     >>> browser.open(portal.absolute_url()+'/@@manage-dashboard')
-    >>> '/calendar/edit' in browser.contents
+    >>> '/search/edit' in browser.contents
     True
-    >>> browser.getControl(name="calendar-remove").click()
-    >>> '/calendar/edit' in browser.contents
+    >>> browser.getControl(name="search-remove").click()
+    >>> '/search/edit' in browser.contents
     False
 
 
