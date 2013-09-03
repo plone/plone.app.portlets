@@ -46,20 +46,6 @@ class TestDashboard(PortletsTestCase):
         # portlets
         retriever.getPortlets()
 
-    def test_disable_dasboard_breaks_event_portlet(self):
-        # Bug #8230: disabling the dashboard breaks the event portlet
-        self.portal.manage_permission('Portlets: Manage own portlets',
-                roles=['Manager'], acquire=0)
-        self.loginAsPortalOwner()
-
-        portlet = getUtility(IPortletType, name='portlets.Events')
-        mapping = self.portal.restrictedTraverse('++contextportlets++plone.leftcolumn')
-        addview = mapping.restrictedTraverse('+/' + portlet.addview)
-        try:
-            addview()
-        except Unauthorized:
-            self.fail()
-
 
 def test_suite():
     from unittest import TestSuite, makeSuite
