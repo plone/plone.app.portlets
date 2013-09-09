@@ -10,9 +10,8 @@ from plone.portlets.interfaces import IPortletManagerRenderer
 from plone.portlets.interfaces import ILocalPortletAssignmentManager
 from plone.portlets.interfaces import IPortletContext
 from plone.portlets.utils import hashPortletInfo
-from plone.portlets.utils import unhashPortletInfo
 
-from zope.container  import contained
+from zope.container import contained
 from zope.interface import implements, Interface
 from zope.component import adapts, getMultiAdapter, queryMultiAdapter, queryAdapter, getUtility
 from zope.contentprovider.interfaces import UpdateNotCalled
@@ -50,7 +49,7 @@ class EditPortletManagerRenderer(Explicit):
 
     def __init__(self, context, request, view, manager):
         self.__parent__ = view
-        self.manager = manager # part of interface
+        self.manager = manager  # part of interface
         self.context = context
         self.request = request
         self.__updated = False
@@ -95,12 +94,10 @@ class EditPortletManagerRenderer(Explicit):
     def baseUrl(self):
         return self.__parent__.getAssignmentMappingUrl(self.manager)
 
-
     def portlets(self):
         assignments = self._lazyLoadAssignments(self.manager)
         return self.portlets_for_assignments(
             assignments, self.manager, self.baseUrl())
-
 
     def portlets_for_assignments(self, assignments, manager, base_url):
         category = self.__parent__.category
@@ -150,8 +147,10 @@ class EditPortletManagerRenderer(Explicit):
     def addable_portlets(self):
         baseUrl = self.baseUrl()
         addviewbase = baseUrl.replace(self.context_url(), '')
+
         def sort_key(v):
             return v.get('title')
+
         def check_permission(p):
             addview = p.addview
             if not addview:
@@ -166,10 +165,10 @@ class EditPortletManagerRenderer(Explicit):
                 return False
             return True
 
-        portlets =  [{
-            'title' : p.title,
-            'description' : p.description,
-            'addview' : '%s/+/%s' % (addviewbase, p.addview)
+        portlets = [{
+            'title': p.title,
+            'description': p.description,
+            'addview': '%s/+/%s' % (addviewbase, p.addview)
             } for p in self.manager.getAddablePortletTypes() if check_permission(p)]
 
         portlets.sort(key=sort_key)
@@ -192,6 +191,10 @@ class EditPortletManagerRenderer(Explicit):
     @memoize
     def url_quote_referer(self):
         return url_quote(self.referer())
+
+    @memoize
+    def key(self):
+        return self.request.get('key', None)
 
     # See note in plone.portlets.manager
 
