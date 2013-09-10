@@ -4,7 +4,9 @@ Changelog
 2.4.6 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix the removing of Group- and Typeportlets
+  https://dev.plone.org/ticket/13659
+  [pbauer]
 
 
 2.4.5 (2013-08-13)
@@ -13,15 +15,15 @@ Changelog
 - Acquisition-wrap portlet assignments retrieved from storage.
   [davisagli]
 
-- Fixed calendar portlet from "Event" to portal_calendar types 
+- Fixed calendar portlet from "Event" to portal_calendar types
   [dr460neye]
 
 - Fixed events.py to all portal_calendar types.
   [dr460neye]
 
-- Fixed event portlet. Static Type removed and changed to 
+- Fixed event portlet. Static Type removed and changed to
   portal_calendar type.
-  [dr460neye] 
+  [dr460neye]
 
 
 2.4.4 (2013-05-23)
