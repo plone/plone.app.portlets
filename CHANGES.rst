@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.4.6 (unreleased)
+2.4.6 (2013-09-14)
 ------------------
 
 - Use relative links for calender next and prev buttons since caching can
