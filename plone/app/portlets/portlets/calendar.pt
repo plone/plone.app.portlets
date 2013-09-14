@@ -19,7 +19,7 @@
            tal:define="prevMonthMonth view/prevMonthMonth;
                        prevMonthYear view/prevMonthYear"
            tal:attributes="id python:showPrevMonth and 'calendar-previous' or '';
-                           href python:'%s?%smonth:int=%d&amp;year:int=%d&amp;orig_query=%s' % (request['ACTUAL_URL'], query_string, prevMonthMonth, prevMonthYear, url_quote_plus(query_string));
+                           href python:'?%smonth:int=%d&amp;year:int=%d&amp;orig_query=%s' % (query_string, prevMonthMonth, prevMonthYear, url_quote_plus(query_string));
                            data-year prevMonthYear;
                            data-month prevMonthMonth;"
            tal:condition="showPrevMonth"
@@ -40,7 +40,7 @@
            tal:define="nextMonthMonth view/nextMonthMonth;
                        nextMonthYear view/nextMonthYear"
            tal:attributes="id python:showNextMonth and 'calendar-next' or '';
-                           href python:'%s?%smonth:int=%d&amp;year:int=%d&amp;orig_query=%s' % (request['ACTUAL_URL'], query_string, nextMonthMonth, nextMonthYear, url_quote_plus(query_string));
+                           href python:'?%smonth:int=%d&amp;year:int=%d&amp;orig_query=%s' % (query_string, nextMonthMonth, nextMonthYear, url_quote_plus(query_string));
                            data-year nextMonthYear;
                            data-month nextMonthMonth;"
            tal:condition="showNextMonth"

@@ -4,6 +4,10 @@ Changelog
 2.4.6 (unreleased)
 ------------------
 
+- Use relative links for calender next and prev buttons since caching can
+  cause these things to change the current page the user is viewing
+  [vangheem]
+
 - Fix the removing of Group- and Typeportlets
   https://dev.plone.org/ticket/13659
   [pbauer]
