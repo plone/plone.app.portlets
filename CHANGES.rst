@@ -4,6 +4,10 @@ Changelog
 2.5a2 (unreleased)
 ------------------
 
+- Don't show the ``New user?`` link in the Login portlet if there isn't
+  a register URL available from portal_actions.
+  [davidjb] 
+
 2.5a1 (2013-10-05)
 ------------------
 
