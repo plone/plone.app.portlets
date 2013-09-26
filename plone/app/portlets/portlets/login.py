@@ -77,7 +77,8 @@ class Renderer(base.Renderer):
         return None
 
     def can_register(self):
-        if getToolByName(self.context, 'portal_registration', None) is None:
+        if getToolByName(self.context, 'portal_registration', None) is None \
+           or not self.join_action():
             return False
         return self.membership.checkPermission('Add portal member', self.context)
 
