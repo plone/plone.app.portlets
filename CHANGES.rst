@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.5a1 (unreleased)
+2.5a1 (2013-10-05)
 ------------------
 
 - Merge in changes from plone.app.event. portlets.Calendar and portlets.Events
