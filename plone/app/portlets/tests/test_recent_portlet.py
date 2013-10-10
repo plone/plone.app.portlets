@@ -24,20 +24,20 @@ class TestPortlet(PortletsTestCase):
 
     def testPortletTypeRegistered(self):
         portlet = getUtility(IPortletType, name='portlets.Recent')
-        self.assertEquals(portlet.addview, 'portlets.Recent')
+        self.assertEqual(portlet.addview, 'portlets.Recent')
 
     def testRegisteredInterfaces(self):
         portlet = getUtility(IPortletType, name='portlets.Recent')
         registered_interfaces = [_getDottedName(i) for i in portlet.for_]
         registered_interfaces.sort()
-        self.assertEquals(['plone.app.portlets.interfaces.IColumn',
+        self.assertEqual(['plone.app.portlets.interfaces.IColumn',
           'plone.app.portlets.interfaces.IDashboard'],
           registered_interfaces)
 
     def testInterfaces(self):
         portlet = recent.Assignment()
-        self.failUnless(IPortletAssignment.providedBy(portlet))
-        self.failUnless(IPortletDataProvider.providedBy(portlet.data))
+        self.assertTrue(IPortletAssignment.providedBy(portlet))
+        self.assertTrue(IPortletDataProvider.providedBy(portlet.data))
 
     def testInvokeAddview(self):
         portlet = getUtility(IPortletType, name='portlets.Recent')
@@ -48,8 +48,8 @@ class TestPortlet(PortletsTestCase):
 
         addview.createAndAdd(data={})
 
-        self.assertEquals(len(mapping), 1)
-        self.failUnless(isinstance(mapping.values()[0], recent.Assignment))
+        self.assertEqual(len(mapping), 1)
+        self.assertTrue(isinstance(mapping.values()[0], recent.Assignment))
 
     def testInvokeEditView(self):
         mapping = PortletAssignmentMapping()
@@ -57,7 +57,7 @@ class TestPortlet(PortletsTestCase):
 
         mapping['foo'] = recent.Assignment()
         editview = getMultiAdapter((mapping['foo'], request), name='edit')
-        self.failUnless(isinstance(editview, recent.EditForm))
+        self.assertTrue(isinstance(editview, recent.EditForm))
 
     def testRenderer(self):
         context = self.folder
@@ -67,7 +67,7 @@ class TestPortlet(PortletsTestCase):
         assignment = recent.Assignment()
 
         renderer = getMultiAdapter((context, request, view, manager, assignment), IPortletRenderer)
-        self.failUnless(isinstance(renderer, recent.Renderer))
+        self.assertTrue(isinstance(renderer, recent.Renderer))
 
 
 class TestRenderer(PortletsTestCase):
@@ -98,18 +98,18 @@ class TestRenderer(PortletsTestCase):
         self.portal.invokeFactory('Document', 'doc1')
         self.portal.invokeFactory('Document', 'doc2')
         r = self.renderer(assignment=recent.Assignment())
-        self.assertEquals(2, len(r.recent_items()))
+        self.assertEqual(2, len(r.recent_items()))
 
         r = self.renderer(assignment=recent.Assignment(count=1))
-        self.assertEquals(1, len(r.recent_items()))
+        self.assertEqual(1, len(r.recent_items()))
 
     def test_recently_modified_link(self):
         r = self.renderer(assignment=recent.Assignment())
-        self.failUnless(r.recently_modified_link().endswith('/recently_modified'))
+        self.assertTrue(r.recently_modified_link().endswith('/recently_modified'))
 
     def test_title(self):
         r = self.renderer(assignment=recent.Assignment())
-        self.assertEquals(str(r.title), 'box_recent_changes')
+        self.assertEqual(str(r.title), 'box_recent_changes')
 
 
 def test_suite():

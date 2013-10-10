@@ -25,18 +25,18 @@ class TestPortlet(PortletsTestCase):
 
     def testPortletTypeRegistered(self):
         portlet = getUtility(IPortletType, name='portlets.Login')
-        self.assertEquals(portlet.addview, 'portlets.Login')
+        self.assertEqual(portlet.addview, 'portlets.Login')
 
     def testRegisteredInterfaces(self):
         portlet = getUtility(IPortletType, name='portlets.Login')
         registered_interfaces = [_getDottedName(i) for i in portlet.for_]
-        self.assertEquals(['plone.app.portlets.interfaces.IColumn'],
+        self.assertEqual(['plone.app.portlets.interfaces.IColumn'],
           registered_interfaces)
 
     def testInterfaces(self):
         portlet = login.Assignment()
-        self.failUnless(IPortletAssignment.providedBy(portlet))
-        self.failUnless(IPortletDataProvider.providedBy(portlet.data))
+        self.assertTrue(IPortletAssignment.providedBy(portlet))
+        self.assertTrue(IPortletDataProvider.providedBy(portlet.data))
 
     def testInvokeAddview(self):
         portlet = getUtility(IPortletType, name='portlets.Login')
@@ -48,8 +48,8 @@ class TestPortlet(PortletsTestCase):
         # This is a NullAddForm - calling it does the work
         addview()
 
-        self.assertEquals(len(mapping), 1)
-        self.failUnless(isinstance(mapping.values()[0], login.Assignment))
+        self.assertEqual(len(mapping), 1)
+        self.assertTrue(isinstance(mapping.values()[0], login.Assignment))
 
     def testInvokeEditView(self):
         mapping = PortletAssignmentMapping()
@@ -57,7 +57,7 @@ class TestPortlet(PortletsTestCase):
 
         mapping['foo'] = login.Assignment()
         editview = queryMultiAdapter((mapping['foo'], request), name='edit', default=None)
-        self.failUnless(editview is None)
+        self.assertTrue(editview is None)
 
     def testRenderer(self):
         context = self.folder
@@ -67,7 +67,7 @@ class TestPortlet(PortletsTestCase):
         assignment = login.Assignment()
 
         renderer = getMultiAdapter((context, request, view, manager, assignment), IPortletRenderer)
-        self.failUnless(isinstance(renderer, login.Renderer))
+        self.assertTrue(isinstance(renderer, login.Renderer))
 
 
 class TestRenderer(PortletsTestCase):
@@ -88,34 +88,34 @@ class TestRenderer(PortletsTestCase):
     def testAvailable(self):
         request = self.folder.REQUEST
         r = self.renderer()
-        self.assertEquals(False, r.available)
+        self.assertEqual(False, r.available)
         self.logout()
         del request.__annotations__
         r = self.renderer()
-        self.assertEquals(True, r.available)
+        self.assertEqual(True, r.available)
         self.portal.acl_users._delObject('credentials_cookie_auth')
         r = self.renderer()
         del request.__annotations__
-        self.assertEquals(False, r.available)
+        self.assertEqual(False, r.available)
 
     def testShow(self):
         request = self.folder.REQUEST
 
         r = self.renderer()
-        self.assertEquals(False, r.show())
+        self.assertEqual(False, r.show())
 
         self.logout()
 
         del request.__annotations__
-        self.assertEquals(True, r.show())
+        self.assertEqual(True, r.show())
 
         del request.__annotations__
         request['URL'] = self.portal.absolute_url() + '/login_form'
-        self.assertEquals(False, self.renderer(request=request).show())
+        self.assertEqual(False, self.renderer(request=request).show())
 
         del request.__annotations__
         request['URL'] = self.portal.absolute_url() + '/@@register'
-        self.assertEquals(False, self.renderer(request=request).show())
+        self.assertEqual(False, self.renderer(request=request).show())
 
     # TODO: Add more detailed tests here
 

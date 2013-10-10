@@ -24,20 +24,20 @@ class TestPortlet(PortletsTestCase):
 
     def testPortletTypeRegistered(self):
         portlet = getUtility(IPortletType, name='portlets.Review')
-        self.assertEquals(portlet.addview, 'portlets.Review')
+        self.assertEqual(portlet.addview, 'portlets.Review')
 
     def testRegisteredInterfaces(self):
         portlet = getUtility(IPortletType, name='portlets.Review')
         registered_interfaces = [_getDottedName(i) for i in portlet.for_]
         registered_interfaces.sort()
-        self.assertEquals(['plone.app.portlets.interfaces.IColumn',
+        self.assertEqual(['plone.app.portlets.interfaces.IColumn',
           'plone.app.portlets.interfaces.IDashboard'],
           registered_interfaces)
 
     def testInterfaces(self):
         portlet = review.Assignment()
-        self.failUnless(IPortletAssignment.providedBy(portlet))
-        self.failUnless(IPortletDataProvider.providedBy(portlet.data))
+        self.assertTrue(IPortletAssignment.providedBy(portlet))
+        self.assertTrue(IPortletDataProvider.providedBy(portlet.data))
 
     def testInvokeAddview(self):
         portlet = getUtility(IPortletType, name='portlets.Review')
@@ -49,8 +49,8 @@ class TestPortlet(PortletsTestCase):
         # This is a NullAddForm - calling it does the work
         addview()
 
-        self.assertEquals(len(mapping), 1)
-        self.failUnless(isinstance(mapping.values()[0], review.Assignment))
+        self.assertEqual(len(mapping), 1)
+        self.assertTrue(isinstance(mapping.values()[0], review.Assignment))
 
     def testRenderer(self):
         context = self.folder
@@ -60,7 +60,7 @@ class TestPortlet(PortletsTestCase):
         assignment = review.Assignment()
 
         renderer = getMultiAdapter((context, request, view, manager, assignment), IPortletRenderer)
-        self.failUnless(isinstance(renderer, review.Renderer))
+        self.assertTrue(isinstance(renderer, review.Renderer))
 
 
 class TestRenderer(PortletsTestCase):
@@ -91,16 +91,16 @@ class TestRenderer(PortletsTestCase):
 
     def test_review_items(self):
         r = self.renderer(assignment=review.Assignment())
-        self.assertEquals(0, len(r.review_items()))
+        self.assertEqual(0, len(r.review_items()))
         wf = getToolByName(self.portal, 'portal_workflow')
         wf.doActionFor(self.portal.doc1, 'submit')
         r = self.renderer(assignment=review.Assignment())
-        self.assertEquals(1, len(r.review_items()))
-        self.assertEquals(r.review_items()[0]['creator'], "Test user")
+        self.assertEqual(1, len(r.review_items()))
+        self.assertEqual(r.review_items()[0]['creator'], "Test user")
 
     def test_full_news_link(self):
         r = self.renderer(assignment=review.Assignment())
-        self.failUnless(r.full_review_link().endswith('/full_review_list'))
+        self.assertTrue(r.full_review_link().endswith('/full_review_list'))
 
     def test_full_news_link_local_reviewer(self):
         # login as our test user
@@ -109,7 +109,7 @@ class TestRenderer(PortletsTestCase):
 
         # there should be no full news link on site root for our local reviewer
         r = self.renderer(assignment=review.Assignment())
-        self.failIf(r.full_review_link())
+        self.assertFalse(r.full_review_link())
 
         # get renderer in context of our reviewer's folder
         r = self.renderer(context=self.folder1, assignment=review.Assignment())
@@ -118,7 +118,7 @@ class TestRenderer(PortletsTestCase):
 
     def test_title(self):
         r = self.renderer(assignment=review.Assignment())
-        self.assertEquals(str(r.title), 'box_review_list')
+        self.assertEqual(str(r.title), 'box_review_list')
 
 
 def test_suite():

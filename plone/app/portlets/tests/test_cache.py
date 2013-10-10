@@ -49,7 +49,7 @@ class TestCacheKey(PortletsTestCase):
         renderer.manager.__name__ += '__changed__'
         key2 = render_cachekey(None, renderer)
 
-        self.failUnless(key1 != key2)
+        self.assertTrue(key1 != key2)
 
     def testAnonymousFlag(self):
         context = self.folder

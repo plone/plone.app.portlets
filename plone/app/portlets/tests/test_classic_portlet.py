@@ -25,20 +25,20 @@ class TestPortlet(PortletsTestCase):
 
     def testPortletTypeRegistered(self):
         portlet = getUtility(IPortletType, name='portlets.Classic')
-        self.assertEquals(portlet.addview, 'portlets.Classic')
+        self.assertEqual(portlet.addview, 'portlets.Classic')
 
     def testRegisteredInterfaces(self):
         portlet = getUtility(IPortletType, name='portlets.Classic')
         registered_interfaces = [_getDottedName(i) for i in portlet.for_]
         registered_interfaces.sort()
-        self.assertEquals(['plone.app.portlets.interfaces.IColumn',
+        self.assertEqual(['plone.app.portlets.interfaces.IColumn',
           'plone.app.portlets.interfaces.IDashboard'],
           registered_interfaces)
 
     def testInterfaces(self):
         portlet = classic.Assignment(template='portlet_recent', macro='portlet')
-        self.failUnless(IPortletAssignment.providedBy(portlet))
-        self.failUnless(IPortletDataProvider.providedBy(portlet.data))
+        self.assertTrue(IPortletAssignment.providedBy(portlet))
+        self.assertTrue(IPortletDataProvider.providedBy(portlet.data))
 
     def testInvokeAddview(self):
         portlet = getUtility(IPortletType, name='portlets.Classic')
@@ -49,8 +49,8 @@ class TestPortlet(PortletsTestCase):
 
         addview.createAndAdd(data={})
 
-        self.assertEquals(len(mapping), 1)
-        self.failUnless(isinstance(mapping.values()[0], classic.Assignment))
+        self.assertEqual(len(mapping), 1)
+        self.assertTrue(isinstance(mapping.values()[0], classic.Assignment))
 
     def testInvokeEditView(self):
         mapping = PortletAssignmentMapping()
@@ -58,7 +58,7 @@ class TestPortlet(PortletsTestCase):
 
         mapping['foo'] = classic.Assignment(template='portlet_recent', macro='portlet')
         editview = getMultiAdapter((mapping['foo'], request), name='edit')
-        self.failUnless(isinstance(editview, classic.EditForm))
+        self.assertTrue(isinstance(editview, classic.EditForm))
 
     def testRenderer(self):
         context = self.folder
@@ -68,7 +68,7 @@ class TestPortlet(PortletsTestCase):
         assignment = classic.Assignment(template='portlet_recent', macro='portlet')
 
         renderer = getMultiAdapter((context, request, view, manager, assignment), IPortletRenderer)
-        self.failUnless(isinstance(renderer, classic.Renderer))
+        self.assertTrue(isinstance(renderer, classic.Renderer))
 
 
 class TestRenderer(PortletsTestCase):
@@ -88,15 +88,15 @@ class TestRenderer(PortletsTestCase):
 
     def testUseMacro(self):
         r = self.renderer(assignment=classic.Assignment(template='portlet_recent', macro='portlet'))
-        self.assertEquals(True, r.use_macro())
+        self.assertEqual(True, r.use_macro())
         r = self.renderer(assignment=classic.Assignment(template='portlet_recent', macro=None))
-        self.assertEquals(False, r.use_macro())
+        self.assertEqual(False, r.use_macro())
 
     def testPathExpression(self):
         r = self.renderer(assignment=classic.Assignment(template='portlet_recent', macro='portlet'))
-        self.assertEquals('context/portlet_recent/macros/portlet', r.path_expression())
+        self.assertEqual('context/portlet_recent/macros/portlet', r.path_expression())
         r = self.renderer(assignment=classic.Assignment(template='portlet_recent', macro=None))
-        self.assertEquals('context/portlet_recent', r.path_expression())
+        self.assertEqual('context/portlet_recent', r.path_expression())
 
     def testRenderClassicPortlet(self):
         r = self.renderer(assignment=classic.Assignment(template='base_view', macro='content-core'))

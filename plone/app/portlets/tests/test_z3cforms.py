@@ -118,8 +118,8 @@ class TestPortlet(PortletsTestCase):
 
     def testInterfaces(self):
         portlet = Assignment()
-        self.failUnless(IPortletAssignment.providedBy(portlet))
-        self.failUnless(IPortletDataProvider.providedBy(portlet.data))
+        self.assertTrue(IPortletAssignment.providedBy(portlet))
+        self.assertTrue(IPortletDataProvider.providedBy(portlet.data))
 
     def testInvokeAddview(self):
         portlet = getUtility(IPortletType, name='portlet.z3cTest')
@@ -130,8 +130,8 @@ class TestPortlet(PortletsTestCase):
         addview = mapping.restrictedTraverse('+/' + portlet.addview)
         addview.createAndAdd(data={'foo': 'bar'})
 
-        self.assertEquals(len(mapping), 1)
-        self.failUnless(isinstance(mapping.values()[0], Assignment))
+        self.assertEqual(len(mapping), 1)
+        self.assertTrue(isinstance(mapping.values()[0], Assignment))
 
     def testInvokeEditView(self):
         mapping = PortletAssignmentMapping()
@@ -147,7 +147,7 @@ class TestPortlet(PortletsTestCase):
         manager = getUtility(IPortletManager, name='plone.leftcolumn', context=self.portal)
         assignment = Assignment(foo='bar')
         renderer = getMultiAdapter((context, request, view, manager, assignment), IPortletRenderer)
-        self.failUnless(isinstance(renderer, Renderer))
+        self.assertTrue(isinstance(renderer, Renderer))
         self.assertEqual(renderer.render(context, request), 'bar')
 
 

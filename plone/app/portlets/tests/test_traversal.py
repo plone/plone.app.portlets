@@ -35,7 +35,7 @@ class TestTraversal(PortletsTestCase):
         self._assertSameObject(aq_parent(mapping), self.folder)
         mapping['foo'] = assignment
         self._assertSameObject(target['foo'], assignment)
-        self.assertEquals('++contextportlets++plone.leftcolumn', mapping.id)
+        self.assertEqual('++contextportlets++plone.leftcolumn', mapping.id)
 
     def testDashboardNamespace(self):
         assignment = classic.Assignment()
@@ -44,7 +44,7 @@ class TestTraversal(PortletsTestCase):
         self._assertSameObject(aq_parent(mapping), self.portal)
         mapping['foo'] = assignment
         self._assertSameObject(manager[USER_CATEGORY][user_name]['foo'], assignment)
-        self.assertEquals('++dashboard++plone.dashboard1+' + user_name, mapping.id)
+        self.assertEqual('++dashboard++plone.dashboard1+' + user_name, mapping.id)
 
     def testGroupDashboardNamespace(self):
         assignment = classic.Assignment()
@@ -53,7 +53,7 @@ class TestTraversal(PortletsTestCase):
         self._assertSameObject(aq_parent(mapping), self.portal)
         mapping['foo'] = assignment
         self._assertSameObject(manager[GROUP_CATEGORY]['Reviewers']['foo'], assignment)
-        self.assertEquals('++groupdashboard++plone.dashboard1+Reviewers', mapping.id)
+        self.assertEqual('++groupdashboard++plone.dashboard1+Reviewers', mapping.id)
 
     def testGroupDashboardNamespaceChecker(self):
         assignment = classic.Assignment()
@@ -75,7 +75,7 @@ class TestTraversal(PortletsTestCase):
         self._assertSameObject(aq_parent(mapping), self.portal)
         mapping['foo'] = assignment
         self._assertSameObject(manager[GROUP_CATEGORY]['Reviewers']['foo'], assignment)
-        self.assertEquals('++groupportlets++plone.leftcolumn+Reviewers', mapping.id)
+        self.assertEqual('++groupportlets++plone.leftcolumn+Reviewers', mapping.id)
 
     def testContentTypeNamespace(self):
         assignment = classic.Assignment()
@@ -84,7 +84,7 @@ class TestTraversal(PortletsTestCase):
         self._assertSameObject(aq_parent(mapping), self.portal)
         mapping['foo'] = assignment
         self._assertSameObject(manager[CONTENT_TYPE_CATEGORY]['Image']['foo'], assignment)
-        self.assertEquals('++contenttypeportlets++plone.leftcolumn+Image', mapping.id)
+        self.assertEqual('++contenttypeportlets++plone.leftcolumn+Image', mapping.id)
 
 
 def test_suite():

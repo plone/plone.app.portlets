@@ -25,9 +25,9 @@ class TestNameChooser(PortletsTestCase):
         chooser = INameChooser(mapping)
         c = classic.Assignment()
         mapping[chooser.chooseName(None, c)] = c
-        self.failUnless(c.__name__)
+        self.assertTrue(c.__name__)
         d = classic.Assignment()
-        self.failIfEqual(chooser.chooseName(None, d), c.__name__)
+        self.assertFalseEqual(chooser.chooseName(None, d), c.__name__)
 
 
 class TestContextMapping(PortletsTestCase):
@@ -39,7 +39,7 @@ class TestContextMapping(PortletsTestCase):
 
     def testAdapting(self):
         mapping = getMultiAdapter((self.folder, self.manager), IPortletAssignmentMapping)
-        self.assertEquals(0, len(mapping))
+        self.assertEqual(0, len(mapping))
 
     def testEquivalence(self):
         mapping = getMultiAdapter((self.folder, self.manager), IPortletAssignmentMapping)
@@ -47,7 +47,7 @@ class TestContextMapping(PortletsTestCase):
         mapping['foo'] = c
 
         mapping2 = getMultiAdapter((self.folder, self.manager), IPortletAssignmentMapping)
-        self.assertEquals(mapping2['foo'], c)
+        self.assertEqual(mapping2['foo'], c)
 
 
 class TestTraverser(PortletsTestCase):
@@ -60,13 +60,13 @@ class TestTraverser(PortletsTestCase):
 
     def testTraverseToName(self):
         obj = self.traverser.publishTraverse(self.folder.REQUEST, 'foo')
-        self.failUnless(aq_base(obj) is aq_base(self.mapping['foo']))
-        self.failUnless(obj.aq_parent is self.mapping)
+        self.assertTrue(aq_base(obj) is aq_base(self.mapping['foo']))
+        self.assertTrue(obj.aq_parent is self.mapping)
 
     def testTraverseToView(self):
         view = self.traverser.publishTraverse(self.folder.REQUEST, '+')
-        self.failUnless(isinstance(view, PortletAdding))
-        self.failUnless(view.aq_parent is self.mapping)
+        self.assertTrue(isinstance(view, PortletAdding))
+        self.assertTrue(view.aq_parent is self.mapping)
 
     def testTraverseToNonExistent(self):
         self.assertRaises(NotFound, self.traverser.publishTraverse, self.folder.REQUEST, 'bar')

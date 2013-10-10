@@ -155,11 +155,11 @@ class TestZCML(PortletsTestCase):
 
     def testPortletTypeInterfaceRegistered(self):
         iface = getUtility(IPortletTypeInterface, name=u"portlets.test.Test")
-        self.assertEquals(ITestPortlet, iface)
+        self.assertEqual(ITestPortlet, iface)
 
     def testFactoryRegistered(self):
         factory = getUtility(IFactory, name=u"portlets.test.Test")
-        self.assertEquals(TestAssignment, factory._callable)
+        self.assertEqual(TestAssignment, factory._callable)
 
     def testRendererRegistered(self):
         context = self.portal
@@ -169,21 +169,21 @@ class TestZCML(PortletsTestCase):
         assignment = TestAssignment()
 
         renderer = getMultiAdapter((context, request, view, manager, assignment), IPortletRenderer)
-        self.failUnless(isinstance(renderer, TestRenderer))
+        self.assertTrue(isinstance(renderer, TestRenderer))
 
     def testAddViewRegistered(self):
         request = self.portal.REQUEST
         adding = PortletAdding(self.portal, request)
 
         addview = getMultiAdapter((adding, request), name=u"portlets.test.Test")
-        self.failUnless(isinstance(addview, TestAddForm))
+        self.assertTrue(isinstance(addview, TestAddForm))
 
     def testEditViewRegistered(self):
         assignment = TestAssignment()
         request = self.portal.REQUEST
 
         editview = getMultiAdapter((assignment, request), name=u"edit")
-        self.failUnless(isinstance(editview, TestEditForm))
+        self.assertTrue(isinstance(editview, TestEditForm))
 
 
 class TestGenericSetup(PortletsTestCase):
@@ -198,69 +198,69 @@ class TestGenericSetup(PortletsTestCase):
 
     def testPortletManagerInstalled(self):
         manager = getUtility(IPortletManager, name=u"test.testcolumn")
-        self.failUnless(ITestColumn.providedBy(manager))
+        self.assertTrue(ITestColumn.providedBy(manager))
 
     def disabled_testPortletTypeRegistered(self):
         portlet_type = getUtility(IPortletType, name=u"portlets.test.Test")
-        self.assertEquals('portlets.test.Test', portlet_type.addview)
-        self.assertEquals([Interface], portlet_type.for_)
+        self.assertEqual('portlets.test.Test', portlet_type.addview)
+        self.assertEqual([Interface], portlet_type.for_)
         # XXX Missing i18n support in the exportimport code
-        self.failUnless(isinstance(portlet_type.title, Message),
+        self.assertTrue(isinstance(portlet_type.title, Message),
                         "Portlet title should be a Message instance")
-        self.failUnless(isinstance(portlet_type.description, Message),
+        self.assertTrue(isinstance(portlet_type.description, Message),
                         "Portlet description should be a Message instance")
-        self.assertEquals(u"title_test_portlet", portlet_type.title)
-        self.assertEquals(u"description_test_portlet", portlet_type.description)
-        self.assertEquals(u"Test portlet", portlet_type.title.default)
-        self.assertEquals(u"A test portlet", portlet_type.description.default)
-        self.assertEquals(u"plone", portlet_type.title.domain)
-        self.assertEquals(u"plone", portlet_type.description.domain)
+        self.assertEqual(u"title_test_portlet", portlet_type.title)
+        self.assertEqual(u"description_test_portlet", portlet_type.description)
+        self.assertEqual(u"Test portlet", portlet_type.title.default)
+        self.assertEqual(u"A test portlet", portlet_type.description.default)
+        self.assertEqual(u"plone", portlet_type.title.domain)
+        self.assertEqual(u"plone", portlet_type.description.domain)
 
     def testAssignmentCreatedAndOrdered(self):
         mapping = assignment_mapping_from_key(self.portal,
             manager_name=u"test.testcolumn", category=CONTEXT_CATEGORY, key="/")
-        self.assertEquals(3, len(mapping))
-        self.assertEquals(['test.portlet3', 'test.portlet2', 'test.portlet1'], list(mapping.keys()))
+        self.assertEqual(3, len(mapping))
+        self.assertEqual(['test.portlet3', 'test.portlet2', 'test.portlet1'], list(mapping.keys()))
 
     def testAssignmentPropertiesSet(self):
         mapping = assignment_mapping_from_key(self.portal,
             manager_name=u"test.testcolumn", category=CONTEXT_CATEGORY, key="/")
 
         assignment = mapping['test.portlet1']
-        self.assertEquals(u'Test pr\xf6p 1', assignment.test_text)
-        self.assertEquals(False, assignment.test_bool)
-        self.assertEquals((u'published', u'private'), assignment.test_tuple)
+        self.assertEqual(u'Test pr\xf6p 1', assignment.test_text)
+        self.assertEqual(False, assignment.test_bool)
+        self.assertEqual((u'published', u'private'), assignment.test_tuple)
 
         assignment = mapping['test.portlet2']
-        self.assertEquals('Test prop 2', assignment.test_text)
-        self.assertEquals(True, assignment.test_bool)
-        self.assertEquals((), assignment.test_tuple)
+        self.assertEqual('Test prop 2', assignment.test_text)
+        self.assertEqual(True, assignment.test_bool)
+        self.assertEqual((), assignment.test_tuple)
 
         assignment = mapping['test.portlet3']
-        self.assertEquals(None, assignment.test_text)
-        self.assertEquals(None, assignment.test_bool)
-        self.assertEquals(None, assignment.test_tuple)
+        self.assertEqual(None, assignment.test_text)
+        self.assertEqual(None, assignment.test_bool)
+        self.assertEqual(None, assignment.test_tuple)
 
     def testAssignmentSettings(self):
         mapping = assignment_mapping_from_key(self.portal,
             manager_name=u"test.testcolumn", category=CONTEXT_CATEGORY, key="/")
         assignment = mapping['test.portlet1']
         settings = IPortletAssignmentSettings(assignment)
-        self.failUnless(settings.get('visible', True))
+        self.assertTrue(settings.get('visible', True))
 
         assignment = mapping['test.portlet2']
         settings = IPortletAssignmentSettings(assignment)
-        self.failIf(settings.get('visible', True))
+        self.assertFalse(settings.get('visible', True))
 
     def testAssignmentRoot(self):
         mapping = assignment_mapping_from_key(self.portal,
             manager_name=u"test.testcolumn", category=CONTEXT_CATEGORY, key="/")
-        self.assertEquals(3, len(mapping))
+        self.assertEqual(3, len(mapping))
 
         # No assignment in /news subfolder
         mapping = assignment_mapping_from_key(self.portal,
             manager_name=u"test.testcolumn", category=CONTEXT_CATEGORY, key="/news")
-        self.assertEquals(0, len(mapping))
+        self.assertEqual(0, len(mapping))
 
         context = DummyImportContext(self.portal, purge=False)
         context._files['portlets.xml'] = """<?xml version="1.0"?>
@@ -279,12 +279,12 @@ class TestGenericSetup(PortletsTestCase):
         # Still 3 portlets in the root
         mapping = assignment_mapping_from_key(self.portal,
             manager_name=u"test.testcolumn", category=CONTEXT_CATEGORY, key="/")
-        self.assertEquals(3, len(mapping))
+        self.assertEqual(3, len(mapping))
 
         # but 1 extra in the /news subfolder
         mapping = assignment_mapping_from_key(self.portal,
             manager_name=u"test.testcolumn", category=CONTEXT_CATEGORY, key="/news")
-        self.assertEquals(1, len(mapping))
+        self.assertEqual(1, len(mapping))
 
     def testAssignmentRemoval(self):
         portal_setup = self.portal.portal_setup
@@ -319,7 +319,7 @@ class TestGenericSetup(PortletsTestCase):
         # initially there should be 3 assignments on the root
         mapping = assignment_mapping_from_key(self.portal,
             manager_name=u"test.testcolumn", category=CONTEXT_CATEGORY, key="/")
-        self.assertEquals(3, len(mapping))
+        self.assertEqual(3, len(mapping))
 
         context = DummyImportContext(self.portal, purge=False)
         context._files['portlets.xml'] = """<?xml version="1.0"?>
@@ -337,12 +337,12 @@ class TestGenericSetup(PortletsTestCase):
         # now they should be gone
         mapping = assignment_mapping_from_key(self.portal,
             manager_name=u"test.testcolumn", category=CONTEXT_CATEGORY, key="/")
-        self.assertEquals(0, len(mapping))
+        self.assertEqual(0, len(mapping))
 
         # group assignments should still be there
         mapping = assignment_mapping_from_key(self.portal,
             manager_name=u"test.testcolumn", category=GROUP_CATEGORY, key="Reviewers")
-        self.assertEquals(1, len(mapping))
+        self.assertEqual(1, len(mapping))
 
         # and be purgable
         context = DummyImportContext(self.portal, purge=False)
@@ -361,12 +361,12 @@ class TestGenericSetup(PortletsTestCase):
         # now they should be gone
         mapping = assignment_mapping_from_key(self.portal,
             manager_name=u"test.testcolumn", category=GROUP_CATEGORY, key="Reviewers")
-        self.assertEquals(0, len(mapping))
+        self.assertEqual(0, len(mapping))
 
         # also content type assignments should still be there
         mapping = assignment_mapping_from_key(self.portal,
             manager_name=u"test.testcolumn", category=CONTENT_TYPE_CATEGORY, key="Folder")
-        self.assertEquals(2, len(mapping))
+        self.assertEqual(2, len(mapping))
 
         # and be purgable
         context = DummyImportContext(self.portal, purge=False)
@@ -385,7 +385,7 @@ class TestGenericSetup(PortletsTestCase):
         # now they should be gone
         mapping = assignment_mapping_from_key(self.portal,
             manager_name=u"test.testcolumn", category=CONTENT_TYPE_CATEGORY, key="Folder")
-        self.assertEquals(0, len(mapping))
+        self.assertEqual(0, len(mapping))
 
     def testBlacklisting(self):
         manager = getUtility(IPortletManager, name=u"test.testcolumn")
@@ -396,11 +396,11 @@ class TestGenericSetup(PortletsTestCase):
             assignable = getMultiAdapter(
                 (news, manager), ILocalPortletAssignmentManager)
 
-            self.assertEquals(
+            self.assertEqual(
                 True, assignable.getBlacklistStatus(CONTEXT_CATEGORY))
-            self.assertEquals(
+            self.assertEqual(
                 False, assignable.getBlacklistStatus(GROUP_CATEGORY))
-            self.assertEquals(
+            self.assertEqual(
                 None, assignable.getBlacklistStatus(CONTENT_TYPE_CATEGORY))
 
     def testPurgeMethod(self):
@@ -410,7 +410,7 @@ class TestGenericSetup(PortletsTestCase):
         handler._purgePortlets()
 
         manager = queryUtility(IPortletManager, name=u"test.testcolumn")
-        self.assertEquals(None, manager)
+        self.assertEqual(None, manager)
 
     def testPurge(self):
         manager = queryUtility(IPortletManager, name=u"test.testcolumn")
@@ -424,7 +424,7 @@ class TestGenericSetup(PortletsTestCase):
         importPortlets(context)
 
         manager = queryUtility(IPortletManager, name=u"test.testcolumn")
-        self.assertEquals(None, manager)
+        self.assertEqual(None, manager)
 
     def testManagerRemove(self):
         manager = queryUtility(IPortletManager, name=u"test.testcolumn")
@@ -442,7 +442,7 @@ class TestGenericSetup(PortletsTestCase):
         importPortlets(context)
 
         manager = queryUtility(IPortletManager, name=u"test.testcolumn")
-        self.assertEquals(None, manager)
+        self.assertEqual(None, manager)
 
     def testManagerPurge(self):
         context = DummyImportContext(self.portal, purge=False)
@@ -469,7 +469,7 @@ class TestGenericSetup(PortletsTestCase):
         # context assignment at the root are purged as well
         mapping = assignment_mapping_from_key(self.portal,
             manager_name=u"test.testcolumn", category=CONTEXT_CATEGORY, key="/")
-        self.assertEquals(0, len(mapping))
+        self.assertEqual(0, len(mapping))
 
     def testExport(self):
         sm = getSiteManager()
@@ -559,7 +559,7 @@ class TestGenericSetup(PortletsTestCase):
 """
 
         body = handler.body
-        self.assertEquals(expected.strip(), body.strip(), body)
+        self.assertEqual(expected.strip(), body.strip(), body)
 
 
 def test_suite():

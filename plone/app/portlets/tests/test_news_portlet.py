@@ -24,20 +24,20 @@ class TestPortlet(PortletsTestCase):
 
     def testPortletTypeRegistered(self):
         portlet = getUtility(IPortletType, name='portlets.News')
-        self.assertEquals(portlet.addview, 'portlets.News')
+        self.assertEqual(portlet.addview, 'portlets.News')
 
     def testRegisteredInterfaces(self):
         portlet = getUtility(IPortletType, name='portlets.News')
         registered_interfaces = [_getDottedName(i) for i in portlet.for_]
         registered_interfaces.sort()
-        self.assertEquals(['plone.app.portlets.interfaces.IColumn',
+        self.assertEqual(['plone.app.portlets.interfaces.IColumn',
           'plone.app.portlets.interfaces.IDashboard'],
           registered_interfaces)
 
     def testInterfaces(self):
         portlet = news.Assignment(count=5)
-        self.failUnless(IPortletAssignment.providedBy(portlet))
-        self.failUnless(IPortletDataProvider.providedBy(portlet.data))
+        self.assertTrue(IPortletAssignment.providedBy(portlet))
+        self.assertTrue(IPortletDataProvider.providedBy(portlet.data))
 
     def testInvokeAddview(self):
         portlet = getUtility(IPortletType, name='portlets.News')
@@ -48,8 +48,8 @@ class TestPortlet(PortletsTestCase):
 
         addview.createAndAdd(data={})
 
-        self.assertEquals(len(mapping), 1)
-        self.failUnless(isinstance(mapping.values()[0], news.Assignment))
+        self.assertEqual(len(mapping), 1)
+        self.assertTrue(isinstance(mapping.values()[0], news.Assignment))
 
     def testInvokeEditView(self):
         mapping = PortletAssignmentMapping()
@@ -57,7 +57,7 @@ class TestPortlet(PortletsTestCase):
 
         mapping['foo'] = news.Assignment(count=5)
         editview = getMultiAdapter((mapping['foo'], request), name='edit')
-        self.failUnless(isinstance(editview, news.EditForm))
+        self.assertTrue(isinstance(editview, news.EditForm))
 
     def testRenderer(self):
         context = self.folder
@@ -67,7 +67,7 @@ class TestPortlet(PortletsTestCase):
         assignment = news.Assignment(count=5)
 
         renderer = getMultiAdapter((context, request, view, manager, assignment), IPortletRenderer)
-        self.failUnless(isinstance(renderer, news.Renderer))
+        self.assertTrue(isinstance(renderer, news.Renderer))
 
 
 class TestRenderer(PortletsTestCase):
@@ -94,11 +94,11 @@ class TestRenderer(PortletsTestCase):
         self.portal.portal_workflow.doActionFor(self.portal.n1, 'publish')
 
         r = self.renderer(assignment=news.Assignment(count=5, state=('draft', )))
-        self.assertEquals(0, len(r.published_news_items()))
+        self.assertEqual(0, len(r.published_news_items()))
         r = self.renderer(assignment=news.Assignment(count=5, state=('published', )))
-        self.assertEquals(1, len(r.published_news_items()))
+        self.assertEqual(1, len(r.published_news_items()))
         r = self.renderer(assignment=news.Assignment(count=5, state=('published', 'private', )))
-        self.assertEquals(2, len(r.published_news_items()))
+        self.assertEqual(2, len(r.published_news_items()))
 
     def test_all_news_link(self):
         if 'news' in self.portal:
@@ -107,7 +107,7 @@ class TestRenderer(PortletsTestCase):
         self.assertEqual(r.all_news_link(), None)
         self.setRoles(['Manager'])
         self.portal.invokeFactory('Folder', 'news')
-        self.failUnless(r.all_news_link().endswith('/news'))
+        self.assertTrue(r.all_news_link().endswith('/news'))
 
 
 def test_suite():

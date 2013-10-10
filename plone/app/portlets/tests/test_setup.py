@@ -19,7 +19,7 @@ class TestProductInstall(PortletsTestCase):
         sm = getSiteManager(self.portal)
         registrations = [r.name for r in sm.registeredUtilities()
                             if IPortletManager == r.provided]
-        self.assertEquals(['plone.dashboard1', 'plone.dashboard2',
+        self.assertEqual(['plone.dashboard1', 'plone.dashboard2',
                            'plone.dashboard3', 'plone.dashboard4',
                            'plone.leftcolumn', 'plone.rightcolumn'], sorted(registrations))
 
@@ -28,18 +28,18 @@ class TestProductInstall(PortletsTestCase):
         right = getUtility(IPortletManager, 'plone.rightcolumn')
         dashboard = getUtility(IPortletManager, 'plone.dashboard1')
 
-        self.failUnless(ILeftColumn.providedBy(left))
-        self.failUnless(IRightColumn.providedBy(right))
-        self.failUnless(IDashboard.providedBy(dashboard))
+        self.assertTrue(ILeftColumn.providedBy(left))
+        self.assertTrue(IRightColumn.providedBy(right))
+        self.assertTrue(IDashboard.providedBy(dashboard))
 
     def testAssignable(self):
-        self.failUnless(ILocalPortletAssignable.providedBy(self.folder))
-        self.failUnless(ILocalPortletAssignable.providedBy(self.portal))
+        self.assertTrue(ILocalPortletAssignable.providedBy(self.folder))
+        self.assertTrue(ILocalPortletAssignable.providedBy(self.portal))
 
     def testPortletTypesRegistered(self):
         portlets = [u[0] for u in getUtilitiesFor(IPortletType)]
-        self.failUnless('portlets.Classic' in portlets)
-        self.failUnless('portlets.Login' in portlets)
+        self.assertTrue('portlets.Classic' in portlets)
+        self.assertTrue('portlets.Login' in portlets)
 
 
 def test_suite():

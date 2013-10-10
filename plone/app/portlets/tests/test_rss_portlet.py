@@ -22,20 +22,20 @@ class TestPortlet(PortletsTestCase):
 
     def testPortletTypeRegistered(self):
         portlet = getUtility(IPortletType, name='portlets.rss')
-        self.assertEquals(portlet.addview, 'portlets.rss')
+        self.assertEqual(portlet.addview, 'portlets.rss')
 
     def testRegisteredInterfaces(self):
         portlet = getUtility(IPortletType, name='portlets.rss')
         registered_interfaces = [_getDottedName(i) for i in portlet.for_]
         registered_interfaces.sort()
-        self.assertEquals(['plone.app.portlets.interfaces.IColumn',
+        self.assertEqual(['plone.app.portlets.interfaces.IColumn',
           'plone.app.portlets.interfaces.IDashboard'],
           registered_interfaces)
 
     def testInterfaces(self):
         portlet = rss.Assignment()
-        self.failUnless(IPortletAssignment.providedBy(portlet))
-        self.failUnless(IPortletDataProvider.providedBy(portlet.data))
+        self.assertTrue(IPortletAssignment.providedBy(portlet))
+        self.assertTrue(IPortletDataProvider.providedBy(portlet.data))
 
     def testInvokeAddview(self):
         portlet = getUtility(IPortletType, name='portlets.rss')
@@ -46,8 +46,8 @@ class TestPortlet(PortletsTestCase):
 
         addview.createAndAdd(data={})
 
-        self.assertEquals(len(mapping), 1)
-        self.failUnless(isinstance(mapping.values()[0], rss.Assignment))
+        self.assertEqual(len(mapping), 1)
+        self.assertTrue(isinstance(mapping.values()[0], rss.Assignment))
 
     def testRenderer(self):
         context = self.folder
@@ -57,7 +57,7 @@ class TestPortlet(PortletsTestCase):
         assignment = rss.Assignment()
 
         renderer = getMultiAdapter((context, request, view, manager, assignment), IPortletRenderer)
-        self.failUnless(isinstance(renderer, rss.Renderer))
+        self.assertTrue(isinstance(renderer, rss.Renderer))
 
 
 class TestRenderer(PortletsTestCase):
@@ -77,13 +77,13 @@ class TestRenderer(PortletsTestCase):
 
     def test_rss_items(self):
         r = self.renderer(assignment=rss.Assignment())
-        self.assertEquals(False, r.enabled)
+        self.assertEqual(False, r.enabled)
 
     def testTitle(self):
         r = self.renderer(assignment=rss.Assignment())
-        self.assertEquals(r.title, u'')
+        self.assertEqual(r.title, u'')
         r.data.portlet_title = u'Overridden title'
-        self.assertEquals(r.title, u'Overridden title')
+        self.assertEqual(r.title, u'Overridden title')
 
 
 def test_suite():

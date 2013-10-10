@@ -31,13 +31,13 @@ class TestAssignmentFromKey(PortletsTestCase):
         mapping['foo'] = c
         path = '/'.join(self.portal.getPhysicalPath())
         a = assignment_from_key(self.portal, u'plone.leftcolumn', CONTEXT_CATEGORY, path, 'foo')
-        self.assertEquals(c, a)
+        self.assertEqual(c, a)
 
     def testGetPortletFromUserCategory(self):
         c = classic.Assignment()
         self.cat[user_name]['foo'] = c
         a = assignment_from_key(self.portal, u'plone.leftcolumn', USER_CATEGORY, user_name, 'foo')
-        self.assertEquals(c, a)
+        self.assertEqual(c, a)
 
 
 def test_suite():
