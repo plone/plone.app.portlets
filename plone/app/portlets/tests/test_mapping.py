@@ -27,7 +27,7 @@ class TestNameChooser(PortletsTestCase):
         mapping[chooser.chooseName(None, c)] = c
         self.assertTrue(c.__name__)
         d = classic.Assignment()
-        self.assertFalseEqual(chooser.chooseName(None, d), c.__name__)
+        self.assertFalse(chooser.chooseName(None, d) == c.__name__)
 
 
 class TestContextMapping(PortletsTestCase):
