@@ -4,6 +4,9 @@ Changelog
 2.5a2 (unreleased)
 ------------------
 
+- Don't break if portal_factory is missing.
+  [davisagli]
+
 - Don't show the ``New user?`` link in the Login portlet if there isn't
   a register URL available from portal_actions.
   [davidjb] 

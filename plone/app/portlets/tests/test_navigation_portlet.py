@@ -302,14 +302,6 @@ class TestRenderer(PortletsTestCase):
         self.assertEqual(len(tree2['children']), 1)
         self.assertEqual(len(tree1['children']), 1)
 
-    def testTopLevelWithPortalFactory(self):
-        id=self.portal.generateUniqueId('Document')
-        typeName='Document'
-        newObject=self.portal.folder1.restrictedTraverse('portal_factory/' + typeName + '/' + id)
-        # Will raise a KeyError unless bug is fixed
-        view = self.renderer(newObject, assignment=navigation.Assignment(topLevel=1))
-        view.getNavTree()
-
     def testShowAllParentsOverridesBottomLevel(self):
         view = self.renderer(self.portal.folder2.file21, assignment=navigation.Assignment(bottomLevel=1, topLevel=0))
         tree = view.getNavTree()
