@@ -281,6 +281,15 @@ class TestRenderer(PortletsTestCase):
         self.assertEqual(len(tree['children']), 1)
         self.assertEqual(tree['children'][0]['item'].getPath(), '/plone/folder2/folder21/doc211')
 
+    def testNavRootWithUnicodeNavigationRoot(self):
+        self.portal.folder2.invokeFactory('Folder', 'folder21')
+        self.portal.folder2.folder21.invokeFactory('Document', 'doc211')
+        view = self.renderer(self.portal.folder2.folder21,
+            assignment=navigation.Assignment(topLevel=1, root=u'/folder2'))
+        self.assertEqual(view.getNavRootPath(), '/plone/folder2/folder21')
+        self.assertEqual(view.getNavRoot().absolute_url(),
+                         self.portal.folder2.folder21.absolute_url())
+
     def testMultipleTopLevelWithNavigationRoot(self):
         # See bug 9405
         # http://dev.plone.org/plone/ticket/9405

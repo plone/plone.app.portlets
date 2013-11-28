@@ -228,7 +228,8 @@ class Renderer(base.Renderer):
         currentFolderOnly = self.data.currentFolderOnly or \
                             self.properties.getProperty('currentFolderOnlyInNavtree', False)
         topLevel = self.data.topLevel or self.properties.getProperty('topLevel', 0)
-        return getRootPath(self.context, currentFolderOnly, topLevel, self.data.root)
+        return getRootPath(self.context, currentFolderOnly, topLevel,
+                           str(self.data.root))
 
     @memoize
     def getNavRoot(self, _marker=None):

@@ -4,9 +4,13 @@ Changelog
 2.4.7 (unreleased)
 ------------------
 
+- Fix navigation root of portlets when root field is unicode.
+  This is the case when portlet is imported with generic setup.
+  [thomasdesvenain]
+
 - Don't show the ``New user?`` link in the Login portlet if there isn't
   a register URL available from portal_actions.
-  [davidjb] 
+  [davidjb]
 
 2.4.6 (2013-09-14)
 ------------------
