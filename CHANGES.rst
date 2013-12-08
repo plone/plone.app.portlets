@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.4.7 (unreleased)
+2.4.7 (2013-12-07)
 ------------------
 
 - Fix navigation root of portlets when root field is unicode.
