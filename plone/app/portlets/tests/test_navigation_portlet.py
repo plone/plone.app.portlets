@@ -267,9 +267,10 @@ class TestRenderer(PortletsTestCase):
         view = self.renderer(self.portal.folder2.folder21,
             assignment=navigation.Assignment(topLevel=0, root=None, includeTop=True))
         tree = view.getNavTree()
-        self.assertTrue(tree)
-        self.assertTrue(view.root_is_portal())
+        self.failUnless(tree)
+        self.failUnless(view.root_is_portal())
         self.assertEqual(len(tree['children']), 6)
+        self.assertEqual(view.getNavRootPath(), '/plone')
 
     def testTopLevelWithNavigationRoot(self):
         self.portal.folder2.invokeFactory('Folder', 'folder21')
@@ -334,6 +335,15 @@ class TestRenderer(PortletsTestCase):
         tree = view.getNavTree()
         self.assertTrue(tree)
         self.assertEqual(tree['children'][-1]['children'][0]['item'].getPath(), '/plone/folder2/doc21')
+
+    def testNavRootWithUnicodeNavigationRoot(self):
+        self.portal.folder2.invokeFactory('Folder', 'folder21')
+        self.portal.folder2.folder21.invokeFactory('Document', 'doc211')
+        view = self.renderer(self.portal.folder2.folder21,
+            assignment=navigation.Assignment(topLevel=1, root=u'/folder2'))
+        self.assertEqual(view.getNavRootPath(), '/plone/folder2/folder21')
+        self.assertEqual(view.getNavRoot().absolute_url(),
+                         self.portal.folder2.folder21.absolute_url())
 
     def testNoRootSet(self):
         view = self.renderer(self.portal.folder2.file21, assignment=navigation.Assignment(root='', topLevel=0))

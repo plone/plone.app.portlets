@@ -11,6 +11,10 @@ Changelog
   a register URL available from portal_actions.
   [davidjb] 
 
+- Fix navigation root of portlets when root field is unicode.
+  This is the case when portlet is imported with generic setup.
+  [thomasdesvenain]
+
 2.5a1 (2013-10-05)
 ------------------
 
