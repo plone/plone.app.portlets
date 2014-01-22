@@ -270,6 +270,7 @@ class TestRenderer(PortletsTestCase):
         self.failUnless(tree)
         self.failUnless(view.root_is_portal())
         self.assertEqual(len(tree['children']), 6)
+        self.assertEqual(view.getNavRootPath(), '/plone')
 
     def testTopLevelWithNavigationRoot(self):
         self.portal.folder2.invokeFactory('Folder', 'folder21')

@@ -4,7 +4,8 @@ Changelog
 2.4.8 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fixed navigation portlet when navigation root was None.
+  [thomasdesvenain]
 
 
 2.4.7 (2013-12-07)
