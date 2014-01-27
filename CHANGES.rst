@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.4.8 (unreleased)
+2.4.8 (2014-01-27)
 ------------------
 
 - Fixed navigation portlet when navigation root was None.
