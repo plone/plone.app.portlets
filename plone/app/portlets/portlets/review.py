@@ -3,8 +3,9 @@ from plone.memoize.instance import memoize
 from plone.portlets.interfaces import IPortletDataProvider
 from zope.component import getMultiAdapter
 from zope.component import queryUtility
-from zope.formlib import form
 from zope.interface import implements
+
+from z3c.form import field
 
 from Acquisition import aq_inner
 from Products.CMFCore.utils import getToolByName
@@ -95,7 +96,7 @@ class Renderer(base.Renderer):
 
 
 class AddForm(base.NullAddForm):
-    form_fields = form.Fields(IReviewPortlet)
+    fields = field.Fields(IReviewPortlet)
     label = _(u"Add Review Portlet")
     description = _(u"This portlet displays a queue of documents awaiting review.")
 
