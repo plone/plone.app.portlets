@@ -23,7 +23,7 @@ class AddForm(form.AddForm):
     implements(IPortletAddForm)
 
     template = ViewPageTemplateFile('templates/z3cform-portlets-pageform.pt')
-    
+
     label = _(u"Configure portlet")
 
     def add(self, object):
@@ -57,7 +57,7 @@ class AddForm(form.AddForm):
     @property
     def referer(self):
         return self.request.get('referer', '')
-    
+
     def nextURL(self):
         if self.referer:
             return self.referer
@@ -113,7 +113,8 @@ class NullAddForm(BrowserView):
         else:
             addview = aq_parent(aq_inner(self.context))
             context = aq_parent(aq_inner(addview))
-            url = str(getMultiAdapter((context, self.request), name=u"absolute_url"))
+            url = str(getMultiAdapter((context, self.request),
+                                      name=u"absolute_url"))
             return url + '/@@manage-portlets'
 
     def create(self):
@@ -127,7 +128,7 @@ class EditForm(form.EditForm):
     implements(IPortletEditForm)
 
     template = ViewPageTemplateFile('templates/z3cform-portlets-pageform.pt')
-    
+
     label = _(u"Modify portlet")
 
     def __call__(self):
