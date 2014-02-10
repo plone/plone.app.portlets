@@ -1,8 +1,9 @@
 from plone.portlets.interfaces import IPortletDataProvider
 from zope.component import getMultiAdapter
-from zope.formlib import form
 from zope.interface import implements
 from zope import schema
+
+from z3c.form import field
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
@@ -52,7 +53,7 @@ class Renderer(base.Renderer):
 
 
 class AddForm(base.AddForm):
-    form_fields = form.Fields(ISearchPortlet)
+    fields = field.Fields(ISearchPortlet)
     label = _(u"Add Search Portlet")
     description = _(u"This portlet shows a search box.")
 
@@ -61,6 +62,6 @@ class AddForm(base.AddForm):
 
 
 class EditForm(base.EditForm):
-    form_fields = form.Fields(ISearchPortlet)
+    fields = field.Fields(ISearchPortlet)
     label = _(u"Edit Search Portlet")
     description = _(u"This portlet shows a search box.")
