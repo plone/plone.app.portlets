@@ -20,6 +20,25 @@ from Products.statusmessages.interfaces import IStatusMessage
 
 
 class AddForm(form.AddForm):
+    """A base add form for portlets.
+
+    Use this for portlet assignments that require configuration before being
+    added. Assignment types that do not should use NullAddForm instead.
+
+    Sub-classes should define create() and set the form_fields class variable.
+
+    Notice the suble difference between AddForm and NullAddform in that the
+    create template method for AddForm takes as a parameter a dict 'data':
+
+        def create(self, data):
+            return MyAssignment(data.get('foo'))
+
+    whereas the NullAddForm has no data parameter:
+
+        def create(self):
+            return MyAssignment()
+    """
+
     implements(IPortletAddForm)
 
     template = ViewPageTemplateFile('templates/z3cform-portlets-pageform.pt')
