@@ -29,8 +29,8 @@ def portletDirective(_context, name, interface, assignment, renderer, addview,
 
     Portlets that consist of a simple assignment class deriving form
     base.Assignment, a renderer deriving from base.Renderer, an addview
-    using formlib and deriving from base.AddForm and an editview (optional)
-    using formlib and deriving from base.EditForm, can use this directive
+    using z3c form and deriving from base.AddForm and an editview (optional)
+    using z3c form and deriving from base.EditForm, can use this directive
     to avoid having to regiter each of those components individually.
 
     In addition, we register the portlet interface using IPortletTypeInterface
