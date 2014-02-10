@@ -1,19 +1,21 @@
+from plone.folder.interfaces import IOrderableFolder
+from plone.formwidget.contenttree import ObjPathSourceBinder
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.memoize.instance import memoize
 from plone.portlets.interfaces import IPortletDataProvider
-from plone.app.form.widgets.uberselectionwidget import UberSelectionWidget
 from plone.app.layout.navigation.defaultpage import isDefaultPage
 from plone.app.layout.navigation.interfaces import INavtreeStrategy
 from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.app.layout.navigation.interfaces import INavigationQueryBuilder
 from plone.app.layout.navigation.navtree import buildFolderTree
 from plone.app.layout.navigation.root import getNavigationRoot
-from plone.app.vocabularies.catalog import SearchableTextSourceBinder
 from zope.component import adapts, getMultiAdapter, queryUtility
 from zExceptions import NotFound
-from zope.formlib import form
 from zope.interface import implements, Interface
 from zope import schema
+
+from z3c.form import field
+from z3c.relationfield.schema import RelationChoice
 
 from Acquisition import aq_inner, aq_base, aq_parent
 from Products.CMFCore.utils import getToolByName
@@ -39,15 +41,14 @@ class INavigationPortlet(IPortletDataProvider):
             default=u"",
             required=False)
 
-    root = schema.Choice(
+    root = RelationChoice(
             title=_(u"label_navigation_root_path", default=u"Root node"),
             description=_(u'help_navigation_root',
                           default=u"You may search for and choose a folder "
                                     "to act as the root of the navigation tree. "
                                     "Leave blank to use the Plone site root."),
             required=False,
-            source=SearchableTextSourceBinder({'is_folderish': True},
-                                              default_query='path:'))
+            source=ObjPathSourceBinder(object_provides=IOrderableFolder.__identifier__))
 
     includeTop = schema.Bool(
             title=_(u"label_include_top_node", default=u"Include top node"),
@@ -274,8 +275,7 @@ class Renderer(base.Renderer):
 
 
 class AddForm(base.AddForm):
-    form_fields = form.Fields(INavigationPortlet)
-    form_fields['root'].custom_widget = UberSelectionWidget
+    fields = field.Fields(INavigationPortlet)
     label = _(u"Add Navigation Portlet")
     description = _(u"This portlet displays a navigation tree.")
 
@@ -289,8 +289,7 @@ class AddForm(base.AddForm):
 
 
 class EditForm(base.EditForm):
-    form_fields = form.Fields(INavigationPortlet)
-    form_fields['root'].custom_widget = UberSelectionWidget
+    fields = field.Fields(INavigationPortlet)
     label = _(u"Edit Navigation Portlet")
     description = _(u"This portlet displays a navigation tree.")
 
