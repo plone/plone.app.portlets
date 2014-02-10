@@ -1,10 +1,14 @@
 Changelog
 =========
 
-2.5.1 (unreleased)
-------------------
+3.0 (unreleased)
+----------------
 
-- Nothing changed yet.
+- Use z3c.form for portlet forms.
+  [bosim, davisagli]
+
+- Store navigation portlet root setting as a UID rather than a path.
+  [davisagli]
 
 
 2.5.0 (2014-03-02)

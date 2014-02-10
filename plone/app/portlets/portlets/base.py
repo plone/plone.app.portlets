@@ -1,22 +1,11 @@
-#import sys
-
 from Acquisition import Explicit
 from OFS.SimpleItem import SimpleItem
-#from ZODB.POSException import ConflictError
-
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-
-from zope.container.contained import Contained
-from zope.interface import implements
-#from zope.interface import Interface
-#from zope.component import adapts
-#from zope.publisher.interfaces.browser import IBrowserView
-
 from plone.app.portlets.interfaces import IDeferredPortletRenderer
 from plone.portlets.interfaces import IPortletAssignment
-#from plone.portlets.interfaces import IPortletDataProvider
-#from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPortletRenderer
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from zope.container.contained import Contained
+from zope.interface import implements
 
 # Convenience imports
 from plone.app.portlets.browser.formhelper import AddForm

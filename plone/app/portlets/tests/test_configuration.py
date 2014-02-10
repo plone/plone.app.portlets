@@ -56,7 +56,6 @@ class DummyView(BrowserView):
 
 from zope.interface import implements
 from zope import schema
-from zope.formlib import form
 
 from plone.portlets.interfaces import IPortletDataProvider
 from plone.app.portlets.portlets import base
@@ -86,7 +85,7 @@ class TestRenderer(base.Renderer):
 
 
 class TestAddForm(base.AddForm):
-    form_fields = form.Fields(ITestPortlet)
+    schema = ITestPortlet
     label = u"Test portlet"
 
     def create(self, data):
@@ -96,7 +95,7 @@ class TestAddForm(base.AddForm):
 
 
 class TestEditForm(base.EditForm):
-    form_fields = form.Fields(ITestPortlet)
+    schema = ITestPortlet
     label = u"Test portlet"
 
 
@@ -535,9 +534,9 @@ class TestGenericSetup(PortletsTestCase):
   <property name="topLevel">1</property>
   <property name="currentFolderOnly">False</property>
   <property name="name"></property>
-  <property name="includeTop">False</property>
+  <property name="root_uid"/>
   <property name="bottomLevel">0</property>
-  <property name="root"></property>
+  <property name="includeTop">False</property>
  </assignment>
  <blacklist category="user" location="/" manager="test.testcolumn"
     status="acquire"/>

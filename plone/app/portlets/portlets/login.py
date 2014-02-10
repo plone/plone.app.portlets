@@ -1,13 +1,11 @@
-from plone.memoize.instance import memoize
-from plone.portlets.interfaces import IPortletDataProvider
-from zope.component import getMultiAdapter
-from zope.interface import implements
-
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from Products.CMFCore.utils import getToolByName
-
 from plone.app.portlets import PloneMessageFactory as _
 from plone.app.portlets.portlets import base
+from plone.memoize.instance import memoize
+from plone.portlets.interfaces import IPortletDataProvider
+from Products.CMFCore.utils import getToolByName
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from zope.component import getMultiAdapter
+from zope.interface import implements
 
 
 class ILoginPortlet(IPortletDataProvider):
@@ -28,8 +26,10 @@ class Renderer(base.Renderer):
 
         self.membership = getToolByName(self.context, 'portal_membership')
 
-        self.context_state = getMultiAdapter((context, request), name='plone_context_state')
-        self.portal_state = getMultiAdapter((context, request), name='plone_portal_state')
+        self.context_state = getMultiAdapter(
+            (context, request), name='plone_context_state')
+        self.portal_state = getMultiAdapter(
+            (context, request), name='plone_portal_state')
         self.pas_info = getMultiAdapter((context, request), name='pas_info')
 
     def show(self):
@@ -80,10 +80,12 @@ class Renderer(base.Renderer):
         if getToolByName(self.context, 'portal_registration', None) is None \
            or not self.join_action():
             return False
-        return self.membership.checkPermission('Add portal member', self.context)
+        return self.membership.checkPermission(
+            'Add portal member', self.context)
 
     def can_request_password(self):
-        return self.membership.checkPermission('Mail forgotten password', self.context)
+        return self.membership.checkPermission(
+            'Mail forgotten password', self.context)
 
     @memoize
     def auth(self, _marker=None):

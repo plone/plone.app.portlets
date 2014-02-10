@@ -1,20 +1,17 @@
+from Acquisition import aq_inner
+from plone.app.layout.navigation.root import getNavigationRootObject
+from plone.app.portlets import PloneMessageFactory as _
+from plone.app.portlets.cache import render_cachekey
+from plone.app.portlets.portlets import base
 from plone.memoize import ram
 from plone.memoize.compress import xhtml_compress
 from plone.memoize.instance import memoize
 from plone.portlets.interfaces import IPortletDataProvider
-from plone.app.layout.navigation.root import getNavigationRootObject
-from zope.component import getMultiAdapter
-from zope.formlib import form
-from zope.interface import implements
-from zope import schema
-
-from Acquisition import aq_inner
 from Products.CMFCore.utils import getToolByName
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-
-from plone.app.portlets import PloneMessageFactory as _
-from plone.app.portlets.cache import render_cachekey
-from plone.app.portlets.portlets import base
+from zope import schema
+from zope.component import getMultiAdapter
+from zope.interface import implements
 
 
 class INewsPortlet(IPortletDataProvider):
@@ -24,13 +21,14 @@ class INewsPortlet(IPortletDataProvider):
                        required=True,
                        default=5)
 
-    state = schema.Tuple(title=_(u"Workflow state"),
-                         description=_(u"Items in which workflow state to show."),
-                         default=('published', ),
-                         required=True,
-                         value_type=schema.Choice(
-                             vocabulary="plone.app.vocabularies.WorkflowStates")
-                         )
+    state = schema.Tuple(
+        title=_(u"Workflow state"),
+        description=_(u"Items in which workflow state to show."),
+        default=('published', ),
+        required=True,
+        value_type=schema.Choice(
+            vocabulary="plone.app.vocabularies.WorkflowStates")
+        )
 
 
 class Assignment(base.Assignment):
@@ -65,8 +63,8 @@ class Renderer(base.Renderer):
 
     def all_news_link(self):
         context = aq_inner(self.context)
-        portal_state = getMultiAdapter((context, self.request),
-            name='plone_portal_state')
+        portal_state = getMultiAdapter(
+            (context, self.request), name='plone_portal_state')
         portal = portal_state.portal()
         if 'news' in getNavigationRootObject(context, portal).objectIds():
             return '%s/news' % portal_state.navigation_root_url()
@@ -76,8 +74,8 @@ class Renderer(base.Renderer):
     def _data(self):
         context = aq_inner(self.context)
         catalog = getToolByName(context, 'portal_catalog')
-        portal_state = getMultiAdapter((context, self.request),
-            name='plone_portal_state')
+        portal_state = getMultiAdapter(
+            (context, self.request), name='plone_portal_state')
         path = portal_state.navigation_root_path()
         limit = self.data.count
         state = self.data.state
@@ -90,15 +88,18 @@ class Renderer(base.Renderer):
 
 
 class AddForm(base.AddForm):
-    form_fields = form.Fields(INewsPortlet)
+    schema = INewsPortlet
     label = _(u"Add News Portlet")
     description = _(u"This portlet displays recent News Items.")
 
     def create(self, data):
-        return Assignment(count=data.get('count', 5), state=data.get('state', ('published', )))
+        return Assignment(
+            count=data.get('count', 5),
+            state=data.get('state', ('published', )),
+            )
 
 
 class EditForm(base.EditForm):
-    form_fields = form.Fields(INewsPortlet)
+    schema = INewsPortlet
     label = _(u"Edit News Portlet")
     description = _(u"This portlet displays recent News Items.")

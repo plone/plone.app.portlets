@@ -1,18 +1,15 @@
+from Acquisition import aq_inner
+from plone.app.portlets import PloneMessageFactory as _
+from plone.app.portlets.cache import render_cachekey
+from plone.app.portlets.portlets import base
 from plone.memoize import ram
 from plone.memoize.compress import xhtml_compress
 from plone.memoize.instance import memoize
 from plone.portlets.interfaces import IPortletDataProvider
-from zope.component import getMultiAdapter
-from zope.formlib import form
-from zope.interface import implements
-from zope import schema
-
-from Acquisition import aq_inner
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-
-from plone.app.portlets import PloneMessageFactory as _
-from plone.app.portlets.cache import render_cachekey
-from plone.app.portlets.portlets import base
+from zope import schema
+from zope.component import getMultiAdapter
+from zope.interface import implements
 
 
 class IRecentPortlet(IPortletDataProvider):
@@ -49,13 +46,15 @@ class Renderer(base.Renderer):
         base.Renderer.__init__(self, *args)
 
         context = aq_inner(self.context)
-        portal_state = getMultiAdapter((context, self.request), name='plone_portal_state')
+        portal_state = getMultiAdapter(
+            (context, self.request), name='plone_portal_state')
         self.anonymous = portal_state.anonymous()
         self.navigation_root_url = portal_state.navigation_root_url()
         self.typesToShow = portal_state.friendly_types()
         self.navigation_root_path = portal_state.navigation_root_path()
 
-        plone_tools = getMultiAdapter((context, self.request), name='plone_tools')
+        plone_tools = getMultiAdapter(
+            (context, self.request), name='plone_tools')
         self.catalog = plone_tools.catalog()
 
     @ram.cache(_render_cachekey)
@@ -64,9 +63,7 @@ class Renderer(base.Renderer):
 
     @property
     def available(self):
-        return not self.anonymous and \
-               self.data.count > 0 and \
-               len(self._data())
+        return not self.anonymous and self.data.count > 0 and len(self._data())
 
     def recent_items(self):
         return self._data()
@@ -76,7 +73,6 @@ class Renderer(base.Renderer):
 
     @memoize
     def _data(self):
-        context = aq_inner(self.context)
         limit = self.data.count
         path = self.navigation_root_path
         return self.catalog(portal_type=self.typesToShow,
@@ -87,7 +83,7 @@ class Renderer(base.Renderer):
 
 
 class AddForm(base.AddForm):
-    form_fields = form.Fields(IRecentPortlet)
+    schema = IRecentPortlet
     label = _(u"Add Recent Portlet")
     description = _(u"This portlet displays recently modified content.")
 
@@ -96,6 +92,6 @@ class AddForm(base.AddForm):
 
 
 class EditForm(base.EditForm):
-    form_fields = form.Fields(IRecentPortlet)
+    schema = IRecentPortlet
     label = _(u"Edit Recent Portlet")
     description = _(u"This portlet displays recently modified content.")

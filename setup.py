@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '2.5.1.dev0'
+version = '3.0.dev0'
 
 setup(name='plone.app.portlets',
       version=version,
@@ -32,15 +32,13 @@ setup(name='plone.app.portlets',
       ),
       install_requires=[
         'setuptools',
-        'five.formlib',
         'five.customerize',
         'plone.i18n',
         'plone.memoize',
         'plone.portlets>=1.1',
-        'plone.app.form',
         'plone.app.i18n',
         'plone.app.layout >= 1.2dev',
-        'plone.app.vocabularies',
+        'plone.app.vocabularies >= 2.1.15.dev0',
         'transaction',
         'zope.annotation',
         'zope.browser',
@@ -49,7 +47,6 @@ setup(name='plone.app.portlets',
         'zope.container',
         'zope.contentprovider',
         'zope.event',
-        'zope.formlib',
         'zope.i18nmessageid',
         'zope.interface',
         'zope.lifecycleevent',
