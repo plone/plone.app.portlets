@@ -4,9 +4,10 @@ from plone.memoize.instance import memoize
 from plone.portlets.interfaces import IPortletDataProvider
 from plone.app.layout.navigation.root import getNavigationRootObject
 from zope.component import getMultiAdapter
-from zope.formlib import form
 from zope.interface import implements
 from zope import schema
+
+from z3c.form import field
 
 from Acquisition import aq_inner
 from Products.CMFCore.utils import getToolByName
@@ -90,7 +91,7 @@ class Renderer(base.Renderer):
 
 
 class AddForm(base.AddForm):
-    form_fields = form.Fields(INewsPortlet)
+    fields = field.Fields(INewsPortlet)
     label = _(u"Add News Portlet")
     description = _(u"This portlet displays recent News Items.")
 
@@ -99,6 +100,6 @@ class AddForm(base.AddForm):
 
 
 class EditForm(base.EditForm):
-    form_fields = form.Fields(INewsPortlet)
+    fields = field.Fields(INewsPortlet)
     label = _(u"Edit News Portlet")
     description = _(u"This portlet displays recent News Items.")
