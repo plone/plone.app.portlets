@@ -1,7 +1,8 @@
 from plone.portlets.interfaces import IPortletDataProvider
 from zope import schema
-from zope.formlib import form
 from zope.interface import implements
+
+from z3c.form import field
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
@@ -58,7 +59,7 @@ class Renderer(base.Renderer):
 
 
 class AddForm(base.AddForm):
-    form_fields = form.Fields(IClassicPortlet)
+    fields = field.Fields(IClassicPortlet)
     label = _(u"Add Classic Portlet")
     description = _(u"A classic portlet allows you to use legacy portlet templates.")
 
@@ -68,6 +69,6 @@ class AddForm(base.AddForm):
 
 
 class EditForm(base.EditForm):
-    form_fields = form.Fields(IClassicPortlet)
+    fields = field.Fields(IClassicPortlet)
     label = _(u"Edit Classic Portlet")
     description = _(u"A classic portlet allows you to use legacy portlet templates.")
