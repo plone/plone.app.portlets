@@ -2,10 +2,12 @@ from plone.memoize import ram
 from plone.memoize.compress import xhtml_compress
 from plone.memoize.instance import memoize
 from plone.portlets.interfaces import IPortletDataProvider
+
 from zope.component import getMultiAdapter
-from zope.formlib import form
 from zope.interface import implements
 from zope import schema
+
+from z3c.form import field
 
 from Acquisition import aq_inner
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -87,7 +89,7 @@ class Renderer(base.Renderer):
 
 
 class AddForm(base.AddForm):
-    form_fields = form.Fields(IRecentPortlet)
+    fields = field.Fields(IRecentPortlet)
     label = _(u"Add Recent Portlet")
     description = _(u"This portlet displays recently modified content.")
 
@@ -96,6 +98,6 @@ class AddForm(base.AddForm):
 
 
 class EditForm(base.EditForm):
-    form_fields = form.Fields(IRecentPortlet)
+    fields = field.Fields(IRecentPortlet)
     label = _(u"Edit Recent Portlet")
     description = _(u"This portlet displays recently modified content.")
