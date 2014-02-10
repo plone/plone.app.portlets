@@ -5,6 +5,7 @@ from zope.interface import implements
 import zope.event
 import zope.lifecycleevent
 
+from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 from Acquisition import aq_parent, aq_inner, aq_base
@@ -16,6 +17,7 @@ from plone.app.portlets.browser.interfaces import IPortletEditForm
 from plone.app.portlets.interfaces import IPortletPermissionChecker
 
 from Products.statusmessages.interfaces import IStatusMessage
+
 
 class AddForm(form.AddForm):
     implements(IPortletAddForm)
@@ -83,6 +85,39 @@ class AddForm(form.AddForm):
         if nextURL:
             self.request.response.redirect(nextURL)
         return ''
+
+
+class NullAddForm(BrowserView):
+    """An add view that will add its content immediately, without presenting
+    a form.
+
+    You should subclass this for portlets that do not require any configuration
+    before being added, and write a create() method that takes no parameters
+    and returns the appropriate assignment instance.
+    """
+
+    def __call__(self):
+        IPortletPermissionChecker(aq_parent(aq_inner(self.context)))()
+        ob = self.create()
+        zope.event.notify(zope.lifecycleevent.ObjectCreatedEvent(ob))
+        self.context.add(ob)
+        nextURL = self.nextURL()
+        if nextURL:
+            self.request.response.redirect(self.nextURL())
+        return ''
+
+    def nextURL(self):
+        referer = self.request.get('referer')
+        if referer:
+            return referer
+        else:
+            addview = aq_parent(aq_inner(self.context))
+            context = aq_parent(aq_inner(addview))
+            url = str(getMultiAdapter((context, self.request), name=u"absolute_url"))
+            return url + '/@@manage-portlets'
+
+    def create(self):
+        raise NotImplementedError("concrete classes must implement create()")
 
 
 class EditForm(form.EditForm):
