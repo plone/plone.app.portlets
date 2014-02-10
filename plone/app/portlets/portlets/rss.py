@@ -7,6 +7,8 @@ from zope.formlib import form
 from zope.interface import implements, Interface
 from zope import schema
 
+from z3c.form import field
+
 from DateTime import DateTime
 from DateTime.interfaces import DateTimeError
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
@@ -322,7 +324,7 @@ class Renderer(base.DeferredRenderer):
 
 
 class AddForm(base.AddForm):
-    form_fields = form.Fields(IRSSPortlet)
+    fields = field.Fields(IRSSPortlet)
     label = _(u"Add RSS Portlet")
     description = _(u"This portlet displays an RSS feed.")
 
@@ -334,6 +336,6 @@ class AddForm(base.AddForm):
 
 
 class EditForm(base.EditForm):
-    form_fields = form.Fields(IRSSPortlet)
+    fields = field.Fields(IRSSPortlet)
     label = _(u"Edit RSS Portlet")
     description = _(u"This portlet displays an RSS feed.")
