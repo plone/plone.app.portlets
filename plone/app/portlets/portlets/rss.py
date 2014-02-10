@@ -3,7 +3,6 @@ import time
 
 import feedparser
 from plone.portlets.interfaces import IPortletDataProvider
-from zope.formlib import form
 from zope.interface import implements, Interface
 from zope import schema
 
