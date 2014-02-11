@@ -16,6 +16,7 @@ from zope import schema
 
 from z3c.form import field
 from z3c.relationfield.schema import RelationChoice
+from z3c.relationfield.relation import create_relation
 
 from Acquisition import aq_inner, aq_base, aq_parent
 from Products.CMFCore.utils import getToolByName
@@ -107,7 +108,12 @@ class Assignment(base.Assignment):
 
     def __init__(self, name="", root=None, currentFolderOnly=False, includeTop=False, topLevel=1, bottomLevel=0):
         self.name = name
-        self.root = root
+
+        if type(root) == str or type(root) == unicode:
+            self.root = create_relation(root)
+        else:
+            self.root = root
+
         self.currentFolderOnly = currentFolderOnly
         self.includeTop = includeTop
         self.topLevel = topLevel
@@ -139,7 +145,6 @@ class Renderer(base.Renderer):
 
     @property
     def available(self):
-
         rootpath = self.getNavRootPath()
         if rootpath is None:
             return False
@@ -229,7 +234,7 @@ class Renderer(base.Renderer):
         currentFolderOnly = self.data.currentFolderOnly or \
                             self.properties.getProperty('currentFolderOnlyInNavtree', False)
         topLevel = self.data.topLevel or self.properties.getProperty('topLevel', 0)
-        root = self.data.root
+        root = self.data.root and '/' + '/'.join(self.data.root.to_path.split('/')[2:]) or None
         if isinstance(root, unicode):
             root = str(root)
 
@@ -317,7 +322,7 @@ class QueryBuilder(object):
 
         # Construct the path query
 
-        rootPath = getNavigationRoot(context, relativeRoot=portlet.root)
+        rootPath = getNavigationRoot(context, relativeRoot=portlet.root and '/' + '/'.join(portlet.root.to_path.split('/')[2:]) or None)
         currentPath = '/'.join(context.getPhysicalPath())
 
         # If we are above the navigation root, a navtree query would return
@@ -376,7 +381,7 @@ class NavtreeStrategy(SitemapNavtreeStrategy):
             navtree_properties.getProperty('currentFolderOnlyInNavtree', False)
 
         topLevel = portlet.topLevel or navtree_properties.getProperty('topLevel', 0)
-        self.rootPath = getRootPath(context, currentFolderOnly, topLevel, portlet.root)
+        self.rootPath = getRootPath(context, currentFolderOnly, topLevel, portlet.root and '/' + '/'.join(portlet.root.to_path.split('/')[2:]) or None)
 
     def subtreeFilter(self, node):
         sitemapDecision = SitemapNavtreeStrategy.subtreeFilter(self, node)
