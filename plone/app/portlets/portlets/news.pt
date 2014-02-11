@@ -2,10 +2,10 @@
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       tal:omit-tag="">
-<dl class="portlet portletNews"
+<section class="portlet portletNews"
     i18n:domain="plone">
 
-    <dt class="portletHeader">
+  <header class="portletHeader">
         <span class="portletTopLeft"></span>
         <a href="#"
            class="tile"
@@ -14,13 +14,14 @@
            tal:attributes="href all_news_link"
            i18n:translate="box_news">News</a>
         <span class="portletTopRight"></span>
-    </dt>
+  </header>
 
+  <ul class="portletContent">
     <tal:newsitems  tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime;
                                 plone_view context/@@plone;
                                 getIcon nocall:plone_view/getIcon;"
                     tal:repeat="obj view/published_news_items">
-    <dd tal:define="oddrow repeat/obj/odd;
+    <li tal:define="oddrow repeat/obj/odd;
                     item_icon python:getIcon(obj);"
          tal:attributes="class python:oddrow and 'portletItem even' or 'portletItem odd'">
 
@@ -36,10 +37,11 @@
             <span class="portletItemDetails"
                   tal:content="python:toLocalizedTime(obj.Date)">May 5</span>
 
-    </dd>
+    </li>
     </tal:newsitems>
+  </ul>
 
-    <dd class="portletFooter"
+  <footer class="portletFooter"
          tal:condition="view/all_news_link">
         <span class="portletBottomLeft"></span>
         <a href=""
@@ -48,12 +50,10 @@
           More news&hellip;
         </a>
         <span class="portletBottomRight"></span>
-    </dd>
-    <tal:block condition="not:view/all_news_link">
-    <dd class="portletFooter">
+  </footer>
+  <footer class="portletFooter" condition="not:view/all_news_link">
         <span class="portletBottomLeft"></span>
         <span class="portletBottomRight"></span>
-    </dd>
-    </tal:block>
-</dl>
+  </footer>
+</section>
 </html>

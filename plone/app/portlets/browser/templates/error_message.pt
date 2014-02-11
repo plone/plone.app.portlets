@@ -2,24 +2,24 @@
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       tal:omit-tag="">
-<dl class="portlet portletError"
+<section class="portlet portletError"
     i18n:domain="plone">
 
-    <dt class="portletHeader">
+    <header class="portletHeader">
         <span class="portletTopLeft"></span>
         <a href="#"
            class="tile"
            i18n:translate="box_error">Error</a>
         <span class="portletTopRight"></span>
-    </dt>
+    </header>
 
-    <dd i18n:translate="text_error_rendering_portlet">
+    <section class="portletContent" i18n:translate="text_error_rendering_portlet">
         There was an error while rendering the portlet.
-    </dd>
+    </section>
 
-    <dd class="portletFooter">
+    <footer class="portletFooter">
         <span class="portletBottomLeft"></span>
         <span class="portletBottomRight"></span>
-    </dd>
-</dl>
+    </footer>
+</section>
 </html>
