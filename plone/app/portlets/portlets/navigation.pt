@@ -1,8 +1,8 @@
 <tal:block i18n:domain="plone">
-<dl class="portlet portletNavigationTree"
+<section class="portlet portletNavigationTree"
     tal:define="root view/navigation_root">
 
-    <dt class="portletHeader"
+    <header class="portletHeader"
         tal:attributes="class python:view.hasName() and 'portletHeader' or 'portletHeader hiddenStructure'">
         <span class="portletTopLeft"></span>
         <a href="#"
@@ -11,9 +11,9 @@
            tal:content="view/title"
            i18n:translate="">Navigation</a>
         <span class="portletTopRight"></span>
-    </dt>
+    </header>
 
-    <dd class="portletItem lastItem">
+    <div class="portletContent lastItem">
         <ul class="navTree navTreeLevel0">
             <li tal:define="selectedClass view/root_item_class;
                             li_class python:selectedClass and ' navTreeCurrentNode' or '';
@@ -45,6 +45,6 @@
         </ul>
         <span class="portletBottomLeft"></span>
         <span class="portletBottomRight"></span>
-    </dd>
-</dl>
+    </div>
+</section>
 </tal:block>
