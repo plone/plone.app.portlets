@@ -4,6 +4,10 @@ Changelog
 2.5a2 (unreleased)
 ------------------
 
+- Replace DL's etc. in portlets.
+  https://github.com/plone/Products.CMFPlone/issues/153
+  [khink]
+
 - Remove DL's from portal message in templates.
   https://github.com/plone/Products.CMFPlone/issues/153
   [khink]
