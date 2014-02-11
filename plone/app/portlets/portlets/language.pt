@@ -1,15 +1,14 @@
 <tal:block i18n:domain="plone">
 
-<dl class="portlet portletLanguage">
-    <dt class="portletHeader">
+<section class="portlet portletLanguage">
+    <header class="portletHeader">
         <span class="portletTopLeft"></span>
         <span class="tile" i18n:translate="box_languages">Languages</span>
         <span class="portletTopRight"></span>
-    </dt>
+    </header>
 
-    <dd class="portletItem" tal:define="showFlags view/showFlags">
-        <ul>
-            <li tal:repeat="lang view/languages">
+        <ul class="portletContent" tal:define="showFlags view/showFlags">
+            <li class="portletItem" tal:repeat="lang view/languages">
                 <span tal:define="code lang/code;
                                   selected lang/selected"
                       tal:omit-tag="selected">
@@ -36,6 +35,5 @@
 
         <span class="portletBottomLeft"></span>
         <span class="portletBottomRight"></span>
-    </dd>
-</dl>
+</section>
 </tal:block>

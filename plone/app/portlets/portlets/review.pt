@@ -2,10 +2,10 @@
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       tal:omit-tag="">
-<dl class="portlet portletWorkflowReview"
+<section class="portlet portletWorkflowReview"
     i18n:domain="plone">
 
-    <dt class="portletHeader">
+    <header class="portletHeader">
         <span class="portletTopLeft"></span>
         <a href="#"
            class="tile"
@@ -15,10 +15,11 @@
            i18n:translate=""
            tal:content="view/title" />
         <span class="portletTopRight"></span>
-    </dt>
+    </header>
 
+  <ul class="portletContent">
     <tal:items tal:repeat="o view/review_items">
-        <dd class="portletItem"
+        <li class="portletItem"
             tal:define="oddrow repeat/o/odd;
                         review_state o/review_state;"
             tal:attributes="class python:oddrow and 'portletItem even' or 'portletItem odd'">
@@ -37,10 +38,11 @@
                 </span>
             </a>
 
-        </dd>
+        </li>
     </tal:items>
+  </ul>
 
-    <dd class="portletFooter"
+  <footer class="portletFooter"
         tal:define="full_review_link view/full_review_link"
         tal:condition="full_review_link">
         <a href="#"
@@ -49,6 +51,6 @@
            i18n:translate="box_full_review_list">Full review list&hellip;</a>
         <span class="portletBottomLeft"></span>
         <span class="portletBottomRight"></span>
-    </dd>
-</dl>
+  </footer>
+</section>
 </html>
