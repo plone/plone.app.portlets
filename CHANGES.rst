@@ -4,12 +4,20 @@ Changelog
 2.5a2 (unreleased)
 ------------------
 
+- Replace DL's etc. in portlets.
+  https://github.com/plone/Products.CMFPlone/issues/153
+  [khink]
+
+- Remove DL's from portal message in templates.
+  https://github.com/plone/Products.CMFPlone/issues/153
+  [khink]
+
 - Don't break if portal_factory is missing.
   [davisagli]
 
 - Don't show the ``New user?`` link in the Login portlet if there isn't
   a register URL available from portal_actions.
-  [davidjb] 
+  [davidjb]
 
 - Fix navigation root of portlets when root field is unicode.
   This is the case when portlet is imported with generic setup.
