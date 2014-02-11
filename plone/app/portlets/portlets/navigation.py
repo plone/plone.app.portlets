@@ -1,4 +1,4 @@
-from plone.folder.interfaces import IOrderableFolder
+from plone.app.contenttypes.interfaces import IFolder
 from plone.formwidget.contenttree import ObjPathSourceBinder
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.memoize.instance import memoize
@@ -49,7 +49,7 @@ class INavigationPortlet(IPortletDataProvider):
                                     "to act as the root of the navigation tree. "
                                     "Leave blank to use the Plone site root."),
             required=False,
-            source=ObjPathSourceBinder(object_provides=IOrderableFolder.__identifier__))
+            source=ObjPathSourceBinder(object_provides=IFolder.__identifier__))
 
     includeTop = schema.Bool(
             title=_(u"label_include_top_node", default=u"Include top node"),
