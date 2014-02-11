@@ -2,7 +2,7 @@
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       tal:omit-tag="">
-<div class="portlet portletRecent"
+<section class="portlet portletRecent"
     i18n:domain="plone">
 
     <header class="portletHeader">
@@ -62,5 +62,5 @@
         <span class="portletBottomRight"></span>
     </footer>
 
-</div>
+</section>
 </html>
