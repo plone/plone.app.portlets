@@ -21,7 +21,8 @@ class TestProductInstall(PortletsTestCase):
                             if IPortletManager == r.provided]
         self.assertEqual(['plone.dashboard1', 'plone.dashboard2',
                            'plone.dashboard3', 'plone.dashboard4',
-                           'plone.leftcolumn', 'plone.rightcolumn'], sorted(registrations))
+                           'plone.footerportlets', 'plone.leftcolumn',
+                           'plone.rightcolumn'], sorted(registrations))
 
     def testInterfaces(self):
         left = getUtility(IPortletManager, 'plone.leftcolumn')

@@ -83,4 +83,13 @@
         addview=".language.AddForm"
         />
 
+    <plone:portlet
+       name="portlets.Actions"
+       interface=".actions.IActionsPortlet"
+       assignment=".actions.Assignment"
+       renderer=".actions.Renderer"
+       addview=".actions.AddForm"
+       editview=".actions.EditForm"
+       />
+
 </configure>

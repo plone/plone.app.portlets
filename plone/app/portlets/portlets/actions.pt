@@ -1,0 +1,40 @@
+<dl class="portlet portletActionsPortlet"
+    tal:define="portal_url context/@@plone_portal_state/portal_url;"
+    i18n:domain="plone">
+
+  <dt class="portletHeader" tal:condition="view/showTitle">
+    <span class="portletTopLeft"></span>
+    <span tal:condition="view/title" tal:content="view/title">
+      Title
+    </span>
+    <span class="portletTopRight"></span>
+  </dt>
+
+  <tal:loop tal:repeat="link view/actionLinks">
+      <dd class="portletItem odd"
+          tal:define="odd_class python:repeat['link'].even() and 'odd' or 'even';
+                      first_class python:repeat['link'].start and 'first' or '';
+                      last_class python:repeat['link'].end and 'last' or '';
+                      icon nocall:link/icon"
+          tal:attributes="class string:portletItem ${odd_class} ${first_class} ${last_class};">
+        <a href="#"
+           tal:attributes="href link/url;">
+
+          <span tal:condition="not:icon"
+                tal:content="link/title">
+            Action
+          </span>
+
+          <span tal:condition="icon"
+                tal:content="link/title"
+                tal:define="icon_url icon/absolute_url|icon"
+                tal:attributes="style string:background-image:url($icon_url);;">
+            Action
+          </span>
+          <img src="#">
+
+        </a>
+      </dd>
+  </tal:loop>
+
+</dl>

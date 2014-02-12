@@ -49,15 +49,6 @@ class ColumnPortletManagerRenderer(PortletManagerRenderer):
         """
         return str(getMultiAdapter((self._context(), self.request, ), name=u'absolute_url'))
 
-    def can_manage_portlets(self):
-        context = self._context()
-        ftool = getToolByName(context, 'portal_factory', None)
-        if ftool and ftool.isTemporary(context) or \
-            not ILocalPortletAssignable.providedBy(context):
-            return False
-        mtool = getToolByName(context, 'portal_membership')
-        return mtool.checkPermission("Portlets: Manage portlets", context)
-
     def safe_render(self, portlet_renderer):
         try:
             return portlet_renderer.render()
