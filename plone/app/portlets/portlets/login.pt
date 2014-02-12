@@ -112,7 +112,7 @@
         <span class="portletBottomRight"></span>
     </li>
   </ul>
-</div>
+</section>
 
 <section class="portlet portletLogin"
     tal:condition="not:view/available">
