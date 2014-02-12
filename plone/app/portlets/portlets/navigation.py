@@ -1,5 +1,4 @@
 from plone.app.contenttypes.interfaces import IFolder
-from plone.formwidget.contenttree import ObjPathSourceBinder
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.memoize.instance import memoize
 from plone.portlets.interfaces import IPortletDataProvider
@@ -29,7 +28,7 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 from plone.app.portlets import PloneMessageFactory as _
 from plone.app.portlets.portlets import base
-
+from plone.app.relationfield.source import CMFContentSearchSource
 
 class INavigationPortlet(IPortletDataProvider):
     """A portlet which can render the navigation tree
@@ -49,7 +48,7 @@ class INavigationPortlet(IPortletDataProvider):
                                     "to act as the root of the navigation tree. "
                                     "Leave blank to use the Plone site root."),
             required=False,
-            source=ObjPathSourceBinder(object_provides=IFolder.__identifier__))
+            vocabulary='plone.formwidget.relations.cmfcontentsearch')
 
     includeTop = schema.Bool(
             title=_(u"label_include_top_node", default=u"Include top node"),
