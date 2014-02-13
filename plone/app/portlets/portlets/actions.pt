@@ -1,17 +1,23 @@
-<dl class="portlet portletActionsPortlet"
-    tal:define="portal_url context/@@plone_portal_state/portal_url;"
-    i18n:domain="plone">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      tal:omit-tag=""
+      i18n:domain="plone">
 
-  <dt class="portletHeader" tal:condition="view/showTitle">
-    <span class="portletTopLeft"></span>
-    <span tal:condition="view/title" tal:content="view/title">
-      Title
-    </span>
-    <span class="portletTopRight"></span>
-  </dt>
+<section class="portlet portletActions"
+    tal:define="portal_url context/@@plone_portal_state/portal_url;">
 
-  <tal:loop tal:repeat="link view/actionLinks">
-      <dd class="portletItem odd"
+  <header class="portletHeader" tal:condition="view/showTitle">
+        <span class="portletTopLeft"></span>
+        <span tal:condition="view/title" tal:content="view/title">
+          Title
+        </span>
+        <span class="portletTopRight"></span>
+  </header>
+
+  <ul class="portletContent">
+    <tal:loop tal:repeat="link view/actionLinks">
+      <li class="portletItem odd"
           tal:define="odd_class python:repeat['link'].even() and 'odd' or 'even';
                       first_class python:repeat['link'].start and 'first' or '';
                       last_class python:repeat['link'].end and 'last' or '';
@@ -34,7 +40,9 @@
           <img src="#">
 
         </a>
-      </dd>
-  </tal:loop>
+      </li>
+    </tal:loop>
+  </ul>
 
-</dl>
+</section>
+</html>
