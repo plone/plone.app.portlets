@@ -1,13 +1,10 @@
 # -*- coding: utf-8 -*-
-"""Actions portlet"""
-
 from Acquisition import aq_inner
 from zope.interface import implements
 from zope import schema
 from zope.formlib import form
 from zope.component import getMultiAdapter
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from Products.CMFCore.utils import getToolByName
 from plone.portlets.interfaces import IPortletDataProvider
 from plone.app.portlets.portlets import base
 from plone.memoize import view as pm_view
@@ -56,7 +53,7 @@ class IActionsPortlet(IPortletDataProvider):
         description=_(u'help_default_icon',
                       default=u"What icon we should use for actions with no specific icons. A 16*16 pixels image."),
         required=False,
-        default='action_icon.gif')
+        default='action_icon.png')
 
 
 class Assignment(base.Assignment):
@@ -71,9 +68,9 @@ class Assignment(base.Assignment):
     show_title = True
     category = u""
     show_icons = True
-    default_icon = 'action_icon.gif'
+    default_icon = 'action_icon.png'
 
-    def __init__(self, ptitle=u"", show_title=True, category=u"", show_icons=True, default_icon='action_icon.gif'):
+    def __init__(self, ptitle=u"", show_title=True, category=u"", show_icons=True, default_icon='action_icon.png'):
         self.ptitle = ptitle
         self.show_title = show_title
         self.category = category
@@ -179,13 +176,14 @@ class Renderer(base.Renderer):
                         and action['url']):
                     continue
                 link = {
-                    'id':action['id'],
+                    'id': action['id'],
                     'url': action['url'],
                     'title': action['title'],
                     'icon': render_icon(
                         actions_category,
                         action,
-                        default=default_icon)
+                        default=default_icon),
+                    'modal': action.get('modal'),
                     }
                 result.append(link)
         return result

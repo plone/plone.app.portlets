@@ -24,7 +24,10 @@
                       icon nocall:link/icon"
           tal:attributes="class string:portletItem ${odd_class} ${first_class} ${last_class};">
         <a href="#"
-           tal:attributes="href link/url;">
+           tal:define="modal link/modal|nothing"
+           tal:attributes="href link/url;
+                           class python:'pat-modal' if modal else None;
+                           data-pat-modal python:modal if modal else None;">
 
           <span tal:condition="not:icon"
                 tal:content="link/title">
@@ -37,7 +40,6 @@
                 tal:attributes="style string:background-image:url($icon_url);;">
             Action
           </span>
-          <img src="#">
 
         </a>
       </li>

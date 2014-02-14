@@ -4,6 +4,16 @@ Changelog
 2.5a2 (unreleased)
 ------------------
 
+- In actions portlet, include modal pattern options if specified
+  as an action property.
+  [davisagli]
+
+- Fix empty img in actions portlet.
+  [davisagli]
+
+- Add actions portlet.
+  [giacomos]
+
 - Replace DL's etc. in portlets.
   https://github.com/plone/Products.CMFPlone/issues/153
   [khink]
