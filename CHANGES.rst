@@ -57,6 +57,16 @@ Changelog
 2.4.4 (2013-05-23)
 ------------------
 
+- fix z3cform support - add status messages when redirecting
+  [sunew / tmog]
+
+- fix z3cform support - respect referer
+  [tmog / sunew]
+
+- fix z3cform support - fix for vocabularies, lifted from
+  p.dexterity addForm. 
+  [tmog / sunew]
+
 - Don't require a macro for classic portlets - rendering a browser view doesn't
   need one.
   [danjacka]
