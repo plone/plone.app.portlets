@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.5a2 (unreleased)
+2.5.0 (2014-03-02)
 ------------------
 
 - In actions portlet, include modal pattern options if specified
