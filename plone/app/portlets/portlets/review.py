@@ -1,22 +1,17 @@
+from Acquisition import aq_inner
+from plone.app.portlets import PloneMessageFactory as _
+from plone.app.portlets.portlets import base
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.memoize.instance import memoize
 from plone.portlets.interfaces import IPortletDataProvider
+from Products.CMFCore.utils import getToolByName
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.component import getMultiAdapter
 from zope.component import queryUtility
 from zope.interface import implements
 
-from z3c.form import field
-
-from Acquisition import aq_inner
-from Products.CMFCore.utils import getToolByName
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-
-from plone.app.portlets import PloneMessageFactory as _
-from plone.app.portlets.portlets import base
-
 
 class IReviewPortlet(IPortletDataProvider):
-
     pass
 
 
@@ -83,22 +78,23 @@ class Renderer(base.Renderer):
                 creator_name = creator_id
 
             items.append(dict(
-                path = obj.absolute_url(),
-                title = obj.pretty_title_or_id(),
-                description = obj.Description(),
-                icon = getIcon(obj).html_tag(),
-                creator = creator_name,
-                review_state = review_state,
-                review_state_class = 'state-%s ' % norm(review_state),
-                mod_date = toLocalizedTime(obj.ModificationDate()),
+                path=obj.absolute_url(),
+                title=obj.pretty_title_or_id(),
+                description=obj.Description(),
+                icon=getIcon(obj).html_tag(),
+                creator=creator_name,
+                review_state=review_state,
+                review_state_class='state-%s ' % norm(review_state),
+                mod_date=toLocalizedTime(obj.ModificationDate()),
             ))
         return items
 
 
 class AddForm(base.NullAddForm):
-    fields = field.Fields(IReviewPortlet)
+    schema = IReviewPortlet
     label = _(u"Add Review Portlet")
-    description = _(u"This portlet displays a queue of documents awaiting review.")
+    description = _(u"This portlet displays a queue of documents awaiting "
+                    u"review.")
 
     def create(self):
         return Assignment()

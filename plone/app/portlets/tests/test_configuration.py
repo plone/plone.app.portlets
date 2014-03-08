@@ -56,7 +56,6 @@ class DummyView(BrowserView):
 
 from zope.interface import implements
 from zope import schema
-from zope.formlib import form
 
 from plone.portlets.interfaces import IPortletDataProvider
 from plone.app.portlets.portlets import base
@@ -86,7 +85,7 @@ class TestRenderer(base.Renderer):
 
 
 class TestAddForm(base.AddForm):
-    form_fields = form.Fields(ITestPortlet)
+    schema = ITestPortlet
     label = u"Test portlet"
 
     def create(self, data):
@@ -96,7 +95,7 @@ class TestAddForm(base.AddForm):
 
 
 class TestEditForm(base.EditForm):
-    form_fields = form.Fields(ITestPortlet)
+    schema = ITestPortlet
     label = u"Test portlet"
 
 

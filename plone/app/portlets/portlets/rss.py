@@ -1,19 +1,14 @@
-from logging import getLogger
-import time
-
-import feedparser
-from plone.portlets.interfaces import IPortletDataProvider
-from zope.interface import implements, Interface
-from zope import schema
-
-from z3c.form import field
-
 from DateTime import DateTime
 from DateTime.interfaces import DateTimeError
-from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
-
+from logging import getLogger
 from plone.app.portlets import PloneMessageFactory as _
 from plone.app.portlets.portlets import base
+from plone.portlets.interfaces import IPortletDataProvider
+from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
+from zope import schema
+from zope.interface import implements, Interface
+import feedparser
+import time
 
 
 # Accept these bozo_exceptions encountered by feedparser when parsing
@@ -24,6 +19,7 @@ ACCEPTED_FEEDPARSER_EXCEPTIONS = (feedparser.CharacterEncodingOverride, )
 FEED_DATA = {}  # url: ({date, title, url, itemlist})
 
 logger = getLogger(__name__)
+
 
 class IFeed(Interface):
 
@@ -84,8 +80,8 @@ class RSSFeed(object):
         self._siteurl = ""
         self._loaded = False    # is the feed loaded
         self._failed = False    # does it fail at the last update?
-        self._last_update_time_in_minutes = 0 # when was the feed last updated?
-        self._last_update_time = None            # time as DateTime or Nonw
+        self._last_update_time_in_minutes = 0  # when was the feed last updated?
+        self._last_update_time = None  # time as DateTime or Nonw
 
     @property
     def last_update_time_in_minutes(self):
@@ -113,8 +109,8 @@ class RSSFeed(object):
     @property
     def needs_update(self):
         """check if this feed needs updating"""
-        now = time.time()/60
-        return (self.last_update_time_in_minutes+self.timeout) < now
+        now = time.time() / 60
+        return (self.last_update_time_in_minutes + self.timeout) < now
 
     def update(self):
         """update this feed"""
@@ -157,13 +153,14 @@ class RSSFeed(object):
     def _retrieveFeed(self):
         """do the actual work and try to retrieve the feed"""
         url = self.url
-        if url!='':
-            self._last_update_time_in_minutes = time.time()/60
+        if url != '':
+            self._last_update_time_in_minutes = time.time() / 60
             self._last_update_time = DateTime()
             d = feedparser.parse(url)
-            if getattr(d, 'bozo', 0) == 1 and not isinstance(d.get('bozo_exception'),
-                                              ACCEPTED_FEEDPARSER_EXCEPTIONS):
-                self._loaded = True # we tried at least but have a failed load
+            if (getattr(d, 'bozo', 0) == 1
+                    and not isinstance(d.get('bozo_exception'),
+                                       ACCEPTED_FEEDPARSER_EXCEPTIONS)):
+                self._loaded = True  # we tried at least but have a failed load
                 self._failed = True
                 return False
             try:
@@ -186,8 +183,8 @@ class RSSFeed(object):
             self._failed = False
             return True
         self._loaded = True
-        self._failed = True # no url set means failed
-        return False # no url set, although that actually should not really happen
+        self._failed = True  # no url set means failed
+        return False  # no url set, although that should not really happen
 
     @property
     def items(self):
@@ -216,23 +213,29 @@ class IRSSPortlet(IPortletDataProvider):
 
     portlet_title = schema.TextLine(
         title=_(u'Title'),
-        description=_(u'Title of the portlet.  If omitted, the title of the feed will be used.'),
+        description=_(u'Title of the portlet.  If omitted, the title of the '
+                      u'feed will be used.'),
         required=False,
         default=u'')
 
-    count = schema.Int(title=_(u'Number of items to display'),
-                       description=_(u'How many items to list.'),
-                       required=True,
-                       default=5)
-    url = schema.TextLine(title=_(u'URL of RSS feed'),
-                        description=_(u'Link of the RSS feed to display.'),
-                        required=True,
-                        default=u'')
+    count = schema.Int(
+        title=_(u'Number of items to display'),
+        description=_(u'How many items to list.'),
+        required=True,
+        default=5)
 
-    timeout = schema.Int(title=_(u'Feed reload timeout'),
-                        description=_(u'Time in minutes after which the feed should be reloaded.'),
-                        required=True,
-                        default=100)
+    url = schema.TextLine(
+        title=_(u'URL of RSS feed'),
+        description=_(u'Link of the RSS feed to display.'),
+        required=True,
+        default=u'')
+
+    timeout = schema.Int(
+        title=_(u'Feed reload timeout'),
+        description=_(u'Time in minutes after which the feed should be '
+                      u'reloaded.'),
+        required=True,
+        default=100)
 
 
 class Assignment(base.Assignment):
@@ -245,9 +248,9 @@ class Assignment(base.Assignment):
         """return the title with RSS feed title or from URL"""
         feed = FEED_DATA.get(self.data.url, None)
         if feed is None:
-            return u'RSS: '+self.url[:20]
+            return u'RSS: ' + self.url[:20]
         else:
-            return u'RSS: '+feed.title[:20]
+            return u'RSS: ' + feed.title[:20]
 
     def __init__(self, portlet_title=u'', count=5, url=u"", timeout=100):
         self.portlet_title = portlet_title
@@ -263,7 +266,7 @@ class Renderer(base.DeferredRenderer):
     @property
     def initializing(self):
         """should return True if deferred template should be displayed"""
-        feed=self._getFeed()
+        feed = self._getFeed()
         if not feed.loaded:
             return True
         if feed.needs_update:
@@ -323,18 +326,19 @@ class Renderer(base.DeferredRenderer):
 
 
 class AddForm(base.AddForm):
-    fields = field.Fields(IRSSPortlet)
+    schema = IRSSPortlet
     label = _(u"Add RSS Portlet")
     description = _(u"This portlet displays an RSS feed.")
 
     def create(self, data):
-        return Assignment(portlet_title=data.get('portlet_title', u''),
-                          count=data.get('count', 5),
-                          url = data.get('url', ''),
-                          timeout = data.get('timeout', 100))
+        return Assignment(
+            portlet_title=data.get('portlet_title', u''),
+            count=data.get('count', 5),
+            url=data.get('url', ''),
+            timeout=data.get('timeout', 100))
 
 
 class EditForm(base.EditForm):
-    fields = field.Fields(IRSSPortlet)
+    schema = IRSSPortlet
     label = _(u"Edit RSS Portlet")
     description = _(u"This portlet displays an RSS feed.")

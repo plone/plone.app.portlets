@@ -1,18 +1,13 @@
 # -*- coding: utf-8 -*-
-"""Actions portlet"""
-
 from Acquisition import aq_inner
-from zope.interface import implements
-from zope import schema
-from zope.formlib import form
-from zope.component import getMultiAdapter
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from Products.CMFCore.utils import getToolByName
-from plone.portlets.interfaces import IPortletDataProvider
+from plone.app.portlets import PloneMessageFactory as _
 from plone.app.portlets.portlets import base
 from plone.memoize import view as pm_view
-
-from plone.app.portlets import PloneMessageFactory as _
+from plone.portlets.interfaces import IPortletDataProvider
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from zope import schema
+from zope.component import getMultiAdapter
+from zope.interface import implements
 
 
 class IActionsPortlet(IPortletDataProvider):
@@ -193,15 +188,15 @@ class Renderer(base.Renderer):
 
 class AddForm(base.AddForm):
     """Portlet add form.
-    This is registered in configure.zcml. The form_fields variable tells
-    zope.formlib which fields to display. The create() method actually
+    This is registered in configure.zcml. The schema attribute tells
+    plone.autoform which fields to display. The create() method actually
     constructs the assignment that is being added.
     """
-    form_fields = form.Fields(IActionsPortlet)
+    schema = IActionsPortlet
     label = _(u'heading_add_actions_portlet',
               default=u'Add actions portlet')
-    description= _(u'help_add_actions_portlet',
-                   default=u'An action portlet displays actions from a category')
+    description = _(u'help_add_actions_portlet',
+                    default=u'An action portlet displays actions from a category')
 
     def create(self, data):
         return Assignment(**data)
@@ -210,7 +205,7 @@ class AddForm(base.AddForm):
 class EditForm(base.EditForm):
     """Portlet edit form.
 
-    This is registered with configure.zcml. The form_fields variable tells
-    zope.formlib which fields to display.
+    This is registered with configure.zcml. The schema attribute tells
+    plone.autoform which fields to display.
     """
-    form_fields = form.Fields(IActionsPortlet)
+    schema = IActionsPortlet

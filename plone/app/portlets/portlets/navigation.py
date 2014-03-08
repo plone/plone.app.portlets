@@ -1,34 +1,28 @@
-from plone.app.contenttypes.interfaces import IFolder
+from Acquisition import aq_inner, aq_base, aq_parent
+from plone.app.layout.navigation.defaultpage import isDefaultPage
+from plone.app.layout.navigation.interfaces import INavigationQueryBuilder
+from plone.app.layout.navigation.interfaces import INavigationRoot
+from plone.app.layout.navigation.interfaces import INavtreeStrategy
+from plone.app.layout.navigation.navtree import buildFolderTree
+from plone.app.layout.navigation.root import getNavigationRoot
+from plone.app.portlets import PloneMessageFactory as _
+from plone.app.portlets.portlets import base
+from plone.app.vocabularies.catalog import CatalogSource
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.memoize.instance import memoize
 from plone.portlets.interfaces import IPortletDataProvider
-from plone.app.layout.navigation.defaultpage import isDefaultPage
-from plone.app.layout.navigation.interfaces import INavtreeStrategy
-from plone.app.layout.navigation.interfaces import INavigationRoot
-from plone.app.layout.navigation.interfaces import INavigationQueryBuilder
-from plone.app.layout.navigation.navtree import buildFolderTree
-from plone.app.layout.navigation.root import getNavigationRoot
-from zope.component import adapts, getMultiAdapter, queryUtility
-from zExceptions import NotFound
-from zope.interface import implements, Interface
-from zope import schema
-
-from z3c.form import field
-from z3c.relationfield.schema import RelationChoice
-from z3c.relationfield.relation import create_relation
-
-from Acquisition import aq_inner, aq_base, aq_parent
-from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.interfaces import ISiteRoot
+from Products.CMFCore.utils import getToolByName
 from Products.CMFDynamicViewFTI.interface import IBrowserDefault
 from Products.CMFPlone import utils
 from Products.CMFPlone.browser.navtree import SitemapNavtreeStrategy
 from Products.CMFPlone.interfaces import INonStructuralFolder
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from zExceptions import NotFound
+from zope import schema
+from zope.component import adapts, getMultiAdapter, queryUtility
+from zope.interface import implements, Interface
 
-from plone.app.portlets import PloneMessageFactory as _
-from plone.app.portlets.portlets import base
-from plone.app.relationfield.source import CMFContentSearchSource
 
 class INavigationPortlet(IPortletDataProvider):
     """A portlet which can render the navigation tree
@@ -41,14 +35,15 @@ class INavigationPortlet(IPortletDataProvider):
             default=u"",
             required=False)
 
-    root = RelationChoice(
+    root = schema.Choice(
             title=_(u"label_navigation_root_path", default=u"Root node"),
             description=_(u'help_navigation_root',
                           default=u"You may search for and choose a folder "
                                     "to act as the root of the navigation tree. "
                                     "Leave blank to use the Plone site root."),
             required=False,
-            vocabulary='plone.formwidget.relations.cmfcontentsearch')
+            source=CatalogSource(is_folderish=True),
+            )
 
     includeTop = schema.Bool(
             title=_(u"label_include_top_node", default=u"Include top node"),
@@ -107,12 +102,7 @@ class Assignment(base.Assignment):
 
     def __init__(self, name="", root=None, currentFolderOnly=False, includeTop=False, topLevel=1, bottomLevel=0):
         self.name = name
-
-        if type(root) == str or type(root) == unicode:
-            self.root = create_relation(root)
-        else:
-            self.root = root
-
+        self.root = root
         self.currentFolderOnly = currentFolderOnly
         self.includeTop = includeTop
         self.topLevel = topLevel
@@ -279,7 +269,7 @@ class Renderer(base.Renderer):
 
 
 class AddForm(base.AddForm):
-    fields = field.Fields(INavigationPortlet)
+    schema = INavigationPortlet
     label = _(u"Add Navigation Portlet")
     description = _(u"This portlet displays a navigation tree.")
 
@@ -293,7 +283,7 @@ class AddForm(base.AddForm):
 
 
 class EditForm(base.EditForm):
-    fields = field.Fields(INavigationPortlet)
+    schema = INavigationPortlet
     label = _(u"Edit Navigation Portlet")
     description = _(u"This portlet displays a navigation tree.")
 

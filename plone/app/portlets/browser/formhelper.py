@@ -15,11 +15,12 @@ from plone.app.portlets import PloneMessageFactory as _
 from plone.app.portlets.browser.interfaces import IPortletAddForm
 from plone.app.portlets.browser.interfaces import IPortletEditForm
 from plone.app.portlets.interfaces import IPortletPermissionChecker
+from plone.autoform.form import AutoExtensibleForm
 
 from Products.statusmessages.interfaces import IStatusMessage
 
 
-class AddForm(form.AddForm):
+class AddForm(AutoExtensibleForm, form.AddForm):
     """A base add form for portlets.
 
     Use this for portlet assignments that require configuration before being
@@ -140,7 +141,7 @@ class NullAddForm(BrowserView):
         raise NotImplementedError("concrete classes must implement create()")
 
 
-class EditForm(form.EditForm):
+class EditForm(AutoExtensibleForm, form.EditForm):
     """An edit form for portlets.
     """
 
