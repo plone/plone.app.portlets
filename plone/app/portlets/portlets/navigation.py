@@ -1,12 +1,14 @@
 from Acquisition import aq_inner, aq_base, aq_parent
+from ComputedAttribute import ComputedAttribute
 from plone.app.layout.navigation.defaultpage import isDefaultPage
 from plone.app.layout.navigation.interfaces import INavigationQueryBuilder
 from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.app.layout.navigation.interfaces import INavtreeStrategy
 from plone.app.layout.navigation.navtree import buildFolderTree
-from plone.app.layout.navigation.root import getNavigationRoot
+from plone.app.layout.navigation.root import getNavigationRootObject
 from plone.app.portlets import PloneMessageFactory as _
 from plone.app.portlets.portlets import base
+from plone.app.uuid.utils import uuidToObject
 from plone.app.vocabularies.catalog import CatalogSource
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.memoize.instance import memoize
@@ -35,7 +37,7 @@ class INavigationPortlet(IPortletDataProvider):
             default=u"",
             required=False)
 
-    root = schema.Choice(
+    root_uid = schema.Choice(
             title=_(u"label_navigation_root_path", default=u"Root node"),
             description=_(u'help_navigation_root',
                           default=u"You may search for and choose a folder "
@@ -95,14 +97,15 @@ class Assignment(base.Assignment):
 
     name = ""
     root = None
+    root_uid = None
     currentFolderOnly = False
     includeTop = False
     topLevel = 1
     bottomLevel = 0
 
-    def __init__(self, name="", root=None, currentFolderOnly=False, includeTop=False, topLevel=1, bottomLevel=0):
+    def __init__(self, name="", root_uid=None, currentFolderOnly=False, includeTop=False, topLevel=1, bottomLevel=0):
         self.name = name
-        self.root = root
+        self.root_uid = root_uid
         self.currentFolderOnly = currentFolderOnly
         self.includeTop = includeTop
         self.topLevel = topLevel
@@ -116,6 +119,22 @@ class Assignment(base.Assignment):
         if self.name:
             return self.name
         return _(u'Navigation')
+
+    def _root(self):
+        # This is only called if the instance doesn't have a root_uid
+        # attribute, which is probably because it has an old 'root'
+        # attribute that needs to be converted.
+        root = self.root
+        if not root:
+            return None
+        portal = getToolByName(self, 'portal_url').getPortalObject()
+        navroot = getNavigationRootObject(self, portal)
+        try:
+            root = navroot.unrestrictedTraverse(root.lstrip('/'))
+        except (AttributeError, KeyError, TypeError, NotFound):
+            return
+        return root.UID()
+    root_uid = ComputedAttribute(_root, 1)
 
 
 class Renderer(base.Renderer):
@@ -162,7 +181,7 @@ class Renderer(base.Renderer):
         displaying /sitemap links for anything besides nav root.
         """
 
-        if not self.data.root:
+        if not self.data.root_uid:
             # No particular root item assigned -> should get link to the
             # navigation root sitemap of the current context acquisition chain
             portal_state = getMultiAdapter((self.context, self.request), name="plone_portal_state")
@@ -223,11 +242,7 @@ class Renderer(base.Renderer):
         currentFolderOnly = self.data.currentFolderOnly or \
                             self.properties.getProperty('currentFolderOnlyInNavtree', False)
         topLevel = self.data.topLevel or self.properties.getProperty('topLevel', 0)
-        root = self.data.root and '/' + '/'.join(self.data.root.to_path.split('/')[2:]) or None
-        if isinstance(root, unicode):
-            root = str(root)
-
-        return getRootPath(self.context, currentFolderOnly, topLevel, root)
+        return getRootPath(self.context, currentFolderOnly, topLevel, self.data.root_uid)
 
     @memoize
     def getNavRoot(self, _marker=None):
@@ -310,8 +325,11 @@ class QueryBuilder(object):
             query = {}
 
         # Construct the path query
-
-        rootPath = getNavigationRoot(context, relativeRoot=portlet.root and '/' + '/'.join(portlet.root.to_path.split('/')[2:]) or None)
+        root = uuidToObject(portlet.root_uid)
+        if root is not None:
+            rootPath = '/'.join(root.getPhysicalPath())
+        else:
+            rootPath = ''
         currentPath = '/'.join(context.getPhysicalPath())
 
         # If we are above the navigation root, a navtree query would return
@@ -370,7 +388,7 @@ class NavtreeStrategy(SitemapNavtreeStrategy):
             navtree_properties.getProperty('currentFolderOnlyInNavtree', False)
 
         topLevel = portlet.topLevel or navtree_properties.getProperty('topLevel', 0)
-        self.rootPath = getRootPath(context, currentFolderOnly, topLevel, portlet.root and '/' + '/'.join(portlet.root.to_path.split('/')[2:]) or None)
+        self.rootPath = getRootPath(context, currentFolderOnly, topLevel, portlet.root_uid)
 
     def subtreeFilter(self, node):
         sitemapDecision = SitemapNavtreeStrategy.subtreeFilter(self, node)
@@ -402,7 +420,11 @@ def getRootPath(context, currentFolderOnly, topLevel, root):
         else:
             return '/'.join(context.getPhysicalPath())
 
-    rootPath = getNavigationRoot(context, relativeRoot=root)
+    root = uuidToObject(root)
+    if root is not None:
+        rootPath = '/'.join(root.getPhysicalPath())
+    else:
+        rootPath = ''
 
     # Adjust for topLevel
     if topLevel > 0:
