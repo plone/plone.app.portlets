@@ -534,9 +534,9 @@ class TestGenericSetup(PortletsTestCase):
   <property name="topLevel">1</property>
   <property name="currentFolderOnly">False</property>
   <property name="name"></property>
-  <property name="includeTop">False</property>
+  <property name="root_uid"/>
   <property name="bottomLevel">0</property>
-  <property name="root"></property>
+  <property name="includeTop">False</property>
  </assignment>
  <blacklist category="user" location="/" manager="test.testcolumn"
     status="acquire"/>

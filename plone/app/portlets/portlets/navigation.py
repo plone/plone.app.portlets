@@ -5,6 +5,7 @@ from plone.app.layout.navigation.interfaces import INavigationQueryBuilder
 from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.app.layout.navigation.interfaces import INavtreeStrategy
 from plone.app.layout.navigation.navtree import buildFolderTree
+from plone.app.layout.navigation.root import getNavigationRoot
 from plone.app.layout.navigation.root import getNavigationRootObject
 from plone.app.portlets import PloneMessageFactory as _
 from plone.app.portlets.portlets import base
@@ -290,7 +291,7 @@ class AddForm(base.AddForm):
 
     def create(self, data):
         return Assignment(name=data.get('name', ""),
-                          root=data.get('root', ""),
+                          root_uid=data.get('root_uid', ""),
                           currentFolderOnly=data.get('currentFolderOnly', False),
                           includeTop=data.get('includeTop', False),
                           topLevel=data.get('topLevel', 0),
@@ -329,7 +330,7 @@ class QueryBuilder(object):
         if root is not None:
             rootPath = '/'.join(root.getPhysicalPath())
         else:
-            rootPath = ''
+            rootPath = getNavigationRoot(context)
         currentPath = '/'.join(context.getPhysicalPath())
 
         # If we are above the navigation root, a navtree query would return
@@ -424,7 +425,7 @@ def getRootPath(context, currentFolderOnly, topLevel, root):
     if root is not None:
         rootPath = '/'.join(root.getPhysicalPath())
     else:
-        rootPath = ''
+        rootPath = getNavigationRoot(context)
 
     # Adjust for topLevel
     if topLevel > 0:

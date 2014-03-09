@@ -83,7 +83,7 @@ class Renderer(base.Renderer):
 
 
 class AddForm(base.AddForm):
-    fields = IRecentPortlet
+    schema = IRecentPortlet
     label = _(u"Add Recent Portlet")
     description = _(u"This portlet displays recently modified content.")
 
