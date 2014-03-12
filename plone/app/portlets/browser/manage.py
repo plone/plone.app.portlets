@@ -32,6 +32,7 @@ from plone.app.portlets.browser.interfaces import IManageContentTypePortletsView
 
 from plone.app.portlets import utils
 from plone.memoize.view import memoize
+from plone.protect.authenticator import createToken
 
 
 class ManageContextualPortlets(BrowserView):
@@ -110,6 +111,10 @@ class ManageDashboardPortlets(BrowserView):
     implements(IManageDashboardPortletsView)
 
     # IManagePortletsView implementation
+
+    @property
+    def auth_token(self):
+        return createToken()
 
     @property
     def macros(self):

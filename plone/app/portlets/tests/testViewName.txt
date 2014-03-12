@@ -108,7 +108,8 @@ Now customize the manage dashboard view and check the name is in place too::
 
 Add a portlet in the dashboard and try to delete it::
 
-    >>> browser.open(portal.absolute_url()+'/@@manage-dashboard')
+    >>> browser.open(portal.absolute_url()+'/dashboard')
+    >>> browser.getLink('Edit').click()
     >>> browser.getControl(name=':action',index=0).value = ['/++dashboard++plone.dashboard1+test_user_1_/+/portlets.Search']
     >>> browser.getForm(index=1).submit()
     >>> browser.getControl('Save').click()  # This submits the now shown add form.
