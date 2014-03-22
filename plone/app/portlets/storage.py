@@ -70,7 +70,7 @@ class PortletAssignmentMapping(BaseMapping, SimpleItem):
                 assignments = annotations[CONTEXT_ASSIGNMENT_KEY] = OOBTree()
             mapping = assignments.get(self.__manager__, None)
             if mapping is None:
-                assignments[self.__manager__] = self
+                assignments[self.__manager__] = aq_base(self)
             del self._v_context
 
         BaseMapping.__setitem__(self, key, aq_base(assignment))
