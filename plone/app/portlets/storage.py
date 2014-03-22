@@ -1,3 +1,4 @@
+from zope.annotation.interfaces import IAnnotations
 from zope.interface import implements
 from zope.component import adapts
 from zope.component import getUtility
@@ -10,10 +11,12 @@ from zope.container.contained import NameChooser
 from zope.container.traversal import ItemTraverser
 
 from Acquisition import aq_base
+from BTrees.OOBTree import OOBTree
 from OFS.SimpleItem import SimpleItem
 
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 
+from plone.portlets.constants import CONTEXT_ASSIGNMENT_KEY
 from plone.portlets.interfaces import IPortletAssignmentMapping
 from plone.portlets import constants
 from plone.portlets.storage import PortletAssignmentMapping as BaseMapping
@@ -35,6 +38,12 @@ class PortletAssignmentMapping(BaseMapping, SimpleItem):
     """A Zope 2 version of the default assignment mapping storage.
     """
 
+    def __init__(self, manager=u'', category=u'', name=u'', context=None):
+        super(PortletAssignmentMapping, self).__init__(manager, category, name)
+        # Keep track of context so we can avoid storing anything
+        # until an assignment is actually added.
+        self._v_context = context
+
     @property
     def id(self):
         manager = self.__manager__
@@ -53,6 +62,17 @@ class PortletAssignmentMapping(BaseMapping, SimpleItem):
         return BaseMapping.__getitem__(self, key).__of__(self)
 
     def __setitem__(self, key, assignment):
+        # add the assignment mapping to the object graph, if it's not there yet
+        if getattr(self, '_v_context', None) is not None:
+            annotations = IAnnotations(self._v_context)
+            assignments = annotations.get(CONTEXT_ASSIGNMENT_KEY, None)
+            if assignments is None:
+                assignments = annotations[CONTEXT_ASSIGNMENT_KEY] = OOBTree()
+            mapping = assignments.get(self.__manager__, None)
+            if mapping is None:
+                assignments[self.__manager__] = self
+            del self._v_context
+
         BaseMapping.__setitem__(self, key, aq_base(assignment))
 
 

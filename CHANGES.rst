@@ -4,6 +4,10 @@ Changelog
 3.0 (unreleased)
 ----------------
 
+- Avoid storing portlet assignment mapping in the database until
+  an assignment is actually added.
+  [davisagli]
+
 - Use z3c.form for portlet forms.
   [bosim, davisagli]
 

@@ -31,9 +31,9 @@ class TestTraversal(PortletsTestCase):
         assignment = classic.Assignment()
         manager = getUtility(IPortletManager, name='plone.leftcolumn')
         mapping = self.folder.restrictedTraverse('++contextportlets++plone.leftcolumn')
-        target = getMultiAdapter((self.folder, manager), IPortletAssignmentMapping)
         self._assertSameObject(aq_parent(mapping), self.folder)
         mapping['foo'] = assignment
+        target = getMultiAdapter((self.folder, manager), IPortletAssignmentMapping)
         self._assertSameObject(target['foo'], assignment)
         self.assertEqual('++contextportlets++plone.leftcolumn', mapping.id)
 
