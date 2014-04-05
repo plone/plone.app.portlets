@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.0 (unreleased)
+3.0 (2014-04-05)
 ----------------
 
 - Avoid storing portlet assignment mapping in the database until
