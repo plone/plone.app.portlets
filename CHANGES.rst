@@ -8,6 +8,9 @@ Changelog
   an assignment is actually added.
   [davisagli]
 
+- Fix auto csrf protection integration.
+  [vangheem]
+
 - Use z3c.form for portlet forms.
   [bosim, davisagli]
 
