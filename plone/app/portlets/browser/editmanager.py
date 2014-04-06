@@ -192,6 +192,10 @@ class EditPortletManagerRenderer(Explicit):
     @memoize
     def url_quote_referer(self):
         return url_quote(self.referer())
+        
+    @memoize
+    def key(self):
+        return self.request.get('key', None)
 
     # See note in plone.portlets.manager
 
