@@ -4,8 +4,9 @@ Changelog
 3.0.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Transfered pbauer's fix of #32 'removing group-portlets' of 2.4.x-branch to master.
+  [ida27]
+  
 
 3.0 (2014-04-05)
 ----------------
