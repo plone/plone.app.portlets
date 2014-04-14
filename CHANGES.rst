@@ -4,7 +4,8 @@ Changelog
 3.0.1 (unreleased)
 ------------------
 
-- Tansfered changelogs of v. 2.4.4 to 2.4.8.
+- Transfered pbauer's fix of #32 'removing group-portlets' of 2.4.x-branch to
+  master. Also Tansfered changelogs of version 2.4.4 to 2.4.8.
   [ida27]
   
 
