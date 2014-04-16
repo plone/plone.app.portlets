@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.0.1 (unreleased)
+3.0.1 (2014-04-16)
 ------------------
 
 - Transfered pbauer's fix of #32 'removing group-portlets' of 2.4.x-branch to
