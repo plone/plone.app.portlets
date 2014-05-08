@@ -45,11 +45,11 @@
     </tal:items>
     </ul>
 
-    <section class="portletContent"
+    <div class="portletContent"
         tal:condition="not: view/recent_items"
         i18n:translate="box_recent_no_items">
         No items changed yet.
-    </section>
+    </div>
 
     <footer class="portletFooter">
         <a href="#"
