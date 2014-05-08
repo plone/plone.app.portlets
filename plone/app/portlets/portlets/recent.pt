@@ -2,27 +2,25 @@
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       tal:omit-tag="">
-<div class="portlet portletRecent"
+<dl class="portlet portletRecent"
     i18n:domain="plone">
 
-    <header class="portletHeader">
+    <dt class="portletHeader">
         <span class="portletTopLeft"></span>
         <a href="#"
             tal:attributes="href view/recently_modified_link"
             i18n:translate=""
             tal:content="view/title" />
         <span class="portletTopRight"></span>
-    </header>
+    </dt>
 
-    <ul class="portletContent"
-        tal:condition="view/recent_items">
     <tal:items tal:define="plone_view context/@@plone;
                            getIcon nocall:plone_view/getIcon;
                            normalizeString nocall:plone_view/normalizeString;
                            toLocalizedTime nocall:plone_view/toLocalizedTime;"
                tal:repeat="obj view/recent_items">
 
-        <li class="portletItem"
+        <dd class="portletItem"
             tal:define="oddrow repeat/obj/odd;
                         item_icon python:getIcon(obj);
                         item_wf_state obj/review_state;
@@ -41,17 +39,16 @@
                        tal:content="python:toLocalizedTime(obj.ModificationDate)"
                        >May 5</span>
              </a>
-        </li>
+        </dd>
     </tal:items>
-    </ul>
 
-    <div class="portletContent"
+    <dd class="portletItem"
         tal:condition="not: view/recent_items"
         i18n:translate="box_recent_no_items">
         No items changed yet.
-    </div>
+    </dd>
 
-    <footer class="portletFooter">
+    <dd class="portletFooter">
         <a href="#"
            class="tile"
            tal:attributes="href view/recently_modified_link"
@@ -60,7 +57,7 @@
         </a>
         <span class="portletBottomLeft"></span>
         <span class="portletBottomRight"></span>
-    </footer>
+    </dd>
 
-</div>
+</dl>
 </html>
