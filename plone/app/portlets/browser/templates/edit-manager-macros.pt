@@ -52,6 +52,7 @@
                       <form class="portlet-action up" method="POST" tal:attributes="action portlet/up_url"
                           tal:condition="not:repeat/portlet/start">
                         <input type="hidden" name="referer" tal:attributes="value view/url_quote_referer" />
+                        <input type="hidden" name="key" tal:attributes="value view/key" />
                         <input type="hidden" name="name" tal:attributes="value portlet/name" />
                         <input type="hidden" name="viewname" tal:attributes="value view/view_name" />
                         <span tal:replace="structure authenticator"/>
@@ -62,6 +63,7 @@
                       <form class="portlet-action down" method="POST" tal:attributes="action portlet/down_url"
                           tal:condition="not:repeat/portlet/end">
                         <input type="hidden" name="referer" tal:attributes="value view/url_quote_referer" />
+                        <input type="hidden" name="key" tal:attributes="value view/key" />
                         <input type="hidden" name="name" tal:attributes="value portlet/name" />
                         <input type="hidden" name="viewname" tal:attributes="value view/view_name" />
                         <span tal:replace="structure authenticator"/>
@@ -72,6 +74,7 @@
                       <form class="portlet-action" method="POST" tal:attributes="action portlet/show_url"
                           tal:condition="not: portlet/visible">
                         <input type="hidden" name="referer" tal:attributes="value view/url_quote_referer" />
+                        <input type="hidden" name="key" tal:attributes="value view/key" />
                         <input type="hidden" name="name" tal:attributes="value portlet/name" />
                         <input type="hidden" name="viewname" tal:attributes="value view/view_name" />
                         <span tal:replace="structure authenticator"/>
@@ -82,6 +85,7 @@
                       <form class="portlet-action" method="POST" tal:attributes="action portlet/hide_url"
                           tal:condition="portlet/visible">
                         <input type="hidden" name="referer" tal:attributes="value view/url_quote_referer" />
+                        <input type="hidden" name="key" tal:attributes="value view/key" />
                         <input type="hidden" name="name" tal:attributes="value portlet/name" />
                         <input type="hidden" name="viewname" tal:attributes="value view/view_name" />
                         <span tal:replace="structure authenticator"/>
@@ -91,6 +95,7 @@
 
                       <form class="portlet-action delete" method="POST" tal:attributes="action portlet/delete_url">
                         <input type="hidden" name="referer" tal:attributes="value view/url_quote_referer" />
+                        <input type="hidden" name="key" tal:attributes="value view/key" />
                         <input type="hidden" name="name" tal:attributes="value portlet/name" />
                         <input type="hidden" name="viewname" tal:attributes="value view/view_name" />
                         <span tal:replace="structure authenticator"/>

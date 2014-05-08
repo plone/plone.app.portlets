@@ -132,6 +132,21 @@ class TestRenderer(PortletsTestCase):
         self.assertFalse(r.can_register())
 
 
+    def testCanRegister(self):
+        request = self.folder.REQUEST
+        r = self.renderer()
+        self.assertFalse(r.can_register())
+
+        #Enable self-registration to ensure that the register link is shown
+        self.portal.manage_permission('Add portal member', roles=['Anonymous'])
+        self.logout()
+        self.assertTrue(r.can_register())
+
+        #Hiding the Register action hides the register link
+        self.portal.portal_actions.user.join.visible = False
+        self.assertFalse(r.can_register())
+
+
     # TODO: Add more detailed tests here
 
 
