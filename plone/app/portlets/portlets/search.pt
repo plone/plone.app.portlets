@@ -2,18 +2,18 @@
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       tal:omit-tag="">
-<section class="portlet portletSearch"
+<dl class="portlet portletSearch"
     i18n:domain="plone">
 
-  <header class="portletHeader">
+  <dt class="portletHeader">
       <span class="portletTopLeft"></span>
       <a class="tile"
          tal:attributes="href view/search_action"
          i18n:translate="box_search">Search</a>
       <span class="portletTopRight"></span>
-  </header>
+  </dt>
 
-    <div class="portletContent">
+    <dd class="portletItem">
       <form id="searchform" action="search"
             tal:define="livesearch view/enable_livesearch;"
             tal:attributes="action view/search_action">
@@ -40,9 +40,9 @@
         </div>
       </form>
       <div class="visualClear"><!-- --></div>
-    </div>
+    </dd>
 
-    <footer class="portletFooter">
+    <dd class="portletFooter">
         <a href="#"
          class="tile"
          tal:attributes="href view/search_action"
@@ -51,6 +51,6 @@
         </a>
         <span class="portletBottomLeft"></span>
         <span class="portletBottomRight"></span>
-    </footer>
-</section>
+    </dd>
+</dl>
 </html>

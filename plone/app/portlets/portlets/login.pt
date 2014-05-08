@@ -1,20 +1,19 @@
 <tal:block condition="view/show"
            i18n:domain="plone">
 
-<section class="portlet portletLogin"
+<dl class="portlet portletLogin"
     tal:condition="view/available">
 
-  <header class="portletHeader">
+    <dt class="portletHeader">
         <span class="portletTopLeft"></span>
         <a href="#"
            class="tile"
            tal:attributes="href view/login_form"
            i18n:translate="box_sign_in">Log in</a>
         <span class="portletTopRight"></span>
-  </header>
+    </dt>
 
-  <ul class="portletContent">
-    <li class="portletItem odd"
+    <dd class="portletItem odd"
         tal:define="ac_name view/login_name;
                     ac_password view/login_password">
         <form action="login_form"
@@ -90,18 +89,18 @@
                        i18n:attributes="value label_log_in; alt label_log_in;"/>
             </div>
         </form>
-    </li>
+    </dd>
 
-    <li class="portletItem even" tal:condition="view/can_request_password">
+    <dd class="portletItem even" tal:condition="view/can_request_password">
         <a href="mail_password_form"
            class="tile"
            tal:attributes="href view/mail_password_form">
            <tal:block replace="structure context/info_icon.png"/>
            <span tal:omit-tag="" i18n:translate="box_forgot_password_option">Forgot your password?</span>
         </a>
-    </li>
+    </dd>
 
-    <li class="portletItem lastItem" tal:condition="view/can_register">
+    <dd class="portletItem lastItem" tal:condition="view/can_register">
         <a href=""
            class="tile"
            tal:attributes="href view/join_action">
@@ -110,25 +109,24 @@
         </a>
         <span class="portletBottomLeft"></span>
         <span class="portletBottomRight"></span>
-    </li>
-  </ul>
-</section>
+    </dd>
+</dl>
 
-<section class="portlet portletLogin"
+<dl class="portlet portletLogin"
     tal:condition="not:view/available">
 
-    <header class="portletHeader">
+    <dt class="portletHeader">
         <a href="#"
            class="tile"
            i18n:translate="box_sign_in">Log in</a>
-    </header>
+    </dt>
 
-    <div class="portletContent"
+    <dd class="portletItem"
         i18n:translate="login_portlet_disabled">
         Cookie authentication is disabled.
         Login portlet not available.
-    </div>
+    </dd>
 
-</section>
+</dl>
 
 </tal:block>
