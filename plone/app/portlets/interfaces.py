@@ -60,11 +60,6 @@ class IRightColumn(IColumn):
     Normally, you will register portlets for IColumn instead.
     """
 
-class IFooter(IColumn):
-    """The footer
-
-    Normally, you will register portlets for IColumn instead.
-    """
 
 class IDashboard(IDefaultPortletManager, IPlacelessPortletManager):
     """Common base class for dashboard columns
