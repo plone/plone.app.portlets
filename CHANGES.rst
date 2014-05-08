@@ -4,7 +4,9 @@ Changelog
 2.5.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Reverted all Plone 5 relevant commits, so we can ship ``plone.app.portlets``
+  <= 2.5 with Plone 4.3 as we wrote in README before...
+  [saily]
 
 
 2.5.0 (2014-03-02)
