@@ -14,12 +14,8 @@ from plone.app.portlets.portlets import news
 from plone.app.portlets.portlets import navigation
 from plone.app.portlets.portlets import recent
 from plone.app.portlets.portlets import review
-try:
-    from plone.app.event.portlets import portlet_calendar
-    from plone.app.event.portlets import portlet_events
-    HAS_EVENTS = True
-except ImportError:
-    HAS_EVENTS = False
+from plone.app.portlets.portlets import events
+from plone.app.portlets.portlets import calendar
 
 from plone.app.portlets.storage import PortletAssignmentMapping
 from plone.app.portlets.storage import UserPortletAssignmentMapping
@@ -86,12 +82,9 @@ def convert_legacy_portlets(context):
                        'portlet_recent': recent.Assignment(count=5),
                        'portlet_related': DONT_MIGRATE,
                        'portlet_languages': DONT_MIGRATE,
-                      }
-    if HAS_EVENTS:
-        portletsMapping.update({
-            'portlet_calendar': portlet_calendar.Assignment(),
-            'portlet_events': portlet_events.Assignment(count=5),
-            })
+                       'portlet_calendar': calendar.Assignment(),
+                       'portlet_events': events.Assignment(count=5),
+                       }
 
     # Convert left_slots and right_slots to portlets
 
