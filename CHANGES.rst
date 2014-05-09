@@ -4,6 +4,10 @@ Changelog
 2.5.1 (unreleased)
 ------------------
 
+- Remove test dependency on plone.app.event. Fix ``convert_legacy_portlets``
+  method in utils module to use correct Assignment classes.
+  [thet]
+
 - Register `Events` and `Calendar` portlet if ``plone.app.event`` is not
   available - which is default in Plone <5.0
   [saily]
