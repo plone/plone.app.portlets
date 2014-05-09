@@ -4,16 +4,16 @@ Changelog
 2.5.1 (unreleased)
 ------------------
 
-- Reverted all Plone 5 relevant commits, so we can ship ``plone.app.portlets``
-  <= 2.5 with Plone 4.3 as we wrote in README before...
+- Register `Events` and `Calendar` portlet if ``plone.app.event`` is not
+  available - which is default in Plone <5.0
   [saily]
 
 - Reintegrate changes from ``2.4.x`` branch, add conditional imports of
   ``plone.app.event`` Event and Calendar portlet assignment.
   [saily]
 
-- Register `Events` and `Calendar` portlet if ``plone.app.event`` is not
-  available - which is default in Plone <5.0
+- Reverted all Plone 5 relevant commits, so we can ship ``plone.app.portlets``
+  <= 2.5 with Plone 4.3 as we wrote in README before...
   [saily]
 
 
