@@ -56,15 +56,6 @@
         permission="plone.app.portlets.ManageOwnPortlets"
         />
 
-    <browser:page
-      for="plone.portlets.interfaces.ILocalPortletAssignable"
-      class=".manage.TopbarManagePortlets"
-      permission="plone.app.portlets.ManagePortlets"
-      name="topbar-manage-portlets"
-      template="templates/topbar-manage-portlets.pt"
-      />
-
-
     <browser:pages
       for="plone.portlets.interfaces.ILocalPortletAssignable"
       class=".manage.ManageContextualPortlets"
