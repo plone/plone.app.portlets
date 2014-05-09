@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.5.1 (unreleased)
+2.5.1 (2014-05-09)
 ------------------
 
 - Remove test dependency on plone.app.event. Fix ``convert_legacy_portlets``
