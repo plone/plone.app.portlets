@@ -1,6 +1,28 @@
 <configure xmlns="http://namespaces.zope.org/zope"
            xmlns:browser="http://namespaces.zope.org/browser"
-           xmlns:plone="http://namespaces.plone.org/plone">
+           xmlns:plone="http://namespaces.plone.org/plone"
+           xmlns:zcml="http://namespaces.zope.org/zcml">
+
+    <configure zcml:condition="not-installed plone.app.event">
+
+        <plone:portlet
+            name="portlets.Calendar"
+            interface=".calendar.ICalendarPortlet"
+            assignment=".calendar.Assignment"
+            renderer=".calendar.Renderer"
+            addview=".calendar.AddForm"
+            />
+
+        <plone:portlet
+            name="portlets.Events"
+            interface=".events.IEventsPortlet"
+            assignment=".events.Assignment"
+            renderer=".events.Renderer"
+            addview=".events.AddForm"
+            editview=".events.EditForm"
+            />
+
+    </configure>
 
     <plone:portlet
         name="portlets.Classic"

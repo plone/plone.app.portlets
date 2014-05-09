@@ -12,6 +12,10 @@ Changelog
   ``plone.app.event`` Event and Calendar portlet assignment.
   [saily]
 
+- Register `Events` and `Calendar` portlet if ``plone.app.event`` is not
+  available - which is default in Plone <5.0
+  [saily]
+
 
 2.5.0 (2014-03-02)
 ------------------
