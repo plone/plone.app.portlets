@@ -41,7 +41,7 @@ class IEventsPortlet(IPortletDataProvider):
 
 if HAS_PLONE_APP_EVENT:
     # avoid broken persistent object
-    from plone.app.event.portlets.portlet_calendar import Assignment
+    from plone.app.event.portlets.portlet_events import Assignment
 else:
     class Assignment(base.Assignment):
         implements(IEventsPortlet)
