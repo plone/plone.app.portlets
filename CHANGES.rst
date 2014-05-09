@@ -4,7 +4,9 @@ Changelog
 3.0.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Remove test dependency on plone.app.event. Fix ``convert_legacy_portlets``
+  method in utils module to use correct Assignment classes.
+  [thet]
 
 
 3.0.1 (2014-04-16)
