@@ -27,7 +27,6 @@ setup(name='plone.app.portlets',
       extras_require=dict(
         test=[
             'Products.PloneTestCase',
-            'plone.app.event',
         ]
       ),
       install_requires=[
