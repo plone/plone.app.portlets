@@ -14,14 +14,20 @@ from plone.app.portlets.portlets import news
 from plone.app.portlets.portlets import navigation
 from plone.app.portlets.portlets import recent
 from plone.app.portlets.portlets import review
-from plone.app.portlets.portlets import events
-from plone.app.portlets.portlets import calendar
 
 from plone.app.portlets.storage import PortletAssignmentMapping
 from plone.app.portlets.storage import UserPortletAssignmentMapping
 
 from Acquisition import aq_base
 from Products.CMFCore.utils import getToolByName
+
+from plone.app.portlets import HAS_PLONE_APP_EVENT
+if HAS_PLONE_APP_EVENT:
+    from plone.app.event.portlets import portlet_calendar as calendar
+    from plone.app.event.portlets import portlet_events as events
+else:
+    from plone.app.portlets.portlets import events
+    from plone.app.portlets.portlets import calendar
 
 
 def assignment_mapping_from_key(context, manager_name, category, key, create=False):
