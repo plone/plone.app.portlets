@@ -22,8 +22,9 @@ Changelog
   ``plone.app.event`` Event and Calendar portlet assignment.
   [saily]
 
-- Reverted all Plone 5 relevant commits, so we can ship ``plone.app.portlets``
-  <= 2.5 with Plone 4.3 as we wrote in README before...
+- Reverted all Plone 5 relevant commits (especially the DL/DT/DD merge,
+  https://github.com/plone/Products.CMFPlone/issues/153 ), so we can ship
+  ``plone.app.portlets`` <= 2.5 with Plone 4.3 as we wrote in README before.
   [saily]
 
 
