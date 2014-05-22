@@ -403,6 +403,7 @@ class NavtreeStrategy(SitemapNavtreeStrategy):
 
         topLevel = portlet.topLevel or navtree_properties.getProperty('topLevel', 0)
         self.rootPath = getRootPath(context, currentFolderOnly, topLevel, portlet.root_uid)
+        self.showExcludedFromNav = portlet.showExcludedFromNav
 
     def subtreeFilter(self, node):
         sitemapDecision = SitemapNavtreeStrategy.subtreeFilter(self, node)
