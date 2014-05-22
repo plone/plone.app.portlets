@@ -297,7 +297,8 @@ class AddForm(base.AddForm):
                           currentFolderOnly=data.get('currentFolderOnly', False),
                           includeTop=data.get('includeTop', False),
                           topLevel=data.get('topLevel', 0),
-                          bottomLevel=data.get('bottomLevel', 0))
+                          bottomLevel=data.get('bottomLevel', 0),
+                          showExcludedFromNav=data.get('showExcludedFromNav', False))
 
 
 class EditForm(base.EditForm):
