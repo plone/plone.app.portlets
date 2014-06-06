@@ -4,6 +4,10 @@ Changelog
 3.0.2 (unreleased)
 ------------------
 
+- Abstract the search form and livesearch action URLs making it easier to
+  extend the search portlet with custom views or other actions.
+  [rpatterson]
+
 - Remove test dependency on plone.app.event. Fix ``convert_legacy_portlets``
   method in utils module to use correct Assignment classes.
   [thet]

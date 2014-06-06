@@ -34,6 +34,8 @@ class Assignment(base.Assignment):
 class Renderer(base.Renderer):
 
     render = ViewPageTemplateFile('search.pt')
+    action = '@@search'
+    livesearch_action = 'livesearch_reply'
 
     def __init__(self, context, request, view, manager, data):
         base.Renderer.__init__(self, context, request, view, manager, data)
@@ -46,7 +48,7 @@ class Renderer(base.Renderer):
         return self.data.enableLivesearch
 
     def search_action(self):
-        return '%s/@@search' % self.navigation_root_url
+        return '{0}/{1}'.format(self.navigation_root_url, self.action)
 
 
 class AddForm(base.AddForm):

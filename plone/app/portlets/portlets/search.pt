@@ -16,7 +16,8 @@
     <div class="portletContent">
       <form id="searchform" action="search"
             tal:define="livesearch view/enable_livesearch;"
-            tal:attributes="action view/search_action">
+            tal:attributes="action view/search_action;
+                            data-action view/action;">
         <div class="LSBox">
           <input class="searchField"
               name="SearchableText"
@@ -34,7 +35,9 @@
               value="Search"
               i18n:attributes="value label_search;"/>
 
-          <div class="LSResult" style="" tal:condition="livesearch">
+          <div class="LSResult" style=""
+               tal:condition="livesearch"
+               tal:attributes="data-livesearch view/livesearch_action;">
             <div class="LSShadow"></div>
           </div>
         </div>
