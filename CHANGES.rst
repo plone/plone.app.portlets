@@ -4,7 +4,9 @@ Changelog
 2.4.9 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Abstract the search form and livesearch action URLs making it easier to
+  extend the search portlet with custom views or other actions.
+  [rpatterson]
 
 
 2.4.8 (2014-01-27)
