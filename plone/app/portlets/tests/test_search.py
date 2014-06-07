@@ -82,8 +82,8 @@ class TestRenderer(PortletsTestCase):
     def test_render(self):
         view = self.renderer(self.portal)
         html = view.render()
-        self.assertIn(
-            'id="searchform"', html, 'Missing search form element')
+        self.assertTrue(
+            'id="searchform"' in html, 'Missing search form element')
 
 
 def test_suite():
