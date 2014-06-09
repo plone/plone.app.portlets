@@ -8,8 +8,14 @@
   <header class="portletHeader">
       <span class="portletTopLeft"></span>
       <a class="tile"
-         tal:attributes="href view/search_action"
-         i18n:translate="box_search">Search</a>
+         tal:attributes="href view/search_action">
+        <tal:header
+           condition="not:view/data/title|nothing"
+           i18n:translate="box_search">Search</tal:header>
+        <tal:header
+           condition="view/data/title|nothing"
+           tal:content="view/data/title">Search</tal:header>
+      </a>
       <span class="portletTopRight"></span>
   </header>
 
