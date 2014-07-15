@@ -2,11 +2,10 @@
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       tal:omit-tag="">
-<section class="portlet portletSearch"
+<section class="portlet portletSearch" role="search"
     i18n:domain="plone">
 
   <header class="portletHeader">
-      <span class="portletTopLeft"></span>
       <a class="tile"
          tal:attributes="href view/search_action">
         <tal:header
@@ -16,10 +15,9 @@
            condition="view/data/title|nothing"
            tal:content="view/data/title">Search</tal:header>
       </a>
-      <span class="portletTopRight"></span>
   </header>
 
-    <div class="portletContent">
+  <section class="portletContent">
       <form id="searchform" action="search"
             tal:define="livesearch view/enable_livesearch;"
             tal:attributes="action view/search_action;
@@ -35,8 +33,7 @@
                                placeholder title_search_site"
               tal:attributes="value request/SearchableText|nothing;
                               class python:livesearch and 'searchField portlet-search-gadget' or 'searchField portlet-search-gadget-nols'"
-              />
-          <input class="searchButton"
+              /><input class="searchButton"
               type="submit"
               value="Search"
               i18n:attributes="value label_search;"/>
@@ -48,8 +45,7 @@
           </div>
         </div>
       </form>
-      <div class="visualClear"><!-- --></div>
-    </div>
+    </section>
 
     <footer class="portletFooter">
         <a href="#"
@@ -58,8 +54,6 @@
          i18n:translate="label_advanced_search">
         Advanced Search&hellip;
         </a>
-        <span class="portletBottomLeft"></span>
-        <span class="portletBottomRight"></span>
     </footer>
 </section>
 </html>

@@ -2,27 +2,25 @@
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       tal:omit-tag="">
-<section class="portlet portletRecent"
+<section class="portlet portletRecent" role="section"
     i18n:domain="plone">
 
     <header class="portletHeader">
-        <span class="portletTopLeft"></span>
         <a href="#"
             tal:attributes="href view/recently_modified_link"
             i18n:translate=""
             tal:content="view/title" />
-        <span class="portletTopRight"></span>
     </header>
-
-    <ul class="portletContent"
+    <section class="portletContent"
         tal:condition="view/recent_items">
-    <tal:items tal:define="plone_view context/@@plone;
+      <ul>
+        <tal:items tal:define="plone_view context/@@plone;
                            getIcon nocall:plone_view/getIcon;
                            normalizeString nocall:plone_view/normalizeString;
                            toLocalizedTime nocall:plone_view/toLocalizedTime;"
                tal:repeat="obj view/recent_items">
 
-        <li class="portletItem"
+          <li class="portletItem"
             tal:define="oddrow repeat/obj/odd;
                         item_icon python:getIcon(obj);
                         item_wf_state obj/review_state;
@@ -37,19 +35,20 @@
                  <tal:title content="obj/pretty_title_or_id">
                      Title
                  </tal:title>
-                 <span class="portletItemDetails"
-                       tal:content="python:toLocalizedTime(obj.ModificationDate)"
-                       >May 5</span>
+                 
              </a>
-        </li>
-    </tal:items>
-    </ul>
+             <time class="portletItemDetails"
+                       tal:content="python:toLocalizedTime(obj.ModificationDate)"
+                       >May 5</time>
+          </li>
+        </tal:items>
+      </ul>
+    </section>
 
-    <div class="portletContent"
-        tal:condition="not: view/recent_items"
-        i18n:translate="box_recent_no_items">
-        No items changed yet.
-    </div>
+    <section class="portletContent"
+        tal:condition="not: view/recent_items">
+        <p i18n:translate="box_recent_no_items">No items changed yet.</p>
+    </section>
 
     <footer class="portletFooter">
         <a href="#"
@@ -58,8 +57,6 @@
            i18n:translate="box_more_recently_changed">
            All recent changes&hellip;
         </a>
-        <span class="portletBottomLeft"></span>
-        <span class="portletBottomRight"></span>
     </footer>
 
 </section>

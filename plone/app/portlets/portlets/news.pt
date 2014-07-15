@@ -2,58 +2,52 @@
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       tal:omit-tag="">
-<section class="portlet portletNews"
+<section class="portlet portletNews"  role="section"
     i18n:domain="plone">
 
   <header class="portletHeader">
-        <span class="portletTopLeft"></span>
         <a href="#"
            class="tile"
            tal:define="all_news_link view/all_news_link"
            tal:omit-tag="not:all_news_link"
            tal:attributes="href all_news_link"
            i18n:translate="box_news">News</a>
-        <span class="portletTopRight"></span>
   </header>
+  <section class="portletContent">
+    <ul>
+      <tal:newsitems  tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime;
+                                  plone_view context/@@plone;
+                                  getIcon nocall:plone_view/getIcon;"
+                      tal:repeat="obj view/published_news_items">
+      <li tal:define="oddrow repeat/obj/odd;
+                      item_icon python:getIcon(obj);"
+          tal:attributes="class python:oddrow and 'portletItem even' or 'portletItem odd'">
 
-  <ul class="portletContent">
-    <tal:newsitems  tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime;
-                                plone_view context/@@plone;
-                                getIcon nocall:plone_view/getIcon;"
-                    tal:repeat="obj view/published_news_items">
-    <li tal:define="oddrow repeat/obj/odd;
-                    item_icon python:getIcon(obj);"
-         tal:attributes="class python:oddrow and 'portletItem even' or 'portletItem odd'">
-
-        <a href=""
-           class="tile"
-           tal:attributes="href obj/getURL;
-                           title obj/Description">
-            <img tal:replace="structure item_icon/html_tag" />
-            <span tal:replace="obj/pretty_title_or_id">
+        <a  href=""
+            class="tile"
+            tal:attributes="href obj/getURL;
+                             title obj/Description">
+          <img tal:replace="structure item_icon/html_tag" />
+          <span tal:replace="obj/pretty_title_or_id">
             Plone 2.1 announced!
-            </span>
-         </a>
-            <span class="portletItemDetails"
-                  tal:content="python:toLocalizedTime(obj.Date)">May 5</span>
+          </span>
+           </a>
+           <time class="portletItemDetails"
+                    tal:content="python:toLocalizedTime(obj.Date)">May 5</time>
 
-    </li>
-    </tal:newsitems>
-  </ul>
-
+      </li>
+      </tal:newsitems>
+    </ul>
+  </section>
   <footer class="portletFooter"
          tal:condition="view/all_news_link">
-        <span class="portletBottomLeft"></span>
         <a href=""
            tal:attributes="href view/all_news_link"
            i18n:translate="box_more_news_link">
           More news&hellip;
         </a>
-        <span class="portletBottomRight"></span>
   </footer>
   <footer class="portletFooter" condition="not:view/all_news_link">
-        <span class="portletBottomLeft"></span>
-        <span class="portletBottomRight"></span>
   </footer>
 </section>
 </html>

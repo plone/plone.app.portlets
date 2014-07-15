@@ -1,20 +1,17 @@
 <tal:block condition="view/show"
            i18n:domain="plone">
 
-<section class="portlet portletLogin"
+<section class="portlet portletLogin"  role="section"
     tal:condition="view/available">
 
   <header class="portletHeader">
-        <span class="portletTopLeft"></span>
         <a href="#"
            class="tile"
            tal:attributes="href view/login_form"
            i18n:translate="box_sign_in">Log in</a>
-        <span class="portletTopRight"></span>
   </header>
-
-  <ul class="portletContent">
-    <li class="portletItem odd"
+  <section class="portletContent">
+    <div
         tal:define="ac_name view/login_name;
                     ac_password view/login_password">
         <form action="login_form"
@@ -73,11 +70,15 @@
                        i18n:attributes="alt label_password;"/>
             </div>
 
-            <div i18n:translate="enable_cookies_message_before_login"
-                 class="cookiesMessage portalMessage"
-                 style="display:none">
-                Cookies are not enabled. You must enable cookies before you
-                can log in.
+            <div class="cookiesMessage portalMessage warning"
+                 style="display:none" role="alert">
+                <strong i18n:translate="">
+                  Warning
+                </strong>
+                <span i18n:translate="enable_cookies_message_before_login">
+                  Cookies are not enabled. You must enable cookies before you
+                  can log in.
+                </span>
             </div>
 
             <div class="formControls">
@@ -90,28 +91,27 @@
                        i18n:attributes="value label_log_in; alt label_log_in;"/>
             </div>
         </form>
-    </li>
-
-    <li class="portletItem even" tal:condition="view/can_request_password">
+      </div>
+  </section>
+  <footer class="portletFooter">
+    <div tal:condition="view/can_request_password">
         <a href="mail_password_form"
            class="tile"
            tal:attributes="href view/mail_password_form">
            <tal:block replace="structure context/info_icon.png"/>
            <span tal:omit-tag="" i18n:translate="box_forgot_password_option">Forgot your password?</span>
         </a>
-    </li>
+    </div>
 
-    <li class="portletItem lastItem" tal:condition="view/can_register">
+    <div tal:condition="view/can_register">
         <a href=""
            class="tile"
            tal:attributes="href view/join_action">
             <tal:block replace="structure context/user.png"/>
             <span tal:omit-tag="" i18n:translate="box_new_user_option">New user?</span>
         </a>
-        <span class="portletBottomLeft"></span>
-        <span class="portletBottomRight"></span>
-    </li>
-  </ul>
+    </div>
+  </footer>
 </section>
 
 <section class="portlet portletLogin"
