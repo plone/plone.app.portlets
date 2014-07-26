@@ -1,4 +1,7 @@
 from plone.app.portlets.tests.base import PortletsTestCase
+from plone.app.testing import TEST_USER_ID
+from plone.app.testing import logout
+from plone.app.testing import setRoles
 
 from plone.portlets.interfaces import IPortletContext
 
@@ -21,9 +24,9 @@ class TestBasicContext(PortletsTestCase):
     def testGlobalsWithSingleGroup(self):
 
         group = self.portal.portal_groups.getGroupById('Reviewers')
-        self.setRoles(('Manager', ))
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
         group.addMember(user_name)
-        self.setRoles(('Member', ))
+        setRoles(self.portal, TEST_USER_ID, ['Member'])
 
         ctx = IPortletContext(self.folder)
         g = ctx.globalPortletCategories()
@@ -34,12 +37,12 @@ class TestBasicContext(PortletsTestCase):
 
     def testGlobalsWithMultipleGroup(self):
 
-        self.setRoles(('Manager', ))
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
         group = self.portal.portal_groups.getGroupById('Reviewers')
         group.addMember(user_name)
         group = self.portal.portal_groups.getGroupById('Administrators')
         group.addMember(user_name)
-        self.setRoles(('Member', ))
+        setRoles(self.portal, TEST_USER_ID, ['Member'])
 
         ctx = IPortletContext(self.folder)
         g = ctx.globalPortletCategories()
@@ -50,7 +53,7 @@ class TestBasicContext(PortletsTestCase):
         self.assertEqual(g[4], ('group', 'Reviewers'))
 
     def testAnonymous(self):
-        self.logout()
+        logout()
         ctx = IPortletContext(self.folder)
         g = ctx.globalPortletCategories()
         self.assertEqual(len(g), 2)
@@ -74,9 +77,9 @@ class TestPortalRootContext(PortletsTestCase):
     def testGlobalsWithSingleGroup(self):
 
         group = self.portal.portal_groups.getGroupById('Reviewers')
-        self.setRoles(('Manager', ))
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
         group.addMember(user_name)
-        self.setRoles(('Member', ))
+        setRoles(self.portal, TEST_USER_ID, ['Member'])
 
         ctx = IPortletContext(self.portal)
         g = ctx.globalPortletCategories()
@@ -87,12 +90,12 @@ class TestPortalRootContext(PortletsTestCase):
 
     def testGlobalsWithMultipleGroup(self):
 
-        self.setRoles(('Manager', ))
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
         group = self.portal.portal_groups.getGroupById('Reviewers')
         group.addMember(user_name)
         group = self.portal.portal_groups.getGroupById('Administrators')
         group.addMember(user_name)
-        self.setRoles(('Member', ))
+        setRoles(self.portal, TEST_USER_ID, ['Member'])
 
         ctx = IPortletContext(self.portal)
         g = ctx.globalPortletCategories()
@@ -103,7 +106,7 @@ class TestPortalRootContext(PortletsTestCase):
         self.assertEqual(g[4], ('group', 'Reviewers'))
 
     def testAnonymous(self):
-        self.logout()
+        logout()
         ctx = IPortletContext(self.portal)
         g = ctx.globalPortletCategories()
         self.assertEqual(len(g), 2)

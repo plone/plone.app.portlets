@@ -1,0 +1,26 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    package="plone.app.portlets"
+    i18n_domain="test">
+
+    <plone:portlet
+        name="portlets.test.Test"
+        interface="plone.app.portlets.tests.test_configuration.ITestPortlet"
+        assignment="plone.app.portlets.tests.test_configuration.TestAssignment"
+        renderer="plone.app.portlets.tests.test_configuration.TestRenderer"
+        addview="plone.app.portlets.tests.test_configuration.TestAddForm"
+        editview="plone.app.portlets.tests.test_configuration.TestEditForm"
+        />
+
+    <genericsetup:registerProfile
+        name="testing"
+        title="plone.app.portlets testing"
+        description="Used for testing only"
+        directory="tests/profiles/testing"
+        for="Products.CMFCore.interfaces.ISiteRoot"
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+        />
+
+</configure>

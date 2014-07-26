@@ -1,7 +1,6 @@
 from Testing.ZopeTestCase import user_name
 
 from zope.component import getUtility, getMultiAdapter
-from zope.site.hooks import setSite, setHooks
 
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPortletAssignmentMapping
@@ -17,8 +16,6 @@ from plone.app.portlets.utils import assignment_from_key
 class TestAssignmentFromKey(PortletsTestCase):
 
     def afterSetUp(self):
-        setHooks()
-        setSite(self.portal)
         self.manager = getUtility(IPortletManager, name=u'plone.leftcolumn')
         self.cat = self.manager[USER_CATEGORY]
         self.cat[user_name] = PortletAssignmentMapping(manager=u'plone.leftcolumn',

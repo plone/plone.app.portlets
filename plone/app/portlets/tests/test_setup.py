@@ -1,4 +1,3 @@
-from zope.site.hooks import setSite, setHooks
 from zope.component import getSiteManager, getUtilitiesFor, getUtility
 
 from plone.portlets.interfaces import IPortletManager
@@ -10,10 +9,6 @@ from plone.app.portlets.tests.base import PortletsTestCase
 
 
 class TestProductInstall(PortletsTestCase):
-
-    def afterSetUp(self):
-        setHooks()
-        setSite(self.portal)
 
     def testPortletManagersRegistered(self):
         sm = getSiteManager(self.portal)

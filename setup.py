@@ -25,9 +25,11 @@ setup(name='plone.app.portlets',
       include_package_data=True,
       zip_safe=False,
       extras_require=dict(
-        test=[
-            'Products.PloneTestCase',
-        ]
+          test=[
+              'Products.ATContentTypes',
+              'plone.app.blob',
+              'plone.app.testing',
+          ],
       ),
       install_requires=[
         'setuptools',

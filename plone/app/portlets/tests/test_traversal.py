@@ -4,7 +4,6 @@ from AccessControl import Unauthorized
 
 from Testing.ZopeTestCase import user_name
 
-from zope.site.hooks import setSite, setHooks
 from zope.component import getMultiAdapter, getUtility
 
 from plone.portlets.interfaces import IPortletManager, IPortletAssignmentMapping
@@ -16,13 +15,11 @@ from plone.portlets.constants import CONTENT_TYPE_CATEGORY
 from plone.app.portlets.interfaces import IPortletPermissionChecker
 from plone.app.portlets.tests.base import PortletsTestCase
 from plone.app.portlets.portlets import classic
+from plone.app.testing import setRoles
+from plone.app.testing import TEST_USER_ID
 
 
 class TestTraversal(PortletsTestCase):
-
-    def afterSetUp(self):
-        setHooks()
-        setSite(self.portal)
 
     def _assertSameObject(self, a, b):
         self.assertTrue(aq_base(a) is aq_base(b))
@@ -62,10 +59,10 @@ class TestTraversal(PortletsTestCase):
 
         checker = IPortletPermissionChecker(mapping)
 
-        self.setRoles(('Manager', ))
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
         checker() # no exception
 
-        self.setRoles(('Member', ))
+        setRoles(self.portal, TEST_USER_ID, ['Member'])
         self.assertRaises(Unauthorized, checker)
 
     def testGroupNamespace(self):

@@ -1,6 +1,4 @@
 from zope.component import getUtility, getMultiAdapter
-from zope.site.hooks import setHooks, setSite
-
 from Products.GenericSetup.utils import _getDottedName
 
 from plone.portlets.interfaces import IPortletType
@@ -14,14 +12,14 @@ from plone.app.portlets.portlets import classic
 from plone.app.portlets.storage import PortletAssignmentMapping
 
 from plone.app.portlets.tests.base import PortletsTestCase
+from plone.app.testing import TEST_USER_ID
+from plone.app.testing import setRoles
 
 
 class TestPortlet(PortletsTestCase):
 
     def afterSetUp(self):
-        setHooks()
-        setSite(self.portal)
-        self.setRoles(('Manager', ))
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
 
     def testPortletTypeRegistered(self):
         portlet = getUtility(IPortletType, name='portlets.Classic')
@@ -72,10 +70,6 @@ class TestPortlet(PortletsTestCase):
 
 
 class TestRenderer(PortletsTestCase):
-
-    def afterSetUp(self):
-        setHooks()
-        setSite(self.portal)
 
     def renderer(self, context=None, request=None, view=None, manager=None, assignment=None):
         context = context or self.folder

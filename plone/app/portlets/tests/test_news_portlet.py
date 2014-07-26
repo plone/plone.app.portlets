@@ -1,5 +1,4 @@
 from zope.component import getUtility, getMultiAdapter
-from zope.site.hooks import setHooks, setSite
 
 from Products.GenericSetup.utils import _getDottedName
 
@@ -14,13 +13,14 @@ from plone.app.portlets.storage import PortletAssignmentMapping
 
 from plone.app.portlets.tests.base import PortletsTestCase
 
+from plone.app.testing import TEST_USER_ID
+from plone.app.testing import setRoles
+
 
 class TestPortlet(PortletsTestCase):
 
     def afterSetUp(self):
-        setHooks()
-        setSite(self.portal)
-        self.setRoles(('Manager', ))
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
 
     def testPortletTypeRegistered(self):
         portlet = getUtility(IPortletType, name='portlets.News')
@@ -73,8 +73,6 @@ class TestPortlet(PortletsTestCase):
 class TestRenderer(PortletsTestCase):
 
     def afterSetUp(self):
-        setHooks()
-        setSite(self.portal)
         # Make sure News Items use simple_publication_workflow
         self.portal.portal_workflow.setChainForPortalTypes(['News Item'], ['simple_publication_workflow'])
 
@@ -88,7 +86,7 @@ class TestRenderer(PortletsTestCase):
         return getMultiAdapter((context, request, view, manager, assignment), IPortletRenderer)
 
     def test_published_news_items(self):
-        self.setRoles(('Manager', ))
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
         self.portal.invokeFactory('News Item', 'n1')
         self.portal.invokeFactory('News Item', 'n2')
         self.portal.portal_workflow.doActionFor(self.portal.n1, 'publish')
@@ -105,7 +103,6 @@ class TestRenderer(PortletsTestCase):
             self.portal._delObject('news')
         r = self.renderer(assignment=news.Assignment(count=5))
         self.assertEqual(r.all_news_link(), None)
-        self.setRoles(['Manager'])
         self.portal.invokeFactory('Folder', 'news')
         self.assertTrue(r.all_news_link().endswith('/news'))
 

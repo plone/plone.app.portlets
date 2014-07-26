@@ -1,5 +1,4 @@
 from zope.component import getUtility, getMultiAdapter
-from zope.site.hooks import setHooks, setSite
 
 from Products.CMFCore.utils import getToolByName
 from Products.GenericSetup.utils import _getDottedName
@@ -14,13 +13,16 @@ from plone.app.portlets.portlets import review
 
 from plone.app.portlets.tests.base import PortletsTestCase
 
+from plone.app.testing import TEST_USER_ID
+from plone.app.testing import TEST_USER_NAME
+from plone.app.testing import setRoles
+from plone.app.testing import login
+
 
 class TestPortlet(PortletsTestCase):
 
     def afterSetUp(self):
-        setHooks()
-        setSite(self.portal)
-        self.setRoles(('Manager', ))
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
 
     def testPortletTypeRegistered(self):
         portlet = getUtility(IPortletType, name='portlets.Review')
@@ -66,9 +68,7 @@ class TestPortlet(PortletsTestCase):
 class TestRenderer(PortletsTestCase):
 
     def afterSetUp(self):
-        setHooks()
-        setSite(self.portal)
-        self.setRoles(('Manager'), )
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
         self.portal.invokeFactory('Document', 'doc1')
         self.portal.invokeFactory('Document', 'doc2')
         self.portal.portal_membership.getMemberById('test_user_1_').setMemberProperties(
@@ -104,8 +104,8 @@ class TestRenderer(PortletsTestCase):
 
     def test_full_news_link_local_reviewer(self):
         # login as our test user
-        self.login('test_user_1_')
-        self.setRoles(['Member'])
+        login(self.portal, TEST_USER_NAME)
+        setRoles(self.portal, TEST_USER_ID, ['Member'])
 
         # there should be no full news link on site root for our local reviewer
         r = self.renderer(assignment=review.Assignment())

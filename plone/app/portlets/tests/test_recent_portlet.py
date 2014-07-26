@@ -1,5 +1,4 @@
 from zope.component import getUtility, getMultiAdapter
-from zope.site.hooks import setHooks, setSite
 
 from Products.GenericSetup.utils import _getDottedName
 
@@ -13,14 +12,14 @@ from plone.app.portlets.portlets import recent
 from plone.app.portlets.storage import PortletAssignmentMapping
 
 from plone.app.portlets.tests.base import PortletsTestCase
+from plone.app.testing import setRoles
+from plone.app.testing import TEST_USER_ID
 
 
 class TestPortlet(PortletsTestCase):
 
     def afterSetUp(self):
-        setHooks()
-        setSite(self.portal)
-        self.setRoles(('Manager', ))
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
 
     def testPortletTypeRegistered(self):
         portlet = getUtility(IPortletType, name='portlets.Recent')
@@ -72,10 +71,6 @@ class TestPortlet(PortletsTestCase):
 
 class TestRenderer(PortletsTestCase):
 
-    def afterSetUp(self):
-        setHooks()
-        setSite(self.portal)
-
     def renderer(self, context=None, request=None, view=None, manager=None, assignment=None):
         context = context or self.portal
         request = request or self.app.REQUEST
@@ -85,7 +80,7 @@ class TestRenderer(PortletsTestCase):
         return getMultiAdapter((context, request, view, manager, assignment), IPortletRenderer)
 
     def test_recent_items(self):
-        self.setRoles(('Manager', ))
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
         if 'news' in self.portal:
             self.portal._delObject('news')
         if 'events' in self.portal:
@@ -95,6 +90,10 @@ class TestRenderer(PortletsTestCase):
         if 'Members' in self.portal:
             self.portal._delObject('Members')
             self.folder = None
+        if 'folder' in self.portal:
+            self.portal._delObject('folder')
+        if 'users' in self.portal:
+            self.portal._delObject('users')
         self.portal.invokeFactory('Document', 'doc1')
         self.portal.invokeFactory('Document', 'doc2')
         r = self.renderer(assignment=recent.Assignment())
