@@ -1,57 +1,61 @@
-"""Base class for integration tests, based on ZopeTestCase and PloneTestCase.
+"""Base class for integration tests, based on ZopeTestCase.
 
 Note that importing this module has various side-effects: it registers a set of
 products with Zope, and it sets up a sandbox Plone site with the appropriate
 products installed.
 """
 
-#from Testing import ZopeTestCase
-#import doctest
-#from unittest import TestSuite
+import unittest2 as unittest
 
-# Import PloneTestCase - this registers more products with Zope as a side effect
-from Products.PloneTestCase import PloneTestCase
-from plone.app.portlets.tests import layer
-
-# BBB Zope 2.12
-try:
-    from Testing.testbrowser import Browser
-    Browser # pyflakes
-except ImportError:
-    from Products.Five.testbrowser import Browser
-
-# Set up a Plone site - note that the portlets branch of CMFPlone applies
-# a portlets profile.
-PloneTestCase.setupPloneSite()
+from plone.app.portlets.testing import PLONE_APP_PORTLETS_INTEGRATION_TESTING
+from plone.app.testing import PLONE_FUNCTIONAL_TESTING
+from plone.testing.z2 import Browser
 
 
-class PortletsTestCase(PloneTestCase.PloneTestCase):
+class PortletsTestCase(unittest.TestCase):
     """Base class for integration tests for plone.app.portlets. This may
     provide specific set-up and tear-down operations, or provide convenience
     methods.
     """
 
+    layer = PLONE_APP_PORTLETS_INTEGRATION_TESTING
 
-class PortletsFunctionalTestCase(PloneTestCase.FunctionalTestCase):
+    def setUp(self):
+        self.app = self.layer['app']
+        self.portal = self.layer['portal']
+        self.folder = self.portal['folder']
+        self.request = self.layer['request']
+
+        self.afterSetUp()
+
+    def afterSetUp(self):
+        pass
+
+
+class PortletsFunctionalTestCase(unittest.TestCase):
     """Base class for functional integration tests for plone.app.portlets.
     This may provide specific set-up and tear-down operations, or provide
     convenience methods.
     """
 
-    layer = layer.PlonePortlets
+    layer = PLONE_FUNCTIONAL_TESTING
 
-    def afterSetUp(self):
-        """ set up the tests """
-        pass
+    def setUp(self):
+        self.app = self.layer['app']
+        self.request = self.layer['request']
+        self.portal = self.layer['portal']
+        self.portal_url = self.portal.absolute_url()
+        self.browser = Browser(self.app)
+        self.browser.handleErrors = True
+        self.app.acl_users.userFolderAddUser('app', 'secret', ['Manager'], [])
+        from plone.testing import z2
+        z2.login(self.app['acl_users'], 'app')
 
-    def getBrowser(self, loggedIn=False, admin=False):
-        """ instantiate and return a testbrowser for convenience """
-        browser = Browser()
-        if loggedIn:
-            u = PloneTestCase.default_user
-            p = PloneTestCase.default_password
-            browser.open(self.portal.absolute_url() + "/login_form")
-            browser.getControl(name='__ac_name').value = u
-            browser.getControl(name='__ac_password').value = p
-            browser.getControl(name='submit').click()
-        return browser
+        import transaction
+        transaction.commit()
+        self.site_administrator_browser = Browser(self.app)
+        self.site_administrator_browser.handleErrors = False
+        self.site_administrator_browser.addHeader(
+            'Authorization',
+            'Basic %s:%s' % ('app', 'secret')
+        )

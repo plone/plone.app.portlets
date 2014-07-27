@@ -5,6 +5,8 @@ Setup::
     >>> uf = portal.acl_users
     >>> uf.userFolderAddUser(user1, pass1, ['Member'], [])
     >>> uf.userFolderAddUser(user2, pass2, ['Member'], [])
+    >>> import transaction
+    >>> transaction.commit()
     >>> import re
     >>> from plone.protect.authenticator import createToken
 
@@ -13,7 +15,7 @@ bug: 11174: Portal Members can't add portlets to their dashboard
 ----------------------
 Login as the 'user1' user
 
-    >>> browser = self.getBrowser()
+    >>> browser = self.browser
     >>> portalURL = portal.absolute_url()
 
     >>> browser.open(portalURL + '/login_form')
@@ -68,8 +70,6 @@ Using the addview, let's see that we cannot add a portlet for another user
     >>> browser.getControl(name='__ac_password').value = 'pass2'
     >>> browser.getControl(name='submit').click()
 
-    >>> self.login('user2')
-
     >>> browser.open(portalURL+'/@@manage-dashboard?_authenticator=' + createToken())
     >>> bool(re.search('\<\/span\>\s+Search\s+\<\/div\>', browser.contents))
     False
@@ -88,6 +88,7 @@ Finally, if we add the "Member" role to the "Portlets: Manage portlets" permissi
 those views
 
     >>> portal.manage_permission('Portlets: Manage portlets', roles=['Manager', 'Member'], acquire=0)
+    >>> transaction.commit()
     >>> browser.open(portalURL+'/@@manage-portlets?_authenticator=' + createToken())
     >>> "Insufficient Privileges" in browser.contents
     False

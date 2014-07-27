@@ -21,8 +21,7 @@ check the names for customized views are in place::
 
 Now customize the manage dashboard view and check the name is in place too::
 
-    >>> self.setRoles('Manager')
-    >>> browser = self.getBrowser(loggedIn=True)
+    >>> browser = self.site_administrator_browser
     >>> browser.open(portal.absolute_url()+'/portal_view_customizations/registrations.html')
     >>> browser.getLink(url='manage-dashboard').click()
     >>> managedashboard_template = """
@@ -102,7 +101,9 @@ Now customize the manage dashboard view and check the name is in place too::
     ... </metal:main>
     ... </body>
     ... </html>"""
+    >>> browser.handleErrors = True
     >>> browser.getControl('Customize').click()
+    >>> browser.handleErrors = False
     >>> browser.getControl(name='text:text').value = managedashboard_template
     >>> browser.getControl('Save Changes').click()
 
@@ -110,7 +111,7 @@ Add a portlet in the dashboard and try to delete it::
 
     >>> browser.open(portal.absolute_url()+'/dashboard')
     >>> browser.getLink('Edit').click()
-    >>> browser.getControl(name=':action',index=0).value = ['/++dashboard++plone.dashboard1+test_user_1_/+/portlets.Search']
+    >>> browser.getControl(name=':action',index=0).value = ['/++dashboard++plone.dashboard1+app/+/portlets.Search']
     >>> browser.getForm(index=1).submit()
     >>> browser.getControl('Save').click()  # This submits the now shown add form.
     >>> browser.open(portal.absolute_url()+'/@@manage-dashboard')

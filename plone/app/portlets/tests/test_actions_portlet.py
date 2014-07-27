@@ -10,14 +10,15 @@ from plone.app.portlets.portlets import actions
 
 from plone.app.portlets.storage import PortletAssignmentMapping
 from plone.app.portlets.tests.base import PortletsTestCase
+from plone.app.testing import TEST_USER_ID
+from plone.app.testing import setRoles
 from Products.CMFCore.utils import getToolByName
 
 
 class TestPortlet(PortletsTestCase):
 
     def afterSetUp(self):
-        self.setRoles(('Manager', ))
-        return
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
 
     def test_portlet_type_registered(self):
         portlet = getUtility(
@@ -81,8 +82,7 @@ class TestPortlet(PortletsTestCase):
 class TestRenderer(PortletsTestCase):
 
     def afterSetUp(self):
-        self.setRoles(('Manager', ))
-        return
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
 
     def renderer(self, context=None, request=None, view=None, manager=None,
                  assignment=None):
@@ -153,7 +153,7 @@ renderer's method
         links2 = r2.actionLinks()
 
         # check the portal_tabs links (portal_tabs is somehow special)
-        self.assertEquals(len(links1), 4)
+        self.assertEquals(len(links1), 5)
         self.assertEquals(links1[0]['title'], u'Home')
 #        self.failIf(links1[0]['icon'] is None)
 
@@ -181,7 +181,7 @@ content in Plone content root
         output = r.actionLinks()
 
         # Have our expected tabs ?
-        expected = set([u'Home', u'Users', u'News', u'Events'])
+        expected = set([u'Test Folder', u'Home', u'Users', u'News', u'Events'])
         got = set([unicode(link['title']) for link in output])
         self.failUnlessEqual(got, expected)
         return

@@ -1,5 +1,4 @@
 from zope.component import getUtility, getMultiAdapter, queryMultiAdapter
-from zope.site.hooks import setHooks, setSite
 
 from Products.GenericSetup.utils import _getDottedName
 
@@ -14,14 +13,15 @@ from plone.app.portlets.portlets import login
 from plone.app.portlets.storage import PortletAssignmentMapping
 
 from plone.app.portlets.tests.base import PortletsTestCase
+from plone.app.testing import TEST_USER_ID
+from plone.app.testing import setRoles
+from plone.app.testing import logout
 
 
 class TestPortlet(PortletsTestCase):
 
     def afterSetUp(self):
-        setHooks()
-        setSite(self.portal)
-        self.setRoles(('Manager', ))
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
 
     def testPortletTypeRegistered(self):
         portlet = getUtility(IPortletType, name='portlets.Login')
@@ -72,10 +72,6 @@ class TestPortlet(PortletsTestCase):
 
 class TestRenderer(PortletsTestCase):
 
-    def afterSetUp(self):
-        setHooks()
-        setSite(self.portal)
-
     def renderer(self, context=None, request=None, view=None, manager=None, assignment=None):
         context = context or self.folder
         request = request or self.folder.REQUEST
@@ -89,7 +85,7 @@ class TestRenderer(PortletsTestCase):
         request = self.folder.REQUEST
         r = self.renderer()
         self.assertEqual(False, r.available)
-        self.logout()
+        logout()
         del request.__annotations__
         r = self.renderer()
         self.assertEqual(True, r.available)
@@ -104,7 +100,7 @@ class TestRenderer(PortletsTestCase):
         r = self.renderer()
         self.assertEqual(False, r.show())
 
-        self.logout()
+        logout()
 
         del request.__annotations__
         self.assertEqual(True, r.show())
@@ -124,7 +120,7 @@ class TestRenderer(PortletsTestCase):
 
         #Enable self-registration to ensure that the register link is shown
         self.portal.manage_permission('Add portal member', roles=['Anonymous'])
-        self.logout()
+        logout()
         self.assertTrue(r.can_register())
 
         #Hiding the Register action hides the register link

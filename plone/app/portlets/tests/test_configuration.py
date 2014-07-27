@@ -16,8 +16,6 @@ from Products.GenericSetup.interfaces import IBody
 from Products.GenericSetup.context import TarballExportContext
 from Products.GenericSetup.tests.common import DummyImportContext
 
-from Products.PloneTestCase.layer import PloneSite
-
 from plone.portlets.interfaces import ILocalPortletAssignmentManager
 from plone.portlets.interfaces import IPortletType
 from plone.portlets.interfaces import IPortletRenderer
@@ -105,52 +103,7 @@ class TestEditForm(base.EditForm):
 class ITestColumn(IColumn):
     pass
 
-zcml_string = """\
-<configure xmlns="http://namespaces.zope.org/zope"
-           xmlns:browser="http://namespaces.zope.org/browser"
-           xmlns:plone="http://namespaces.plone.org/plone"
-           xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
-           package="plone.app.portlets"
-           i18n_domain="test">
-
-    <plone:portlet
-        name="portlets.test.Test"
-        interface="plone.app.portlets.tests.test_configuration.ITestPortlet"
-        assignment="plone.app.portlets.tests.test_configuration.TestAssignment"
-        renderer="plone.app.portlets.tests.test_configuration.TestRenderer"
-        addview="plone.app.portlets.tests.test_configuration.TestAddForm"
-        editview="plone.app.portlets.tests.test_configuration.TestEditForm"
-        />
-
-    <genericsetup:registerProfile
-        name="testing"
-        title="plone.app.portlets testing"
-        description="Used for testing only"
-        directory="tests/profiles/testing"
-        for="Products.CMFCore.interfaces.ISiteRoot"
-        provides="Products.GenericSetup.interfaces.EXTENSION"
-        />
-
-</configure>
-"""
-
-
-class TestPortletZCMLLayer(PloneSite):
-
-    @classmethod
-    def setUp(cls):
-        metaconfigure.debug_mode = True
-        zcml.load_string(zcml_string)
-        metaconfigure.debug_mode = False
-
-    @classmethod
-    def tearDown(cls):
-        pass
-
-
 class TestZCML(PortletsTestCase):
-
-    layer = TestPortletZCMLLayer
 
     def testPortletTypeInterfaceRegistered(self):
         iface = getUtility(IPortletTypeInterface, name=u"portlets.test.Test")
@@ -187,12 +140,8 @@ class TestZCML(PortletsTestCase):
 
 class TestGenericSetup(PortletsTestCase):
 
-    layer = TestPortletZCMLLayer
-
     def afterSetUp(self):
         portal_setup = self.portal.portal_setup
-        # wait a bit or we get duplicate ids on import
-        time.sleep(0.2)
         portal_setup.runAllImportStepsFromProfile('profile-plone.app.portlets:testing')
 
     def testPortletManagerInstalled(self):

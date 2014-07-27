@@ -22,6 +22,9 @@ from plone.app.portlets.tests.base import PortletsTestCase
 from plone.app.layout.navigation.interfaces import INavigationRoot
 
 from Products.CMFPlone.tests import dummy
+from plone.app.testing import TEST_USER_ID
+from plone.app.testing import setRoles
+
 
 
 class TestPortlet(PortletsTestCase):
@@ -30,7 +33,7 @@ class TestPortlet(PortletsTestCase):
         sm = getSiteManager(self.portal)
         addUtility(sm, IIntIds, IntIds, ofs_name='intids', findroot=False)
 
-        self.setRoles(('Manager', ))
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
 
     def testPortletTypeRegistered(self):
         portlet = getUtility(IPortletType, name='portlets.Navigation')
@@ -89,7 +92,7 @@ class TestRenderer(PortletsTestCase):
 
     def renderer(self, context=None, request=None, view=None, manager=None, assignment=None):
         context = context or self.portal
-        request = request or self.app.REQUEST
+        request = request or self.request
         view = view or self.portal.restrictedTraverse('@@plone')
         manager = manager or getUtility(IPortletManager, name='plone.leftcolumn', context=self.portal)
         assignment = assignment or navigation.Assignment(topLevel=0)
@@ -97,7 +100,7 @@ class TestRenderer(PortletsTestCase):
         return getMultiAdapter((context, request, view, manager, assignment), IPortletRenderer)
 
     def populateSite(self):
-        self.setRoles(['Manager'])
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
         if 'Members' in self.portal:
             self.portal._delObject('Members')
             self.folder = None
@@ -107,12 +110,16 @@ class TestRenderer(PortletsTestCase):
             self.portal._delObject('events')
         if 'front-page' in self.portal:
             self.portal._delObject('front-page')
+        if 'folder' in self.portal:
+            self.portal._delObject('folder')
+        if 'users' in self.portal:
+            self.portal._delObject('users')
         self.portal.invokeFactory('Document', 'doc1')
         self.portal.invokeFactory('Document', 'doc2')
         self.portal.invokeFactory('Document', 'doc3')
         self.portal.invokeFactory('Folder', 'folder1')
         self.portal.invokeFactory('Link', 'link1')
-        self.portal.link1.setRemoteUrl('http://plone.org')
+        self.portal.link1.remoteUrl = 'http://plone.org'
         self.portal.link1.reindexObject()
         folder1 = getattr(self.portal, 'folder1')
         folder1.invokeFactory('Document', 'doc11')
@@ -124,7 +131,7 @@ class TestRenderer(PortletsTestCase):
         folder2.invokeFactory('Document', 'doc22')
         folder2.invokeFactory('Document', 'doc23')
         folder2.invokeFactory('File', 'file21')
-        self.setRoles(['Member'])
+        setRoles(self.portal, TEST_USER_ID, ['Member'])
 
     def testCreateNavTree(self):
         view = self.renderer(self.portal)
@@ -143,7 +150,7 @@ class TestRenderer(PortletsTestCase):
     def testNavTreeExcludesItemsWithExcludeProperty(self):
         # Make sure that items with the exclude_from_nav property set get
         # no_display set to True
-        self.portal.folder2.setExcludeFromNav(True)
+        self.portal.folder2.exclude_from_nav = True
         self.portal.folder2.reindexObject()
         view = self.renderer(self.portal.folder1.doc11)
         tree = view.getNavTree()
@@ -155,7 +162,7 @@ class TestRenderer(PortletsTestCase):
     def testShowAllParentsOverridesNavTreeExcludesItemsWithExcludeProperty(self):
         # Make sure that items whose ids are in the idsNotToList navTree
         # property are not included
-        self.portal.folder2.setExcludeFromNav(True)
+        self.portal.folder2.exclude_from_nav = True
         self.portal.folder2.reindexObject()
         ntp=self.portal.portal_properties.navtree_properties
         ntp.manage_changeProperties(showAllParents=True)
@@ -296,7 +303,7 @@ class TestRenderer(PortletsTestCase):
     def testMultipleTopLevelWithNavigationRoot(self):
         # See bug 9405
         # http://dev.plone.org/plone/ticket/9405
-        self.setRoles(['Manager'])
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
         self.portal.invokeFactory('Folder', 'abc')
         self.portal.invokeFactory('Folder', 'abcde')
         self.portal.abc.invokeFactory('Folder', 'down_abc')
@@ -406,7 +413,7 @@ class TestRenderer(PortletsTestCase):
     def testCustomQuery(self):
         # Try a custom query script for the navtree that returns only published
         # objects
-        self.setRoles(['Manager'])
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
         workflow = self.portal.portal_workflow
         factory = self.portal.manage_addProduct['PythonScripts']
         factory.manage_addPythonScript('getCustomNavQuery')
@@ -429,7 +436,7 @@ class TestRenderer(PortletsTestCase):
 
     def testStateFiltering(self):
         # Test Navtree workflow state filtering
-        self.setRoles(['Manager'])
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
         workflow = self.portal.portal_workflow
         ntp=self.portal.portal_properties.navtree_properties
         ntp.manage_changeProperties(wf_states_to_show=['published'])
@@ -472,10 +479,10 @@ class TestRenderer(PortletsTestCase):
         self.assertEqual(tree['children'][0]['item'].getPath(), '/plone/folder1/doc11')
 
     def testIsCurrentParentWithOverlapingNames(self):
-        self.setRoles(['Manager', ])
+        setRoles(self.portal, TEST_USER_ID, ['Manager', ])
         self.portal.invokeFactory('Folder', 'folder2x')
         self.portal.folder2x.invokeFactory('Document', 'doc2x1')
-        self.setRoles(['Member', ])
+        setRoles(self.portal, TEST_USER_ID, ['Member', ])
         view = self.renderer(self.portal.folder2x.doc2x1)
         tree = view.getNavTree()
         self.assertTrue(tree)

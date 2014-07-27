@@ -1,6 +1,5 @@
 from StringIO import StringIO
 
-from zope.site.hooks import setSite, setHooks
 from zope.component import getSiteManager
 from zope.component import getUtility
 from zope.component import queryUtility
@@ -26,8 +25,6 @@ from plone.app.portlets.tests.utils import FooPortletManager
 class PortletsExportImportTestCase(PortletsTestCase):
 
     def afterSetUp(self):
-        setHooks()
-        setSite(self.portal)
         self.sm = getSiteManager(self.portal)
         self.importer = self.exporter = PortletsXMLAdapter(self.sm,
           DummySetupEnviron())

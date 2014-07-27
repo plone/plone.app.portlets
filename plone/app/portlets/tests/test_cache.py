@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
-
-from zope.site.hooks import setSite, setHooks
-
 from plone.app.portlets.tests.base import PortletsTestCase
 from plone.app.portlets.cache import render_cachekey
+from plone.app.testing import logout
 
 
 class MockBrain(object):
@@ -37,10 +35,6 @@ class MockRenderer(object):
 
 class TestCacheKey(PortletsTestCase):
 
-    def afterSetUp(self):
-        setHooks()
-        setSite(self.portal)
-
     def testRenderCachekey(self):
         context = self.folder
         renderer = MockRenderer(context, context.REQUEST)
@@ -56,7 +50,7 @@ class TestCacheKey(PortletsTestCase):
         renderer = MockRenderer(context, context.REQUEST)
 
         key1 = render_cachekey(None, renderer)
-        self.logout()
+        logout()
         key2 = render_cachekey(None, renderer)
 
         self.assertNotEqual(key1, key2)

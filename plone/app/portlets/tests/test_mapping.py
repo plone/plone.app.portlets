@@ -1,8 +1,6 @@
 from Acquisition import aq_base
 
 from zope.component import getUtility, getMultiAdapter
-from zope.site.hooks import setSite, setHooks
-
 from zope.publisher.interfaces.browser import IBrowserPublisher
 from zope.publisher.interfaces import NotFound
 from zope.container.interfaces import INameChooser
@@ -33,8 +31,6 @@ class TestNameChooser(PortletsTestCase):
 class TestContextMapping(PortletsTestCase):
 
     def afterSetUp(self):
-        setHooks()
-        setSite(self.portal)
         self.manager = getUtility(IPortletManager, name=u'plone.leftcolumn')
 
     def testAdapting(self):
