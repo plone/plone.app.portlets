@@ -55,7 +55,7 @@
             Portal status message
         </div>
 
-        <div id="content">
+        <article id="content">
 
             <h1 class="documentFirstHeading" i18n:translate="title_edit_dashboard_group">
                 Edit Dashboard Portlets for <span i18n:name="group" tal:content="view/group" />
@@ -83,7 +83,7 @@
                 <div class="visualClear"><!-- --></div>
             </div>
 
-        </div>
+        </article>
 
     </tal:main-macro>
 
