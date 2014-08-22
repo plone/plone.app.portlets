@@ -19,7 +19,7 @@ Changelog
 - Transfered pbauer's fix of #32 'removing group-portlets' of 2.4.x-branch to
   master. Also Tansfered changelogs of version 2.4.4 to 2.4.8.
   [ida27]
-  
+
 
 3.0 (2014-04-05)
 ----------------
@@ -102,49 +102,49 @@ Changelog
 2.4.8 (2014-01-27)
 ------------------
 
-- Fixed navigation portlet when navigation root was None. 
+- Fixed navigation portlet when navigation root was None.
   [thomasdesvenain]
 
 
 2.4.7 (2013-12-07)
 ------------------
 
-- Fix navigation root of portlets when root field is unicode. This is the case when portlet is imported with generic setup. 
+- Fix navigation root of portlets when root field is unicode. This is the case when portlet is imported with generic setup.
   [thomasdesvenain]
 
-- Don't show the New user? link in the Login portlet if there isn't a register URL available from portal_actions. 
+- Don't show the New user? link in the Login portlet if there isn't a register URL available from portal_actions.
   [davidjb]
 
 
 2.4.6 (2013-09-14)
 ------------------
 
-- Use relative links for calender next and prev buttons since caching can cause these things to change the current page the user is viewing 
+- Use relative links for calender next and prev buttons since caching can cause these things to change the current page the user is viewing
   [vangheem]
-- Fix the removing of Group- and Typeportlets https://dev.plone.org/ticket/13659 
+- Fix the removing of Group- and Typeportlets https://dev.plone.org/ticket/13659
   [pbauer]
 
 
 2.4.5 (2013-08-13)
 ------------------
 
-- Acquisition-wrap portlet assignments retrieved from storage. 
+- Acquisition-wrap portlet assignments retrieved from storage.
   [davisagli]
 
-- Fixed calendar portlet from "Event" to portal_calendar types 
+- Fixed calendar portlet from "Event" to portal_calendar types
   [dr460neye]
 
-- Fixed events.py to all portal_calendar types. 
+- Fixed events.py to all portal_calendar types.
   [dr460neye]
 
-- Fixed event portlet. Static Type removed and changed to portal_calendar type. 
+- Fixed event portlet. Static Type removed and changed to portal_calendar type.
   [dr460neye]
 
 
 2.4.4 (2013-05-23)
 ------------------
 
-- Don't require a macro for classic portlets - rendering a browser view doesn't need one. 
+- Don't require a macro for classic portlets - rendering a browser view doesn't need one.
   [danjacka]
 
 
