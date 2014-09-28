@@ -25,7 +25,7 @@ setup(name='plone.app.portlets',
       zip_safe=False,
       install_requires=[
         'setuptools',
-        'plone.portlets >=1.1dev',
+        'plone.portlets >=1.2.1.dev0, <2',  # not released yet.
         'feedparser',
         'five.customerize',
         'plone.app.layout >= 1.2dev',
