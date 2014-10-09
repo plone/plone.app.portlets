@@ -4,43 +4,41 @@
       tal:omit-tag=""
       i18n:domain="plone">
 
-<section class="portlet portletActions"
+<section class="portlet portletActions" role="section"
     tal:define="portal_url context/@@plone_portal_state/portal_url;">
 
   <header class="portletHeader" tal:condition="view/showTitle">
-        <span class="portletTopLeft"></span>
         <span tal:condition="view/title" tal:content="view/title">
           Title
         </span>
-        <span class="portletTopRight"></span>
   </header>
+  <section class="portletContent">
+    <ul>
+      <tal:loop tal:repeat="link view/actionLinks">
+        <li class="portletItem"
+            tal:define="icon nocall:link/icon">
+          <a href="#"
+             tal:define="modal link/modal|nothing"
+             tal:attributes="href link/url;
+                             class python:'pat-modal' if modal else None;
+                             data-pat-modal python:modal if modal else None;">
 
-  <ul class="portletContent">
-    <tal:loop tal:repeat="link view/actionLinks">
-      <li class="portletItem"
-          tal:define="icon nocall:link/icon">
-        <a href="#"
-           tal:define="modal link/modal|nothing"
-           tal:attributes="href link/url;
-                           class python:'pat-modal' if modal else None;
-                           data-pat-modal python:modal if modal else None;">
+            <span tal:condition="not:icon"
+                  tal:content="link/title">
+              Action
+            </span>
 
-          <span tal:condition="not:icon"
-                tal:content="link/title">
-            Action
-          </span>
+            <span tal:condition="icon"
+                  tal:content="link/title"
+                  tal:define="icon_url icon/absolute_url|icon"
+                  tal:attributes="style string:background-image:url($icon_url);;">
+              Action
+            </span>
 
-          <span tal:condition="icon"
-                tal:content="link/title"
-                tal:define="icon_url icon/absolute_url|icon"
-                tal:attributes="style string:background-image:url($icon_url);;">
-            Action
-          </span>
-
-        </a>
-      </li>
-    </tal:loop>
-  </ul>
-
+          </a>
+        </li>
+      </tal:loop>
+    </ul>
+  </section>
 </section>
 </html>

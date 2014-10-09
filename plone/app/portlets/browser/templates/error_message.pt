@@ -6,20 +6,12 @@
     i18n:domain="plone">
 
     <header class="portletHeader">
-        <span class="portletTopLeft"></span>
         <a href="#"
            class="tile"
            i18n:translate="box_error">Error</a>
-        <span class="portletTopRight"></span>
     </header>
-
-    <section class="portletContent" i18n:translate="text_error_rendering_portlet">
-        There was an error while rendering the portlet.
+    <section class="portletContent">
+        <p i18n:translate="text_error_rendering_portlet">There was an error while rendering the portlet.</p>
     </section>
-
-    <footer class="portletFooter">
-        <span class="portletBottomLeft"></span>
-        <span class="portletBottomRight"></span>
-    </footer>
 </section>
 </html>

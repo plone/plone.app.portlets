@@ -2,44 +2,43 @@
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       tal:omit-tag="">
-<section class="portlet portletRss"
+<section class="portlet portletRss" role="section"
     i18n:domain="plone"
     tal:condition="view/enabled">
 
-    <header class="portletHeader">
-        <span class="portletTopLeft"></span>
-        <a href=""
+  <header class="portletHeader">
+    <a href=""
            tal:attributes="href view/siteurl"
            tal:omit-tag="not:view/siteurl"
            tal:content="view/title"
            class="tile">
-            Tags
-        </a>
-        <span class="portletTopRight"></span>
-    </header>
+      Tags
+    </a>
+  </header>
+  <section class="portletContent" >
+    <ul tal:condition="view/feedAvailable">
+      <tal:rss
+                  tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime"
+                  tal:repeat="item view/items">
+          <li class="portletItem oddrow"
+              tal:define="oddrow repeat/item/odd"
+              tal:attributes="class python:oddrow and 'portletItem even' or 'portletItem odd'">
 
-  <ul class="portletContent" tal:condition="view/feedAvailable">
-    <tal:rss
-                tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime"
-                tal:repeat="item view/items">
-        <li class="portletItem oddrow"
-            tal:define="oddrow repeat/item/odd"
-            tal:attributes="class python:oddrow and 'portletItem even' or 'portletItem odd'">
-
-            <a href="#"
-                tal:attributes="href string:${item/url}"
-                class="tile">
-                <span tal:replace="item/title">
-                    Title
-                </span>
-                <span class="portletItemDetails"
-                      tal:condition="exists:item/updated">
-                      <span tal:omit-tag="" tal:content="python:toLocalizedTime(item['updated'])">19.02.2007</span>
-                </span>
-            </a>
-        </li>
-    </tal:rss>
-  </ul>
+              <a href="#"
+                  tal:attributes="href string:${item/url}"
+                  class="tile">
+                  <span tal:replace="item/title">
+                      Title
+                  </span>
+              </a>
+              <time class="portletItemDetails"
+                        tal:condition="exists:item/updated">
+                <span tal:omit-tag="" tal:content="python:toLocalizedTime(item['updated'])">19.02.2007</span>
+              </time>
+          </li>
+      </tal:rss>
+    </ul>
+  </section>
   <footer class="portletFooter" tal:condition="view/feedAvailable">
         <a href=""
            tal:condition="view/siteurl"
@@ -47,8 +46,6 @@
            <span class="hiddenStructure"><span tal:replace="view/title" /> - </span>
            <span i18n:translate="box_morelink">More&hellip;</span>
         </a>
-        <span class="portletBottomLeft"></span>
-        <span class="portletBottomRight"></span>
   </footer>
 </section>
 </html>
