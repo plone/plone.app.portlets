@@ -12,6 +12,13 @@ Changelog
   method in utils module to use correct Assignment classes.
   [thet]
 
+- Integration of the new markup update and CSS for both Plone and Barceloneta
+  theme. This is the work done in the GSOC Barceloneta theme project.
+  [albertcasado, sneridagh]
+
+- Update <div id="content"> in all templates with <article id="content">
+  [albertcasado]
+
 
 3.0.1 (2014-04-16)
 ------------------
