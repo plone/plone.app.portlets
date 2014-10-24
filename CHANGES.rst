@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.0.2 (unreleased)
+3.0.2 (2014-10-23)
 ------------------
 
 - Abstract the search form and livesearch action URLs making it easier to
