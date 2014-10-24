@@ -68,9 +68,6 @@ class RSSFeed(object):
     """an RSS feed"""
     implements(IFeed)
 
-    # TODO: discuss whether we want an increasing update time here, probably not though
-    FAILURE_DELAY = 10  # time in minutes after which we retry to load it after a failure
-
     def __init__(self, url, timeout):
         self.url = url
         self.timeout = timeout
@@ -82,6 +79,8 @@ class RSSFeed(object):
         self._failed = False    # does it fail at the last update?
         self._last_update_time_in_minutes = 0  # when was the feed last updated?
         self._last_update_time = None  # time as DateTime or Nonw
+        self._etag = None
+        self._last_modified = None
 
     @property
     def last_update_time_in_minutes(self):
@@ -119,7 +118,7 @@ class RSSFeed(object):
         try:
             # check for failure and retry
             if self.update_failed:
-                if (self.last_update_time_in_minutes + self.FAILURE_DELAY) < now:
+                if (self.last_update_time_in_minutes) < now:
                     return self._retrieveFeed()
                 else:
                     return False
@@ -156,7 +155,12 @@ class RSSFeed(object):
         if url != '':
             self._last_update_time_in_minutes = time.time() / 60
             self._last_update_time = DateTime()
-            d = feedparser.parse(url)
+            kwargs = {}
+            if self._last_modified:
+                kwargs['modified'] = self._last_modified
+            if self._etag:
+                kwargs['etag'] = self._etag
+            d = feedparser.parse(url, **kwargs)
             if (getattr(d, 'bozo', 0) == 1
                     and not isinstance(d.get('bozo_exception'),
                                        ACCEPTED_FEEDPARSER_EXCEPTIONS)):
@@ -165,22 +169,31 @@ class RSSFeed(object):
                 logger.info('failed to update RSS feed %s', 
                             d.get('bozo_exception', None))
                 return False
-            try:
-                self._title = d.feed.title
-            except AttributeError:
-                self._title = ""
-            self._items = []
-            try:
-                self._siteurl = d.feed.link
-            except AttributeError:
-                self._siteurl = ""
-            for item in d['items']:
-                try:
-                    itemdict = self._buildItemDict(item)
-                except AttributeError:
-                    continue
+            
+            #  If the response was 304, nothing changed!
+            #  Don't change anything...
+            if d.status != 304:
+                self._etag = getattr(d, 'etag', None)
+                self._modified = getattr(d, 'modified', None)
 
-                self._items.append(itemdict)
+                try:
+                    self._title = d.feed.title
+                except AttributeError:
+                    self._title = ""
+                try:
+                    self._siteurl = d.feed.link
+                except AttributeError:
+                    self._siteurl = ""
+            
+                self._items = []
+                for item in d['items']:
+                    try:
+                        itemdict = self._buildItemDict(item)
+                    except AttributeError:
+                        continue
+  
+                    self._items.append(itemdict)
+
             self._loaded = True
             self._failed = False
             return True

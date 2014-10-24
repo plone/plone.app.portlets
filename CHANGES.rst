@@ -4,6 +4,19 @@ Changelog
 3.1.2 (unreleased)
 ------------------
 
+- Log exceptions while parsing rss feeds. Get logged as info since
+  this often caused by factor out of control of site owners and
+  because the problem is handled in the UI
+  [do3cc]
+
+- Remove hard coded 10 minute delay if retrieving a feed failed once.
+  Either you don't need your feeds ultra fast, then you can create
+  a longer time, or you need them fast and don't want this hidden delayq
+  [do3cc]
+
+- Add caching functionality from feedparser.
+  [do3cc]
+
 - Use ``is_default_page`` instead of ``check_default_page_via_view``. 
   [fulv]
 
@@ -70,7 +83,7 @@ Changelog
 
 
 3.0.6 (2015-06-05)
-------------------
+-----------------
 
 - Convert manage-portlets.js into a pattern and make improvements on
   using the manage portlets infrastructure
@@ -111,11 +124,7 @@ Changelog
   [thet]
 
 - Use plone_layout for getIcon.
-- Log exceptions while parsing rss feeds. Get logged as info since
-  this often caused by factor out of control of site owners and
-  because the problem is handled in the UI
-  [do3cc]
-
+  [pbauer]
 
 3.0.2 (2014-10-23)
 ------------------
