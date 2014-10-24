@@ -111,7 +111,10 @@ Changelog
   [thet]
 
 - Use plone_layout for getIcon.
-  [pbauer]
+- Log exceptions while parsing rss feeds. Get logged as info since
+  this often caused by factor out of control of site owners and
+  because the problem is handled in the UI
+  [do3cc]
 
 
 3.0.2 (2014-10-23)

@@ -162,6 +162,8 @@ class RSSFeed(object):
                                        ACCEPTED_FEEDPARSER_EXCEPTIONS)):
                 self._loaded = True  # we tried at least but have a failed load
                 self._failed = True
+                logger.info('failed to update RSS feed %s', 
+                            d.get('bozo_exception', None))
                 return False
             try:
                 self._title = d.feed.title
