@@ -15,7 +15,7 @@ class IActionsPortlet(IPortletDataProvider):
 
     ptitle = schema.TextLine(
         title=_(u'label_title',
-                default=u"Portlet Title"),
+                default=u"Title"),
         description=_(u'help_title',
                       default=u"Displayed title of this portlet"),
         default=u"",
