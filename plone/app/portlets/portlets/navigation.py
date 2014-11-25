@@ -93,6 +93,16 @@ class INavigationPortlet(IPortletDataProvider):
             default=0,
             required=False)
 
+    showExcludedFromNav = schema.Bool(
+            title=_(u"label_show_excluded_from_nav",
+                    default=u"Show nodes excluded from navigation."),
+            description=_(u"help_excluded_from_nav",
+                          default=u"If selected, the navigation tree will "
+                                   "also show nodes excluded "
+                                   "from navigation."),
+            default=False,
+            required=False)
+
 
 class Assignment(base.Assignment):
     implements(INavigationPortlet)
@@ -103,14 +113,16 @@ class Assignment(base.Assignment):
     includeTop = False
     topLevel = 1
     bottomLevel = 0
+    showExcludedFromNav = False
 
-    def __init__(self, name="", root=None, currentFolderOnly=False, includeTop=False, topLevel=1, bottomLevel=0):
+    def __init__(self, name="", root=None, currentFolderOnly=False, includeTop=False, topLevel=1, bottomLevel=0, showExcludedFromNav=False):
         self.name = name
         self.root = root
         self.currentFolderOnly = currentFolderOnly
         self.includeTop = includeTop
         self.topLevel = topLevel
         self.bottomLevel = bottomLevel
+        self.showExcludedFromNav = showExcludedFromNav
 
     @property
     def title(self):
@@ -285,7 +297,8 @@ class AddForm(base.AddForm):
                           currentFolderOnly=data.get('currentFolderOnly', False),
                           includeTop=data.get('includeTop', False),
                           topLevel=data.get('topLevel', 0),
-                          bottomLevel=data.get('bottomLevel', 0))
+                          bottomLevel=data.get('bottomLevel', 0),
+                          showExcludedFromNav=data.get('showExcludedFromNav', False))
 
 
 class EditForm(base.EditForm):
@@ -378,6 +391,7 @@ class NavtreeStrategy(SitemapNavtreeStrategy):
 
         topLevel = portlet.topLevel or navtree_properties.getProperty('topLevel', 0)
         self.rootPath = getRootPath(context, currentFolderOnly, topLevel, portlet.root)
+        self.showExcludedFromNav = portlet.showExcludedFromNav
 
     def subtreeFilter(self, node):
         sitemapDecision = SitemapNavtreeStrategy.subtreeFilter(self, node)
@@ -389,6 +403,16 @@ class NavtreeStrategy(SitemapNavtreeStrategy):
         else:
             return True
 
+    def nodeFilter(self, node):
+        item = node['item']
+        if getattr(item, 'getId', None) in self.excludedIds:
+            return False
+        elif self.showExcludedFromNav:
+            return True
+        elif getattr(item, 'exclude_from_nav', False):
+            return False
+        else:
+            return True
 
 def getRootPath(context, currentFolderOnly, topLevel, root):
     """Helper function to calculate the real root path
