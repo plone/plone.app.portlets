@@ -14,8 +14,8 @@
     <section class="portletContent"
         tal:condition="view/recent_items">
       <ul>
-        <tal:items tal:define="plone_view context/@@plone;
-                           getIcon nocall:plone_view/getIcon;
+        <tal:items tal:define="plone_layout context/@@plone_layout;
+                           getIcon nocall:plone_layout/getIcon;
                            normalizeString nocall:plone_view/normalizeString;
                            toLocalizedTime nocall:plone_view/toLocalizedTime;"
                tal:repeat="obj view/recent_items">
@@ -35,7 +35,7 @@
                  <tal:title content="obj/pretty_title_or_id">
                      Title
                  </tal:title>
-                 
+
              </a>
              <time class="portletItemDetails"
                        tal:content="python:toLocalizedTime(obj.ModificationDate)"

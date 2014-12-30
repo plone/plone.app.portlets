@@ -4,7 +4,8 @@ Changelog
 3.0.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Use plone_layout for getIcon.
+  [pbauer]
 
 
 3.0.2 (2014-10-23)

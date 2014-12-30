@@ -16,8 +16,8 @@
   <section class="portletContent">
     <ul>
       <tal:newsitems  tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime;
-                                  plone_view context/@@plone;
-                                  getIcon nocall:plone_view/getIcon;"
+                                  plone_layout context/@@plone_layout;
+                                  getIcon nocall:plone_layout/getIcon;"
                       tal:repeat="obj view/published_news_items">
       <li tal:define="oddrow repeat/obj/odd;
                       item_icon python:getIcon(obj);"

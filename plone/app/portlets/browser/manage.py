@@ -281,8 +281,9 @@ class ManageContentTypePortlets(BrowserView):
         return self.fti().Title()
 
     def portal_type_icon(self):
-        ploneview = getMultiAdapter((self.context, self.request), name=u"plone")
-        return ploneview.getIcon(self.fti())
+        plone_layout = getMultiAdapter((self.context, self.request),
+            name=u"plone_layout")
+        return plone_layout.getIcon(self.fti())
 
     @memoize
     def fti(self):

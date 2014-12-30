@@ -60,8 +60,9 @@ class Renderer(base.Renderer):
         workflow = getToolByName(context, 'portal_workflow')
 
         plone_view = getMultiAdapter((context, self.request), name='plone')
+        plone_layout = getMultiAdapter((context, self.request), name='plone_layout')
         getMember = getToolByName(context, 'portal_membership').getMemberById
-        getIcon = plone_view.getIcon
+        getIcon = plone_layout.getIcon
         toLocalizedTime = plone_view.toLocalizedTime
 
         idnormalizer = queryUtility(IIDNormalizer)
