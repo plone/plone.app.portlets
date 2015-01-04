@@ -20,69 +20,40 @@
 
 <body>
 
-<tal:comment replace="nothing">
-    Please note that this template fills the "content" slot instead of the
-    "main" slot, this is done so we can provide stuff like the content
-    tabs. This also means that we have to supply things that are normally
-    present from main_template.
-</tal:comment>
+<metal:b fill-slot="content-title">
+  <h1 class="documentFirstHeading" i18n:translate="title_edit_dashboard">
+      Edit your dashboard
+  </h1>
+</metal:b>
 
-<metal:main fill-slot="content"
-    tal:define="errors options/state/getErrors | nothing">
+<metal:b fill-slot="content-core">
 
-    <tal:main-macro metal:define-macro="main">
+  <tal:main-macro metal:define-macro="main">
 
-            <div id="edit-bar">
-                <h5 class="hiddenStructure"
-                     i18n:translate="heading_content_views">Content views</h5>
+    <div class="autotabs">
+      <nav class="autotoc-nav">
+        <a href="${context/@@plone_portal_state/navigation_root_url}/dashboard"
+           i18n:translate="label_dashboard">Dashboard</a>
+        <a class="active"
+           href="${context/@@plone_portal_state/navigation_root_url}/@@manage-dashboard?_authenticator=${view/auth_token}"
+           i18n:translate="label_edit">Edit</a>
+      </nav>
 
-                <ul id="content-views"
-                    class="contentViews">
-                  <li>
-                    <a href=""
-                       tal:attributes="href string:${context/@@plone_portal_state/navigation_root_url}/dashboard"
-                       i18n:translate="label_dashboard">Dashboard</a>
-                  </li>
-                  <li class="selected">
-                    <a href=""
-                       tal:attributes="href string:${context/@@plone_portal_state/navigation_root_url}/@@manage-dashboard?_authenticator=${view/auth_token}"
-                       i18n:translate="label_edit">Edit</a>
-                  </li>
-                </ul>
+      <div id="dashboard">
+          <div id="dashboard-portlets1"
+            tal:content="structure provider:plone.dashboard1" />
+          <div id="dashboard-portlets2"
+            tal:content="structure provider:plone.dashboard2" />
+          <div id="dashboard-portlets3"
+            tal:content="structure provider:plone.dashboard3" />
+          <div id="dashboard-portlets4"
+            tal:content="structure provider:plone.dashboard4" />
+      </div>
+      <div class="visualClear"><!-- --></div>
+    </div>
 
-                <div class="contentActions">
-                  &nbsp;
-                </div>
-            </div>
-
-            <div metal:use-macro="context/global_statusmessage/macros/portal_message">
-                Portal status message
-            </div>
-
-            <article id="content">
-
-                <h1 class="documentFirstHeading" i18n:translate="title_edit_dashboard">
-                    Edit your dashboard
-                </h1>
-
-                <div id="content-core">
-                    <div id="dashboard">
-                        <div id="dashboard-portlets1"
-                          tal:content="structure provider:plone.dashboard1" />
-                        <div id="dashboard-portlets2"
-                          tal:content="structure provider:plone.dashboard2" />
-                        <div id="dashboard-portlets3"
-                          tal:content="structure provider:plone.dashboard3" />
-                        <div id="dashboard-portlets4"
-                          tal:content="structure provider:plone.dashboard4" />
-                    </div>
-                    <div class="visualClear"><!-- --></div>
-                </div>
-
-            </article>
-    </tal:main-macro>
-
-</metal:main>
+  </tal:main-macro>
+</metal:b>
 
 </body>
 </html>
