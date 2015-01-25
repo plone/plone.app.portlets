@@ -4,6 +4,10 @@ Changelog
 3.0.3 (unreleased)
 ------------------
 
+- Read ``use_email_as_login`` setting from the registry instead of portal
+  properties (see https://github.com/plone/Products.CMFPlone/issues/216).
+  [jcerjak]
+
 - Use plone_layout for getIcon.
   [pbauer]
 
