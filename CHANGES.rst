@@ -4,6 +4,9 @@ Changelog
 3.0.3 (unreleased)
 ------------------
 
+- Fix missing definitions of ``plone_view``. Fixes the recent portlet.
+  [thet]
+
 - Use plone_layout for getIcon.
   [pbauer]
 
