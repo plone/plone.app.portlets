@@ -4,7 +4,8 @@ Changelog
 2.5.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Change the logic for retrieving and storing values of portlets in the assignment exportimport handler to allow for non-trivial data structures.
+  [MatthewWilkes]
 
 
 2.5.2 (2014-09-07)

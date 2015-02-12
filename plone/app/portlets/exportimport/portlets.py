@@ -45,7 +45,9 @@ from zope.component.interfaces import IFactory
 from zope.component.interfaces import IComponentRegistry
 
 from zope.schema.interfaces import IField
+from zope.schema.interfaces import IChoice
 from zope.schema.interfaces import ICollection
+from zope.schema.interfaces import IObject
 from zope.schema.interfaces import IFromUnicode
 
 from zope.container.interfaces import INameChooser
@@ -140,8 +142,22 @@ class PropertyPortletAssignmentExportImportHandler(object):
             return
 
         field = field.bind(self.assignment)
-        value = None
 
+        value = self.import_node_for_field(field, child)
+        
+        if field.getName() == 'root' and value in ['', '/']:
+            # these valid values don't pass validation of SearchableTextSourceBinder
+            field.set(self.assignment, value)
+        else:
+            try:
+                field.validate(value)
+            except:
+                import pdb; pdb.set_trace( )
+            field.set(self.assignment, value)
+
+    def import_node_for_field(self, field, child):
+        value = None
+        
         # If we have a collection, we need to look at the value_type.
         # We look for <element>value</element> child nodes and get the
         # value from there
@@ -151,22 +167,28 @@ class PropertyPortletAssignmentExportImportHandler(object):
             for element in child.childNodes:
                 if element.nodeName != 'element':
                     continue
-                element_value = self.extract_text(element)
-                value.append(self.from_unicode(value_type, element_value))
-            value = self.field_typecast(field, value)
-
-        # Otherwise, just get the value of the <property /> node
+                value.append(self.import_node_for_field(value_type, element))
+        elif IObject.providedBy(field):
+            value = {}
+            for element in child.childNodes:
+                if element.nodeName != 'property':
+                    continue
+                property_key = self.extract_text(element.attributes['name'])
+                property_value = self.import_node_for_field(field.schema[property_key], element)
+                value[property_key] = property_value
+        elif IChoice.providedBy(field):
+            # Choice fields can be optional, so treat an empty contents as None
+            value = self.extract_text(child)
+            if not value:
+                value = None
+            else:
+                value = self.from_unicode(field, value)
         else:
+            # Otherwise, just get the value of the <property /> node
             value = self.extract_text(child)
             if not (field.getName() == 'root' and value in ['', '/']):
                 value = self.from_unicode(field, value)
-
-        if field.getName() == 'root' and value in ['', '/']:
-            # these valid values don't pass validation of SearchableTextSourceBinder
-            field.set(self.assignment, value)
-        else:
-            field.validate(value)
-            field.set(self.assignment, value)
+        return value
 
     def export_field(self, doc, field):
         """Turn a zope.schema field into a node and return it
@@ -178,15 +200,30 @@ class PropertyPortletAssignmentExportImportHandler(object):
         child.setAttribute('name', field.__name__)
 
         if value is not None:
+            self.export_sub_field(doc, child, field, value)
+
+        return child
+    
+    def export_sub_field(self, doc, parent, field, value):
+        """Turn a zope.schema field into a node and return it
+        """
+        if value is not None:
             if ICollection.providedBy(field):
                 for e in value:
                     list_element = doc.createElement('element')
-                    list_element.appendChild(doc.createTextNode(str(e)))
-                    child.appendChild(list_element)
+                    self.export_sub_field(doc, list_element, field.value_type, e)
+                    parent.appendChild(list_element)
+            elif IObject.providedBy(field):
+                for name, sub_field in field.schema.namesAndDescriptions():
+                    sub_value = value.get(name)
+                    list_element = doc.createElement('property')
+                    list_element.setAttribute('name', name)
+                    self.export_sub_field(doc, list_element, sub_field, sub_value)
+                    parent.appendChild(list_element)
             else:
-                child.appendChild(doc.createTextNode(unicode(value)))
+                parent.appendChild(doc.createTextNode(unicode(value)))
 
-        return child
+        return parent
 
     def extract_text(self, node):
         node.normalize()
