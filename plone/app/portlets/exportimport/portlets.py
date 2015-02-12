@@ -149,10 +149,7 @@ class PropertyPortletAssignmentExportImportHandler(object):
             # these valid values don't pass validation of SearchableTextSourceBinder
             field.set(self.assignment, value)
         else:
-            try:
-                field.validate(value)
-            except:
-                import pdb; pdb.set_trace( )
+            field.validate(value)
             field.set(self.assignment, value)
 
     def import_node_for_field(self, field, child):
@@ -188,6 +185,7 @@ class PropertyPortletAssignmentExportImportHandler(object):
             value = self.extract_text(child)
             if not (field.getName() == 'root' and value in ['', '/']):
                 value = self.from_unicode(field, value)
+        value = self.field_typecast(field, value)
         return value
 
     def export_field(self, doc, field):
