@@ -30,7 +30,7 @@
             </div>
 
             <div class="field"
-                 tal:define="use_email_as_login context/portal_properties/site_properties/use_email_as_login|nothing;">
+                 tal:define="use_email_as_login python:context.portal_registry['plone.use_email_as_login'];">
 
               <tal:loginname condition="not:use_email_as_login">
                 <label for=""
