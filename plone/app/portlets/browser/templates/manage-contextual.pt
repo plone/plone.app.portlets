@@ -13,7 +13,7 @@
 </head>
 
 <body>
-<metal:main fill-slot="main" tal:define="ploneview context/@@plone">
+<metal:main fill-slot="main" tal:define="plone_view context/@@plone">
 
   <h1 class="documentFirstHeading"
       i18n:translate="title_manage_contextual_portlets">
@@ -40,7 +40,7 @@
     </tal:block>
 
       <div class="portalMessage info"
-          tal:condition="ploneview/isDefaultPageInFolder|nothing">
+          tal:condition="plone_view/isDefaultPageInFolder|nothing">
         <strong i18n:translate="">
             Info
         </strong>

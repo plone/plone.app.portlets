@@ -8,6 +8,9 @@ Changelog
   properties (see https://github.com/plone/Products.CMFPlone/issues/216).
   [jcerjak]
 
+- Fix missing definitions of ``plone_view``. Fixes the recent portlet.
+  [thet]
+
 - Use plone_layout for getIcon.
   [pbauer]
 

@@ -15,6 +15,7 @@
         tal:condition="view/recent_items">
       <ul>
         <tal:items tal:define="plone_layout context/@@plone_layout;
+                           plone_view context/@@plone;
                            getIcon nocall:plone_layout/getIcon;
                            normalizeString nocall:plone_view/normalizeString;
                            toLocalizedTime nocall:plone_view/toLocalizedTime;"
