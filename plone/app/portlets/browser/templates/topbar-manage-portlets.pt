@@ -18,7 +18,7 @@
         <a href=""
             i18n:name="go_here"
             i18n:translate="label_manage_portlets_default_view_container_go_here"
-            tal:attributes="href string:${context/aq_inner/aq_parent/absolute_url}/@@manage-portlets">go here</a>.
+            tal:attributes="href string:${context/aq_inner/aq_parent/absolute_url}/@@topbar-manage-portlets/${view/manager_name}">go here</a>.
       </div>
     </div>
 
