@@ -14,7 +14,7 @@
            i18n:translate=""
            tal:content="view/title" />
   </header>
-  </section class="portletContent">
+  <section class="portletContent">
     <ul>
       <tal:items tal:repeat="o view/review_items">
           <li class="portletItem"

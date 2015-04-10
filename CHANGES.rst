@@ -4,6 +4,9 @@ Changelog
 3.0.4 (unreleased)
 ------------------
 
+- Fix html markup in review portlet.
+  [vincentfretin]
+
 - Fix the link from `@@topbar-manage-portlets` to container's portlets.
   This fixes https://github.com/plone/Products.CMFPlone/issues/423
   [davisagli]
