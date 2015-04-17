@@ -20,8 +20,8 @@
           <a href="#"
              tal:define="modal link/modal|nothing"
              tal:attributes="href link/url;
-                             class python:'pat-modal' if modal else None;
-                             data-pat-modal python:modal if modal else None;">
+                             class python:'pat-plone-modal' if modal else None;
+                             data-pat-plone-modal python:modal if modal else None;">
 
             <span tal:condition="not:icon"
                   tal:content="link/title">
