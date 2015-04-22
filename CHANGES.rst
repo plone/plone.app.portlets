@@ -11,6 +11,9 @@ Changelog
   This fixes https://github.com/plone/Products.CMFPlone/issues/423
   [davisagli]
 
+- pat-modal pattern has been renamed to pat-plone-modal
+  [jcbrand]
+
 
 3.0.3 (2015-03-13)
 ------------------
