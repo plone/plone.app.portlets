@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.0.4 (unreleased)
+3.0.4 (2015-05-04)
 ------------------
 
 - Fix html markup in review portlet.
