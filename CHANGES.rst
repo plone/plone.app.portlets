@@ -1,6 +1,12 @@
 Changelog
 =========
 
+y (unreleased)
+--------------
+
+- Nothing changed yet.
+
+
 3.0.4 (2015-05-04)
 ------------------
 
