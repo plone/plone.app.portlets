@@ -4,8 +4,9 @@ Changelog
 3.0.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Supress a ZopeTestCase warning.
+  This fixes https://github.com/plone/Products.CMFPlone/issues/501
+  [gforcada]
 
 3.0.4 (2015-05-04)
 ------------------
