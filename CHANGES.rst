@@ -1,8 +1,8 @@
 Changelog
 =========
 
-y (unreleased)
---------------
+3.0.5 (unreleased)
+------------------
 
 - Nothing changed yet.
 
