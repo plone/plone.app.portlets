@@ -7,6 +7,7 @@ products installed.
 
 import unittest2 as unittest
 
+from Testing.ZopeTestCase import Functional
 from plone.app.portlets.testing import PLONE_APP_PORTLETS_INTEGRATION_TESTING
 from plone.app.testing import PLONE_FUNCTIONAL_TESTING
 from plone.testing.z2 import Browser
@@ -32,7 +33,7 @@ class PortletsTestCase(unittest.TestCase):
         pass
 
 
-class PortletsFunctionalTestCase(unittest.TestCase):
+class PortletsFunctionalTestCase(unittest.TestCase, Functional):
     """Base class for functional integration tests for plone.app.portlets.
     This may provide specific set-up and tear-down operations, or provide
     convenience methods.
