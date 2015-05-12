@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.0.5 (unreleased)
+3.0.5 (2015-05-12)
 ------------------
 
 - Supress a ZopeTestCase warning.
