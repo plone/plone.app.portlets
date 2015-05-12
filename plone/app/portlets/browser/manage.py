@@ -73,14 +73,17 @@ class ManageContextualPortlets(BrowserView):
         return (left_slots or right_slots)
 
     # view @@set-portlet-blacklist-status
-    def set_blacklist_status(self, manager, group_status, content_type_status, context_status):
+    def set_blacklist_status(self, manager, group_status, content_type_status,
+                             context_status):
         authenticator = getMultiAdapter((self.context, self.request),
                                         name=u"authenticator")
         if not authenticator.verify():
             raise Unauthorized
         portletManager = getUtility(IPortletManager, name=manager)
-        assignable = getMultiAdapter((self.context, portletManager), ILocalPortletAssignmentManager)
-        assignments = getMultiAdapter((self.context, portletManager), IPortletAssignmentMapping)
+        assignable = getMultiAdapter((self.context, portletManager),
+                                     ILocalPortletAssignmentManager)
+        assignments = getMultiAdapter((self.context, portletManager),
+                                      IPortletAssignmentMapping)
 
         IPortletPermissionChecker(assignments.__of__(aq_inner(self.context)))()
 
@@ -93,7 +96,8 @@ class ManageContextualPortlets(BrowserView):
                 return False
 
         assignable.setBlacklistStatus(GROUP_CATEGORY, int2status(group_status))
-        assignable.setBlacklistStatus(CONTENT_TYPE_CATEGORY, int2status(content_type_status))
+        assignable.setBlacklistStatus(CONTENT_TYPE_CATEGORY,
+                                      int2status(content_type_status))
         assignable.setBlacklistStatus(CONTEXT_CATEGORY, int2status(context_status))
 
         baseUrl = str(getMultiAdapter((self.context, self.request), name='absolute_url'))
@@ -139,21 +143,21 @@ class ManageDashboardPortlets(BrowserView):
         category = column[USER_CATEGORY]
         mapping = category.get(userId, None)
         if mapping is None:
-            mapping = category[userId] = UserPortletAssignmentMapping(manager=manager.__name__,
-                                                                      category=USER_CATEGORY,
-                                                                      name=userId)
+            mapping = category[userId] = UserPortletAssignmentMapping(
+                manager=manager.__name__, category=USER_CATEGORY, name=userId)
         return mapping.values()
 
     def _getUserId(self):
         membership = getToolByName(aq_inner(self.context), 'portal_membership', None)
         if membership.isAnonymousUser():
-            raise Unauthorized, "Cannot get portlet assignments for anonymous through this view"
+            raise Unauthorized("Cannot get portlet assignments for anonymous "
+                               "through this view")
 
         member = membership.getAuthenticatedMember()
         memberId = member.getId()
 
         if memberId is None:
-            raise KeyError, "Cannot find user id of current user"
+            raise KeyError("Cannot find user id of current user")
 
         return memberId
 
@@ -270,9 +274,8 @@ class ManageContentTypePortlets(BrowserView):
         category = column[CONTENT_TYPE_CATEGORY]
         mapping = category.get(pt, None)
         if mapping is None:
-            mapping = category[pt] = PortletAssignmentMapping(manager=manager.__name__,
-                                                              category=CONTENT_TYPE_CATEGORY,
-                                                              name=pt)
+            mapping = category[pt] = PortletAssignmentMapping(
+                manager=manager.__name__, category=CONTENT_TYPE_CATEGORY, name=pt)
         return mapping.values()
 
     # View attributes
@@ -281,8 +284,8 @@ class ManageContentTypePortlets(BrowserView):
         return self.fti().Title()
 
     def portal_type_icon(self):
-        plone_layout = getMultiAdapter((self.context, self.request),
-            name=u"plone_layout")
+        plone_layout = getMultiAdapter(
+            (self.context, self.request), name=u"plone_layout")
         return plone_layout.getIcon(self.fti())
 
     @memoize
@@ -341,7 +344,8 @@ class ManagePortletsViewlet(BrowserView):
     def ultimate_parent(self):
         # Walk the __parent__ chain to find the principal view
         parent = self.__parent__
-        while hasattr(parent, '__parent__') and IBrowserView.providedBy(parent.__parent__):
+        while (hasattr(parent, '__parent__') and
+                IBrowserView.providedBy(parent.__parent__)):
             parent = parent.__parent__
         return parent
 
