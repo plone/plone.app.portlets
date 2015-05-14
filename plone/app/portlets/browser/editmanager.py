@@ -10,11 +10,11 @@ from plone.portlets.interfaces import IPortletManagerRenderer
 from plone.portlets.interfaces import ILocalPortletAssignmentManager
 from plone.portlets.interfaces import IPortletContext
 from plone.portlets.utils import hashPortletInfo
-from plone.portlets.utils import unhashPortletInfo
 
-from zope.container  import contained
+from zope.container import contained
 from zope.interface import implements, Interface
-from zope.component import adapts, getMultiAdapter, queryMultiAdapter, queryAdapter, getUtility
+from zope.component import (
+    adapts, getMultiAdapter, queryMultiAdapter, queryAdapter, getUtility)
 from zope.contentprovider.interfaces import UpdateNotCalled
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 from five.customerize.zpt import TTWViewTemplateRenderer
@@ -50,7 +50,7 @@ class EditPortletManagerRenderer(Explicit):
 
     def __init__(self, context, request, view, manager):
         self.__parent__ = view
-        self.manager = manager # part of interface
+        self.manager = manager  # part of interface
         self.context = context
         self.request = request
         self.__updated = False
@@ -95,12 +95,10 @@ class EditPortletManagerRenderer(Explicit):
     def baseUrl(self):
         return self.__parent__.getAssignmentMappingUrl(self.manager)
 
-
     def portlets(self):
         assignments = self._lazyLoadAssignments(self.manager)
         return self.portlets_for_assignments(
             assignments, self.manager, self.baseUrl())
-
 
     def portlets_for_assignments(self, assignments, manager, base_url):
         category = self.__parent__.category
@@ -131,16 +129,16 @@ class EditPortletManagerRenderer(Explicit):
                 visible = False
 
             data.append({
-                'title'      : assignments[idx].title,
-                'editview'   : editviewName,
-                'hash'       : portlet_hash,
-                'name'       : name,
-                'up_url'     : '%s/@@move-portlet-up' % (base_url),
-                'down_url'   : '%s/@@move-portlet-down' % (base_url),
-                'delete_url' : '%s/@@delete-portlet' % (base_url),
-                'hide_url'   : '%s/@@toggle-visibility' % (base_url),
-                'show_url'   : '%s/@@toggle-visibility' % (base_url),
-                'visible'    : visible,
+                'title': assignments[idx].title,
+                'editview': editviewName,
+                'hash': portlet_hash,
+                'name': name,
+                'up_url': '%s/@@move-portlet-up' % (base_url),
+                'down_url': '%s/@@move-portlet-down' % (base_url),
+                'delete_url': '%s/@@delete-portlet' % (base_url),
+                'hide_url': '%s/@@toggle-visibility' % (base_url),
+                'show_url': '%s/@@toggle-visibility' % (base_url),
+                'visible': visible,
                 })
         if len(data) > 0:
             data[0]['up_url'] = data[-1]['down_url'] = None
@@ -166,10 +164,10 @@ class EditPortletManagerRenderer(Explicit):
                 return False
             return True
 
-        portlets =  [{
-            'title' : p.title,
-            'description' : p.description,
-            'addview' : '%s/+/%s' % (addviewbase, p.addview)
+        portlets = [{
+            'title': p.title,
+            'description': p.description,
+            'addview': '%s/+/%s' % (addviewbase, p.addview)
             } for p in self.manager.getAddablePortletTypes() if check_permission(p)]
 
         portlets.sort(key=sort_key)
@@ -209,7 +207,8 @@ class EditPortletManagerRenderer(Explicit):
 
 class ContextualEditPortletManagerRenderer(EditPortletManagerRenderer):
     """Render a portlet manager in edit mode for contextual portlets"""
-    adapts(Interface, IDefaultBrowserLayer, IManageContextualPortletsView, IPortletManager)
+    adapts(Interface, IDefaultBrowserLayer,
+           IManageContextualPortletsView, IPortletManager)
 
     template = ViewPageTemplateFile('templates/edit-manager-contextual.pt')
 
@@ -224,13 +223,15 @@ class ContextualEditPortletManagerRenderer(EditPortletManagerRenderer):
         return self.manager.__name__
 
     def context_blacklist_status(self):
-        assignable = getMultiAdapter((self.context, self.manager,), ILocalPortletAssignmentManager)
+        assignable = getMultiAdapter((self.context, self.manager,),
+                                     ILocalPortletAssignmentManager)
         return assignable.getBlacklistStatus(CONTEXT_CATEGORY)
 
     def group_blacklist_status(self, check_parent=False):
         # If check_parent is True and the blacklist status is None, it returns the
         # parent status recursively.
-        assignable = getMultiAdapter((self.context, self.manager,), ILocalPortletAssignmentManager)
+        assignable = getMultiAdapter((self.context, self.manager,),
+                                     ILocalPortletAssignmentManager)
         status = assignable.getBlacklistStatus(GROUP_CATEGORY)
 
         if check_parent and status is None:
@@ -240,7 +241,8 @@ class ContextualEditPortletManagerRenderer(EditPortletManagerRenderer):
         return status
 
     def content_type_blacklist_status(self, check_parent=False):
-        assignable = getMultiAdapter((self.context, self.manager,), ILocalPortletAssignmentManager)
+        assignable = getMultiAdapter((self.context, self.manager,),
+                                     ILocalPortletAssignmentManager)
         status = assignable.getBlacklistStatus(CONTENT_TYPE_CATEGORY)
 
         if check_parent and status is None:
@@ -260,7 +262,8 @@ class ContextualEditPortletManagerRenderer(EditPortletManagerRenderer):
         current = pcontext.getParent()
         currentpc = pcontext
         while status is None and current is not None:
-            assignable = getMultiAdapter((current, self.manager,), ILocalPortletAssignmentManager)
+            assignable = getMultiAdapter((current, self.manager,),
+                                         ILocalPortletAssignmentManager)
             status = assignable.getBlacklistStatus(category)
 
             current = currentpc.getParent()
@@ -295,14 +298,17 @@ class ContextualEditPortletManagerRenderer(EditPortletManagerRenderer):
                 context = context.__parent__
 
             # we get the contextual portlets view to access its utility methods
-            view = queryMultiAdapter((context, self.request), name=self.__parent__.__name__)
+            view = queryMultiAdapter((context, self.request),
+                                     name=self.__parent__.__name__)
             if view is not None:
                 assignments = view.getAssignmentsForManager(self.manager)
                 assignments_to_show = [a for a in assignments if is_visible(a)]
                 base_url = view.getAssignmentMappingUrl(self.manager)
-                data.extend(self.portlets_for_assignments(assignments_to_show, self.manager, base_url))
+                data.extend(self.portlets_for_assignments(assignments_to_show,
+                                                          self.manager, base_url))
 
-            assignable = queryMultiAdapter((context, self.manager), ILocalPortletAssignmentManager)
+            assignable = queryMultiAdapter((context, self.manager),
+                                           ILocalPortletAssignmentManager)
             if assignable is not None and assignable.getBlacklistStatus(CONTEXT_CATEGORY):
                 # Current context has blocked inherited portlets, stop.
                 break
@@ -320,7 +326,7 @@ class ContextualEditPortletManagerRenderer(EditPortletManagerRenderer):
         # get the portlet context
         pcontext = IPortletContext(self.context)
 
-        portal_state = getMultiAdapter((context, self.request), name=u'plone_portal_state')
+        portal_state = getMultiAdapter((context, self.request), name=u'plone_portal_state')  # noqa
         base_url = portal_state.portal_url()
 
         portlets = []
@@ -329,20 +335,25 @@ class ContextualEditPortletManagerRenderer(EditPortletManagerRenderer):
                 mapping = self.manager.get(category, None)
                 assignments = []
                 if mapping is not None:
-                    is_visible = lambda a: IPortletAssignmentSettings(a).get('visible', True)
-                    assignments.extend([a for a in mapping.get(key, {}).values() if is_visible(a)])
+                    is_visible = lambda a: IPortletAssignmentSettings(a).get('visible', True)  # noqa
+                    assignments.extend([a for a in mapping.get(key, {}).values()
+                                        if is_visible(a)])
                 if assignments:
-                    edit_url = '%s/++%s++%s+%s' % (base_url, prefix, self.manager.__name__, key)
-                    portlets.extend(self.portlets_for_assignments(assignments, self.manager, edit_url))
+                    edit_url = '%s/++%s++%s+%s' % (
+                        base_url, prefix, self.manager.__name__, key)
+                    portlets.extend(self.portlets_for_assignments(
+                        assignments, self.manager, edit_url))
 
         return portlets
 
     def group_portlets(self):
-        """Return the list of global portlets from the group category for the current context."""
+        """Return the list of global portlets from the group category for the
+           current context."""
         return self.global_portlets(GROUP_CATEGORY, 'groupportlets')
 
     def content_type_portlets(self):
-        """Return the list of global portlets from the content type category for the current context."""
+        """Return the list of global portlets from the content type category for
+           the current context."""
         return self.global_portlets(CONTENT_TYPE_CATEGORY, 'contenttypeportlets')
 
 

@@ -11,7 +11,8 @@
             Add portlet
         </label>
 
-        <select name=":action" onchange="this.form.submit()">
+        <select name=":action" class="add-portlet"
+                tal:attributes="data-context-url python: view.context_url()">
             <option tal:attributes="value python:request['ACTUAL_URL'].replace(view.context_url(), '')"
                     i18n:translate="label_add_portlet_ellipsis">
                 Add portlet&hellip;
@@ -47,7 +48,11 @@
                 tal:attributes="class string:managedPortlet portlet ${hiddenPortletClass};
                                 data-portlethash portlet/hash;
                                 data-viewname view/view_name;">
+
                 <div class="portletHeader" tal:define="authenticator context/@@authenticator/authenticator">
+                    <a tal:omit-tag="not:portlet/editview"
+                       tal:attributes="href string:${portlet/editview}?referer=${view/url_quote_referer}"
+                       tal:content="portlet/title" />
                     <span class="managedPortletActions">
                       <form class="portlet-action up" method="POST" tal:attributes="action portlet/up_url"
                           tal:condition="not:repeat/portlet/start">
@@ -103,9 +108,6 @@
                           tal:attributes="name string:${portlet/name}-remove">&times;</button>
                       </form>
                     </span>
-                    <a tal:omit-tag="not:portlet/editview"
-                       tal:attributes="href string:${portlet/editview}?referer=${view/url_quote_referer}"
-                       tal:content="portlet/title" />
                 </div>
             </div>
         </tal:block>

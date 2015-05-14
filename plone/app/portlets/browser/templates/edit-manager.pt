@@ -3,7 +3,7 @@
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       tal:omit-tag="">
-<div class="portlets-manager"
+<div class="portlets-manager pat-manage-portlets"
      tal:attributes="id string:portletmanager-${view/normalized_manager_name};">
 
   <div metal:use-macro="context/@@manage-portlets-macros/macros/portlet-add-form" />

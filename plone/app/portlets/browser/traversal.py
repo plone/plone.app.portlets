@@ -50,9 +50,8 @@ class DashboardNamespace(object):
         category = column[USER_CATEGORY]
         manager = category.get(user, None)
         if manager is None:
-            manager = category[user] = UserPortletAssignmentMapping(manager=col,
-                                                                    category=USER_CATEGORY,
-                                                                    name=user)
+            manager = category[user] = UserPortletAssignmentMapping(
+                manager=col, category=USER_CATEGORY, name=user)
 
         # XXX: For graceful migration
         if not getattr(manager, '__manager__', None):
@@ -133,9 +132,8 @@ class ContentTypePortletNamespace(object):
         category = column[CONTENT_TYPE_CATEGORY]
         manager = category.get(pt, None)
         if manager is None:
-            manager = category[pt] = PortletAssignmentMapping(manager=col,
-                                                              category=CONTENT_TYPE_CATEGORY,
-                                                              name=pt)
+            manager = category[pt] = PortletAssignmentMapping(
+                manager=col, category=CONTENT_TYPE_CATEGORY, name=pt)
 
         # XXX: For graceful migration
         if not getattr(manager, '__manager__', None):

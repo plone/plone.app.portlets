@@ -10,11 +10,6 @@
     <metal:block fill-slot="top_slot"
              tal:define="dummy python:request.set('disable_border',1)" />
 
-    <div metal:fill-slot="javascript_head_slot" tal:omit-tag="">
-      <script type="text/javascript"
-        tal:attributes="src string:${context/absolute_url}/++resource++manage-portlets.js">
-      </script>
-    </div>
 </head>
 
 <body>
