@@ -3,7 +3,7 @@
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       tal:omit-tag="">
-<div class="portlets-manager"
+<div class="portlets-manager pat-manage-portlets"
      tal:attributes="id string:portletmanager-${view/normalized_manager_name};"
      i18n:domain="plone">
 
@@ -17,11 +17,11 @@
         Block/unblock portlets
     </h4>
 
-    <form method="post" tal:attributes="action view/blacklist_status_action">
+    <form method="post" tal:attributes="action view/blacklist_status_action" class="portlets-settings">
       <span tal:replace="structure context/@@authenticator/authenticator" />
       <input type="hidden" name="manager" tal:attributes="value view/manager_name" />
 
-      <div tal:define="status view/context_blacklist_status">
+      <div tal:define="status view/context_blacklist_status" class="portlet-group">
 
         <span tal:omit-tag=""
               i18n:translate="label_portlets_parent_folders">
@@ -47,7 +47,7 @@
         <tal:block define="portlets view/inherited_portlets;"
                    condition="portlets">
 
-          <div tal:attributes="class python:status and 'managedPortlet inheritedPortlet blockedPortlet' or 'managedPortlet'" tal:repeat="portlet portlets">
+          <div tal:attributes="class python:status and 'managedPortlet inheritedPortlet blockedPortlet' or 'managedPortlet inheritedPortlet'" tal:repeat="portlet portlets">
             <div class="portletHeader">
 
               <a tal:omit-tag="not:portlet/editview"
@@ -68,7 +68,7 @@
 
       </div>
 
-      <div tal:define="status view/group_blacklist_status">
+      <div tal:define="status view/group_blacklist_status" class="portlet-group">
 
         <span tal:omit-tag=""
               i18n:translate="label_portlets_group_portlets">Group portlets:</span>
@@ -98,7 +98,7 @@
         <tal:block define="portlets view/group_portlets;
                            status python:view.group_blacklist_status(check_parent=True)">
 
-          <div tal:attributes="class python:status and 'managedPortlet inheritedPortlet blockedPortlet' or 'managedPortlet'" tal:repeat="portlet portlets">
+          <div tal:attributes="class python:status and 'managedPortlet inheritedPortlet blockedPortlet' or 'managedPortlet inheritedPortlet'" tal:repeat="portlet portlets">
             <div class="portletHeader">
 
               <a tal:omit-tag="not:portlet/editview"
@@ -121,7 +121,7 @@
       </div>
 
 
-      <div tal:define="status view/content_type_blacklist_status">
+      <div tal:define="status view/content_type_blacklist_status" class="portlet-group">
 
         <span tal:omit-tag=""
               i18n:translate="label_portlets_content_type_portlets">
@@ -152,7 +152,7 @@
         <tal:block define="portlets view/content_type_portlets;
                    status python:view.content_type_blacklist_status(check_parent=True)">
 
-          <div tal:attributes="class python:status and 'managedPortlet inheritedPortlet blockedPortlet' or 'managedPortlet'"
+          <div tal:attributes="class python:status and 'managedPortlet inheritedPortlet blockedPortlet' or 'managedPortlet inheritedPortlet'"
             tal:repeat="portlet portlets">
             <div class="portletHeader">
               <a tal:omit-tag="not:portlet/editview"
@@ -173,13 +173,14 @@
 
       </div>
 
-
+      <noscript>
       <div class="formControls">
           <input class="context"
                  type="submit"
                  value="Save settings"
                  i18n:attributes="value label_save_settings"/>
       </div>
+      </noscript>
 
     </form>
   </div>

@@ -4,13 +4,6 @@
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       metal:use-macro="context/main_template/macros/master"
       i18n:domain="plone">
-<head>
-    <metal:javascript fill-slot="javascript_head_slot" tal:omit-tag="">
-        <script type="text/javascript"
-            tal:attributes="src string:${context/absolute_url}/++resource++manage-portlets.js">
-        </script>
-    </metal:javascript>
-</head>
 
 <body>
 <metal:main fill-slot="main" tal:define="plone_view context/@@plone">

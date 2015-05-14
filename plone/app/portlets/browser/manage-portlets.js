@@ -1,28 +1,123 @@
-(function($){
-$(document).ready(function(){
-    $('#portal-columns').delegate('.portlet-action', 'submit', function(e){
-        $('#kss-spinner').show();
-        var form = $(this);
-        var formdata = form.serializeArray();
-        var data = {};
-        for(var i=0; i<formdata.length; i++){
-            data[formdata[i].name] = formdata[i].value;
-        }
-        data.ajax = true;
-        $.ajax({
-            url: form.attr('action'),
-            data: data,
-            type: 'POST',
-            success: function(data){
-                var container = form.parents('.portlets-manager');
-                container.replaceWith($(data));
-                $('#kss-spinner').hide();
-            },
-            error: function(){
-                $('#kss-spinner').hide();
-            }
+define([
+  'jquery',
+  'mockup-patterns-base',
+  'pat-registry',
+  'mockup-utils',
+  'mockup-patterns-modal',
+  'translate',
+  'jquery.form'
+], function ($, Base, Registry, utils, Modal, _t) {
+  'use strict';
+  var ManagePortlets = Base.extend({
+    name: 'manage-portlets',
+    trigger: '.pat-manage-portlets',
+    messageTimeout: 0,
+    isModal: false,
+    dirty: false,
+    init: function(){
+      var that = this;
+      that.setupAddDropdown();
+      that.setupSavePortletsSettings();
+      var $modal = that.$el.parents('.plone-modal');
+      if($modal.size() === 1){
+        this.isModal = true;
+        /* want to do something on exit from modal now */
+        var modal = $modal.data('pattern-plone-modal');
+        modal.on('hide', function(){
+          if(that.dirty){
+            window.location.reload();
+          }
         });
-        return false;
-    });
+      }
+    },
+    rebind: function($el){
+      this.$el.replaceWith($el);
+      this.$el = $el;
+      this.init();
+      this.statusMessage();
+      this.dirty = true;
+    },
+    statusMessage: function(msg){
+      if(msg === undefined){
+        msg = _t("Portlet changes saved");
+      }
+      var that = this;
+
+      var $message = $('#portlet-message');
+      if($message.size() === 0){
+        $message = $('<div class="portalMessage info" id="portlet-message" style="display:none"></div>');
+        if(that.isModal){
+          $('.plone-modal-body:visible').prepend($message);
+        }else{
+          $('#content-core').prepend($message);
+        }
+      }
+      $message.html('<strong>' + _t("Info") + '</strong>' + msg);
+      clearTimeout(that.messageTimeout);
+      if(!$message.is(':visible')){
+        $message.fadeIn();
+      }
+      that.messageTimeout = setTimeout(function(){
+        $message.fadeOut();
+      }, 3000);
+    },
+    setupAddDropdown: function(){
+      var that = this;
+      $('.add-portlet', that.$el).change(function(e){
+        e.preventDefault();
+        var $select = $(this);
+        var $form = $select.parents('form');
+        var contextUrl = $select.attr('data-context-url');
+        var url = contextUrl + $select.val() +
+          '?_authenticator=' + $('[name="_authenticator"]').val() +
+          '&referer=' + $('[name="referer"]', $form).val();
+        /* create model */
+        var $a = $('<a/>');
+        $('body').append($a);
+        var pattern = new Modal($a, {
+          ajaxUrl: url,
+          actionOptions: {
+            displayInModal: false,
+            reloadWindowOnClose: false,
+            isForm: true,
+            onSuccess: function(modal, html){
+              pattern.hide();
+              var $body = $(utils.parseBodyTag(html));
+              that.rebind($('#' + that.$el.attr('id'), $body));
+              that.statusMessage(_t('Portlet added'));
+            }
+          }
+        });
+        pattern.on('after-render', function(){
+          var $el = $('#' + that.$el.attr('id'), pattern.$raw);
+          /* this is a check that the add form doesn't just automatically
+             create the portlet without an actual form.
+             If element is found here, we can short circuit and
+             continue on. */
+          if($el.size() === 1){
+            /* hacky, trying to prevent modal parts from flickering here */
+            $el = $el.clone();
+            pattern.on('shown', function(){
+              pattern.hide();
+            });
+            that.rebind($el);
+            that.statusMessage(_t('Portlet added'));
+          }
+        });
+        pattern.show();
+      });
+    },
+    setupSavePortletsSettings: function(){
+      var that = this;
+      $('.portlets-settings,form.portlet-action', that.$el).ajaxForm(function(html){
+        var $body = $(utils.parseBodyTag(html));
+        that.rebind($('#' + that.$el.attr('id'), $body));
+      });
+      $('.portlets-settings select', that.$el).change(function(){
+        $('.portlets-settings', that.$el).submit();
+      });
+    }
+  });
+
+  return ManagePortlets;
 });
-})(jQuery);

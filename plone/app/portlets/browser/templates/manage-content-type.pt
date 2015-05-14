@@ -5,12 +5,6 @@
       metal:use-macro="context/main_template/macros/master"
       i18n:domain="plone">
 
-<metal:javascript fill-slot="javascript_head_slot" tal:omit-tag="">
-    <script type="text/javascript"
-        tal:attributes="src string:${context/absolute_url}/++resource++manage-portlets.js">
-    </script>
-</metal:javascript>
-
 <body>
 <metal:main fill-slot="main">
 

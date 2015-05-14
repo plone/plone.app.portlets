@@ -38,11 +38,6 @@ Now customize the manage dashboard view and check the name is in place too::
     ...                  tal:define="dummy python:request.set('disable_border',1);
     ...                              disable_column_one python:request.set('disable_plone.leftcolumn',1);
     ...                              disable_column_two python:request.set('disable_plone.rightcolumn',1);" />
-    ...     <div metal:fill-slot="javascript_head_slot" tal:omit-tag="">
-    ...         <script type="text/javascript"
-    ...             tal:attributes="src string:${context/absolute_url}/++resource++manage-portlets.js">
-    ...         </script>
-    ...     </div>
     ... </head>
     ... <body>
     ... <tal:comment replace="nothing">
