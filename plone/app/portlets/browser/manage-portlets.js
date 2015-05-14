@@ -5,13 +5,18 @@ define([
   'mockup-utils',
   'mockup-patterns-modal',
   'translate',
+  'pat-logger',
   'jquery.form'
-], function ($, Base, Registry, utils, Modal, _t) {
+], function ($, Base, Registry, utils, Modal, _t, logger) {
   'use strict';
+
+  var log = logger.getLogger('pat-manage-portlets');
+
   var ManagePortlets = Base.extend({
     name: 'manage-portlets',
     trigger: '.pat-manage-portlets',
     messageTimeout: 0,
+    submitTimeout: 0,
     isModal: false,
     dirty: false,
     init: function(){
@@ -26,6 +31,7 @@ define([
             window.location.reload();
           }
         });
+
       }
       that.bind();
     },
@@ -34,12 +40,42 @@ define([
       that.setupAddDropdown();
       that.setupSavePortletsSettings();
       that.setupPortletEdit();
+      if(that.isModal){
+        /* if we're in a modal, it's possible we have a link to
+           parent case, bind the link so we can reload modal */
+        $('.portlets-link-to-parent').off('click').click(function(e){
+          var $el = $(this);
+          e.preventDefault();
+          $.ajax({
+            url: $el.attr('href'),
+            data: {
+              ajax_load: 1
+            }
+          }).done(function(html){
+            var $body = $(utils.parseBodyTag(html));
+            var $modal = $el.parents('.plone-modal-body');
+            $modal.empty();
+            var $content = $('#content', $body);
+            var $h1 = $('h1', $content);
+            $('.plone-modal-header', $modal.parent()).find('h2').html($h1.html());
+            $h1.remove();
+            $modal.append($content);
+            that.rebind($('.pat-manage-portlets', $content), true);
+          });
+        });
+      }
     },
-    rebind: function($el){
-      this.$el.replaceWith($el);
+    rebind: function($el, suppress){
+      log.info('rebind');
+      if ($.contains(document, this.$el[0])) {
+        // $el is not detached, replace it
+        this.$el.replaceWith($el);
+      }
       this.$el = $el;
       this.bind();
-      this.statusMessage();
+      if(!suppress){
+        this.statusMessage();
+      }
       this.dirty = true;
     },
     statusMessage: function(msg){
@@ -50,7 +86,7 @@ define([
 
       var $message = $('#portlet-message');
       if($message.size() === 0){
-        $message = $('<div class="portalMessage info" id="portlet-message" style="display:none"></div>');
+        $message = $('<div class="portalMessage info" id="portlet-message" style="opacity: 0"></div>');
         if(that.isModal){
           $('.plone-modal-body:visible').prepend($message);
         }else{
@@ -59,14 +95,13 @@ define([
       }
       $message.html('<strong>' + _t("Info") + '</strong>' + msg);
       clearTimeout(that.messageTimeout);
-      if(!$message.is(':visible')){
-        $message.fadeIn();
-      }
+      $message.fadeTo(500, 1);
       that.messageTimeout = setTimeout(function(){
-        $message.fadeOut();
+        $message.fadeTo(500, 0.6);
       }, 3000);
     },
     showEditPortlet: function(url){
+      log.info('show edit portlet in modal');
       var that = this;
       var $a = $('<a/>');
       $('body').append($a);
@@ -79,7 +114,7 @@ define([
           onSuccess: function(modal, html){
             pattern.hide();
             var $body = $(utils.parseBodyTag(html));
-            that.rebind($('#' + that.$el.attr('id'), $body));
+            that.rebind($('#' + that.$el.attr('id'), $body).eq(0));
             that.statusMessage(_t('Portlet added'));
           }
         }
@@ -125,11 +160,16 @@ define([
     setupSavePortletsSettings: function(){
       var that = this;
       $('.portlets-settings,form.portlet-action', that.$el).ajaxForm(function(html){
+        log.info('form submit');
         var $body = $(utils.parseBodyTag(html));
-        that.rebind($('#' + that.$el.attr('id'), $body));
+        that.rebind($('#' + that.$el.attr('id'), $body).eq(0));
       });
       $('.portlets-settings select', that.$el).change(function(){
-        $('.portlets-settings', that.$el).submit();
+        log.info('select change');
+        clearTimeout(that.submitTimeout);
+        that.submitTimeout = setTimeout(function(){
+          $('.portlets-settings', that.$el).submit();
+        }, 100);
       });
     }
   });

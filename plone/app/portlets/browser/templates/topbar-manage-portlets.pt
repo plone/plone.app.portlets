@@ -7,6 +7,11 @@
 <body>
 
   <div metal:fill-slot="main" tal:define="plone_view context/@@plone">
+    <h1 class="documentFirstHeading"
+      i18n:translate="title_manage_contextual_portlets">
+      Manage portlets for
+      <q i18n:name="context_title" tal:content="context/Title">title</q>
+    </h1>
     <div class="portalMessage info"
         tal:condition="plone_view/isDefaultPageInFolder|nothing">
       <strong>
@@ -18,6 +23,7 @@
         <a href=""
             i18n:name="go_here"
             i18n:translate="label_manage_portlets_default_view_container_go_here"
+            class="portlets-link-to-parent"
             tal:attributes="href string:${context/aq_inner/aq_parent/absolute_url}/@@topbar-manage-portlets/${view/manager_name}">go here</a>.
       </div>
     </div>
