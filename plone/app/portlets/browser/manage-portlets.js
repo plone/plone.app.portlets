@@ -31,7 +31,9 @@ define([
             window.location.reload();
           }
         });
-
+        that.loading = modal.loading;
+      }else{
+        that.loading = utils.loading;
       }
       that.bind();
     },
@@ -44,6 +46,7 @@ define([
         /* if we're in a modal, it's possible we have a link to
            parent case, bind the link so we can reload modal */
         $('.portlets-link-to-parent').off('click').click(function(e){
+          that.loading.show();
           var $el = $(this);
           e.preventDefault();
           $.ajax({
@@ -61,6 +64,7 @@ define([
             $h1.remove();
             $modal.append($content);
             that.rebind($('.pat-manage-portlets', $content), true);
+            that.loading.hide();
           });
         });
       }
@@ -159,10 +163,16 @@ define([
     },
     setupSavePortletsSettings: function(){
       var that = this;
-      $('.portlets-settings,form.portlet-action', that.$el).ajaxForm(function(html){
-        log.info('form submit');
-        var $body = $(utils.parseBodyTag(html));
-        that.rebind($('#' + that.$el.attr('id'), $body).eq(0));
+      $('.portlets-settings,form.portlet-action', that.$el).ajaxForm({
+        beforeSubmit: function(){
+          that.loading.show();
+        },
+        success: function(html){
+          that.loading.hide();
+          log.info('form submit');
+          var $body = $(utils.parseBodyTag(html));
+          that.rebind($('#' + that.$el.attr('id'), $body).eq(0));
+        }
       });
       $('.portlets-settings select', that.$el).change(function(){
         log.info('select change');
