@@ -188,7 +188,7 @@
     </class>
 
     <!-- Get pretty templates on our add and edit pages -->
-    <configure package="Products.CMFDefault.skin">
+    <configure package="Products.CMFPlone.browser">
 
       <browser:page
         name="five_template"
