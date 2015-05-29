@@ -193,21 +193,21 @@
       <browser:page
         name="five_template"
         for="plone.portlets.interfaces.IPortletAssignment"
-        template="five_template.pt"
+        template="templates/five_template.pt"
         permission="zope2.View"
         />
 
       <browser:page
         name="five_template"
         for="plone.portlets.interfaces.IPortletAssignmentMapping"
-        template="five_template.pt"
+        template="templates/five_template.pt"
         permission="zope2.View"
         />
 
       <browser:page
         name="five_template"
         for="plone.app.portlets.browser.interfaces.IPortletAdding"
-        template="five_template.pt"
+        template="templates/five_template.pt"
         permission="zope2.View"
         />
 
