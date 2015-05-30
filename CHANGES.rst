@@ -8,6 +8,8 @@ Changelog
   using the manage portlets infrastructure
   [vangheem]
 
+- Remove CMFDefault dependency
+  [tomgross]
 
 3.0.5 (2015-05-12)
 ------------------
