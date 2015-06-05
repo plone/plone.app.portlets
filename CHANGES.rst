@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.0.6 (unreleased)
+3.0.6 (2015-06-05)
 ------------------
 
 - Convert manage-portlets.js into a pattern and make improvements on
