@@ -4,7 +4,7 @@
       tal:omit-tag=""
       i18n:domain="plone">
 
-<section class="portlet portletActions" role="section"
+<section class="portlet portletActions" role="menu"
     tal:define="portal_url context/@@plone_portal_state/portal_url;">
 
   <header class="portletHeader" tal:condition="view/showTitle">
