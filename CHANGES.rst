@@ -4,7 +4,8 @@ Changelog
 3.0.7 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Change role to be a valid one.
+  [polyester]
 
 
 3.0.6 (2015-06-05)
