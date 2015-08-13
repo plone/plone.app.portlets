@@ -18,7 +18,7 @@ from zope import schema
 from Acquisition import aq_inner, aq_base, aq_parent
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.interfaces import ISiteRoot
-from Products.CMFDynamicViewFTI.interface import IBrowserDefault
+from Products.CMFDynamicViewFTI.interfaces import IBrowserDefault
 from Products.CMFPlone import utils
 from Products.CMFPlone.browser.navtree import SitemapNavtreeStrategy
 from Products.CMFPlone.interfaces import INonStructuralFolder
