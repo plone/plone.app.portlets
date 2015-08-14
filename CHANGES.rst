@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.5.4 (unreleased)
+2.5.4 (2015-08-14)
 ------------------
 
 - Avoid DeprecationWarning for Products.CMFDynamicViewFTI.interface.
