@@ -4,7 +4,8 @@ Changelog
 3.0.8 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Remove usage of global defines in classic portlet. 
+  [esteele]
 
 
 3.0.7 (2015-07-18)

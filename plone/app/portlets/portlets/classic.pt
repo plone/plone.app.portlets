@@ -1,4 +1,3 @@
-<metal:block use-macro="here/global_defines/macros/defines" />
 <tal:block tal:define="use_macro view/use_macro;
                        path_expression view/path_expression">
 
