@@ -4,6 +4,9 @@ Changelog
 3.0.8 (unreleased)
 ------------------
 
+- Remove usage of global defines in classic portlet. 
+  [esteele]
+
 - Use registry lookup to get filter_on_workflow and 
   workflow_states_to_show settings.
   [esteele]
