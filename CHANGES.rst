@@ -4,7 +4,9 @@ Changelog
 3.0.8 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Use registry lookup to get filter_on_workflow and 
+  workflow_states_to_show settings.
+  [esteele]
 
 
 3.0.7 (2015-07-18)

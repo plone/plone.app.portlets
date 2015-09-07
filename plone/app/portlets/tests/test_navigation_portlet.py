@@ -20,6 +20,8 @@ from plone.app.portlets.storage import PortletAssignmentMapping
 from plone.app.portlets.tests.base import PortletsTestCase
 
 from plone.app.layout.navigation.interfaces import INavigationRoot
+from plone.registry.interfaces import IRegistry
+from Products.CMFPlone.interfaces import INavigationSchema
 
 from Products.CMFPlone.tests import dummy
 from plone.app.testing import TEST_USER_ID
@@ -437,10 +439,14 @@ class TestRenderer(PortletsTestCase):
     def testStateFiltering(self):
         # Test Navtree workflow state filtering
         setRoles(self.portal, TEST_USER_ID, ['Manager'])
+        registry = getUtility(IRegistry)
+        navigation_settings = registry.forInterface(
+            INavigationSchema,
+            prefix="plone"
+        )
         workflow = self.portal.portal_workflow
-        ntp=self.portal.portal_properties.navtree_properties
-        ntp.manage_changeProperties(wf_states_to_show=['published'])
-        ntp.manage_changeProperties(enable_wf_state_filtering=True)
+        navigation_settings.workflow_states_to_show = ('published',)
+        navigation_settings.filter_on_workflow = True
         view = self.renderer(self.portal.folder2)
         tree = view.getNavTree()
         self.assertTrue(tree)

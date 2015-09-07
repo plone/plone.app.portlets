@@ -14,16 +14,19 @@ from plone.app.vocabularies.catalog import CatalogSource
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.memoize.instance import memoize
 from plone.portlets.interfaces import IPortletDataProvider
+from plone.registry.interfaces import IRegistry
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDynamicViewFTI.interfaces import IBrowserDefault
 from Products.CMFPlone import utils
 from Products.CMFPlone.browser.navtree import SitemapNavtreeStrategy
+from Products.CMFPlone.interfaces import INavigationSchema
 from Products.CMFPlone.interfaces import INonStructuralFolder
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zExceptions import NotFound
 from zope import schema
 from zope.component import adapts, getMultiAdapter, queryUtility
+from zope.component import getUtility
 from zope.interface import implements, Interface
 
 
@@ -362,8 +365,13 @@ class QueryBuilder(object):
                 query['sort_order'] = sortOrder
 
         # Filter on workflow states, if enabled
-        if navtree_properties.getProperty('enable_wf_state_filtering', False):
-            query['review_state'] = navtree_properties.getProperty('wf_states_to_show', ())
+        registry = getUtility(IRegistry)
+        navigation_settings = registry.forInterface(
+            INavigationSchema,
+            prefix="plone"
+        )
+        if navigation_settings.filter_on_workflow:
+            query['review_state'] = navigation_settings.workflow_states_to_show
 
         self.query = query
 
