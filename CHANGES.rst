@@ -83,7 +83,7 @@ Changelog
 
 
 3.0.6 (2015-06-05)
------------------
+------------------
 
 - Convert manage-portlets.js into a pattern and make improvements on
   using the manage portlets infrastructure
@@ -125,6 +125,7 @@ Changelog
 
 - Use plone_layout for getIcon.
   [pbauer]
+
 
 3.0.2 (2014-10-23)
 ------------------
@@ -1351,3 +1352,4 @@ Changelog
 
 - Initial implementation.
   [optilude]
+
