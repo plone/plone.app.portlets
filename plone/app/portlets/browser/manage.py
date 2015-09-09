@@ -1,3 +1,4 @@
+from zope.interface import implementsOnly
 from zope.interface import implements
 from zope.component import getMultiAdapter, getUtility
 from zope.publisher.interfaces.browser import IBrowserView
@@ -23,6 +24,7 @@ from plone.app.portlets.storage import UserPortletAssignmentMapping
 from plone.app.portlets.storage import GroupDashboardPortletAssignmentMapping
 
 from plone.app.portlets.interfaces import IPortletPermissionChecker
+from plone.app.portlets.interfaces import ITopbarManagePortlets
 
 from plone.app.portlets.browser.interfaces import IManagePortletsView
 from plone.app.portlets.browser.interfaces import IManageContextualPortletsView
@@ -377,6 +379,16 @@ class ManageContentTypePortletsViewlet(ManagePortletsViewlet):
 
 class TopbarManagePortlets(ManageContextualPortlets):
 
+    # Pay attention here.
+    # We are removing IManageContextualPortletsView from here
+    # so we can disable showing ALL edit portlet managers
+    # on the page when it's rendered. This view, we only
+    # want to see one edit portlet manager at a time.
+    # We still inherit from ManageContextualPortlets because
+    # we need to reuse all the management actions of adding,
+    # hiding, moving, etc portlets.
+    implementsOnly(ITopbarManagePortlets)
+
     def __init__(self, context, request):
         super(TopbarManagePortlets, self).__init__(context, request)
         # Disable the left and right columns
@@ -392,3 +404,14 @@ class TopbarManagePortlets(ManageContextualPortlets):
         """
         self.manager_name = name
         return self
+
+    def render_edit_manager_portlets(self):
+        # Pay attention again
+        # Here we manually render the portlets instead of doing
+        # something like provider:${view/manager_name} in the template
+        manager_view = ManageContextualPortlets(self.context, self.request)
+        manager_view.__name__ = 'manage-portlets'
+        portlet_manager = getMultiAdapter(
+            (self.context, self.request, manager_view), name=self.manager_name)
+        portlet_manager.update()
+        return portlet_manager.render()

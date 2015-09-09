@@ -4,7 +4,11 @@ Changelog
 3.0.9 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix single portlet manager management to not show other portlet
+  manager that are rendered on the same page. This fixes the odd
+  case where the footer portlets were editable on a page where
+  only the left or right side portlets should be editable
+  [vangheem]
 
 
 3.0.8 (2015-09-07)
