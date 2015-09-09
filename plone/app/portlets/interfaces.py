@@ -119,3 +119,7 @@ class IDefaultDashboard(Interface):
         'plone.dashboard2', 'plone.dashboard3' and/or 'plone.dashboard4')
         and a list of portlet assignmen instances.
         """
+
+
+class ITopbarManagePortlets(Interface):
+    pass
