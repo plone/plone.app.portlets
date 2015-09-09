@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.0.9 (unreleased)
+3.0.9 (2015-09-09)
 ------------------
 
 - Fix single portlet manager management to not show other portlet
