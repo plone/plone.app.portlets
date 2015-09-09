@@ -1,3 +1,4 @@
+from zope.interface import noLongerProvides
 from zope.interface import implements
 from zope.component import getMultiAdapter, getUtility
 from zope.publisher.interfaces.browser import IBrowserView
@@ -386,9 +387,29 @@ class TopbarManagePortlets(ManageContextualPortlets):
         # in the traversal path
         self.manager_name = 'plone.leftcolumn'
 
+        # Pay attention here.
+        # We are removing IManageContextualPortletsView from here
+        # so we can disable showing ALL edit portlet managers
+        # on the page when it's rendered. This view, we only
+        # want to see one edit portlet manager at a time.
+        # We still inherit from ManageContextualPortlets because
+        # we need to reuse all the management actions of adding,
+        # hiding, moving, etc portlets.
+        noLongerProvides(self, IManageContextualPortletsView)
+
     def publishTraverse(self, request, name):
         """Get the portlet manager via traversal so that we can re-use
         the portlet machinery without overriding it all here.
         """
         self.manager_name = name
         return self
+
+    def render_edit_manager_portlets(self):
+        # Pay attention again
+        # Here we manually render the portlets instead of doing
+        # something like provider:${view/manager_name} in the template
+        manager_view = ManageContextualPortlets(self.context, self.request)
+        portlet_manager = getMultiAdapter(
+            (self.context, self.request, manager_view), name=self.manager_name)
+        portlet_manager.update()
+        return portlet_manager.render()

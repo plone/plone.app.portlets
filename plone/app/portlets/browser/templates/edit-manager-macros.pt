@@ -36,14 +36,15 @@
 </div>
 
 <div metal:define-macro="current-portlets-list" class="portletAssignments"
-    i18n:domain="plone">
+    i18n:domain="plone"
+    tal:define="portlets view/portlets">
 
-    <h4 i18n:translate="heading_portlets_assigned_here">
+    <h4 i18n:translate="heading_portlets_assigned_here" tal:condition="portlets">
         Portlets assigned here
     </h4>
 
     <div>
-        <tal:block repeat="portlet view/portlets">
+        <tal:block repeat="portlet portlets">
             <div tal:define="hiddenPortletClass python:not portlet['visible'] and 'blockedPortlet' or ''"
                 tal:attributes="class string:managedPortlet portlet ${hiddenPortletClass};
                                 data-portlethash portlet/hash;
