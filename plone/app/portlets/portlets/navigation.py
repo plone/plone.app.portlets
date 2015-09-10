@@ -185,7 +185,7 @@ class Renderer(base.Renderer):
         displaying /sitemap links for anything besides nav root.
         """
 
-        if not self.data.root_uid:
+        if not self.data.root_uid and not self.data.currentFolderOnly:
             # No particular root item assigned -> should get link to the
             # navigation root sitemap of the current context acquisition chain
             portal_state = getMultiAdapter((self.context, self.request), name="plone_portal_state")
