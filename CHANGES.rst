@@ -4,7 +4,9 @@ Changelog
 3.0.10 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- If 'currentFolderOnly', navigation portlet header link should go to current
+  folder, not to sitemap
+  [ebrehault]
 
 
 3.0.9 (2015-09-09)
