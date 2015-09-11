@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.0.10 (unreleased)
+3.0.10 (2015-09-11)
 -------------------
 
 - Fix extra portletFooter on account of missing tal statement within news.pt
