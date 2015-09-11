@@ -47,7 +47,7 @@
           More news&hellip;
         </a>
   </footer>
-  <footer class="portletFooter" condition="not:view/all_news_link">
+  <footer class="portletFooter" tal:condition="not:view/all_news_link">
   </footer>
 </section>
 </html>
