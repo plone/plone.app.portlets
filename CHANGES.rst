@@ -4,6 +4,9 @@ Changelog
 3.0.10 (unreleased)
 -------------------
 
+- Fix extra portletFooter on account of missing tal statement within news.pt
+  [ichim-david]
+  
 - If 'currentFolderOnly', navigation portlet header link should go to current
   folder, not to sitemap
   [ebrehault]
