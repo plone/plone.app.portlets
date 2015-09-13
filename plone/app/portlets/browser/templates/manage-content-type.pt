@@ -20,7 +20,7 @@
   <div id="content-core">
       <a href=""
            class="link-parent"
-           tal:attributes="href string:${context/absolute_url}/@@types-controlpanel?type_id=${request/key}"
+           tal:attributes="href string:${context/absolute_url}/@@content-controlpanel?type_id=${request/key}"
            i18n:translate="return_to_view">
         Return
       </a>

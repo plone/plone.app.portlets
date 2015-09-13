@@ -4,7 +4,9 @@ Changelog
 3.1.dev0 (unreleased)
 ---------------------
 
-- Nothing changed yet.
+- Fix broken link in manage-content-type-portlets.
+  https://github.com/plone/Products.CMFPlone/issues/959
+  [pbauer]
 
 
 3.0.10 (2015-09-11)
@@ -12,7 +14,7 @@ Changelog
 
 - Fix extra portletFooter on account of missing tal statement within news.pt
   [ichim-david]
-  
+
 - If 'currentFolderOnly', navigation portlet header link should go to current
   folder, not to sitemap
   [ebrehault]
@@ -31,10 +33,10 @@ Changelog
 3.0.8 (2015-09-07)
 ------------------
 
-- Remove usage of global defines in classic portlet. 
+- Remove usage of global defines in classic portlet.
   [esteele]
 
-- Use registry lookup to get filter_on_workflow and 
+- Use registry lookup to get filter_on_workflow and
   workflow_states_to_show settings.
   [esteele]
 
