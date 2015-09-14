@@ -1,8 +1,8 @@
 Changelog
 =========
 
-3.1.dev0 (unreleased)
----------------------
+3.1 (2015-09-14)
+----------------
 
 - Fix broken link in manage-content-type-portlets.
   https://github.com/plone/Products.CMFPlone/issues/959
