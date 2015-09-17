@@ -4,7 +4,8 @@ Changelog
 3.1.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Prevent values lower than 1 in number of items.
+  [pbauer]
 
 
 3.1 (2015-09-14)
