@@ -384,8 +384,8 @@ class TestRenderer(PortletsTestCase):
         self.assertEqual(len(tree['children']), 6)
 
     def testAboveRoot(self):
-        registry = getUtility(IRegistry)
-        registry['plone.root'] = u'/folder2'
+        ntp=self.portal.portal_properties.navtree_properties
+        ntp.manage_changeProperties(root='/folder2')
         view = self.renderer(self.portal)
         tree = view.getNavTree()
         self.assertTrue(tree)
