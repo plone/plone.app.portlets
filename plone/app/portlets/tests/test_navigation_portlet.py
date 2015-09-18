@@ -166,8 +166,6 @@ class TestRenderer(PortletsTestCase):
         # property are not included
         self.portal.folder2.exclude_from_nav = True
         self.portal.folder2.reindexObject()
-        ntp=self.portal.portal_properties.navtree_properties
-        ntp.manage_changeProperties(showAllParents=True)
         view = self.renderer(self.portal.folder2.doc21)
         tree = view.getNavTree()
         self.assertTrue(tree)

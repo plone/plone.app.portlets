@@ -4,6 +4,10 @@ Changelog
 3.1.1 (unreleased)
 ------------------
 
+- Remove global settings for navigation tree's top_level,
+  current_folder_only
+  [esteele]
+
 - Prevent values lower than 1 in number of items.
   [pbauer]
 
