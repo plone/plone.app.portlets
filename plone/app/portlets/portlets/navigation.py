@@ -1,6 +1,6 @@
 from Acquisition import aq_inner, aq_base, aq_parent
 from ComputedAttribute import ComputedAttribute
-from plone.app.layout.navigation.defaultpage import isDefaultPage
+from Products.CMFPlone.defaultpage import check_default_page_via_view
 from plone.app.layout.navigation.interfaces import INavigationQueryBuilder
 from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.app.layout.navigation.interfaces import INavtreeStrategy
@@ -214,7 +214,7 @@ class Renderer(base.Renderer):
         container = aq_parent(context)
         if (aq_base(root) is aq_base(context) or
                 (aq_base(root) is aq_base(container) and
-                isDefaultPage(container, context))):
+                check_default_page_via_view(container, context))):
             return 'navTreeCurrentItem'
         return ''
 

@@ -7,6 +7,9 @@ Changelog
 - Prevent values lower than 1 in number of items.
   [pbauer]
 
+- Resolve deprecation warning for isDefaultPage.
+  [fulv]
+
 
 3.1 (2015-09-14)
 ----------------
