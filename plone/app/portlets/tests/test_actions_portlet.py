@@ -132,12 +132,12 @@ class TestRenderer(PortletsTestCase):
 
     def test_multiple_portlets(self):
         """This test ensures that we can add more than one action portlet on
-the same page with different action categories and show_icons option
-and those portlets will work as they are intended to work.
+        the same page with different action categories and show_icons option
+        and those portlets will work as they are intended to work.
 
-This test was written due to bug caused by caching actionLinks portlet
-renderer's method
-"""
+        This test was written due to bug caused by caching actionLinks portlet
+        renderer's method
+        """
         migtool = getToolByName(self.portal, 'portal_migration')
 
         # let's create two different portlet renderers for the same context
@@ -155,7 +155,6 @@ renderer's method
         # check the portal_tabs links (portal_tabs is somehow special)
         self.assertEquals(len(links1), 5)
         self.assertEquals(links1[0]['title'], u'Home')
-#        self.failIf(links1[0]['icon'] is None)
 
         # now check the site_actions links
         # this was failing until the caching of actionLinks method was fixed
@@ -170,8 +169,8 @@ renderer's method
 
     def test_portal_tabs(self):
         """Special stuff for the portal_tabs category which actions rely on
-content in Plone content root
-"""
+        content in Plone content root
+        """
         r = self.renderer(
             context=self.portal,
             assignment=actions.Assignment(
@@ -188,7 +187,7 @@ content in Plone content root
 
     def test_object_buttons(self):
         """Special stuff for the object_buttons category
-"""
+        """
         r = self.renderer(
             context=self.portal['news'],
             assignment=actions.Assignment(
