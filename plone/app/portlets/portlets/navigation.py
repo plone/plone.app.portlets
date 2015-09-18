@@ -244,8 +244,7 @@ class Renderer(base.Renderer):
 
     @memoize
     def getNavRootPath(self):
-        currentFolderOnly = self.data.currentFolderOnly or \
-                            self.properties.getProperty('currentFolderOnlyInNavtree', False)
+        currentFolderOnly = self.data.currentFolderOnly
         topLevel = self.data.topLevel or self.properties.getProperty('topLevel', 0)
         return getRootPath(self.context, currentFolderOnly, topLevel, self.data.root_uid)
 
@@ -394,8 +393,7 @@ class NavtreeStrategy(SitemapNavtreeStrategy):
         self.bottomLevel = portlet.bottomLevel or \
                            navtree_properties.getProperty('bottomLevel', 0)
 
-        currentFolderOnly = portlet.currentFolderOnly or \
-            navtree_properties.getProperty('currentFolderOnlyInNavtree', False)
+        currentFolderOnly = portlet.currentFolderOnly
 
         topLevel = portlet.topLevel or navtree_properties.getProperty('topLevel', 0)
         self.rootPath = getRootPath(context, currentFolderOnly, topLevel, portlet.root_uid)
