@@ -366,9 +366,13 @@ class QueryBuilder(object):
 
         # Filter on workflow states, if enabled
         registry = getUtility(IRegistry)
-        if registry.get('plone.filter_on_workflow', False):
-            query['review_state'] = registry.get(
-                'plone.workflow_states_to_show', ())
+        navigation_settings = registry.forInterface(
+            INavigationSchema,
+            prefix="plone"
+        )
+        if navigation_settings.filter_on_workflow:
+            query['review_state'] = navigation_settings.workflow_states_to_show
+
         self.query = query
 
     def __call__(self):
