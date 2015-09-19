@@ -146,7 +146,6 @@ class Renderer(base.Renderer):
     def __init__(self, context, request, view, manager, data):
         base.Renderer.__init__(self, context, request, view, manager, data)
 
-        self.properties = getToolByName(context, 'portal_properties').navtree_properties
         self.urltool = getToolByName(context, 'portal_url')
 
     def title(self):
@@ -309,7 +308,7 @@ class EditForm(base.EditForm):
 
 
 class QueryBuilder(object):
-    """Build a navtree query based on the settings in navtree_properties
+    """Build a navtree query based on the settings in INavigationSchema
     and those set on the portlet.
     """
     implements(INavigationQueryBuilder)

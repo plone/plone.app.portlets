@@ -219,8 +219,8 @@ class TestRenderer(PortletsTestCase):
         view = self.renderer(self.portal.folder2.file21)
         tree = view.getNavTree()
         self.assertEqual(tree['children'][-1]['show_children'], True)
-        ntp=self.portal.portal_properties.navtree_properties
-        ntp.manage_changeProperties(parentMetaTypesNotToQuery=['Folder'])
+        registry = self.portal.portal_registry
+        registry['plone.parent_types_not_to_query'] = [u'Folder']
         view = self.renderer(self.portal.folder2.file21)
         tree = view.getNavTree()
         self.assertEqual(tree['children'][-1]['show_children'], False)
@@ -249,7 +249,7 @@ class TestRenderer(PortletsTestCase):
                 self.assertTrue(child['useRemoteUrl'])
 
     def testNonStructuralFolderHidesChildren(self):
-        # Make sure NonStructuralFolders act as if parentMetaTypesNotToQuery
+        # Make sure NonStructuralFolders act as if parent_types_not_to_query
         # is set.
         f = dummy.NonStructuralFolder('ns_folder')
         self.portal.folder1._setObject('ns_folder', f)
@@ -460,8 +460,8 @@ class TestRenderer(PortletsTestCase):
         self.assertEqual(len(tree['children']), 2)
 
     def testPrunedRootNode(self):
-        ntp=self.portal.portal_properties.navtree_properties
-        ntp.manage_changeProperties(parentMetaTypesNotToQuery=['Folder'])
+        registry = self.portal.portal_registry
+        registry['plone.parent_types_not_to_query'] = [u'Folder']
 
         assignment = navigation.Assignment(topLevel=0)
         assignment.topLevel = 1
@@ -471,8 +471,8 @@ class TestRenderer(PortletsTestCase):
         self.assertEqual(len(tree['children']), 0)
 
     def testPrunedRootNodeShowsAllParents(self):
-        ntp=self.portal.portal_properties.navtree_properties
-        ntp.manage_changeProperties(parentMetaTypesNotToQuery=['Folder'])
+        registry = self.portal.portal_registry
+        registry['plone.parent_types_not_to_query'] = [u'Folder']
 
         assignment = navigation.Assignment(topLevel=0)
         assignment.topLevel = 1
