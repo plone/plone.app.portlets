@@ -176,33 +176,6 @@ class TestRenderer(PortletsTestCase):
                 break
         self.assertTrue(found)
 
-    def testNavTreeExcludesItemsInIdsNotToList(self):
-        # Make sure that items whose ids are in the idsNotToList navTree
-        # property are not included
-        ntp=self.portal.portal_properties.navtree_properties
-        ntp.manage_changeProperties(idsNotToList=['folder2'])
-        view = self.renderer(self.portal.folder1.doc11)
-        tree = view.getNavTree()
-        self.assertTrue(tree)
-        for c in tree['children']:
-            if c['item'].getPath() == '/plone/folder2':
-                self.fail()
-
-    def testShowAllParentsOverridesNavTreeExcludesItemsInIdsNotToList(self):
-        # Make sure that items whose ids are in the idsNotToList navTree
-        # property are not included
-        ntp=self.portal.portal_properties.navtree_properties
-        ntp.manage_changeProperties(idsNotToList=['folder2'], showAllParents=True)
-        view = self.renderer(self.portal.folder2.doc21)
-        tree = view.getNavTree()
-        self.assertTrue(tree)
-        found = False
-        for c in tree['children']:
-            if c['item'].getPath() == '/plone/folder2':
-                found = True
-                break
-        self.assertTrue(found)
-
     def testNavTreeExcludesDefaultPage(self):
         # Make sure that items which are the default page are excluded
         self.portal.folder2.setDefaultPage('doc21')
@@ -382,8 +355,8 @@ class TestRenderer(PortletsTestCase):
         self.assertEqual(len(tree['children']), 6)
 
     def testAboveRoot(self):
-        ntp=self.portal.portal_properties.navtree_properties
-        ntp.manage_changeProperties(root='/folder2')
+        registry = getUtility(IRegistry)
+        registry['plone.root'] = u'/folder2'
         view = self.renderer(self.portal)
         tree = view.getNavTree()
         self.assertTrue(tree)

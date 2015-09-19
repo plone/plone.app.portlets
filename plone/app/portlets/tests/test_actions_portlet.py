@@ -130,7 +130,7 @@ class TestRenderer(PortletsTestCase):
         self.failUnless(first['icon'] is None, "We should not have an icon")
         return
 
-    def test_muptiple_portlets(self):
+    def test_multiple_portlets(self):
         """This test ensures that we can add more than one action portlet on
         the same page with different action categories and show_icons option
         and those portlets will work as they are intended to work.
