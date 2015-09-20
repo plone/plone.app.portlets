@@ -146,7 +146,6 @@ class Renderer(base.Renderer):
     def __init__(self, context, request, view, manager, data):
         base.Renderer.__init__(self, context, request, view, manager, data)
 
-        self.properties = getToolByName(context, 'portal_properties').navtree_properties
         self.urltool = getToolByName(context, 'portal_url')
 
     def title(self):
@@ -168,7 +167,7 @@ class Renderer(base.Renderer):
         return len(tree['children']) > 0
 
     def include_top(self):
-        return getattr(self.data, 'includeTop', self.properties.includeTop)
+        return getattr(self.data, 'includeTop', True)
 
     def navigation_root(self):
         return self.getNavRoot()
@@ -231,7 +230,7 @@ class Renderer(base.Renderer):
     def createNavTree(self):
         data = self.getNavTree()
 
-        bottomLevel = self.data.bottomLevel or self.properties.getProperty('bottomLevel', 0)
+        bottomLevel = self.data.bottomLevel or 0
 
         if bottomLevel < 0:
             # Special case where navigation tree depth is negative
@@ -244,10 +243,10 @@ class Renderer(base.Renderer):
 
     @memoize
     def getNavRootPath(self):
-        currentFolderOnly = self.data.currentFolderOnly or \
-                            self.properties.getProperty('currentFolderOnlyInNavtree', False)
-        topLevel = self.data.topLevel or self.properties.getProperty('topLevel', 0)
-        return getRootPath(self.context, currentFolderOnly, topLevel, self.data.root_uid)
+        return getRootPath(self.context,
+                           self.data.currentFolderOnly,
+                           self.data.topLevel,
+                           self.data.root_uid)
 
     @memoize
     def getNavRoot(self, _marker=None):
@@ -309,7 +308,7 @@ class EditForm(base.EditForm):
 
 
 class QueryBuilder(object):
-    """Build a navtree query based on the settings in navtree_properties
+    """Build a navtree query based on the settings in INavigationSchema
     and those set on the portlet.
     """
     implements(INavigationQueryBuilder)
@@ -346,7 +345,7 @@ class QueryBuilder(object):
         else:
             query['path'] = {'query': currentPath, 'navtree': 1}
 
-        topLevel = portlet.topLevel or navtree_properties.getProperty('topLevel', 0)
+        topLevel = portlet.topLevel
         if topLevel and topLevel > 0:
             query['path']['navtree_start'] = topLevel + 1
 
@@ -387,18 +386,14 @@ class NavtreeStrategy(SitemapNavtreeStrategy):
 
     def __init__(self, context, portlet):
         SitemapNavtreeStrategy.__init__(self, context, portlet)
-        portal_properties = getToolByName(context, 'portal_properties')
-        navtree_properties = getattr(portal_properties, 'navtree_properties')
 
         # XXX: We can't do this with a 'depth' query to EPI...
-        self.bottomLevel = portlet.bottomLevel or \
-                           navtree_properties.getProperty('bottomLevel', 0)
+        self.bottomLevel = portlet.bottomLevel or 0
 
-        currentFolderOnly = portlet.currentFolderOnly or \
-            navtree_properties.getProperty('currentFolderOnlyInNavtree', False)
-
-        topLevel = portlet.topLevel or navtree_properties.getProperty('topLevel', 0)
-        self.rootPath = getRootPath(context, currentFolderOnly, topLevel, portlet.root_uid)
+        self.rootPath = getRootPath(context,
+                                    portlet.currentFolderOnly,
+                                    portlet.topLevel,
+                                    portlet.root_uid)
 
     def subtreeFilter(self, node):
         sitemapDecision = SitemapNavtreeStrategy.subtreeFilter(self, node)

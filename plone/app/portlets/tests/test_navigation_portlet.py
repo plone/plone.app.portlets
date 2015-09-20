@@ -166,35 +166,6 @@ class TestRenderer(PortletsTestCase):
         # property are not included
         self.portal.folder2.exclude_from_nav = True
         self.portal.folder2.reindexObject()
-        ntp=self.portal.portal_properties.navtree_properties
-        ntp.manage_changeProperties(showAllParents=True)
-        view = self.renderer(self.portal.folder2.doc21)
-        tree = view.getNavTree()
-        self.assertTrue(tree)
-        found = False
-        for c in tree['children']:
-            if c['item'].getPath() == '/plone/folder2':
-                found = True
-                break
-        self.assertTrue(found)
-
-    def testNavTreeExcludesItemsInIdsNotToList(self):
-        # Make sure that items whose ids are in the idsNotToList navTree
-        # property are not included
-        ntp=self.portal.portal_properties.navtree_properties
-        ntp.manage_changeProperties(idsNotToList=['folder2'])
-        view = self.renderer(self.portal.folder1.doc11)
-        tree = view.getNavTree()
-        self.assertTrue(tree)
-        for c in tree['children']:
-            if c['item'].getPath() == '/plone/folder2':
-                self.fail()
-
-    def testShowAllParentsOverridesNavTreeExcludesItemsInIdsNotToList(self):
-        # Make sure that items whose ids are in the idsNotToList navTree
-        # property are not included
-        ntp=self.portal.portal_properties.navtree_properties
-        ntp.manage_changeProperties(idsNotToList=['folder2'], showAllParents=True)
         view = self.renderer(self.portal.folder2.doc21)
         tree = view.getNavTree()
         self.assertTrue(tree)
@@ -221,8 +192,8 @@ class TestRenderer(PortletsTestCase):
         view = self.renderer(self.portal.folder2.file21)
         tree = view.getNavTree()
         self.assertEqual(tree['children'][-1]['show_children'], True)
-        ntp=self.portal.portal_properties.navtree_properties
-        ntp.manage_changeProperties(parentMetaTypesNotToQuery=['Folder'])
+        registry = self.portal.portal_registry
+        registry['plone.parent_types_not_to_query'] = [u'Folder']
         view = self.renderer(self.portal.folder2.file21)
         tree = view.getNavTree()
         self.assertEqual(tree['children'][-1]['show_children'], False)
@@ -251,7 +222,7 @@ class TestRenderer(PortletsTestCase):
                 self.assertTrue(child['useRemoteUrl'])
 
     def testNonStructuralFolderHidesChildren(self):
-        # Make sure NonStructuralFolders act as if parentMetaTypesNotToQuery
+        # Make sure NonStructuralFolders act as if parent_types_not_to_query
         # is set.
         f = dummy.NonStructuralFolder('ns_folder')
         self.portal.folder1._setObject('ns_folder', f)
@@ -384,8 +355,8 @@ class TestRenderer(PortletsTestCase):
         self.assertEqual(len(tree['children']), 6)
 
     def testAboveRoot(self):
-        ntp=self.portal.portal_properties.navtree_properties
-        ntp.manage_changeProperties(root='/folder2')
+        registry = getUtility(IRegistry)
+        registry['plone.root'] = u'/folder2'
         view = self.renderer(self.portal)
         tree = view.getNavTree()
         self.assertTrue(tree)
@@ -462,8 +433,8 @@ class TestRenderer(PortletsTestCase):
         self.assertEqual(len(tree['children']), 2)
 
     def testPrunedRootNode(self):
-        ntp=self.portal.portal_properties.navtree_properties
-        ntp.manage_changeProperties(parentMetaTypesNotToQuery=['Folder'])
+        registry = self.portal.portal_registry
+        registry['plone.parent_types_not_to_query'] = [u'Folder']
 
         assignment = navigation.Assignment(topLevel=0)
         assignment.topLevel = 1
@@ -473,8 +444,8 @@ class TestRenderer(PortletsTestCase):
         self.assertEqual(len(tree['children']), 0)
 
     def testPrunedRootNodeShowsAllParents(self):
-        ntp=self.portal.portal_properties.navtree_properties
-        ntp.manage_changeProperties(parentMetaTypesNotToQuery=['Folder'])
+        registry = self.portal.portal_registry
+        registry['plone.parent_types_not_to_query'] = [u'Folder']
 
         assignment = navigation.Assignment(topLevel=0)
         assignment.topLevel = 1
