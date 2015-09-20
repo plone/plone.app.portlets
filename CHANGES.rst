@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.1.1 (unreleased)
+3.1.1 (2015-09-20)
 ------------------
 
 - Remove global settings for navigation tree's top_level,
