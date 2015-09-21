@@ -1,6 +1,5 @@
 from Acquisition import aq_inner, aq_base, aq_parent
 from ComputedAttribute import ComputedAttribute
-from Products.CMFPlone.defaultpage import check_default_page_via_view
 from plone.app.layout.navigation.interfaces import INavigationQueryBuilder
 from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.app.layout.navigation.interfaces import INavtreeStrategy
@@ -20,6 +19,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFDynamicViewFTI.interfaces import IBrowserDefault
 from Products.CMFPlone import utils
 from Products.CMFPlone.browser.navtree import SitemapNavtreeStrategy
+from Products.CMFPlone.defaultpage import is_default_page
 from Products.CMFPlone.interfaces import INavigationSchema
 from Products.CMFPlone.interfaces import INonStructuralFolder
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -213,7 +213,7 @@ class Renderer(base.Renderer):
         container = aq_parent(context)
         if (aq_base(root) is aq_base(context) or
                 (aq_base(root) is aq_base(container) and
-                check_default_page_via_view(container, context))):
+                is_default_page(container, context))):
             return 'navTreeCurrentItem'
         return ''
 
