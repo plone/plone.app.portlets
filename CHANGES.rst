@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.1.2 (unreleased)
+3.1.2 (2015-09-27)
 ------------------
 
 - Log exceptions while parsing rss feeds. Get logged as info since
