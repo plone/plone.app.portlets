@@ -16,22 +16,24 @@
   <section class="portletContent">
     <ul>
       <tal:newsitems  tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime;
-                                  plone_layout context/@@plone_layout;
-                                  getIcon nocall:plone_layout/getIcon;"
+                                  plone_layout context/@@plone_layout"
                       tal:repeat="obj view/published_news_items">
-      <li tal:define="oddrow repeat/obj/odd;
-                      item_icon python:getIcon(obj);"
+      <li tal:define="oddrow repeat/obj/odd;"
           tal:attributes="class python:oddrow and 'portletItem even' or 'portletItem odd'">
 
         <a  href=""
             class="tile"
             tal:attributes="href obj/getURL;
                              title obj/Description">
-          <img tal:replace="structure item_icon/html_tag" />
-          <span tal:replace="obj/pretty_title_or_id">
-            Plone 2.1 announced!
-          </span>
-           </a>
+            <img class="image-icon" 
+               tal:define="getIcon python:obj.getURL()+'/@@images/image/icon'"
+               tal:condition="python:  obj.getIcon"                          
+               tal:attributes="href obj/getURL;
+                               src  string:$getIcon">                                        
+           <span tal:replace="obj/pretty_title_or_id">
+             Plone 5.1 announced!
+           </span>
+        </a>
            <time class="portletItemDetails"
                     tal:content="python:toLocalizedTime(obj.Date)">May 5</time>
 

@@ -4,7 +4,9 @@ Changelog
 3.1.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- remove deprecated icons ...
+  https://github.com/plone/Products.CMFPlone/issues/1151
+  [fgrcon]
 
 
 3.1.2 (2015-09-27)
