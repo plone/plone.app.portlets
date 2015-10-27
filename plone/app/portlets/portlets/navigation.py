@@ -218,6 +218,7 @@ class Renderer(base.Renderer):
         return ''
 
     def root_icon(self):
+        ''' should be deprecated for plone > 5.0 '''
         plone_layout = getMultiAdapter((self.context, self.request),
             name='plone_layout')
         icon = plone_layout.getIcon(self.getNavRoot())
