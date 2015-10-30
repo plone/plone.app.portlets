@@ -4,7 +4,13 @@ Changelog
 3.1.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+New:
+
+- *add item here*
+
+Fixes:
+
+- *add item here*
 
 
 3.1.2 (2015-09-27)
@@ -23,7 +29,7 @@ Changelog
 - Add caching functionality from feedparser.
   [do3cc]
 
-- Use ``is_default_page`` instead of ``check_default_page_via_view``. 
+- Use ``is_default_page`` instead of ``check_default_page_via_view``.
   [fulv]
 
 
@@ -1358,4 +1364,3 @@ Changelog
 
 - Initial implementation.
   [optilude]
-
