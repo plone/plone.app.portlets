@@ -25,7 +25,7 @@
               tal:attributes="class python:oddrow and 'portletItem even' or 'portletItem odd'">
 
               <a href="#"
-                  tal:attributes="href string:${item/url}"
+                  tal:attributes="href item/url"
                   class="tile">
                   <span tal:replace="item/title">
                       Title

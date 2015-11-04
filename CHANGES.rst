@@ -10,7 +10,8 @@ New:
 
 Fixes:
 
-- *add item here*
+- Fix links in RSS portlets when using special characters.
+  [Gagaro]
 
 
 3.1.2 (2015-09-27)
