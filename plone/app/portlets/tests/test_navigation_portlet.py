@@ -523,17 +523,6 @@ class TestRenderer(PortletsTestCase):
         self.assertEqual(len(tree['children']), 1)
         self.assertEqual(tree['children'][0]['item'].getPath(), '/plone/folder1/folder1_1/folder1_1_1')
 
-    def testImgConditionalOnTypeIcon(self):
-        """The <img> element should not render if the content type has
-        no icon expression"""
-        folder_fti = self.portal.portal_types['Folder']
-        folder_fti.manage_changeProperties(icon_expr='')
-        self.portal.folder1.reindexObject()
-
-        view = self.renderer(self.portal)
-        tree = view.getNavTree()
-        self.assertFalse(tree['children'][3]['item_icon'].html_tag())
-
     def testPortletsTitle(self):
         """If portlet's name is not explicitely specified we show
            default fallback 'Navigation', translate it and hide it
