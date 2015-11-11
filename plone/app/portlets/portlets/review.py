@@ -60,9 +60,7 @@ class Renderer(base.Renderer):
         workflow = getToolByName(context, 'portal_workflow')
 
         plone_view = getMultiAdapter((context, self.request), name='plone')
-        plone_layout = getMultiAdapter((context, self.request), name='plone_layout')
         getMember = getToolByName(context, 'portal_membership').getMemberById
-        getIcon = plone_layout.getIcon
         toLocalizedTime = plone_view.toLocalizedTime
 
         idnormalizer = queryUtility(IIDNormalizer)
@@ -77,16 +75,17 @@ class Renderer(base.Renderer):
                 creator_name = creator.getProperty('fullname', '') or creator_id
             else:
                 creator_name = creator_id
-
+            hasImage = True if getattr(obj,'image',None) else False
             items.append(dict(
                 path=obj.absolute_url(),
                 title=obj.pretty_title_or_id(),
+                item_class = 'contenttype-' + norm(obj.portal_type),
                 description=obj.Description(),
-                icon=getIcon(obj).html_tag(),
                 creator=creator_name,
                 review_state=review_state,
                 review_state_class='state-%s ' % norm(review_state),
                 mod_date=toLocalizedTime(obj.ModificationDate()),
+                hasImage = hasImage,                    
             ))
         return items
 

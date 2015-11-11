@@ -19,22 +19,28 @@
       <tal:items tal:repeat="o view/review_items">
           <li class="portletItem"
               tal:define="oddrow repeat/o/odd;
-                          review_state o/review_state;"
+                          review_state_class o/review_state_class;
+                          item_class o/item_class;"
               tal:attributes="class python:oddrow and 'portletItem even' or 'portletItem odd'">
 
               <a href="#"
                  tal:attributes="href string:${o/path}/view;
                                  title o/description;
-                                 class string:${o/review_state_class}visualIconPadding tile">
-                  <img tal:replace="structure o/icon" />
+                                 class string:$review_state_class tile $item_class">
+      	            <img class="image-icon"
+                  tal:define="getIcon string:${o/path}/@@images/image/icon"
+                  tal:condition="o/hasImage"                        
+                  tal:attributes="href string:${o/path}/view;
+                               src  string:$getIcon">
                   <span tal:replace="o/title">
                       Title
                   </span>
+              </a>
+ 	
                   <span class="portletItemDetails">
                       <span tal:replace="o/creator">Jim Smith</span> &mdash;
-                      <span tal:replace="o/mod_date"> May 5</span>
+                      <time tal:replace="o/mod_date"> May 5</time>
                   </span>
-              </a>
 
           </li>
       </tal:items>
