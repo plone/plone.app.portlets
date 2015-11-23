@@ -10,6 +10,9 @@ New:
 
 Fixes:
 
+- Add authenticator token to group portlet links
+  [vangheem]
+
 - Fix links in RSS portlets when using special characters.
   [Gagaro]
 
