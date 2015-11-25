@@ -4,22 +4,19 @@ Changelog
 3.1.3 (unreleased)
 ------------------
 
-New:
-
-- *add item here*
-
 Fixes:
 
-- Add authenticator token to group portlet links
+- Added authenticator token to group portlet links.
   [vangheem]
 
-- Fix links in RSS portlets when using special characters.
+- Fixed links in RSS portlets when using special characters.
   [Gagaro]
 
 - Cleanup and rework: contenttype-icons and showing thumbnails
-  for images/leadimages in listings
+  for images/leadimages in listings.
   https://github.com/plone/Products.CMFPlone/issues/1226
   [fgrcon]
+
 
 3.1.2 (2015-09-27)
 ------------------
