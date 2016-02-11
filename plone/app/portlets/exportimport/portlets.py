@@ -21,11 +21,10 @@ any assignments: ::
 
     <portlet remove="True" addview="portlets.Calendar"/>
 
-.. These docs are used in c.developermanual
+.. These docs are used in http://docs.plone.org/develop/addons/components/genericsetup.html
 .. original content from http://www.sixfeetup.com/company/technologies/plone-content-management-new/quick-reference-cards/swag/swag-images-files/generic_setup.pdf
 
-
-"""
+"""  # noqa
 
 from operator import attrgetter
 
