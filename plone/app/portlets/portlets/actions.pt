@@ -4,15 +4,15 @@
       tal:omit-tag=""
       i18n:domain="plone">
 
-<section class="portlet portletActions" role="menu"
+<aside class="portlet portletActions"
     tal:define="portal_url context/@@plone_portal_state/portal_url;">
 
-  <header class="portletHeader" tal:condition="view/showTitle">
+  <div class="portletHeader" tal:condition="view/showTitle">
         <span tal:condition="view/title" tal:content="view/title">
           Title
         </span>
-  </header>
-  <section class="portletContent">
+  </div>
+  <div class="portletContent">
     <ul>
       <tal:loop tal:repeat="link view/actionLinks">
         <li class="portletItem"
@@ -39,6 +39,6 @@
         </li>
       </tal:loop>
     </ul>
-  </section>
-</section>
+  </div>
+</aside>
 </html>
