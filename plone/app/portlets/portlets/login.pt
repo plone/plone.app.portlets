@@ -1,7 +1,7 @@
 <tal:block condition="view/show"
            i18n:domain="plone">
 
-<section class="portlet portletLogin"
+<aside class="portlet portletLogin"
     tal:condition="view/available">
 
   <header class="portletHeader">
@@ -106,9 +106,9 @@
         </a>
     </div>
   </footer>
-</section>
+</aside>
 
-<section class="portlet portletLogin"
+<aside class="portlet portletLogin"
     tal:condition="not:view/available">
 
     <header class="portletHeader">
@@ -123,6 +123,6 @@
         Login portlet not available.
     </div>
 
-</section>
+</aside>
 
 </tal:block>

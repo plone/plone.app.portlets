@@ -2,7 +2,7 @@
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       tal:omit-tag="">
-<section class="portlet portletWorkflowReview"
+<aside class="portlet portletWorkflowReview"
     i18n:domain="plone">
 
   <header class="portletHeader">
@@ -55,5 +55,5 @@
            tal:attributes="href full_review_link"
            i18n:translate="box_full_review_list">Full review list&hellip;</a>
   </footer>
-</section>
+</aside>
 </html>
