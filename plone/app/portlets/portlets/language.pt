@@ -4,7 +4,7 @@
     <header class="portletHeader">
         <span class="tile" i18n:translate="box_languages">Languages</span>
     </header>
-    <section class="portletContent">
+    <div class="portletContent">
         <ul tal:define="showFlags view/showFlags">
             <li class="portletItem" tal:repeat="lang view/languages">
                 <span tal:define="code lang/code;
@@ -30,7 +30,7 @@
                 </span>
             </li>
         </ul>
-    </section>
+    </div>
 
 </section>
 </tal:block>

@@ -17,7 +17,7 @@
       </a>
   </header>
 
-  <section class="portletContent">
+  <div class="portletContent">
       <form id="searchform" action="search"
             tal:define="livesearch view/enable_livesearch;"
             tal:attributes="action view/search_action;
@@ -45,7 +45,7 @@
           </div>
         </div>
       </form>
-    </section>
+  </div>
 
     <footer class="portletFooter">
         <a href="#"

@@ -10,7 +10,7 @@
            tal:attributes="href view/login_form"
            i18n:translate="box_sign_in">Log in</a>
   </header>
-  <section class="portletContent">
+  <div class="portletContent">
     <div
         tal:define="ac_name view/login_name;
                     ac_password view/login_password">
@@ -86,7 +86,7 @@
             </div>
         </form>
       </div>
-  </section>
+  </div>
   <footer class="portletFooter">
     <div tal:condition="view/can_request_password">
         <a href="mail_password_form"

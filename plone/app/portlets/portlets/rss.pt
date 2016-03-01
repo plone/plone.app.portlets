@@ -15,7 +15,7 @@
       Tags
     </a>
   </header>
-  <section class="portletContent" >
+  <div class="portletContent" >
     <ul tal:condition="view/feedAvailable">
       <tal:rss
                   tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime"
@@ -38,7 +38,7 @@
           </li>
       </tal:rss>
     </ul>
-  </section>
+  </div>
   <footer class="portletFooter" tal:condition="view/feedAvailable">
         <a href=""
            tal:condition="view/siteurl"
