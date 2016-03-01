@@ -1,7 +1,7 @@
 <tal:block condition="view/show"
            i18n:domain="plone">
 
-<section class="portlet portletLogin"  role="section"
+<section class="portlet portletLogin"
     tal:condition="view/available">
 
   <header class="portletHeader">

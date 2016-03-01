@@ -2,7 +2,7 @@
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       tal:omit-tag="">
-<section class="portlet portletRecent" role="section"
+<section class="portlet portletRecent"
     i18n:domain="plone">
 
     <header class="portletHeader">

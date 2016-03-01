@@ -1,6 +1,6 @@
 <tal:block i18n:domain="plone">
 
-<section class="portlet portletLanguage" role="section">
+<section class="portlet portletLanguage">
     <header class="portletHeader">
         <span class="tile" i18n:translate="box_languages">Languages</span>
     </header>
