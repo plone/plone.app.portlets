@@ -39,10 +39,8 @@
                 <br />
                 <input type="text"
                        size="10"
-                       alt="Login Name"
                        tal:attributes="name ac_name; id ac_name;
-                                       value python:request.get(ac_name, '');"
-                       i18n:attributes="alt label_login_name;"/>
+                                       value python:request.get(ac_name, '');" />
               </tal:loginname>
               <tal:email condition="use_email_as_login">
                 <label for=""
@@ -51,10 +49,8 @@
                 <br />
                 <input type="text"
                        size="10"
-                       alt="E-mail"
                        tal:attributes="name ac_name; id ac_name;
-                                       value python:request.get(ac_name, '');"
-                       i18n:attributes="alt label_email;"/>
+                                       value python:request.get(ac_name, '');" />
               </tal:email>
             </div>
 
@@ -65,9 +61,7 @@
                 <br />
                 <input type="password"
                        size="10"
-                       alt="Password"
-                       tal:attributes="name ac_password; id ac_password;"
-                       i18n:attributes="alt label_password;"/>
+                       tal:attributes="name ac_password; id ac_password;" />
             </div>
 
             <div class="cookiesMessage portalMessage warning"
@@ -87,8 +81,8 @@
                        type="submit"
                        name="submit"
                        value="Log in"
-                       alt="Log in"
-                       i18n:attributes="value label_log_in; alt label_log_in;"/>
+                       title="Log in"
+                       i18n:attributes="value label_log_in; title label_log_in;"/>
             </div>
         </form>
       </div>
