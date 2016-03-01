@@ -4,6 +4,16 @@ Changelog
 3.1.4 (unreleased)
 ------------------
 
+Incompatibilities:
+
+- Changed these ``section`` elements to ``div`` elements:
+  ``.portletHeader``, ``.portletContent``.  Changed these ``section``
+  elements to ``aside`` elements: ``.portletActions``,
+  ``.portletLanguage``, ``.portletLogin``, ``.portletNavigationTree``,
+  ``.portletNews``, ``.portletRecent``, ``.portletWorkflowReview``,
+  ``.portletRss``, ``.portletSearch``.  This might affect your custom
+  styling or javascript or robot tests.  [maurits]
+
 New:
 
 - *add item here*
