@@ -2,7 +2,7 @@
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       tal:omit-tag="">
-<section class="portlet portletNews"  role="section"
+<aside class="portlet portletNews"
     i18n:domain="plone">
 
   <header class="portletHeader">
@@ -13,7 +13,7 @@
            tal:attributes="href all_news_link"
            i18n:translate="box_news">News</a>
   </header>
-  <section class="portletContent">
+  <div class="portletContent">
     <ul>
       <tal:newsitems  tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime;
                                   plone_layout context/@@plone_layout"
@@ -25,11 +25,11 @@
             class="tile"
             tal:attributes="href obj/getURL;
                              title obj/Description">
-            <img class="image-icon" 
+            <img class="image-icon"
                tal:define="getIcon python:obj.getURL()+'/@@images/image/icon'"
-               tal:condition="python:  obj.getIcon"                          
+               tal:condition="python:  obj.getIcon"
                tal:attributes="href obj/getURL;
-                               src  string:$getIcon">                                        
+                               src  string:$getIcon">
            <span tal:replace="obj/pretty_title_or_id">
              Plone 5.1 announced!
            </span>
@@ -40,7 +40,7 @@
       </li>
       </tal:newsitems>
     </ul>
-  </section>
+  </div>
   <footer class="portletFooter"
          tal:condition="view/all_news_link">
         <a href=""
@@ -51,5 +51,5 @@
   </footer>
   <footer class="portletFooter" tal:condition="not:view/all_news_link">
   </footer>
-</section>
+</aside>
 </html>

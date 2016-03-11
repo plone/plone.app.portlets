@@ -2,7 +2,7 @@
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       tal:omit-tag="">
-<section class="portlet portletWorkflowReview" role="section"
+<aside class="portlet portletWorkflowReview"
     i18n:domain="plone">
 
   <header class="portletHeader">
@@ -14,7 +14,7 @@
            i18n:translate=""
            tal:content="view/title" />
   </header>
-  <section class="portletContent">
+  <div class="portletContent">
     <ul>
       <tal:items tal:repeat="o view/review_items">
           <li class="portletItem"
@@ -29,14 +29,14 @@
                                  class string:$review_state_class tile $item_class">
       	            <img class="image-icon"
                   tal:define="getIcon string:${o/path}/@@images/image/icon"
-                  tal:condition="o/hasImage"                        
+                  tal:condition="o/hasImage"
                   tal:attributes="href string:${o/path}/view;
                                src  string:$getIcon">
                   <span tal:replace="o/title">
                       Title
                   </span>
               </a>
- 	
+
                   <span class="portletItemDetails">
                       <span tal:replace="o/creator">Jim Smith</span> &mdash;
                       <time tal:replace="o/mod_date"> May 5</time>
@@ -45,7 +45,7 @@
           </li>
       </tal:items>
     </ul>
-  </section>
+  </div>
 
   <footer class="portletFooter"
         tal:define="full_review_link view/full_review_link"
@@ -55,5 +55,5 @@
            tal:attributes="href full_review_link"
            i18n:translate="box_full_review_list">Full review list&hellip;</a>
   </footer>
-</section>
+</aside>
 </html>

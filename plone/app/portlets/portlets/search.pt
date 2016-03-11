@@ -2,7 +2,7 @@
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       tal:omit-tag="">
-<section class="portlet portletSearch" role="search"
+<aside class="portlet portletSearch" role="search"
     i18n:domain="plone">
 
   <header class="portletHeader">
@@ -17,7 +17,7 @@
       </a>
   </header>
 
-  <section class="portletContent">
+  <div class="portletContent">
       <form id="searchform" action="search"
             tal:define="livesearch view/enable_livesearch;"
             tal:attributes="action view/search_action;
@@ -45,7 +45,7 @@
           </div>
         </div>
       </form>
-    </section>
+  </div>
 
     <footer class="portletFooter">
         <a href="#"
@@ -55,5 +55,5 @@
         Advanced Search&hellip;
         </a>
     </footer>
-</section>
+</aside>
 </html>

@@ -1,8 +1,18 @@
 Changelog
 =========
 
-3.1.4 (unreleased)
+4.0.0 (unreleased)
 ------------------
+
+Incompatibilities:
+
+- Changed these ``section`` elements to ``div`` elements:
+  ``.portletHeader``, ``.portletContent``.  Changed these ``section``
+  elements to ``aside`` elements: ``.portletActions``,
+  ``.portletLanguage``, ``.portletLogin``, ``.portletNavigationTree``,
+  ``.portletNews``, ``.portletRecent``, ``.portletWorkflowReview``,
+  ``.portletRss``, ``.portletSearch``.  This might affect your custom
+  styling or javascript or robot tests.  [maurits]
 
 New:
 
@@ -10,7 +20,13 @@ New:
 
 Fixes:
 
-- *add item here*
+- Fixed html validation:
+  - section lacks heading
+  - bad value 'menu' for attribute role on element section
+  - bad value 'section' for attribute role on element section
+  - attribute alt not allowed on element input at this point
+  - bad value menu for attribute role on element section.
+  [maurits]
 
 
 3.1.3 (2015-11-25)

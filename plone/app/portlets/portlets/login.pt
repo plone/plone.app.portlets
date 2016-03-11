@@ -1,7 +1,7 @@
 <tal:block condition="view/show"
            i18n:domain="plone">
 
-<section class="portlet portletLogin"  role="section"
+<aside class="portlet portletLogin"
     tal:condition="view/available">
 
   <header class="portletHeader">
@@ -10,7 +10,7 @@
            tal:attributes="href view/login_form"
            i18n:translate="box_sign_in">Log in</a>
   </header>
-  <section class="portletContent">
+  <div class="portletContent">
     <div
         tal:define="ac_name view/login_name;
                     ac_password view/login_password">
@@ -39,10 +39,8 @@
                 <br />
                 <input type="text"
                        size="10"
-                       alt="Login Name"
                        tal:attributes="name ac_name; id ac_name;
-                                       value python:request.get(ac_name, '');"
-                       i18n:attributes="alt label_login_name;"/>
+                                       value python:request.get(ac_name, '');" />
               </tal:loginname>
               <tal:email condition="use_email_as_login">
                 <label for=""
@@ -51,10 +49,8 @@
                 <br />
                 <input type="text"
                        size="10"
-                       alt="E-mail"
                        tal:attributes="name ac_name; id ac_name;
-                                       value python:request.get(ac_name, '');"
-                       i18n:attributes="alt label_email;"/>
+                                       value python:request.get(ac_name, '');" />
               </tal:email>
             </div>
 
@@ -65,9 +61,7 @@
                 <br />
                 <input type="password"
                        size="10"
-                       alt="Password"
-                       tal:attributes="name ac_password; id ac_password;"
-                       i18n:attributes="alt label_password;"/>
+                       tal:attributes="name ac_password; id ac_password;" />
             </div>
 
             <div class="cookiesMessage portalMessage warning"
@@ -87,12 +81,12 @@
                        type="submit"
                        name="submit"
                        value="Log in"
-                       alt="Log in"
-                       i18n:attributes="value label_log_in; alt label_log_in;"/>
+                       title="Log in"
+                       i18n:attributes="value label_log_in; title label_log_in;"/>
             </div>
         </form>
       </div>
-  </section>
+  </div>
   <footer class="portletFooter">
     <div tal:condition="view/can_request_password">
         <a href="mail_password_form"
@@ -112,9 +106,9 @@
         </a>
     </div>
   </footer>
-</section>
+</aside>
 
-<section class="portlet portletLogin"
+<aside class="portlet portletLogin"
     tal:condition="not:view/available">
 
     <header class="portletHeader">
@@ -129,6 +123,6 @@
         Login portlet not available.
     </div>
 
-</section>
+</aside>
 
 </tal:block>

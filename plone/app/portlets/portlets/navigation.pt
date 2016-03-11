@@ -1,5 +1,5 @@
 <tal:block i18n:domain="plone">
-<section class="portlet portletNavigationTree"
+<aside class="portlet portletNavigationTree"
     role="navigation"
     tal:define="root view/navigation_root">
 
@@ -43,5 +43,5 @@
             </li>
         </ul>
     </nav>
-</section>
+</aside>
 </tal:block>
