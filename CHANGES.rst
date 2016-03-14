@@ -10,7 +10,8 @@ Incompatibilities:
 
 New:
 
-- *add item here*
+- Add jumplist to provide quick access across portlet managers
+  [davilima6]
 
 Fixes:
 
