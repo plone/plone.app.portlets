@@ -1,7 +1,7 @@
 Changelog
 =========
 
-4.0.0 (unreleased)
+4.0.0 (2016-03-31)
 ------------------
 
 Incompatibilities:
@@ -13,10 +13,6 @@ Incompatibilities:
   ``.portletNews``, ``.portletRecent``, ``.portletWorkflowReview``,
   ``.portletRss``, ``.portletSearch``.  This might affect your custom
   styling or javascript or robot tests.  [maurits]
-
-New:
-
-- *add item here*
 
 Fixes:
 
