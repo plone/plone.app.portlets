@@ -17,6 +17,7 @@ define([
     trigger: '.pat-manage-portlets',
     messageTimeout: 0,
     submitTimeout: 0,
+    switchTimeout: 0,
     isModal: false,
     dirty: false,
     init: function(){
@@ -40,6 +41,7 @@ define([
     bind: function(){
       var that = this;
       that.setupAddDropdown();
+      that.setupSwitchPortletManager();
       that.setupSavePortletsSettings();
       that.setupPortletEdit();
       if(that.isModal){
@@ -100,7 +102,7 @@ define([
       $message.html('<strong>' + _t("Info") + '</strong>' + msg);
       clearTimeout(that.messageTimeout);
       $message.fadeTo(500, 1);
-      that.messageTimeout = setTimeout(function(){
+      that.messageTimeout = window.setTimeout(function(){
         $message.fadeTo(500, 0.6);
       }, 3000);
     },
@@ -163,7 +165,7 @@ define([
     },
     setupSavePortletsSettings: function(){
       var that = this;
-      $('.portlets-settings,form.portlet-action', that.$el).ajaxForm({
+      $('.portlets-settings, form.portlet-action', that.$el).ajaxForm({
         beforeSubmit: function(){
           that.loading.show();
         },
@@ -174,12 +176,50 @@ define([
           that.rebind($('#' + that.$el.attr('id'), $body).eq(0));
         }
       });
+      // Block/unblock inherited portlets (parent, group and content type portlets)
       $('.portlets-settings select', that.$el).change(function(){
         log.info('select change');
         clearTimeout(that.submitTimeout);
-        that.submitTimeout = setTimeout(function(){
+        that.submitTimeout = window.setTimeout(function(){
           $('.portlets-settings', that.$el).submit();
         }, 100);
+      });
+    },
+    setupSwitchPortletManager: function(){
+      var that = this;
+      $('#main-container').on('change', '.switch-portlet-manager', function(e){
+        e.stopImmediatePropagation();
+        log.info('switch portlet manager');
+        var url_ = $(this).val();
+        clearTimeout(that.switchTimeout);
+        that.switchTimeout = window.setTimeout(function() {
+          that._reloadPortletManager(url_);
+        }, 100);
+      });
+      // Handle back/forward browser buttons
+      $(window).on('popstate', function(e) {
+        e.stopImmediatePropagation();
+        if (e && e.state === undefined) {
+          var url_ = window.location.href;
+          log.info("redirecting to: " + url_);
+          that._reloadPortletManager(url_, true);
+        }
+      });
+    },
+    _reloadPortletManager: function(url_, is_popstate){
+      var that = this;
+      that.loading.show();
+      $.get(url_, {ajax_load: 1}).done(function(html) {
+        var $html = $(utils.parseBodyTag(html));
+        var $content = ('#content', $html);
+        $('#content').html($content);
+        that.rebind($('.pat-manage-portlets', $content), true);
+        if (!is_popstate) {
+          window.history.pushState(null, null, url_);
+        } else {
+          window.history.replaceState(null, null, url_);
+        }
+        that.loading.hide();
       });
     }
   });
