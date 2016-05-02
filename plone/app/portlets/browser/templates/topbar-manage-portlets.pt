@@ -8,13 +8,14 @@
 
   <div metal:fill-slot="main" tal:define="plone_view context/@@plone">
 
-    <div class="quicknav-wrapper pat-manage-portlets">
+    <div class="quicknav-wrapper">
       <form method="post"
           tal:attributes="action context/absolute_url">
-        <select id="quicknav" class="add-portlet pull-right" name=":action"
-            style="width: auto; margin-top: 0.5em;"
+        <select id="quicknav" class="switch-portlet-manager pull-right" name=":action"
             tal:define="portlet_menu context/@@view_get_menu/plone_contentmenu_portletmanager"
             tal:attributes="data-context-url context/absolute_url">
+          <option tal:attributes="value python:request['ACTUAL_URL']"
+              i18n:translate="title_switch_portlet_managers">Other portlet managers&hellip;</option>
           <tal:item repeat="item portlet_menu">
             <option tal:define="item_id python:item['title'].lower().replace(' ', '.');
                                 is_current python:item_id == view.manager_name"
@@ -23,7 +24,7 @@
                 tal:omit-tag="is_current">Plone Leftcolumn</option>
           </tal:item>
         </select>
-        <label for="quicknav" i18n:translate="title_manage_contextual_portlets" class="pull-right" style="margin-right: 0.5em; padding-top: 1em;">Quick access: </label>
+        <label for="quicknav" class="sr-only" i18n:translate="title_switch_portlet_managers">Other portlet managers</label>
       </form>
     </div>
 
