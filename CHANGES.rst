@@ -4,18 +4,10 @@ Changelog
 4.1.0 (unreleased)
 ------------------
 
-Incompatibilities:
-
-- *add item here*
-
 New:
 
 - Add jumplist to provide quick access across portlet managers
   [davilima6]
-
-Fixes:
-
-- *add item here*
 
 
 4.0.0 (2016-03-31)
