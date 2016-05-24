@@ -14,7 +14,10 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Improved documentation about ``portlets.xml``.  This is
+  automatically included in
+  http://docs.plone.org/develop/addons/components/genericsetup.html
+  [maurits]
 
 
 4.1.0 (2016-05-15)

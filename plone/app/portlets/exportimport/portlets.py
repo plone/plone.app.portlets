@@ -1,6 +1,52 @@
 """
+In ``portlets.xml`` you can register various objects.
+
+Add a portlet:
+
+.. code-block:: xml
+
+    <?xml version="1.0"?>
+    <portlets
+        xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+        i18n:domain="plone">
+      <portlet
+          addview="portlets.Navigation"
+          title="Navigation"
+          description="A portlet which can render a navigation tree"
+          i18n:attributes="title;
+                           description"
+          >
+        <for interface="plone.app.portlets.interfaces.IColumn" />
+      </portlet>
+    </portlets>
+
+Add a portlet assignment:
+
+.. code-block:: xml
+
+    <assignment
+        manager="plone.leftcolumn"
+        category="context"
+        key="/"
+        type="portlets.Navigation"
+        name="navigation"
+        />
+
+Valid categories are: ``content_type``,  ``context``, ``group``, ``user``.
+
+Add a portlet manager:
+
+.. code-block:: xml
+
+    <portletmanager
+       name="plone.leftcolumn"
+       type="plone.app.portlets.interfaces.ILeftColumn"
+       />
+
 When creating custom portlet managers, you will need to extend
-existing portlets to be addable to that manager: ::
+existing portlets to be addable to that manager:
+
+.. code-block:: xml
 
     <portlet extend="True" addview="portlets.Calendar">
       <for interface="my.package.interfaces.ICustomPortletManager"/>
@@ -9,15 +55,19 @@ existing portlets to be addable to that manager: ::
 You can also change the title and description of the portlet with the
 extend attribute: ::
 
+.. code-block:: xml
+
     <portlet
-      extend="True"
-      title="Dates of inquisition"
-      description="Nobody expects the SpanishInquisition!"
-      addview="portlets.Calendar"/>
+        extend="True"
+        title="Dates of inquisition"
+        description="Nobody expects the SpanishInquisition!"
+        addview="portlets.Calendar"/>
 
 Remove a portlet definition using the 'remove' attribute so that it can
 no longer be added via @@manage-portlets. This does not remove
-any assignments: ::
+any assignments:
+
+.. code-block:: xml
 
     <portlet remove="True" addview="portlets.Calendar"/>
 
