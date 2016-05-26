@@ -4,14 +4,6 @@ Changelog
 4.1.1 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - Improved documentation about ``portlets.xml``.  This is
