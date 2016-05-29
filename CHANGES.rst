@@ -14,7 +14,8 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Fixed missing pat-livesearch on search portlet
+  [agitator]
 
 
 4.1.1 (2016-05-26)

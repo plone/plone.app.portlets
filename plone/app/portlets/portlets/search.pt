@@ -21,7 +21,10 @@
       <form id="searchform" action="search"
             tal:define="livesearch view/enable_livesearch;"
             tal:attributes="action view/search_action;
-                            data-action view/action;">
+                            data-action view/action;
+                            class python: view.enable_livesearch and 'pat-livesearch' or '';
+                            data-pat-livesearch string:ajaxUrl:${view/navigation_root_url}/@@ajax-search;
+                            ">
         <div class="LSBox">
           <input class="searchField"
               name="SearchableText"
