@@ -1,3 +1,4 @@
+from plone import api
 from plone.app.portlets import PloneMessageFactory as _
 from plone.app.portlets.portlets import base
 from plone.portlets.interfaces import IPortletDataProvider
@@ -49,6 +50,9 @@ class Renderer(base.Renderer):
 
     def search_action(self):
         return '{0}/{1}'.format(self.navigation_root_url, self.action)
+
+    def navigation_root_url(self):
+        return api.portal.get_navigation_root()
 
 
 class AddForm(base.AddForm):
