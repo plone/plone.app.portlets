@@ -4,14 +4,6 @@ Changelog
 4.1.2 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - Fixed missing pat-livesearch on search portlet
