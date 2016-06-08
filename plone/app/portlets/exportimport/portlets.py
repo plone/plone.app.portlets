@@ -183,6 +183,8 @@ class PropertyPortletAssignmentExportImportHandler(object):
         """Import a single <property /> node
         """
         property_name = child.getAttribute('name')
+        
+        __traceback_info__ = "Property name: " + property_name
 
         field = interface.get(property_name, None)
         if field is None:
