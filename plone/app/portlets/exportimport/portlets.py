@@ -494,7 +494,7 @@ class PortletsXMLAdapter(XMLAdapterBase):
             name = str(name)
             assignment = mapping.get(name, None)
             
-        __traceback_info__ = name
+        __traceback_info__ = "Assignment name: " + name
 
         if node.hasAttribute('remove'):
             if assignment is not None:
