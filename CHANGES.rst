@@ -4,7 +4,7 @@ Changelog
 2.5.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fixed links in RSS portlets when they have special characters and we use chameleon.  [maurits]
 
 
 2.5.4 (2015-08-14)
