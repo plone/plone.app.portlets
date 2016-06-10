@@ -8,12 +8,12 @@
     tal:define="portal_url context/@@plone_portal_state/portal_url;">
 
   <div class="portletHeader" tal:condition="view/showTitle">
-        <span tal:condition="view/title" tal:content="view/title">
+        <span tal:condition="view/title" tal:replace="view/title">
           Title
         </span>
   </div>
   <div class="portletContent">
-    <ul>
+    <ul tal:attributes="class string:actions-${view/category}">
       <tal:loop tal:repeat="link view/actionLinks">
         <li class="portletItem"
             tal:define="icon nocall:link/icon">

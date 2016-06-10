@@ -10,13 +10,16 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- Add category as CSS class to actions portlet for easier styling
+  [tomgross]
 
 Bug fixes:
 
 - Fixed missing pat-livesearch on search portlet
   [agitator]
 
+- Remove Plone 3 compatibility code
+  [tomgross]
 
 4.1.1 (2016-05-26)
 ------------------

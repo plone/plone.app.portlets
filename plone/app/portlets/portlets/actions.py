@@ -2,11 +2,13 @@
 from Acquisition import aq_inner
 from plone.app.portlets import PloneMessageFactory as _
 from plone.app.portlets.portlets import base
+from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.memoize import view as pm_view
 from plone.portlets.interfaces import IPortletDataProvider
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope import schema
 from zope.component import getMultiAdapter
+from zope.component import getUtility
 from zope.interface import implements
 
 
@@ -97,7 +99,6 @@ class Renderer(base.Renderer):
     @property
     def title(self):
         """Portlet title"""
-
         return self.data.ptitle
 
     @property
@@ -110,32 +111,16 @@ class Renderer(base.Renderer):
         return self.cachedLinks(self.data.category, self.data.default_icon,
                                 self.data.show_icons)
 
+    @property
+    def category(self):
+        return getUtility(IIDNormalizer).normalize(self.data.category)
+
     @pm_view.memoize
     def cachedLinks(self, actions_category, default_icon, show_icons):
         context_state = getMultiAdapter((aq_inner(self.context), self.request),
                                         name=u'plone_context_state')
-        HAS_PLONE4 = False
-        try:
-            actions = context_state.actions(actions_category)
-            HAS_PLONE4 = True
-        except TypeError:  # Plone < 4
-           actions = context_state.actions()
+        actions = context_state.actions(actions_category)
 
-        # Finding method for icons
-#        if show_icons:
-#            portal_actionicons = getToolByName(self.context, 'portal_actionicons')
-#            def render_icon(category, action, default):
-#                if action.has_key('icon') and action['icon']:
-#                    # We have an icon *in* this action
-#                    return action['icon']
-#                # Otherwise we look for an icon in portal_actionicons
-#                if category != 'object_buttons':
-#                    return portal_actionicons.renderActionIcon(category, action['id'], default)
-#                else:
-#                    # object_buttons
-#                    plone_utils = getToolByName(self.context, 'plone_utils')
-#                    return plone_utils.getIconFor(category, action['id'], default)
-#        else:
         def render_icon(category, action_id, default):
             # We don't show icons whatever
             return None
@@ -159,13 +144,10 @@ class Renderer(base.Renderer):
                         default=default_icon)
                     }
                 result.append(link)
-
         else:
             if actions_category == 'object_buttons':
                 actions_tool = getMultiAdapter((aq_inner(self.context), self.context.request), name=u'plone_tools').actions()
                 actions = actions_tool.listActionInfos(object=aq_inner(self.context), categories=(actions_category,))
-            elif not HAS_PLONE4:
-                actions = actions.get(actions_category, [])
             for action in actions:
                 if not (action['available']
                         and action['visible']
