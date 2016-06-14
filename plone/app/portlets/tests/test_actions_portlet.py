@@ -112,10 +112,7 @@ class TestRenderer(PortletsTestCase):
 
         first = output[0]
         self.failUnlessEqual(first['url'], 'http://nohost/plone/sitemap')
-#        self.failUnless(first['icon'] is not None, "We should have an icon")
         self.failUnlessEqual(first['title'], u"Site Map")
-
-        return
 
     def test_render_woicon(self):
         """Without icons"""
@@ -183,7 +180,6 @@ class TestRenderer(PortletsTestCase):
         expected = set([u'Test Folder', u'Home', u'Users', u'News', u'Events'])
         got = set([unicode(link['title']) for link in output])
         self.failUnlessEqual(got, expected)
-        return
 
     def test_object_buttons(self):
         """Special stuff for the object_buttons category
@@ -200,11 +196,25 @@ class TestRenderer(PortletsTestCase):
         expected = set([u'Cut', u'Copy', u'Rename', u'Delete'])
         got = set([unicode(link['title']) for link in output])
         self.failUnlessEqual(got, expected)
-        return
+
+    def test_category(self):
+        r = self.renderer(
+            context=self.portal['news'],
+            assignment=actions.Assignment(
+                ptitle=u'actions', category=u'object_buttons', show_icons=False))
+        r = r.__of__(self.folder)
+        r.update()
+        self.assertEqual(r.category, 'object_buttons')
+
+    def test_category_normalize(self):
+        class DummyData(object):
+            category = 'Complex Category'
+        r = actions.Renderer(None, None, None, None, DummyData())
+        self.assertEqual(r.category, 'complex-category')
 
     def test_object_buttons_with_icons(self):
         """Special stuff for the object_buttons category (bug in render_icons)
-"""
+        """
         r = self.renderer(
             context=self.portal['news'],
             assignment=actions.Assignment(
@@ -218,12 +228,3 @@ class TestRenderer(PortletsTestCase):
         expected = set([u'Cut', u'Copy', u'Rename', u'Delete'])
         got = set([unicode(link['title']) for link in output])
         self.failUnlessEqual(got, expected)
-        return
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestPortlet))
-    suite.addTest(makeSuite(TestRenderer))
-    return suite
