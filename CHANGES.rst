@@ -11,6 +11,7 @@ Breaking changes:
 New features:
 
 - *add item here*
+- *Tracebak info on importing portlets.xml to show better error location in the xml*
 
 Bug fixes:
 
