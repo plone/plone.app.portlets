@@ -10,8 +10,8 @@ Breaking changes:
 
 New features:
 
-- *add item here*
-- *Tracebak info on importing portlets.xml to show better error location in the xml*
+- Tracebak info on importing portlets.xml to show better error location in the xml
+  [SyZn]
 
 Bug fixes:
 
