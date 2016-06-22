@@ -16,6 +16,8 @@ New features:
 - Upgrade news portlet to use the new select widget;
   Add dependency on plone.app.z3cform
   [datakurre]
+- Tracebak info on importing ``portlets.xml`` to show better error location in the xml
+  [SyZn]
 
 Bug fixes:
 
