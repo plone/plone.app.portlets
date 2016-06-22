@@ -13,6 +13,10 @@ New features:
 - Add category as CSS class to actions portlet for easier styling
   [tomgross]
 
+- Upgrade news portlet to use the new select widget;
+  Add dependency on plone.app.z3cform
+  [datakurre]
+
 Bug fixes:
 
 - *add item here*
