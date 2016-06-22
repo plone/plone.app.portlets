@@ -183,6 +183,8 @@ class PropertyPortletAssignmentExportImportHandler(object):
         """Import a single <property /> node
         """
         property_name = child.getAttribute('name')
+        
+        __traceback_info__ = "Property name: " + property_name
 
         field = interface.get(property_name, None)
         if field is None:
@@ -491,6 +493,8 @@ class PortletsXMLAdapter(XMLAdapterBase):
         if name:
             name = str(name)
             assignment = mapping.get(name, None)
+            
+        __traceback_info__ = "Assignment name: " + name
 
         if node.hasAttribute('remove'):
             if assignment is not None:
