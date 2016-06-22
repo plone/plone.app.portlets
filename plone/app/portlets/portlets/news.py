@@ -1,17 +1,19 @@
 from Acquisition import aq_inner
 from plone.app.layout.navigation.root import getNavigationRootObject
-from plone.app.portlets import PloneMessageFactory as _
 from plone.app.portlets.cache import render_cachekey
+from plone.app.portlets import PloneMessageFactory as _
 from plone.app.portlets.portlets import base
-from plone.memoize import ram
+from plone.app.z3cform.widget import SelectFieldWidget
+from plone.autoform.directives import widget
 from plone.memoize.compress import xhtml_compress
+from plone.memoize import ram
 from plone.memoize.instance import memoize
 from plone.portlets.interfaces import IPortletDataProvider
 from Products.CMFCore.utils import getToolByName
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from zope import schema
 from zope.component import getMultiAdapter
-from zope.interface import implements
+from zope import schema
+from zope.interface import implementer
 
 
 class INewsPortlet(IPortletDataProvider):
@@ -22,6 +24,7 @@ class INewsPortlet(IPortletDataProvider):
                        default=5,
                        min=1)
 
+    widget(state=SelectFieldWidget)
     state = schema.Tuple(
         title=_(u"Workflow state"),
         description=_(u"Items in which workflow state to show."),
@@ -32,8 +35,8 @@ class INewsPortlet(IPortletDataProvider):
         )
 
 
+@implementer(INewsPortlet)
 class Assignment(base.Assignment):
-    implements(INewsPortlet)
 
     def __init__(self, count=5, state=('published', )):
         self.count = count
