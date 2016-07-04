@@ -23,6 +23,8 @@ Bug fixes:
 
 - Use zope.interface decorator.
   [gforcada]
+- Change ``plone-manage-portlets`` to use Patternslib base pattern ``pat-base``.
+  [thet]
 
 
 4.1.2 (2016-06-07)
