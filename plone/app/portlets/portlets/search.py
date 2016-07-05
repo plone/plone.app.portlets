@@ -5,7 +5,7 @@ from plone.portlets.interfaces import IPortletDataProvider
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope import schema
 from zope.component import getMultiAdapter
-from zope.interface import implements
+from zope.interface import implementer
 
 
 class ISearchPortlet(IPortletDataProvider):
@@ -21,8 +21,8 @@ class ISearchPortlet(IPortletDataProvider):
         required=False)
 
 
+@implementer(ISearchPortlet)
 class Assignment(base.Assignment):
-    implements(ISearchPortlet)
 
     def __init__(self, enableLivesearch=True):
         self.enableLivesearch = enableLivesearch

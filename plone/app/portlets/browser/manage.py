@@ -1,5 +1,5 @@
-from zope.interface import implementsOnly
-from zope.interface import implements
+from zope.interface import implementer_only
+from zope.interface import implementer
 from zope.component import getMultiAdapter, getUtility
 from zope.publisher.interfaces.browser import IBrowserView
 
@@ -37,8 +37,8 @@ from plone.memoize.view import memoize
 from plone.protect.authenticator import createToken
 
 
+@implementer(IManageContextualPortletsView)
 class ManageContextualPortlets(BrowserView):
-    implements(IManageContextualPortletsView)
 
     def __init__(self, context, request):
         super(ManageContextualPortlets, self).__init__(context, request)
@@ -113,8 +113,8 @@ class ManageContextualPortlets(BrowserView):
         self.request.response.redirect(self.context.absolute_url() + '/@@manage-portlets')
 
 
+@implementer(IManageDashboardPortletsView)
 class ManageDashboardPortlets(BrowserView):
-    implements(IManageDashboardPortletsView)
 
     # IManagePortletsView implementation
 
@@ -164,8 +164,8 @@ class ManageDashboardPortlets(BrowserView):
         return memberId
 
 
+@implementer(IManageDashboardPortletsView)
 class ManageGroupDashboardPortlets(BrowserView):
-    implements(IManageDashboardPortletsView)
 
     @property
     def group(self):
@@ -201,8 +201,8 @@ class ManageGroupDashboardPortlets(BrowserView):
         return mapping.values()
 
 
+@implementer(IManageGroupPortletsView)
 class ManageGroupPortlets(BrowserView):
-    implements(IManageGroupPortletsView)
 
     # IManagePortletsView implementation
 
@@ -244,8 +244,8 @@ class ManageGroupPortlets(BrowserView):
         return self.request['key']
 
 
+@implementer(IManageContentTypePortletsView)
 class ManageContentTypePortlets(BrowserView):
-    implements(IManageContentTypePortletsView)
 
     def __init__(self, context, request):
         super(ManageContentTypePortlets, self).__init__(context, request)
@@ -299,6 +299,7 @@ class ManageContentTypePortlets(BrowserView):
                 return fti
 
 
+@implementer(IManagePortletsView)
 class ManagePortletsViewlet(BrowserView):
     """A general base class for viewlets that want to be rendered on the
     manage portlets view. This makes it possible to have a viewlet that
@@ -307,7 +308,6 @@ class ManagePortletsViewlet(BrowserView):
     renderer is registered on IManagePortletsView, but inside a viewlet,
     the __parent__ is the viewlet, not the ultimate parent).
     """
-    implements(IManagePortletsView)
 
     def __init__(self, context, request, view, manager):
         super(ManagePortletsViewlet, self).__init__(context, request)
@@ -356,38 +356,29 @@ class ManagePortletsViewlet(BrowserView):
     # put these here)
 
 
+@implementer(IManageContextualPortletsView)
 class ManageContextualPortletsViewlet(ManagePortletsViewlet):
     """A viewlet base class for viewlets that need to render on the
     manage contextual portlets screen.
     """
-    implements(IManageContextualPortletsView)
 
 
+@implementer(IManageGroupPortletsView)
 class ManageGroupPortletsViewlet(ManagePortletsViewlet):
     """A viewlet base class for viewlets that need to render on the
     manage group portlets screen.
     """
-    implements(IManageGroupPortletsView)
 
 
+@implementer(IManageContentTypePortletsView)
 class ManageContentTypePortletsViewlet(ManagePortletsViewlet):
     """A viewlet base class for viewlets that need to render on the
     manage content type portlets screen.
     """
-    implements(IManageContentTypePortletsView)
 
 
+@implementer_only(ITopbarManagePortlets)
 class TopbarManagePortlets(ManageContextualPortlets):
-
-    # Pay attention here.
-    # We are removing IManageContextualPortletsView from here
-    # so we can disable showing ALL edit portlet managers
-    # on the page when it's rendered. This view, we only
-    # want to see one edit portlet manager at a time.
-    # We still inherit from ManageContextualPortlets because
-    # we need to reuse all the management actions of adding,
-    # hiding, moving, etc portlets.
-    implementsOnly(ITopbarManagePortlets)
 
     def __init__(self, context, request):
         super(TopbarManagePortlets, self).__init__(context, request)

@@ -1,4 +1,4 @@
-from zope.interface import implements
+from zope.interface import implementer
 from zope.component import adapts
 
 from plone.portlets.interfaces import IPortletAssignmentMapping
@@ -11,8 +11,8 @@ from AccessControl import getSecurityManager, Unauthorized
 from Acquisition import aq_inner
 
 
+@implementer(IPortletPermissionChecker)
 class DefaultPortletPermissionChecker(object):
-    implements(IPortletPermissionChecker)
     adapts(IPortletAssignmentMapping)
 
     def __init__(self, context):
@@ -28,8 +28,8 @@ class DefaultPortletPermissionChecker(object):
             raise Unauthorized("You are not allowed to manage portlets")
 
 
+@implementer(IPortletPermissionChecker)
 class UserPortletPermissionChecker(object):
-    implements(IPortletPermissionChecker)
     adapts(IUserPortletAssignmentMapping)
 
     def __init__(self, context):
@@ -50,8 +50,8 @@ class UserPortletPermissionChecker(object):
             raise Unauthorized("You are only allowed to manage your own portlets")
 
 
+@implementer(IPortletPermissionChecker)
 class GroupDashboardPortletPermissionChecker(object):
-    implements(IPortletPermissionChecker)
     adapts(IGroupDashboardPortletAssignmentMapping)
 
     def __init__(self, context):

@@ -9,7 +9,7 @@ from plone.portlets.interfaces import IPortletDataProvider
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope import schema
 from zope.component import getMultiAdapter
-from zope.interface import implements
+from zope.interface import implementer
 
 
 class IRecentPortlet(IPortletDataProvider):
@@ -21,8 +21,8 @@ class IRecentPortlet(IPortletDataProvider):
                        min=1)
 
 
+@implementer(IRecentPortlet)
 class Assignment(base.Assignment):
-    implements(IRecentPortlet)
 
     def __init__(self, count=5):
         self.count = count

@@ -52,7 +52,7 @@ class DummyView(BrowserView):
 
 # A sample portlet
 
-from zope.interface import implements
+from zope.interface import implementer
 from zope import schema
 
 from plone.portlets.interfaces import IPortletDataProvider
@@ -66,8 +66,8 @@ class ITestPortlet(IPortletDataProvider):
                               value_type=schema.Choice(vocabulary="plone.app.vocabularies.WorkflowStates"))
 
 
+@implementer(ITestPortlet)
 class TestAssignment(base.Assignment):
-    implements(ITestPortlet)
 
     test_text = None
     test_bool = None

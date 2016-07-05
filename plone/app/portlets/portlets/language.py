@@ -4,7 +4,7 @@ from plone.app.portlets.portlets import base
 from plone.portlets.interfaces import IPortletDataProvider
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.component import getMultiAdapter
-from zope.interface import implements
+from zope.interface import implementer
 
 
 class ILanguagePortlet(IPortletDataProvider):
@@ -12,8 +12,8 @@ class ILanguagePortlet(IPortletDataProvider):
     """
 
 
+@implementer(ILanguagePortlet)
 class Assignment(base.Assignment):
-    implements(ILanguagePortlet)
 
     title = _(u'label_languages', default=u'Languages')
 

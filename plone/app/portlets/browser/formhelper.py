@@ -1,7 +1,7 @@
 from z3c.form import button
 from z3c.form import form
 from zope.component import getMultiAdapter
-from zope.interface import implements
+from zope.interface import implementer
 import zope.event
 import zope.lifecycleevent
 
@@ -20,6 +20,7 @@ from plone.autoform.form import AutoExtensibleForm
 from Products.statusmessages.interfaces import IStatusMessage
 
 
+@implementer(IPortletAddForm)
 class AddForm(AutoExtensibleForm, form.AddForm):
     """A base add form for portlets.
 
@@ -39,8 +40,6 @@ class AddForm(AutoExtensibleForm, form.AddForm):
         def create(self):
             return MyAssignment()
     """
-
-    implements(IPortletAddForm)
 
     template = ViewPageTemplateFile('templates/z3cform-portlets-pageform.pt')
 
@@ -141,11 +140,10 @@ class NullAddForm(BrowserView):
         raise NotImplementedError("concrete classes must implement create()")
 
 
+@implementer(IPortletEditForm)
 class EditForm(AutoExtensibleForm, form.EditForm):
     """An edit form for portlets.
     """
-
-    implements(IPortletEditForm)
 
     template = ViewPageTemplateFile('templates/z3cform-portlets-pageform.pt')
 

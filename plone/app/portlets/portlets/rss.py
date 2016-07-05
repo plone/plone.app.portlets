@@ -6,7 +6,7 @@ from plone.app.portlets.portlets import base
 from plone.portlets.interfaces import IPortletDataProvider
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
 from zope import schema
-from zope.interface import implements, Interface
+from zope.interface import implementer, Interface
 import feedparser
 import time
 
@@ -64,9 +64,9 @@ class IFeed(Interface):
         """is this feed ok to display?"""
 
 
+@implementer(IFeed)
 class RSSFeed(object):
     """an RSS feed"""
-    implements(IFeed)
 
     def __init__(self, url, timeout):
         self.url = url
@@ -253,8 +253,8 @@ class IRSSPortlet(IPortletDataProvider):
         default=100)
 
 
+@implementer(IRSSPortlet)
 class Assignment(base.Assignment):
-    implements(IRSSPortlet)
 
     portlet_title = u''
 

@@ -5,7 +5,7 @@ from plone.portlets.interfaces import IPortletAssignment
 from plone.portlets.interfaces import IPortletRenderer
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.container.contained import Contained
-from zope.interface import implements
+from zope.interface import implementer
 
 # Convenience imports
 from plone.app.portlets.browser.formhelper import AddForm
@@ -13,14 +13,13 @@ from plone.app.portlets.browser.formhelper import NullAddForm
 from plone.app.portlets.browser.formhelper import EditForm
 
 
+@implementer(IPortletAssignment)
 class Assignment(SimpleItem, Contained):
     """Base class for assignments.
 
     Your type may override the 'title', 'available' and 'data' properties, and
     may
     """
-
-    implements(IPortletAssignment)
 
     __name__ = ''
 
@@ -44,6 +43,7 @@ class Assignment(SimpleItem, Contained):
         return self
 
 
+@implementer(IPortletRenderer)
 class Renderer(Explicit):
     """Base class for portlet renderers.
 
@@ -57,8 +57,6 @@ class Renderer(Explicit):
     This will render the template mytemplate.pt, found in the same directory
     as your source code file.
     """
-
-    implements(IPortletRenderer)
 
     def __init__(self, context, request, view, manager, data):
         self.context = context
@@ -82,14 +80,13 @@ class Renderer(Explicit):
         return True
 
 
+@implementer(IDeferredPortletRenderer)
 class DeferredRenderer(Renderer):
     """provide defer functionality via KSS
 
     in here don't override render() but instead override render_full
 
     """
-
-    implements(IDeferredPortletRenderer)
 
     render_preload = ViewPageTemplateFile('deferred_portlet.pt')
 

@@ -3,7 +3,7 @@ from plone.app.portlets.portlets import base
 from plone.portlets.interfaces import IPortletDataProvider
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope import schema
-from zope.interface import implements
+from zope.interface import implementer
 
 
 class IClassicPortlet(IPortletDataProvider):
@@ -23,8 +23,8 @@ class IClassicPortlet(IPortletDataProvider):
         required=False)
 
 
+@implementer(IClassicPortlet)
 class Assignment(base.Assignment):
-    implements(IClassicPortlet)
 
     def __init__(self, template='', macro=''):
         self.template = template
