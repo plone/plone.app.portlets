@@ -1,6 +1,7 @@
 Changelog
 =========
 
+
 3.1.4 (unreleased)
 ------------------
 
@@ -10,7 +11,8 @@ New:
 
 Fixes:
 
-- *add item here*
+- Use absolute source URL in navigation portlet's thumbnails
+  [davilima6]
 
 
 3.1.3 (2015-11-25)
@@ -121,12 +123,14 @@ Fixes:
 - Remove CMFDefault dependency
   [tomgross]
 
+
 3.0.5 (2015-05-12)
 ------------------
 
 - Supress a ZopeTestCase warning.
   This fixes https://github.com/plone/Products.CMFPlone/issues/501
   [gforcada]
+
 
 3.0.4 (2015-05-04)
 ------------------
@@ -231,6 +235,7 @@ Fixes:
 - Fix navigation root of portlets when root field is unicode.
   This is the case when portlet is imported with generic setup.
   [thomasdesvenain]
+
 
 2.5a1 (2013-10-05)
 ------------------
@@ -366,11 +371,13 @@ Fixes:
   displayed with CSS or an img tag.
   [danjacka]
 
+
 2.3.5 (2012-09-28)
 ------------------
 
 - Fix inheritance hierarchy of IPortletForm to reflect usage in z3cformhelper.
   [elro]
+
 
 2.3.4 (2012-09-28)
 ------------------
@@ -378,12 +385,14 @@ Fixes:
 - Tweak z3c.form add/edit forms to disable edit bar and columns.
   [elro]
 
+
 2.3.3 (2012-09-27)
 ------------------
 
 - Portlets are now registered for IDefaultPortletManager by default to allow
   for easier creation of custom portlet managers with restricted portlets.
   [elro]
+
 
 2.3.2 (2012-09-26)
 ------------------
@@ -417,11 +426,13 @@ Fixes:
 
 - Add safety check for portletHeader links [davilima6]
 
+
 2.3.1 (2012-08-29)
 ------------------
 
 - Fix packaging error.
   [esteele]
+
 
 2.3 (2012-08-29)
 ----------------
@@ -465,11 +476,13 @@ Fixes:
   manage-portlets viewlet
   [toutpt]
 
+
 2.3a1 (2012-06-29)
 ------------------
 
 - Make it possible to create portlets using z3c.form.
   [ggozad]
+
 
 2.2.6 (unreleased)
 ------------------
@@ -480,6 +493,7 @@ Fixes:
 - accessibility improvements for screen readers regarding "more" links, see
   https://dev.plone.org/ticket/11982
   [rmattb, applied by polyester]
+
 
 2.2.5 (2012-05-07)
 ------------------
@@ -498,6 +512,7 @@ Fixes:
 - Fix inherited local portlets for objects allowing locally-assigned
   portlets which are contained by an object that does not.
   [mitchellrj]
+
 
 2.2.3 (2011-11-24)
 ------------------
@@ -542,12 +557,14 @@ Fixes:
   JS handling of the same functionality.
   [spliter]
 
+
 2.2 - 2011-07-19
 ----------------
 
 - Updated 'Advanced Search' link and form's action of the search portlet to
   link to updated search results view at @@search.
   [spliter]
+
 
 2.1.5 - 2011-06-19
 ------------------
