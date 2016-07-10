@@ -1,5 +1,5 @@
 from zope.annotation.interfaces import IAnnotations
-from zope.interface import implements
+from zope.interface import implementer
 from zope.component import adapts
 from zope.component import getUtility
 
@@ -76,18 +76,16 @@ class PortletAssignmentMapping(BaseMapping, SimpleItem):
         BaseMapping.__setitem__(self, key, aq_base(assignment))
 
 
+@implementer(IUserPortletAssignmentMapping)
 class UserPortletAssignmentMapping(PortletAssignmentMapping):
     """An assignment mapping for user/dashboard portlets
     """
 
-    implements(IUserPortletAssignmentMapping)
 
-
+@implementer(IGroupDashboardPortletAssignmentMapping)
 class GroupDashboardPortletAssignmentMapping(PortletAssignmentMapping):
     """An assignment mapping for group dashboard portlets
     """
-
-    implements(IGroupDashboardPortletAssignmentMapping)
 
     @property
     def id(self):
@@ -97,10 +95,10 @@ class GroupDashboardPortletAssignmentMapping(PortletAssignmentMapping):
         return "++groupdashboard++%s+%s" % (manager, key)
 
 
+@implementer(IBrowserPublisher)
 class PortletAssignmentMappingTraverser(ItemTraverser):
     """A traverser for portlet assignment mappings, that is acqusition-aware
     """
-    implements(IBrowserPublisher)
     adapts(IPortletAssignmentMapping, IDefaultBrowserLayer)
 
     def publishTraverse(self, request, name):
@@ -108,11 +106,10 @@ class PortletAssignmentMappingTraverser(ItemTraverser):
         return ob.__of__(self.context)
 
 
+@implementer(INameChooser)
 class PortletsNameChooser(NameChooser):
     """A name chooser for portlets
     """
-
-    implements(INameChooser)
 
     def __init__(self, context):
         self.context = context

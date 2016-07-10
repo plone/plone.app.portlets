@@ -9,7 +9,7 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope import schema
 from zope.component import getMultiAdapter
 from zope.component import getUtility
-from zope.interface import implements
+from zope.interface import implementer
 
 
 class IActionsPortlet(IPortletDataProvider):
@@ -56,13 +56,12 @@ class IActionsPortlet(IPortletDataProvider):
         default='action_icon.png')
 
 
+@implementer(IActionsPortlet)
 class Assignment(base.Assignment):
     """Portlet assignment.
     This is what is actually managed through the portlets UI and associated
     with columns.
     """
-
-    implements(IActionsPortlet)
 
     ptitle = u""
     show_title = True

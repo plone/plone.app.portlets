@@ -1,6 +1,6 @@
 from warnings import warn
 
-from zope.interface import implements
+from zope.interface import implementer
 from zope.component import getMultiAdapter
 
 from zope.container.interfaces import INameChooser
@@ -13,8 +13,8 @@ from plone.app.portlets.browser.interfaces import IPortletAdding
 from plone.app.portlets.interfaces import IPortletPermissionChecker
 
 
+@implementer(IPortletAdding)
 class PortletAdding(SimpleItem, BrowserView):
-    implements(IPortletAdding)
 
     context = None
     request = None

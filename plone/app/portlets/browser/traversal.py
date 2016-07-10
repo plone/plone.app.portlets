@@ -1,4 +1,4 @@
-from zope.interface import implements
+from zope.interface import implementer
 from zope.component import adapts, getUtility, getMultiAdapter
 
 from zope.traversing.interfaces import ITraversable
@@ -18,10 +18,10 @@ from plone.app.portlets.storage import PortletAssignmentMapping
 from plone.app.portlets.storage import UserPortletAssignmentMapping
 from plone.app.portlets.storage import GroupDashboardPortletAssignmentMapping
 
+@implementer(ITraversable)
 class ContextPortletNamespace(object):
     """Used to traverse to a contextual portlet assignable
     """
-    implements(ITraversable)
     adapts(ILocalPortletAssignable, IHTTPRequest)
 
     def __init__(self, context, request=None):
@@ -33,11 +33,11 @@ class ContextPortletNamespace(object):
         manager = getMultiAdapter((self.context, column,), IPortletAssignmentMapping)
         return manager
 
+@implementer(ITraversable)
 class DashboardNamespace(object):
     """Used to traverse to a portlet assignable for the current user for
     the dashboard.
     """
-    implements(ITraversable)
     adapts(ISiteRoot, IHTTPRequest)
 
     def __init__(self, context, request=None):
@@ -63,11 +63,10 @@ class DashboardNamespace(object):
 
         return manager
 
+@implementer(ITraversable)
 class GroupDashboardNamespace(object):
     """Used to traverse to a portlet assignable for a group for the dashboard
     """
-
-    implements(ITraversable)
     adapts(ISiteRoot, IHTTPRequest)
 
     def __init__(self, context, request=None):
@@ -86,10 +85,10 @@ class GroupDashboardNamespace(object):
                                                        name=group)
         return manager
 
+@implementer(ITraversable)
 class GroupPortletNamespace(object):
     """Used to traverse to a group portlet assignable
     """
-    implements(ITraversable)
     adapts(ISiteRoot, IHTTPRequest)
 
     def __init__(self, context, request=None):
@@ -116,10 +115,10 @@ class GroupPortletNamespace(object):
 
         return manager
 
+@implementer(ITraversable)
 class ContentTypePortletNamespace(object):
     """Used to traverse to a content type portlet assignable
     """
-    implements(ITraversable)
     adapts(ISiteRoot, IHTTPRequest)
 
     def __init__(self, context, request=None):

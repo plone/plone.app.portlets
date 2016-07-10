@@ -12,7 +12,7 @@ from plone.portlets.interfaces import IPortletContext
 from plone.portlets.utils import hashPortletInfo
 
 from zope.container import contained
-from zope.interface import implements, Interface
+from zope.interface import implementer, Interface
 from zope.component import (
     adapts, getMultiAdapter, queryMultiAdapter, queryAdapter, getUtility)
 from zope.contentprovider.interfaces import UpdateNotCalled
@@ -36,6 +36,7 @@ from plone.app.portlets.interfaces import IDashboard, IPortletPermissionChecker
 
 from plone.portlets.interfaces import IPortletAssignmentSettings
 
+@implementer(IPortletManagerRenderer)
 class EditPortletManagerRenderer(Explicit):
     """Render a portlet manager in edit mode.
 
@@ -43,7 +44,6 @@ class EditPortletManagerRenderer(Explicit):
     which assignments to display.
 
     """
-    implements(IPortletManagerRenderer)
     adapts(Interface, IDefaultBrowserLayer, IManageColumnPortletsView, IPortletManager)
 
     template = ViewPageTemplateFile('templates/edit-manager.pt')

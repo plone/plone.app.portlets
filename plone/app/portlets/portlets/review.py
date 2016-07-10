@@ -8,15 +8,15 @@ from Products.CMFCore.utils import getToolByName
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.component import getMultiAdapter
 from zope.component import queryUtility
-from zope.interface import implements
+from zope.interface import implementer
 
 
 class IReviewPortlet(IPortletDataProvider):
     pass
 
 
+@implementer(IReviewPortlet)
 class Assignment(base.Assignment):
-    implements(IReviewPortlet)
 
     @property
     def title(self):

@@ -1,6 +1,6 @@
 from types import StringTypes
 
-from zope.interface import implements, Interface
+from zope.interface import implementer, Interface
 from zope.component import adapts
 
 from Acquisition import aq_parent, aq_inner, aq_base
@@ -14,6 +14,7 @@ from plone.portlets.constants import GROUP_CATEGORY
 from plone.portlets.constants import CONTENT_TYPE_CATEGORY
 
 
+@implementer(IPortletContext)
 class ContentContext(object):
     """A portlet context for regular content items.
 
@@ -21,7 +22,6 @@ class ContentContext(object):
     tools and other non-content items. This may hijack the context in non-CMF
     contexts, but that is doubtfully going to be an issue.
     """
-    implements(IPortletContext)
     adapts(Interface)
 
     def __init__(self, context):
@@ -102,11 +102,10 @@ class ContentContext(object):
         return None
 
 
+@implementer(IPortletContext)
 class PortalRootContext(ContentContext):
     """A portlet context for the site root.
     """
-
-    implements(IPortletContext)
     adapts(ISiteRoot)
 
     def __init__(self, context):

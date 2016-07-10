@@ -1,4 +1,4 @@
-from zope.interface import implements
+from zope.interface import implementer
 from zope.component import adapts, queryUtility
 
 from zope.container.interfaces import INameChooser
@@ -41,11 +41,10 @@ def new_user(principal, event):
                         manager[chooser.chooseName(None, assignment)] = assignment
 
 
+@implementer(IDefaultDashboard)
 class DefaultDashboard(object):
     """The default default dashboard.
     """
-
-    implements(IDefaultDashboard)
     adapts(IPropertiedUser)
 
     def __init__(self, principal):

@@ -78,7 +78,7 @@ any assignments:
 
 from operator import attrgetter
 
-from zope.interface import implements
+from zope.interface import implementer
 from zope.interface import Interface
 from zope.interface import alsoProvides
 from zope.interface import providedBy
@@ -142,8 +142,8 @@ except ImportError:
 
 if HAS_BLACKLIST:
 
+    @implementer(IComponentsHandlerBlacklist)
     class Blacklist(object):
-        implements(IComponentsHandlerBlacklist)
 
         def getExcludedInterfaces(self):
             return (_getDottedName(IPortletType),
@@ -152,11 +152,10 @@ if HAS_BLACKLIST:
                     )
 
 
+@implementer(IPortletAssignmentExportImportHandler)
 class PropertyPortletAssignmentExportImportHandler(object):
     """Import portlet assignment settings based on zope.schema properties
     """
-
-    implements(IPortletAssignmentExportImportHandler)
     adapts(Interface)
 
     def __init__(self, assignment):
@@ -273,10 +272,10 @@ class PropertyPortletAssignmentExportImportHandler(object):
         return value
 
 
+@implementer(IBody)
 class PortletsXMLAdapter(XMLAdapterBase):
     """In- and exporter for a local portlet configuration
     """
-    implements(IBody)
     adapts(IComponentRegistry, ISetupEnviron)
 
     name = 'portlets'

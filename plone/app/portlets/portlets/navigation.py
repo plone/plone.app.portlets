@@ -27,7 +27,7 @@ from zExceptions import NotFound
 from zope import schema
 from zope.component import adapts, getMultiAdapter, queryUtility
 from zope.component import getUtility
-from zope.interface import implements, Interface
+from zope.interface import implementer, Interface
 
 
 class INavigationPortlet(IPortletDataProvider):
@@ -96,8 +96,8 @@ class INavigationPortlet(IPortletDataProvider):
             required=False)
 
 
+@implementer(INavigationPortlet)
 class Assignment(base.Assignment):
-    implements(INavigationPortlet)
 
     name = ""
     root = None
@@ -308,11 +308,11 @@ class EditForm(base.EditForm):
     description = _(u"This portlet displays a navigation tree.")
 
 
+@implementer(INavigationQueryBuilder)
 class QueryBuilder(object):
     """Build a navtree query based on the settings in INavigationSchema
     and those set on the portlet.
     """
-    implements(INavigationQueryBuilder)
     adapts(Interface, INavigationPortlet)
 
     def __init__(self, context, portlet):
@@ -379,10 +379,10 @@ class QueryBuilder(object):
         return self.query
 
 
+@implementer(INavtreeStrategy)
 class NavtreeStrategy(SitemapNavtreeStrategy):
     """The navtree strategy used for the default navigation portlet
     """
-    implements(INavtreeStrategy)
     adapts(Interface, INavigationPortlet)
 
     def __init__(self, context, portlet):

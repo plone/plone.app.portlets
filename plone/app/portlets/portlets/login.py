@@ -5,7 +5,7 @@ from plone.portlets.interfaces import IPortletDataProvider
 from Products.CMFCore.utils import getToolByName
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.component import getMultiAdapter
-from zope.interface import implements
+from zope.interface import implementer
 
 
 class ILoginPortlet(IPortletDataProvider):
@@ -13,8 +13,8 @@ class ILoginPortlet(IPortletDataProvider):
     """
 
 
+@implementer(ILoginPortlet)
 class Assignment(base.Assignment):
-    implements(ILoginPortlet)
 
     title = _(u'label_log_in', default=u'Log in')
 
