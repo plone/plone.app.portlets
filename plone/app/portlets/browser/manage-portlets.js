@@ -1,13 +1,12 @@
 define([
   'jquery',
-  'mockup-patterns-base',
-  'pat-registry',
+  'pat-base',
   'mockup-utils',
   'mockup-patterns-modal',
   'translate',
   'pat-logger',
   'jquery.form'
-], function ($, Base, Registry, utils, Modal, _t, logger) {
+], function ($, Base, utils, Modal, _t, logger) {
   'use strict';
 
   var log = logger.getLogger('pat-manage-portlets');
@@ -15,6 +14,7 @@ define([
   var ManagePortlets = Base.extend({
     name: 'manage-portlets',
     trigger: '.pat-manage-portlets',
+    parser: 'mockup',
     messageTimeout: 0,
     submitTimeout: 0,
     switchTimeout: 0,
