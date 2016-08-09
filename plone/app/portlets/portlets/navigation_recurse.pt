@@ -11,8 +11,8 @@
                 item_remote_url node/getRemoteUrl;
                 use_remote_url  node/useRemoteUrl | nothing;
                 item_type       node/portal_type;
-                hasImage        node/item/getIcon;
-                imageBase       node/path;
+                has_thumb       node/item/getIcon;
+                thumb_url       string:${node/item/getURL}/@@images/image/icon;
                 is_current      node/currentItem;
                 is_in_path      node/currentParent;
                 li_class        python:' navTreeCurrentNode' if is_current else '';
@@ -30,16 +30,14 @@
                            title node/Description;
                            class string:${item_class}${li_class}${li_extr_class}${li_folder_class} ${item_type_class}">
             <img class="image-icon"
-                tal:define="portal_url context/@@plone_portal_state/portal_url;
-                            icon_url string:${portal_url}/${imageBase}/@@images/image/icon"
-                tal:condition="hasImage"
-                tal:attributes="src icon_url;
+                tal:condition="has_thumb"
+                tal:attributes="src thumb_url;
                                 alt node/Description">
             <span tal:replace="node/Title">Selected Item Title</span>
         </a>
 
         <tal:children condition="children">
-            <ul tal:attributes="class python:'navTree navTreeLevel%s' % level"
+            <ul tal:attributes="class string:navTree navTreeLevel${level}"
                 tal:condition="python: children and show_children and bottomLevel and level < bottomLevel">
                 <span tal:replace="structure python:view.recurse(children=children, level=level+1, bottomLevel=bottomLevel)" />
             </ul>
