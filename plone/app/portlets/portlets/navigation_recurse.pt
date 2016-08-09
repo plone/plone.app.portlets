@@ -12,7 +12,6 @@
                 use_remote_url  node/useRemoteUrl | nothing;
                 item_type       node/portal_type;
                 hasImage        node/item/getIcon;
-                imageBase       node/path;
                 is_current      node/currentItem;
                 is_in_path      node/currentParent;
                 li_class        python:' navTreeCurrentNode' if is_current else '';
@@ -21,7 +20,7 @@
                 normalizeString nocall: context/plone_utils/normalizeString"
     tal:condition="python:bottomLevel &lt;= 0 or level &lt;= bottomLevel"
     tal:attributes="class string:navTreeItem visualNoMarker${li_class}${li_extr_class}${li_folder_class} section-${node/normalized_id}">
-
+     
     <tal:level define="item_class string:state-${node/normalized_review_state};
                        item_type_class python:'contenttype-%s' % normalizeString(item_type);
                        item_class python:'%s navTreeCurrentItem' % item_class if is_current else item_class">
@@ -30,10 +29,9 @@
                            title node/Description;
                            class string:${item_class}${li_class}${li_extr_class}${li_folder_class} ${item_type_class}">
             <img class="image-icon"
-                tal:define="portal_url context/@@plone_portal_state/portal_url;
-                            icon_url string:${portal_url}/${imageBase}/@@images/image/icon"
+                tal:define="thumb_url string:${node/path}/@@images/image/icon"
                 tal:condition="hasImage"
-                tal:attributes="src icon_url;
+                tal:attributes="src thumb_url;
                                 alt node/Description">
             <span tal:replace="node/Title">Selected Item Title</span>
         </a>
