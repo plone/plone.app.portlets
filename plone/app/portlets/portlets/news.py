@@ -10,9 +10,12 @@ from plone.memoize.compress import xhtml_compress
 from plone.memoize import ram
 from plone.memoize.instance import memoize
 from plone.portlets.interfaces import IPortletDataProvider
+from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.interfaces import ISiteSchema
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.component import getMultiAdapter
+from zope.component import getUtility
 from zope import schema
 from zope.interface import implementer
 
@@ -35,14 +38,32 @@ class INewsPortlet(IPortletDataProvider):
             vocabulary="plone.app.vocabularies.WorkflowStates")
         )
 
+    ov_thumbsize = schema.TextLine(
+        title=_(u"Override thumb size "),
+        description=_(u"<br><ul><li> Enter a valid scale name"
+             u"(see 'Image Handling' control panel) to override"
+             u" e.g. icon, tile, thumb, mini, preview, ... )  </li>"
+             u"<li>leave empty to use default "
+             u"(see 'Site' control panel)</li></ul>"),
+        required=False,
+        default=u'')
 
+    no_thumbs = schema.Bool(
+        title=_(u"Suppress thumbs "),
+        description=_(
+            u"If enabled, the portlet will not show thumbs"),
+        required=True,
+        default=False)
+    
 @implementer(INewsPortlet)
 class Assignment(base.Assignment):
 
-    def __init__(self, count=5, state=('published', )):
+    def __init__(self, count=5, state=('published',),
+                 ov_thumbsize = '', no_thumbs = False):
         self.count = count
         self.state = state
-
+        self.ov_thumbsize = ov_thumbsize
+        self.no_thumbs = no_thumbs
     @property
     def title(self):
         return _(u"News")
@@ -90,7 +111,25 @@ class Renderer(base.Renderer):
                        sort_on='Date',
                        sort_order='reverse',
                        sort_limit=limit)[:limit]
-
+    
+    def thumb_size(self):
+        ''' use  overrride value or read thumb_size from registry
+            image sizes must fit to value in allowed image sizes
+            none will suppress thumb!
+        '''
+        if getattr(self.data,'no_thumbs',False):
+            #individual setting overrides ...
+            return 'none'
+        thsize=getattr(self.data,'ov_thumbsize','')
+        if thsize > ' ':
+            return thsize
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(
+            ISiteSchema, prefix="plone", check=False)
+        if settings.no_thumbs_portlet:
+            return 'none' 
+        thumb_size_portlet = settings.thumb_size_portlet
+        return thumb_size_portlet
 
 class AddForm(base.AddForm):
     schema = INewsPortlet

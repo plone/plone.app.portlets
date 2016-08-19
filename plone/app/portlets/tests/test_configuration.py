@@ -480,12 +480,15 @@ class TestGenericSetup(PortletsTestCase):
  </assignment>
  <assignment name="navigation" category="context" key="/"
     manager="test.testcolumn2" type="portlets.Navigation" visible="True">
-  <property name="topLevel">1</property>
-  <property name="currentFolderOnly">False</property>
   <property name="name"></property>
   <property name="root_uid"/>
-  <property name="bottomLevel">0</property>
+  <property name="no_thumbs">False</property>
+  <property name="ov_thumbsize"></property>
+  <property name="topLevel">1</property>
+  <property name="currentFolderOnly">False</property>
   <property name="includeTop">False</property>
+  <property name="no_icons">False</property>
+  <property name="bottomLevel">0</property>
  </assignment>
  <blacklist category="user" location="/" manager="test.testcolumn"
     status="acquire"/>

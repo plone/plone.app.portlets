@@ -35,6 +35,7 @@
                 <element>published</element>
                 <element>private</element>
             </property>
+            
     </assignment>
 
     <assignment
@@ -105,6 +106,9 @@
         <property name="includeTop">False</property>
         <property name="bottomLevel">0</property>
         <property name="root"></property>
+        <property name="no_icon">False</property>
+        <property name="ov_thumbsize"></property>
+        <property name="no_thumbs">False</property>
     </assignment>
 
     <blacklist
