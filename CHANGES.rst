@@ -5,10 +5,6 @@ Changelog
 3.1.4 (unreleased)
 ------------------
 
-New:
-
-- *add item here*
-
 Fixes:
 
 - Use absolute source URL in navigation portlet's thumbnails
