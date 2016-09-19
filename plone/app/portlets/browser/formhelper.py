@@ -7,6 +7,7 @@ import zope.event
 import zope.lifecycleevent
 
 from Acquisition import aq_parent, aq_inner
+from Products.CMFCore.utils import getToolByName
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
@@ -53,18 +54,25 @@ class AddForm(formbase.AddFormBase):
         IPortletPermissionChecker(aq_parent(aq_inner(self.context)))()
         return super(AddForm, self).__call__()
 
+    @property
     def referer(self):
         return self.request.get('referer', '')
 
     def nextURL(self):
-        referer = self.request.form.get('referer')
-        if referer:
-            return referer
-        else:
-            addview = aq_parent(aq_inner(self.context))
-            context = aq_parent(aq_inner(addview))
-            url = str(getMultiAdapter((context, self.request), name=u"absolute_url"))
-            return url + '/@@manage-portlets'
+        urltool = getToolByName(self.context, 'portal_url')
+        if self.referer and urltool.isURLInPortal(self.referer):
+            return self.referer
+        addview = aq_parent(aq_inner(self.context))
+        context = aq_parent(aq_inner(addview))
+        try:
+            url = str(getMultiAdapter((context, self.request),
+                                      name=u"absolute_url"))
+        except (TypeError, AttributeError):
+            # At least in tests we can get a TypeError: "There isn't enough
+            # context to get URL information. This is probably due to a bug in
+            # setting up location information."
+            url = self.context.absolute_url()
+        return url + '/@@manage-portlets'
 
     @form.action(_(u"label_save", default=u"Save"), name=u'save')
     def handle_save_action(self, action, data):
@@ -99,15 +107,22 @@ class NullAddForm(BrowserView):
             self.request.response.redirect(self.nextURL())
         return ''
 
+    @property
+    def referer(self):
+        return self.request.get('referer', '')
+
     def nextURL(self):
-        referer = self.request.get('referer')
-        if referer:
-            return referer
-        else:
-            addview = aq_parent(aq_inner(self.context))
-            context = aq_parent(aq_inner(addview))
-            url = str(getMultiAdapter((context, self.request), name=u"absolute_url"))
-            return url + '/@@manage-portlets'
+        urltool = getToolByName(self.context, 'portal_url')
+        if self.referer and urltool.isURLInPortal(self.referer):
+            return self.referer
+        addview = aq_parent(aq_inner(self.context))
+        context = aq_parent(aq_inner(addview))
+        try:
+            url = str(getMultiAdapter((context, self.request),
+                                      name=u"absolute_url"))
+        except (TypeError, AttributeError):
+            url = self.context.absolute_url()
+        return url + '/@@manage-portlets'
 
     def create(self):
         raise NotImplementedError("concrete classes must implement create()")
@@ -125,18 +140,22 @@ class EditForm(formbase.EditFormBase):
         IPortletPermissionChecker(aq_parent(aq_inner(self.context)))()
         return super(EditForm, self).__call__()
 
+    @property
     def referer(self):
         return self.request.get('referer', '')
 
     def nextURL(self):
-        referer = self.request.form.get('referer')
-        if referer:
-            return referer
-        else:
-            portlet = aq_inner(self.context)
-            context = aq_parent(portlet)
-            url = str(getMultiAdapter((context, self.request), name=u"absolute_url"))
-            return url + '/@@manage-portlets'
+        urltool = getToolByName(self.context, 'portal_url')
+        if self.referer and urltool.isURLInPortal(self.referer):
+            return self.referer
+        editview = aq_parent(aq_inner(self.context))
+        context = aq_parent(aq_inner(editview))
+        try:
+            url = str(getMultiAdapter((context, self.request),
+                                      name=u"absolute_url"))
+        except (TypeError, AttributeError):
+            url = self.context.absolute_url()
+        return url + '/@@manage-portlets'
 
     @form.action(_(u"label_save", default=u"Save"),
                  condition=form.haveInputWidgets,

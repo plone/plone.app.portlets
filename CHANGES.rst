@@ -14,7 +14,9 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Apply security hotfix 20160830 for redirects.  Also, made sure that
+  all form views have a ``referer`` property: until now some did not
+  have it, some had it as property, some had it as method.  [maurits]
 
 
 2.5.5 (2016-06-12)
