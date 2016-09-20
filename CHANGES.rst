@@ -15,7 +15,7 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Apply security hotfix 20160830 for redirects.  [maurits]
 
 
 3.1.4 (2016-09-14)
