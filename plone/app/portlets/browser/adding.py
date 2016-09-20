@@ -35,12 +35,17 @@ class PortletAdding(SimpleItem, BrowserView):
         chooser = INameChooser(manager)
         manager[chooser.chooseName(None, content)] = content
 
+    @property
+    def referer(self):
+        return self.request.get('referer', '')
+
     def nextURL(self):
-        referer = self.request.get('referer')
         urltool = getToolByName(self.context, 'portal_url')
+        referer = self.referer
         if not referer or not urltool.isURLInPortal(referer):
             context = aq_parent(aq_inner(self.context))
-            url = str(getMultiAdapter((context, self.request), name=u"absolute_url"))
+            url = str(getMultiAdapter((context, self.request),
+                                      name=u"absolute_url"))
             referer = url + '/@@manage-portlets'
         return referer
 

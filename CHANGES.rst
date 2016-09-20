@@ -15,6 +15,9 @@ New features:
 
 Bug fixes:
 
+- Added ``referer`` property to ``PortletAdding`` view.  Now all views
+  like this have it.  [maurits]
+
 - Apply security hotfix 20160830 for redirects.  [maurits]
 
 
