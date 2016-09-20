@@ -5,6 +5,7 @@ from zope.interface import implementer
 import zope.event
 import zope.lifecycleevent
 
+from Products.CMFCore.utils import getToolByName
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
@@ -78,12 +79,19 @@ class AddForm(AutoExtensibleForm, form.AddForm):
         return self.request.get('referer', '')
 
     def nextURL(self):
-        if self.referer:
+        urltool = getToolByName(self.context, 'portal_url')
+        if self.referer and urltool.isURLInPortal(self.referer):
             return self.referer
         addview = aq_parent(aq_inner(self.context))
         context = aq_parent(aq_inner(addview))
-        url = str(getMultiAdapter((context, self.request),
-                                  name=u"absolute_url"))
+        try:
+            url = str(getMultiAdapter((context, self.request),
+                                      name=u"absolute_url"))
+        except (TypeError, AttributeError):
+            # At least in tests we can get a TypeError: "There isn't enough
+            # context to get URL information. This is probably due to a bug in
+            # setting up location information."
+            url = self.context.absolute_url()
         return url + '/@@manage-portlets'
 
     @button.buttonAndHandler(_(u"label_save", default=u"Save"), name='add')
@@ -125,15 +133,22 @@ class NullAddForm(BrowserView):
             self.request.response.redirect(self.nextURL())
         return ''
 
+    @property
+    def referer(self):
+        return self.request.get('referer', '')
+
     def nextURL(self):
-        referer = self.request.get('referer')
-        if referer:
-            return referer
+        urltool = getToolByName(self.context, 'portal_url')
+        if self.referer and urltool.isURLInPortal(self.referer):
+            return self.referer
         else:
             addview = aq_parent(aq_inner(self.context))
             context = aq_parent(aq_inner(addview))
-            url = str(getMultiAdapter((context, self.request),
-                                      name=u"absolute_url"))
+            try:
+                url = str(getMultiAdapter((context, self.request),
+                                          name=u"absolute_url"))
+            except (TypeError, AttributeError):
+                url = self.context.absolute_url()
             return url + '/@@manage-portlets'
 
     def create(self):
@@ -161,12 +176,16 @@ class EditForm(AutoExtensibleForm, form.EditForm):
         return self.request.get('referer', '')
 
     def nextURL(self):
-        if self.referer:
+        urltool = getToolByName(self.context, 'portal_url')
+        if self.referer and urltool.isURLInPortal(self.referer):
             return self.referer
         editview = aq_parent(aq_inner(self.context))
         context = aq_parent(aq_inner(editview))
-        url = str(getMultiAdapter((context, self.request),
-                                  name=u"absolute_url"))
+        try:
+            url = str(getMultiAdapter((context, self.request),
+                                      name=u"absolute_url"))
+        except (TypeError, AttributeError):
+            url = self.context.absolute_url()
         return url + '/@@manage-portlets'
 
     @button.buttonAndHandler(_(u"label_save", default=u"Save"), name='apply')
