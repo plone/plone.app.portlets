@@ -5,14 +5,6 @@ Changelog
 3.1.5 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - Apply security hotfix 20160830 for redirects.  [maurits]
