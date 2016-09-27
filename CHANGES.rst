@@ -11,7 +11,9 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- Make use of plone.namedfile's tag() function to generate image tags.
+  Part of plip 1483.
+  [didrix]
 
 Bug fixes:
 

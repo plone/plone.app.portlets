@@ -29,10 +29,9 @@
         <a tal:attributes="href  python:item_remote_url if use_remote_url else item_url;
                            title node/Description;
                            class string:${item_class}${li_class}${li_extr_class}${li_folder_class} ${item_type_class}">
-            <img class="image-icon"
-                tal:condition="has_thumb"
-                tal:attributes="src thumb_url;
-                                alt node/Description">
+            <img tal:condition="has_thumb"
+                tal:define="obj node/item/getObject; images obj/@@images"
+                tal:replace="structure python:images.scale('image', scale='icon').tag(css_class='image-icon')">
             <span tal:replace="node/Title">Selected Item Title</span>
         </a>
 
