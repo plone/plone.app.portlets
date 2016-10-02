@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from Testing.ZopeTestCase import user_name
 
 from zope.component import getUtility, getMultiAdapter

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from plone.app.portlets.tests.base import PortletsTestCase
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import logout

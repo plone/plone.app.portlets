@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from zope.interface import Interface, alsoProvides
 
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from types import StringTypes
 
 from zope.interface import implementer, Interface

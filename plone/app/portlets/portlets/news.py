@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from Acquisition import aq_inner
 from plone.app.layout.navigation.root import getNavigationRootObject
 from plone.app.portlets.cache import render_cachekey

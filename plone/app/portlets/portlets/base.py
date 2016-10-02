@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from Acquisition import Explicit
 from OFS.SimpleItem import SimpleItem
 from plone.app.portlets.interfaces import IDeferredPortletRenderer

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import doctest
 from plone.portlets.manager import PortletManager
 

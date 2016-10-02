@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from zope.component import getUtility, getMultiAdapter
 
 from Products.CMFCore.utils import getToolByName

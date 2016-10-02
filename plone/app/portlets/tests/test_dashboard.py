@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from zExceptions import Unauthorized
 from zope.component import getUtility, getMultiAdapter
 from zope.event import notify

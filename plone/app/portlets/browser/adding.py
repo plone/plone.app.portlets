@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from warnings import warn
 
 from zope.interface import implementer

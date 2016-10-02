@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from Acquisition import aq_inner, aq_base, aq_parent
 from ComputedAttribute import ComputedAttribute
 from plone.app.layout.navigation.interfaces import INavigationQueryBuilder

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from plone.app.i18n.locales.browser.selector import LanguageSelector
 from plone.app.portlets import PloneMessageFactory as _
 from plone.app.portlets.portlets import base

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from plone.app.portlets import PloneMessageFactory as _
 from plone.app.portlets.portlets import base
 from plone.portlets.interfaces import IPortletDataProvider

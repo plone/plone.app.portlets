@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from zope.component import getSiteManager, getUtilitiesFor, getUtility
 
 from plone.portlets.interfaces import IPortletManager

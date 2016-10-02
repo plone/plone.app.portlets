@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from zope.annotation.interfaces import IAnnotations
 from zope.interface import implementer
 from zope.component import adapts
