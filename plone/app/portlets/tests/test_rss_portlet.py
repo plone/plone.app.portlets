@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from zope.component import getUtility, getMultiAdapter
 
 from Products.GenericSetup.utils import _getDottedName

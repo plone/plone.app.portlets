@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from Acquisition import aq_inner
 from plone.app.portlets import PloneMessageFactory as _
 from plone.app.portlets.cache import render_cachekey

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Base class for integration tests, based on ZopeTestCase.
 
 Note that importing this module has various side-effects: it registers a set of

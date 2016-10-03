@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from DateTime import DateTime
 from DateTime.interfaces import DateTimeError
 from logging import getLogger

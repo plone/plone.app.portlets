@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from zope import component
 from Acquisition import aq_inner
 from Products.CMFCore.utils import getToolByName

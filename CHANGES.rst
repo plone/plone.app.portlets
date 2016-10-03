@@ -20,6 +20,8 @@ Bug fixes:
 
 - Apply security hotfix 20160830 for redirects.  [maurits]
 
+- Add coding header on python files.
+  [gforcada]
 
 4.2 (2016-08-12)
 ----------------

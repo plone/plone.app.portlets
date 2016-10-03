@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from z3c.form import button
 from z3c.form import form
 from zope.component import getMultiAdapter
