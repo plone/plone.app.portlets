@@ -5,14 +5,6 @@ Changelog
 4.2.1 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - Added ``referer`` property to ``PortletAdding`` view.  Now all views
