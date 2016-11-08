@@ -15,7 +15,9 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Put ellipsis out of the title_switch_portlet_managers (Other portlet
+  managers) message.
+  [vincentfretin]
 
 
 4.2.1 (2016-10-03)

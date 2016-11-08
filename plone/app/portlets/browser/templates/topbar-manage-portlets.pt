@@ -15,7 +15,7 @@
             tal:define="portlet_menu context/@@view_get_menu/plone_contentmenu_portletmanager"
             tal:attributes="data-context-url context/absolute_url">
           <option tal:attributes="value python:request['ACTUAL_URL']"
-              i18n:translate="title_switch_portlet_managers">Other portlet managers&hellip;</option>
+          ><tal:span i18n:translate="title_switch_portlet_managers">Other portlet managers</tal:span>&hellip;</option>
           <tal:item repeat="item portlet_menu">
             <option tal:define="item_id python:item['title'].lower().replace(' ', '.');
                                 is_current python:item_id == view.manager_name"
