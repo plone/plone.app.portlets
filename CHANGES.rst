@@ -5,14 +5,6 @@ Changelog
 4.2.2 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - Put ellipsis out of the title_switch_portlet_managers (Other portlet
