@@ -50,6 +50,7 @@ def assignment_mapping_from_key(context, manager_name, category, key, create=Fal
                 path = path[len(portal_path)+1:]
             while path.startswith('/'):
                 path = path[1:]
+            path = path.encode('utf-8')  # OFS.traversable cannot do unicode
             obj = portal.restrictedTraverse(path, None)
         if obj is None:
             raise KeyError, "Cannot find object at path %s" % path

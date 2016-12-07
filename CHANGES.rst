@@ -15,7 +15,9 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Make sure, that ``utils.assignment_mapping_from_key`` traverses only to non-unicode paths.
+  OFS.traversable doesn't accept unicode paths.
+  [thet]
 
 
 4.2.2 (2016-11-18)

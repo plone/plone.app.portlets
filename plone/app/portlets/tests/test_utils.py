@@ -31,6 +31,17 @@ class TestAssignmentFromKey(PortletsTestCase):
         a = assignment_from_key(self.portal, u'plone.leftcolumn', CONTEXT_CATEGORY, path, 'foo')
         self.assertEqual(c, a)
 
+    def testGetPortletFromContextUnicodePath(self):
+        """Do not fail, if path is a unicode object.
+        plone.portlets.utils.unhashPortletInfo returns a unicode path key.
+        """
+        mapping = getMultiAdapter((self.portal, self.manager), IPortletAssignmentMapping)
+        c = classic.Assignment()
+        mapping['foo'] = c
+        path = u'/'.join(self.portal.getPhysicalPath())
+        a = assignment_from_key(self.portal, u'plone.leftcolumn', CONTEXT_CATEGORY, path, 'foo')
+        self.assertEqual(c, a)
+
     def testGetPortletFromUserCategory(self):
         c = classic.Assignment()
         self.cat[user_name]['foo'] = c
