@@ -15,6 +15,10 @@ New features:
 
 Bug fixes:
 
+- Fix regression where navigation portlet ignored unlimited setting for
+  *Navigation tree depth* setting
+  [datakurre]
+
 - Make sure, that ``utils.assignment_mapping_from_key`` traverses only to non-unicode paths.
   OFS.traversable doesn't accept unicode paths.
   [thet]
