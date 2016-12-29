@@ -38,7 +38,7 @@
 
         <tal:children condition="children">
             <ul tal:attributes="class string:navTree navTreeLevel${level}"
-                tal:condition="python: children and show_children and bottomLevel and level < bottomLevel">
+                tal:condition="python: children and show_children and bottomLevel and level < bottomLevel or bottomLevel == 0">
                 <span tal:replace="structure python:view.recurse(children=children, level=level+1, bottomLevel=bottomLevel)" />
             </ul>
         </tal:children>
