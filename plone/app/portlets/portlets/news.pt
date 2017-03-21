@@ -21,19 +21,19 @@
       <tal:newsitems  tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime;
                                   plone_layout context/@@plone_layout;
                                   portal context/@@plone_portal_state/portal;
-                                  image_scale portal/@@image_scale;"
+                                  image_scale portal/@@image_scale;
                                   thumb_size view/thumb_size;"
                       tal:repeat="obj view/published_news_items">
       <li tal:define="oddrow repeat/obj/odd;"
           tal:attributes="class python:oddrow and 'portletItem even' or 'portletItem odd'">
-       
+
         <a  href=""
             class="tile"
             tal:attributes="href obj/getURL;
-                            title obj/Description">                            
+                            title obj/Description">
            <img tal:condition="python: obj.getIcon and (view.thumb_size()!='none')"
                 tal:replace="structure python:image_scale.tag(obj, 'image', scale=thumb_size, css_class='pull-right image-'+thumb_size)" />
-                          
+
            <span tal:replace="obj/pretty_title_or_id">
              Plone 5.1 announced!
            </span>

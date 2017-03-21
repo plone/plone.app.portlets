@@ -3,13 +3,12 @@
                     bottomLevel options/bottomLevel | nothing;
                     supress_icon    view/data/no_icons;
                     supress_thumb   view/data/no_thumbs;
-                    thumb_size python:view.thumb_size();
-                    thumb_class python:'pull-right image-'+thumb_size "
+                    thumb_size python:view.thumb_size();"
             i18n:domain="plone">
 
 <metal:main define-macro="nav_main"
-    tal:define="portal context/@@plone_portal_state/portal;
-                image_scale portal/@@image_scale">
+	   tal:define="portal context/@@plone_portal_state/portal;
+                   image_scale portal/@@image_scale">
 <tal:navitem repeat="node children">
 <li tal:define="show_children   node/show_children;
                 children        node/children;
@@ -39,13 +38,12 @@
              <img class="mime-icon" tal:condition="python:item_type =='File' and not supress_icon"
                              tal:attributes="href node/getURL;
                                              src python:view.getMimeTypeIcon(node);">
-                                        
+
             <img tal:condition="python:has_thumb and ( thumb_size !='none' )"
                  tal:replace="structure python:image_scale.tag(item, 'image', scale=thumb_size, css_class='pull-right image-'+thumb_size)">
 
             <span tal:replace="node/Title">Selected Item Title</span>
         </a>
-
         <tal:children condition="children">
             <ul tal:attributes="class string:navTree navTreeLevel${level}"
                 tal:condition="python: children and show_children and bottomLevel and level < bottomLevel or bottomLevel == 0">

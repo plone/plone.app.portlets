@@ -42,7 +42,7 @@ class IReviewPortlet(IPortletDataProvider):
             u"If enabled, the portlet will not show thumbs"),
         required=True,
         default=False)
-    
+
 @implementer(IReviewPortlet)
 class Assignment(base.Assignment):
     no_icons = False
@@ -64,7 +64,7 @@ class Renderer(base.Renderer):
     render = ViewPageTemplateFile('review.pt')
 
     title = _('box_review_list', default=u"Review List")
-    
+
     def __init__(self, *args):
         base.Renderer.__init__(self, *args)
 
@@ -129,7 +129,7 @@ class Renderer(base.Renderer):
                 images=images,
             ))
         return items
-    
+
     @memoize
     def thumb_size(self):
         ''' use  overrride value or read thumb_size from registry
@@ -156,10 +156,10 @@ class AddForm(formhelper.AddForm):
 
     def create(self, data):
         return Assignment(**data)
-    
+
 class EditForm(formhelper.EditForm):
     schema = IReviewPortlet
     label = _(u"Edit Review Portlet")
     description = _(u"displays a queue of documents awaiting "
                     u"review.")
-    
+

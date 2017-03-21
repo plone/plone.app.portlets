@@ -135,7 +135,7 @@ class Assignment(base.Assignment):
     bottomLevel = 0
     no_icons = False
     ov_thumbsize = ''
-    no_thumbs = False   
+    no_thumbs = False
 
     def __init__(self, name="", root_uid=None,
          currentFolderOnly=False, includeTop=False, topLevel=1, bottomLevel=0,
@@ -149,7 +149,7 @@ class Assignment(base.Assignment):
         self.no_icons = no_icons
         self.ov_thumbsize = ov_thumbsize
         self.ov_thumbsize = ov_thumbsize
-        
+
     @property
     def title(self):
         """
@@ -317,7 +317,7 @@ class Renderer(base.Renderer):
             none will suppress thumb!
         '''
         if getattr(self.data,'no_thumbs',False):
-            #individual setting overrides ...
+            #individual setting overrides
             return 'none'
         thsize=getattr(self.data,'ov_thumbsize','')
         if thsize > ' ':
@@ -326,32 +326,32 @@ class Renderer(base.Renderer):
         settings = registry.forInterface(
             ISiteSchema, prefix="plone", check=False)
         if settings.no_thumbs_portlet:
-            return 'none'         
+            return 'none'
         thumb_size_portlet = settings.thumb_size_portlet
         return thumb_size_portlet
 
     def getMimeTypeIcon(self,node):
-        try:                
+        try:
             if not node['normalized_portal_type'] == 'file':
-                return None        
+                return None
             fileo = node['item'].getObject().file
             portal_url = api.portal.get().absolute_url()
             mtt = api.portal.get_tool(name='mimetypes_registry')
-            if fileo.contentType: 
+            if fileo.contentType:
                 ctype = mtt.lookup(fileo.contentType)
                 return os.path.join(portal_url,
                      guess_icon_path(ctype[0])
-                    )            
+                    )
         except (AttributeError):
                 return None
-        return None 
+        return None
 
     def update(self):
         pass
 
     def render(self):
         return self._template()
-    
+
 class AddForm(base.AddForm):
     schema = INavigationPortlet
     label = _(u"Add Navigation Portlet")
@@ -365,12 +365,10 @@ class AddForm(base.AddForm):
                           topLevel=data.get('topLevel', 0),
                           bottomLevel=data.get('bottomLevel', 0))
 
-
 class EditForm(base.EditForm):
     schema = INavigationPortlet
     label = _(u"Edit Navigation Portlet")
     description = _(u"This portlet displays a navigation tree.")
-
 
 @implementer(INavigationQueryBuilder)
 class QueryBuilder(object):

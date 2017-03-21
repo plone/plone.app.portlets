@@ -15,12 +15,14 @@ New features:
 - Make use of plone.namedfile's tag() function to generate image tags.
   Part of plip 1483.
   [didrix]
+
 - navigation-, news-, recent-,review-portlets: add options to supress icons,
-  read thumbsize from registry plus  option to override thumbsize individually 
-  or suppress thumbs. 
+  read thumbsize from registry plus  option to override thumbsize individually
+  or suppress thumbs.
   Replace paper clip (fontello icon) with mimetype icon
   from mimetype registry for files
-  https://github.com/plone/Products.CMFPlone/issues/1734 [fgrcon]
+  https://github.com/plone/Products.CMFPlone/issues/1734
+  [fgrcon]
 
 Bug fixes:
 

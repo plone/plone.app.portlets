@@ -54,7 +54,8 @@ class INewsPortlet(IPortletDataProvider):
             u"If enabled, the portlet will not show thumbs"),
         required=True,
         default=False)
-    
+
+
 @implementer(INewsPortlet)
 class Assignment(base.Assignment):
 
@@ -111,7 +112,7 @@ class Renderer(base.Renderer):
                        sort_on='Date',
                        sort_order='reverse',
                        sort_limit=limit)[:limit]
-    
+
     def thumb_size(self):
         ''' use  overrride value or read thumb_size from registry
             image sizes must fit to value in allowed image sizes
@@ -127,9 +128,10 @@ class Renderer(base.Renderer):
         settings = registry.forInterface(
             ISiteSchema, prefix="plone", check=False)
         if settings.no_thumbs_portlet:
-            return 'none' 
+            return 'none'
         thumb_size_portlet = settings.thumb_size_portlet
         return thumb_size_portlet
+
 
 class AddForm(base.AddForm):
     schema = INewsPortlet

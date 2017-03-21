@@ -42,7 +42,7 @@ class IRecentPortlet(IPortletDataProvider):
              u"(see 'Site' control panel)</li></ul>"),
         required=False,
         default=u'')
-    
+
     no_thumbs = schema.Bool(
         title=_(u"Suppress thumbs "),
         description=_(
@@ -61,7 +61,7 @@ class Assignment(base.Assignment):
         self.no_icons = no_icons
         self.ov_thumbsize = ov_thumbsize
         self.no_thumbs = no_thumbs
-        
+
     @property
     def title(self):
         return _(u"Recent items")
@@ -135,11 +135,11 @@ class Renderer(base.Renderer):
         thumb_size_portlet = settings.thumb_size_portlet
         return thumb_size_portlet
 
-    def getMimeTypeIcon(self,obj):     
+    def getMimeTypeIcon(self,obj):
         fileo = obj.getObject().file
         portal_url = api.portal.get().absolute_url()
         mtt = api.portal.get_tool(name='mimetypes_registry')
-        if fileo.contentType: 
+        if fileo.contentType:
             ctype = mtt.lookup(fileo.contentType)
             return os.path.join(portal_url,
                  guess_icon_path(ctype[0])

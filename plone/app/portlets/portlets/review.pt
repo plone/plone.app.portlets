@@ -17,15 +17,19 @@
   <div class="portletContent"
        tal:define="plone_layout context/@@plone_layout;
                    portal context/@@plone_portal_state/portal;
-                   image_scale portal/@@image_scale;
+                   
                    supress_icon    view/data/no_icons;
                    supress_thumb   view/data/no_thumbs;
-                   thumb_size python:view.thumb_size();">
+                   thumb_size python:view.thumb_size();
+                   ">
     <ul>
       <tal:items tal:repeat="obj view/review_items">
           <li class="portletItem"
               tal:define="oddrow repeat/obj/odd;
+                          imagescale context/@@images;
                           review_state_class obj/review_state_class;
+                          image obj/images;
+                          hasImage obj/hasImage;
                           item_class python: obj['item_class'] if not supress_icon else '';"
               tal:attributes="class python:oddrow and 'portletItem even' or 'portletItem odd'">
 
@@ -33,12 +37,10 @@
                  tal:attributes="href string:${obj/path}/view;
                                  title obj/description;
                                  class string:$review_state_class tile $item_class">
-<!-- Todo: does not work: throws exception in    Module plone.namedfile.scaling, line 494, in _scale_cachekey
-AttributeError: 'dict' object has no attribute 'UID', this view method returns a dict and not a list of brains!
+                                 
+            <img  tal:condition="python:hasImage and (thumb_size!='none')"
+                   tal:replace="structure python:image.scale('image', scale=thumb_size).tag(css_class='pull-right image-'+thumb_size)"/>
 
-           <img tal:condition="python: obj['hasImage'] and (view.thumb_size()!='none')"
-                tal:replace="structure python:image_scale.tag(obj, 'image', scale=thumb_size, css_class='pull-right image-'+thumb_size)" />
--->                             
                   <span tal:replace="obj/title">
                       Title
                   </span>

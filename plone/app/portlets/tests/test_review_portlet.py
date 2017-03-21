@@ -47,12 +47,12 @@ class TestPortlet(PortletsTestCase):
         mapping = self.portal.restrictedTraverse('++contextportlets++plone.leftcolumn')
         for m in mapping.keys():
             del mapping[m]
-        addview = mapping.restrictedTraverse('+/' + portlet.addview)       
+        addview = mapping.restrictedTraverse('+/' + portlet.addview)
         addview.createAndAdd(data={})
 
         self.assertEqual(len(mapping), 1)
         self.assertTrue(isinstance(mapping.values()[0], review.Assignment))
-        
+
     def testRenderer(self):
         context = self.folder
         request = self.folder.REQUEST

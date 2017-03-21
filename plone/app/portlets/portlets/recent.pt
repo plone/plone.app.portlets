@@ -15,7 +15,7 @@
         tal:condition="view/recent_items"
         tal:define="plone_layout context/@@plone_layout;
                     portal context/@@plone_portal_state/portal;
-                    image_scale portal/@@image_scale;        
+                    image_scale portal/@@image_scale;
                     supress_icon    view/data/no_icons;
                     supress_thumb   view/data/no_thumbs;
                     thumb_size      python:view.thumb_size();">
@@ -39,13 +39,11 @@
                   <img class="mime-icon" tal:condition="python:item_type =='File' and not supress_icon"
                              tal:attributes="href obj/getURL;
                                              src python:view.getMimeTypeIcon(obj);">
-                                             
+
            <img tal:define="thumb_size view/thumb_size;"
-           	    tal:condition="python: obj.getIcon and (view.thumb_size()!='none')"
+                tal:condition="python: obj.getIcon and (view.thumb_size()!='none')"
                 tal:replace="structure python:image_scale.tag(obj, 'image', scale=thumb_size, css_class='pull-right image-'+thumb_size)" />
-                          
-                                             
-                        
+
                   <span tal:content="obj/pretty_title_or_id">
                      Title
                  </span>
