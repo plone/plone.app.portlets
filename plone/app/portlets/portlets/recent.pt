@@ -16,7 +16,9 @@
       <ul>
         <tal:items tal:define="plone_view context/@@plone;
                            normalizeString nocall:plone_view/normalizeString;
-                           toLocalizedTime nocall:plone_view/toLocalizedTime;"
+                           toLocalizedTime nocall:plone_view/toLocalizedTime;
+                           portal context/@@plone_portal_state/portal;
+                           image_scale portal/@@image_scale"
                tal:repeat="obj view/recent_items">
 
           <li class="portletItem"
@@ -29,12 +31,9 @@
                 tal:attributes="href string:${obj/getURL}/view;
                                 title obj/Description;
                                 class string:$item_wf_state_class tile $item_class">
-                  <img class="image-icon"
-                    tal:define="getIcon python:obj.getURL()+'/@@images/image/icon'"
-                    tal:condition="python:  obj.getIcon"
-                    tal:attributes="href obj/getURL;
-                              src  string:$getIcon">
-                  <span tal:content="obj/pretty_title_or_id">
+                <img tal:condition="python: obj.getIcon"
+                     tal:replace="structure python:image_scale.tag(obj, 'image', scale='icon', css_class='image-icon')" />
+                <span tal:content="obj/pretty_title_or_id">
                      Title
                  </span>
 

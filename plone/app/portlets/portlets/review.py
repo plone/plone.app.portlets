@@ -76,7 +76,8 @@ class Renderer(base.Renderer):
                 creator_name = creator.getProperty('fullname', '') or creator_id
             else:
                 creator_name = creator_id
-            hasImage = True if getattr(obj,'image',None) else False
+            hasImage = True if getattr(obj, 'image', None) else False
+            images = obj.restrictedTraverse('@@images') if hasImage else None
             items.append(dict(
                 path=obj.absolute_url(),
                 title=obj.pretty_title_or_id(),
@@ -86,7 +87,8 @@ class Renderer(base.Renderer):
                 review_state=review_state,
                 review_state_class='state-%s ' % norm(review_state),
                 mod_date=toLocalizedTime(obj.ModificationDate()),
-                hasImage = hasImage,                    
+                hasImage=hasImage,
+                images=images,
             ))
         return items
 
