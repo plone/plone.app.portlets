@@ -38,7 +38,7 @@
                                  title obj/description;
                                  class string:$review_state_class tile $item_class">
                                  
-            <img  tal:condition="python:hasImage and (thumb_size!='none')"
+            <img  tal:condition="python:hasImage and thumb_size!='none' and imagescale is not None"
                    tal:replace="structure python:image.scale('image', scale=thumb_size).tag(css_class='pull-right image-'+thumb_size)"/>
 
                   <span tal:replace="obj/title">

@@ -170,10 +170,6 @@ Fixes:
 - Fixed links in RSS portlets when using special characters.
   [Gagaro]
 
-- Cleanup and rework: contenttype-icons and showing thumbnails
-  for images/leadimages in listings.
-  https://github.com/plone/Products.CMFPlone/issues/1226
-  [fgrcon]
 
 
 3.1.2 (2015-09-27)
@@ -1092,7 +1088,7 @@ Fixes:
 
 
 1.2.1 - unreleased
--------------------
+------------------
 
 - RSS portlet: accept the feedparser.CharacterEncodingOverride
   exception when parsing the feed as it is just a warning: the parsed

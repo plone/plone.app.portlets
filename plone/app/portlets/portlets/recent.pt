@@ -41,7 +41,7 @@
                                              src python:view.getMimeTypeIcon(obj);">
 
            <img tal:define="thumb_size view/thumb_size;"
-                tal:condition="python: obj.getIcon and (view.thumb_size()!='none')"
+                tal:condition="python: obj.getIcon and (view.thumb_size()!='none'and not supress_thumb and image_scale is not None)"
                 tal:replace="structure python:image_scale.tag(obj, 'image', scale=thumb_size, css_class='pull-right image-'+thumb_size)" />
 
                   <span tal:content="obj/pretty_title_or_id">
