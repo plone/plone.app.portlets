@@ -14,29 +14,41 @@
            i18n:translate=""
            tal:content="view/title" />
   </header>
-  <div class="portletContent">
+  <div class="portletContent"
+       tal:define="plone_layout context/@@plone_layout;
+                   portal context/@@plone_portal_state/portal;
+                   
+                   supress_icon    view/data/no_icons;
+                   supress_thumb   view/data/no_thumbs;
+                   thumb_size python:view.thumb_size();
+                   ">
     <ul>
-      <tal:items tal:repeat="o view/review_items">
+      <tal:items tal:repeat="obj view/review_items">
           <li class="portletItem"
-              tal:define="oddrow repeat/o/odd;
-                          review_state_class o/review_state_class;
-                          item_class o/item_class;"
+              tal:define="oddrow repeat/obj/odd;
+                          imagescale context/@@images;
+                          review_state_class obj/review_state_class;
+                          image obj/images;
+                          hasImage obj/hasImage;
+                          item_class python: obj['item_class'] if not supress_icon else '';"
               tal:attributes="class python:oddrow and 'portletItem even' or 'portletItem odd'">
 
               <a href="#"
-                 tal:attributes="href string:${o/path}/view;
-                                 title o/description;
+                 tal:attributes="href string:${obj/path}/view;
+                                 title obj/description;
                                  class string:$review_state_class tile $item_class">
-                  <img tal:condition="o/hasImage"
-                       tal:replace="structure python:o['images'].scale('image', scale='icon').tag(css_class='image-icon')" />
-                  <span tal:replace="o/title">
+                                 
+            <img  tal:condition="python:hasImage and thumb_size!='none' and imagescale is not None"
+                   tal:replace="structure python:image.scale('image', scale=thumb_size).tag(css_class='pull-right image-'+thumb_size)"/>
+
+                  <span tal:replace="obj/title">
                       Title
                   </span>
               </a>
 
                   <span class="portletItemDetails">
-                      <span tal:replace="o/creator">Jim Smith</span> &mdash;
-                      <time tal:replace="o/mod_date"> May 5</time>
+                      <span tal:replace="obj/creator">Jim Smith</span> &mdash;
+                      <time tal:replace="obj/mod_date"> May 5</time>
                   </span>
 
           </li>

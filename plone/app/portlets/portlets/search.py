@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from plone import api
+from plone.app.layout.navigation.root import getNavigationRoot
 from plone.app.portlets import PloneMessageFactory as _
 from plone.app.portlets.portlets import base
 from plone.portlets.interfaces import IPortletDataProvider
@@ -53,7 +53,7 @@ class Renderer(base.Renderer):
         return '{0}/{1}'.format(self.navigation_root_url, self.action)
 
     def navigation_root_url(self):
-        return api.portal.get_navigation_root()
+        return getNavigationRoot(self.context)
 
 
 class AddForm(base.AddForm):

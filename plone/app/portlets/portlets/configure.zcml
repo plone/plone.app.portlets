@@ -55,6 +55,7 @@
         assignment=".review.Assignment"
         renderer=".review.Renderer"
         addview=".review.AddForm"
+        editview=".review.EditForm"
         />
 
     <plone:portlet

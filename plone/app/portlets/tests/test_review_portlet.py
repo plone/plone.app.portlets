@@ -48,9 +48,7 @@ class TestPortlet(PortletsTestCase):
         for m in mapping.keys():
             del mapping[m]
         addview = mapping.restrictedTraverse('+/' + portlet.addview)
-
-        # This is a NullAddForm - calling it does the work
-        addview()
+        addview.createAndAdd(data={})
 
         self.assertEqual(len(mapping), 1)
         self.assertTrue(isinstance(mapping.values()[0], review.Assignment))

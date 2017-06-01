@@ -23,13 +23,15 @@ from Products.CMFPlone.browser.navtree import SitemapNavtreeStrategy
 from Products.CMFPlone.defaultpage import is_default_page
 from Products.CMFPlone.interfaces import INavigationSchema
 from Products.CMFPlone.interfaces import INonStructuralFolder
+from Products.CMFPlone.interfaces import ISiteSchema
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from Products.MimetypesRegistry.MimeTypeItem import guess_icon_path
 from zExceptions import NotFound
 from zope import schema
 from zope.component import adapts, getMultiAdapter, queryUtility
 from zope.component import getUtility
 from zope.interface import implementer, Interface
-
+import os
 
 class INavigationPortlet(IPortletDataProvider):
     """A portlet which can render the navigation tree
@@ -96,6 +98,29 @@ class INavigationPortlet(IPortletDataProvider):
             default=0,
             required=False)
 
+    no_icons = schema.Bool(
+        title=_(u"Suppress Icons "),
+        description=_(
+            u"If enabled, the portlet will not show document type icons"),
+        required=True,
+        default=False)
+
+    ov_thumbsize = schema.TextLine(
+        title=_(u"Override thumb size "),
+        description=_(u"<br><ul><li> Enter a valid scale name"
+             u"(see 'Image Handling' control panel) to override"
+             u" e.g. icon, tile, thumb, mini, preview, ... )  </li>"
+             u"<li>leave empty to use default "
+             u"(see 'Site' control panel)</li></ul>"),
+        required=False,
+        default=u'')
+
+    no_thumbs = schema.Bool(
+        title=_(u"Suppress thumbs "),
+        description=_(
+            u"If enabled, the portlet will not show thumbs"),
+        required=True,
+        default=False)
 
 @implementer(INavigationPortlet)
 class Assignment(base.Assignment):
@@ -107,14 +132,22 @@ class Assignment(base.Assignment):
     includeTop = False
     topLevel = 1
     bottomLevel = 0
+    no_icons = False
+    ov_thumbsize = ''
+    no_thumbs = False
 
-    def __init__(self, name="", root_uid=None, currentFolderOnly=False, includeTop=False, topLevel=1, bottomLevel=0):
+    def __init__(self, name="", root_uid=None,
+         currentFolderOnly=False, includeTop=False, topLevel=1, bottomLevel=0,
+         no_icons = False, ov_thumbsize = '', no_thumbs = False):
         self.name = name
         self.root_uid = root_uid
         self.currentFolderOnly = currentFolderOnly
         self.includeTop = includeTop
         self.topLevel = topLevel
         self.bottomLevel = bottomLevel
+        self.no_icons = no_icons
+        self.ov_thumbsize = ov_thumbsize
+        self.ov_thumbsize = ov_thumbsize
 
     @property
     def title(self):
@@ -218,13 +251,6 @@ class Renderer(base.Renderer):
             return 'navTreeCurrentItem'
         return ''
 
-    def root_icon(self):
-        ''' should be deprecated for plone > 5.0 '''
-        plone_layout = getMultiAdapter((self.context, self.request),
-            name='plone_layout')
-        icon = plone_layout.getIcon(self.getNavRoot())
-        return icon
-
     def root_is_portal(self):
         root = self.getNavRoot()
         return aq_base(root) is aq_base(self.urltool.getPortalObject())
@@ -279,15 +305,51 @@ class Renderer(base.Renderer):
 
         return buildFolderTree(context, obj=context, query=queryBuilder(), strategy=strategy)
 
+
+    _template = ViewPageTemplateFile('navigation.pt')
+    recurse = ViewPageTemplateFile('navigation_recurse.pt')
+
+    @memoize
+    def thumb_size(self):
+        ''' use  overrride value or read thumb_size from registry
+            image sizes must fit to value in allowed image sizes
+            none will suppress thumb!
+        '''
+        if getattr(self.data,'no_thumbs',False):
+            #individual setting overrides
+            return 'none'
+        thsize=getattr(self.data,'ov_thumbsize','')
+        if thsize > ' ':
+            return thsize
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(
+            ISiteSchema, prefix="plone", check=False)
+        if settings.no_thumbs_portlet:
+            return 'none'
+        thumb_size_portlet = settings.thumb_size_portlet
+        return thumb_size_portlet
+
+    def getMimeTypeIcon(self,node):
+        try:
+            if not node['normalized_portal_type'] == 'file':
+                return None
+            fileo = node['item'].getObject().file
+            portal_url = getNavigationRoot(self.context)
+            mtt = getToolByName(self.context,'mimetypes_registry')
+            if fileo.contentType:
+                ctype = mtt.lookup(fileo.contentType)
+                return os.path.join(portal_url,
+                     guess_icon_path(ctype[0])
+                    )
+        except (AttributeError):
+                return None
+        return None
+
     def update(self):
         pass
 
     def render(self):
         return self._template()
-
-    _template = ViewPageTemplateFile('navigation.pt')
-    recurse = ViewPageTemplateFile('navigation_recurse.pt')
-
 
 class AddForm(base.AddForm):
     schema = INavigationPortlet
@@ -302,12 +364,10 @@ class AddForm(base.AddForm):
                           topLevel=data.get('topLevel', 0),
                           bottomLevel=data.get('bottomLevel', 0))
 
-
 class EditForm(base.EditForm):
     schema = INavigationPortlet
     label = _(u"Edit Navigation Portlet")
     description = _(u"This portlet displays a navigation tree.")
-
 
 @implementer(INavigationQueryBuilder)
 class QueryBuilder(object):
