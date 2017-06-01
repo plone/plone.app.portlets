@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from Acquisition import aq_inner
-from plone import api
+from plone.app.layout.navigation.root import getNavigationRoot
 from plone.app.portlets import PloneMessageFactory as _
 from plone.app.portlets.cache import render_cachekey
 from plone.app.portlets.portlets import base
@@ -9,6 +9,7 @@ from plone.memoize.compress import xhtml_compress
 from plone.memoize.instance import memoize
 from plone.portlets.interfaces import IPortletDataProvider
 from plone.registry.interfaces import IRegistry
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces.controlpanel import ISiteSchema
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.MimetypesRegistry.MimeTypeItem import guess_icon_path
@@ -137,8 +138,8 @@ class Renderer(base.Renderer):
 
     def getMimeTypeIcon(self,obj):
         fileo = obj.getObject().file
-        portal_url = api.portal.get().absolute_url()
-        mtt = api.portal.get_tool(name='mimetypes_registry')
+        portal_url = getNavigationRoot(self.context)
+        mtt = getToolByName(self.context,'mimetypes_registry')
         if fileo.contentType:
             ctype = mtt.lookup(fileo.contentType)
             return os.path.join(portal_url,
