@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from Acquisition import aq_inner, aq_base, aq_parent
 from ComputedAttribute import ComputedAttribute
-from plone import api
 from plone.app.layout.navigation.interfaces import INavigationQueryBuilder
 from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.app.layout.navigation.interfaces import INavtreeStrategy
@@ -335,8 +334,8 @@ class Renderer(base.Renderer):
             if not node['normalized_portal_type'] == 'file':
                 return None
             fileo = node['item'].getObject().file
-            portal_url = api.portal.get().absolute_url()
-            mtt = api.portal.get_tool(name='mimetypes_registry')
+            portal_url = getNavigationRoot(self.context)
+            mtt = getToolByName(self.context,'mimetypes_registry')
             if fileo.contentType:
                 ctype = mtt.lookup(fileo.contentType)
                 return os.path.join(portal_url,
