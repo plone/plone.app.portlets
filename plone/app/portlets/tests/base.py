@@ -6,7 +6,7 @@ products with Zope, and it sets up a sandbox Plone site with the appropriate
 products installed.
 """
 
-import as unittest
+import unittest
 
 from Testing.ZopeTestCase import Functional
 from plone.app.portlets.testing import PLONE_APP_PORTLETS_INTEGRATION_TESTING
