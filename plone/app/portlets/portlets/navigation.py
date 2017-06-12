@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
-from Acquisition import aq_inner, aq_base, aq_parent
+from Acquisition import aq_base
+from Acquisition import aq_inner
+from Acquisition import aq_parent
 from ComputedAttribute import ComputedAttribute
 from plone.app.layout.navigation.interfaces import INavigationQueryBuilder
 from plone.app.layout.navigation.interfaces import INavigationRoot
@@ -28,10 +30,15 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.MimetypesRegistry.MimeTypeItem import guess_icon_path
 from zExceptions import NotFound
 from zope import schema
-from zope.component import adapts, getMultiAdapter, queryUtility
+from zope.component import adapts
+from zope.component import getMultiAdapter
 from zope.component import getUtility
-from zope.interface import implementer, Interface
+from zope.component import queryUtility
+from zope.interface import implementer
+from zope.interface import Interface
+
 import os
+
 
 class INavigationPortlet(IPortletDataProvider):
     """A portlet which can render the navigation tree
@@ -99,28 +106,30 @@ class INavigationPortlet(IPortletDataProvider):
             required=False)
 
     no_icons = schema.Bool(
-        title=_(u"Suppress Icons "),
+        title=_(u"Suppress Icons"),
         description=_(
-            u"If enabled, the portlet will not show document type icons"),
+            u"If enabled, the portlet will not show document type icons."),
         required=True,
         default=False)
 
-    ov_thumbsize = schema.TextLine(
-        title=_(u"Override thumb size "),
-        description=_(u"<br><ul><li> Enter a valid scale name"
-             u"(see 'Image Handling' control panel) to override"
-             u" e.g. icon, tile, thumb, mini, preview, ... )  </li>"
-             u"<li>leave empty to use default "
-             u"(see 'Site' control panel)</li></ul>"),
+    thumb_scale = schema.TextLine(
+        title=_(u"Override thumb scale"),
+        description=_(
+            u"Enter a valid scale name"
+            u" (see 'Image Handling' control panel) to override"
+            u" (e.g. icon, tile, thumb, mini, preview, ... )."
+            u" Leave empty to use default (see 'Site' control panel)."
+        ),
         required=False,
         default=u'')
 
     no_thumbs = schema.Bool(
-        title=_(u"Suppress thumbs "),
+        title=_(u"Suppress thumbs"),
         description=_(
-            u"If enabled, the portlet will not show thumbs"),
+            u"If enabled, the portlet will not show thumbs."),
         required=True,
         default=False)
+
 
 @implementer(INavigationPortlet)
 class Assignment(base.Assignment):
@@ -133,12 +142,21 @@ class Assignment(base.Assignment):
     topLevel = 1
     bottomLevel = 0
     no_icons = False
-    ov_thumbsize = ''
+    thumb_scale = None
     no_thumbs = False
 
-    def __init__(self, name="", root_uid=None,
-         currentFolderOnly=False, includeTop=False, topLevel=1, bottomLevel=0,
-         no_icons = False, ov_thumbsize = '', no_thumbs = False):
+    def __init__(
+            self,
+            name="",
+            root_uid=None,
+            currentFolderOnly=False,
+            includeTop=False,
+            topLevel=1,
+            bottomLevel=0,
+            no_icons=False,
+            thumb_scale=None,
+            no_thumbs=False
+    ):
         self.name = name
         self.root_uid = root_uid
         self.currentFolderOnly = currentFolderOnly
@@ -146,8 +164,8 @@ class Assignment(base.Assignment):
         self.topLevel = topLevel
         self.bottomLevel = bottomLevel
         self.no_icons = no_icons
-        self.ov_thumbsize = ov_thumbsize
-        self.ov_thumbsize = ov_thumbsize
+        self.thumb_scale = thumb_scale
+        self.no_thumbs = no_thumbs
 
     @property
     def title(self):
@@ -310,39 +328,40 @@ class Renderer(base.Renderer):
     recurse = ViewPageTemplateFile('navigation_recurse.pt')
 
     @memoize
-    def thumb_size(self):
-        ''' use  overrride value or read thumb_size from registry
-            image sizes must fit to value in allowed image sizes
-            none will suppress thumb!
-        '''
-        if getattr(self.data,'no_thumbs',False):
-            #individual setting overrides
-            return 'none'
-        thsize=getattr(self.data,'ov_thumbsize','')
-        if thsize > ' ':
+    def thumb_scale(self):
+        """Use override value or read thumb_scale from registry.
+        Image sizes must fit to value in allowed image sizes.
+        None will suppress thumb.
+        """
+        if getattr(self.data, 'no_thumbs', False):
+            # Individual setting overrides
+            return None
+        thsize = getattr(self.data, 'thumb_scale', None)
+        if thsize:
             return thsize
         registry = getUtility(IRegistry)
         settings = registry.forInterface(
             ISiteSchema, prefix="plone", check=False)
         if settings.no_thumbs_portlet:
             return 'none'
-        thumb_size_portlet = settings.thumb_size_portlet
-        return thumb_size_portlet
+        thumb_scale_portlet = settings.thumb_scale_portlet
+        return thumb_scale_portlet
 
-    def getMimeTypeIcon(self,node):
+    def getMimeTypeIcon(self, node):
         try:
             if not node['normalized_portal_type'] == 'file':
                 return None
             fileo = node['item'].getObject().file
             portal_url = getNavigationRoot(self.context)
-            mtt = getToolByName(self.context,'mimetypes_registry')
+            mtt = getToolByName(self.context, 'mimetypes_registry')
             if fileo.contentType:
                 ctype = mtt.lookup(fileo.contentType)
-                return os.path.join(portal_url,
-                     guess_icon_path(ctype[0])
-                    )
-        except (AttributeError):
-                return None
+                return os.path.join(
+                    portal_url,
+                    guess_icon_path(ctype[0])
+                )
+        except AttributeError:
+            return None
         return None
 
     def update(self):
@@ -350,6 +369,7 @@ class Renderer(base.Renderer):
 
     def render(self):
         return self._template()
+
 
 class AddForm(base.AddForm):
     schema = INavigationPortlet

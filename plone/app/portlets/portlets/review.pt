@@ -20,7 +20,7 @@
                    
                    supress_icon    view/data/no_icons;
                    supress_thumb   view/data/no_thumbs;
-                   thumb_size python:view.thumb_size();
+                   thumb_scale python:view.thumb_scale();
                    ">
     <ul>
       <tal:items tal:repeat="obj view/review_items">
@@ -38,8 +38,8 @@
                                  title obj/description;
                                  class string:$review_state_class tile $item_class">
                                  
-            <img  tal:condition="python:hasImage and thumb_size!='none' and imagescale is not None"
-                   tal:replace="structure python:image.scale('image', scale=thumb_size).tag(css_class='pull-right image-'+thumb_size)"/>
+            <img  tal:condition="python:hasImage and thumb_scale!='none' and imagescale is not None"
+                   tal:replace="structure python:image.scale('image', scale=thumb_scale).tag(css_class='pull-right image-'+thumb_scale)"/>
 
                   <span tal:replace="obj/title">
                       Title

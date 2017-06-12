@@ -12,7 +12,7 @@ Breaking changes:
 New features:
 
 - navigation-, news-, recent-,review-portlets: add options to supress icons,
-  read thumbsize from registry plus  option to override thumbsize individually
+  read thumb_scale from registry plus  option to override thumb_scale individually
   or suppress thumbs.
   Replace paper clip (fontello icon) with mimetype icon
   from mimetype registry for files
