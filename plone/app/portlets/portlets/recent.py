@@ -17,7 +17,9 @@ from zope import schema
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.interface import implementer
+
 import os
+
 
 class IRecentPortlet(IPortletDataProvider):
 
@@ -34,33 +36,35 @@ class IRecentPortlet(IPortletDataProvider):
         required=True,
         default=False)
 
-    ov_thumbsize = schema.TextLine(
-        title=_(u"Override thumb size "),
-        description=_(u"<br><ul><li> Enter a valid scale name"
-             u"(see 'Image Handling' control panel) to override"
-             u" e.g. icon, tile, thumb, mini, preview, ... )  </li>"
-             u"<li>leave empty to use default "
-             u"(see 'Site' control panel)</li></ul>"),
+    thumb_scale = schema.TextLine(
+        title=_(u"Override thumb size"),
+        description=_(
+            u"Enter a valid scale name"
+            u" (see 'Image Handling' control panel) to override"
+            u" (e.g. icon, tile, thumb, mini, preview, ... )."
+            u" Leave empty to use default (see 'Site' control panel)."
+        ),
         required=False,
         default=u'')
 
     no_thumbs = schema.Bool(
-        title=_(u"Suppress thumbs "),
+        title=_(u"Suppress thumbs"),
         description=_(
-            u"If enabled, the portlet will not show thumbs"),
+            u"If enabled, the portlet will not show thumbs."),
         required=True,
         default=False)
+
 
 @implementer(IRecentPortlet)
 class Assignment(base.Assignment):
     no_icons = False
-    ov_thumbsize = ''
+    thumb_scale = None
 
     def __init__(self, count=5, no_icons=False,
-                ov_thumbsize=u'', no_thumbs=False):
+                 thumb_scale=None, no_thumbs=False):
         self.count = count
         self.no_icons = no_icons
-        self.ov_thumbsize = ov_thumbsize
+        self.thumb_scale = thumb_scale
         self.no_thumbs = no_thumbs
 
     @property
@@ -119,33 +123,35 @@ class Renderer(base.Renderer):
                             sort_limit=limit)[:limit]
 
     @memoize
-    def thumb_size(self):
-        ''' use  overrride value or read thumb_size from registry
-            image sizes must fit to value in allowed image sizes
-            none from both sources will suppress thumb!
-        '''
-        if getattr(self.data,'no_thumbs',False):
-            #individual setting overrides ...
-            return 'none'
-        thsize=getattr(self.data,'ov_thumbsize','')
-        if thsize > ' ':
+    def thumb_scale(self):
+        """Use override value or read thumb_scale from registry.
+        Image sizes must fit to value in allowed image sizes.
+        None will suppress thumb.
+        """
+        if getattr(self.data, 'no_thumbs', False):
+            # Individual setting overrides ...
+            return None
+        thsize = getattr(self.data, 'thumb_scale', None)
+        if thsize:
             return thsize
         registry = getUtility(IRegistry)
         settings = registry.forInterface(
             ISiteSchema, prefix="plone", check=False)
-        thumb_size_portlet = settings.thumb_size_portlet
-        return thumb_size_portlet
+        thumb_scale_portlet = settings.thumb_scale_portlet
+        return thumb_scale_portlet
 
-    def getMimeTypeIcon(self,obj):
+    def getMimeTypeIcon(self, obj):
         fileo = obj.getObject().file
         portal_url = getNavigationRoot(self.context)
-        mtt = getToolByName(self.context,'mimetypes_registry')
+        mtt = getToolByName(self.context, 'mimetypes_registry')
         if fileo.contentType:
             ctype = mtt.lookup(fileo.contentType)
-            return os.path.join(portal_url,
-                 guess_icon_path(ctype[0])
-                )
-        return None 
+            return os.path.join(
+                portal_url,
+                guess_icon_path(ctype[0])
+            )
+        return None
+
 
 class AddForm(base.AddForm):
     schema = IRecentPortlet

@@ -482,8 +482,8 @@ class TestGenericSetup(PortletsTestCase):
     manager="test.testcolumn2" type="portlets.Navigation" visible="True">
   <property name="name"></property>
   <property name="root_uid"/>
+  <property name="thumb_scale"></property>
   <property name="no_thumbs">False</property>
-  <property name="ov_thumbsize"></property>
   <property name="topLevel">1</property>
   <property name="currentFolderOnly">False</property>
   <property name="includeTop">False</property>

@@ -16,9 +16,9 @@
         tal:define="plone_layout context/@@plone_layout;
                     portal context/@@plone_portal_state/portal;
                     image_scale portal/@@image_scale;
-                    supress_icon    view/data/no_icons;
-                    supress_thumb   view/data/no_thumbs;
-                    thumb_size      python:view.thumb_size();">
+                    supress_icon view/data/no_icons;
+                    supress_thumb view/data/no_thumbs;
+                    thumb_scale view/thumb_scale">
       <ul>
         <tal:items tal:define="plone_view context/@@plone;
                            normalizeString nocall:plone_view/normalizeString;
@@ -40,9 +40,8 @@
                              tal:attributes="href obj/getURL;
                                              src python:view.getMimeTypeIcon(obj);">
 
-           <img tal:define="thumb_size view/thumb_size;"
-                tal:condition="python: obj.getIcon and (view.thumb_size()!='none'and not supress_thumb and image_scale is not None)"
-                tal:replace="structure python:image_scale.tag(obj, 'image', scale=thumb_size, css_class='pull-right image-'+thumb_size)" />
+           <img tal:condition="python:obj.getIcon and thumb_scale and not supress_thumb and image_scale"
+                tal:replace="structure python:image_scale.tag(obj, 'image', scale=thumb_scale, css_class='pull-right image-'+thumb_scale)" />
 
                   <span tal:content="obj/pretty_title_or_id">
                      Title

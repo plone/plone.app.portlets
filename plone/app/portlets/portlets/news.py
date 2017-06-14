@@ -38,18 +38,19 @@ class INewsPortlet(IPortletDataProvider):
             vocabulary="plone.app.vocabularies.WorkflowStates")
         )
 
-    ov_thumbsize = schema.TextLine(
-        title=_(u"Override thumb size "),
-        description=_(u"<br><ul><li> Enter a valid scale name"
-             u"(see 'Image Handling' control panel) to override"
-             u" e.g. icon, tile, thumb, mini, preview, ... )  </li>"
-             u"<li>leave empty to use default "
-             u"(see 'Site' control panel)</li></ul>"),
+    thumb_scale = schema.TextLine(
+        title=_(u"Override thumb scale"),
+        description=_(
+            u"Enter a valid scale name"
+            u" (see 'Image Handling' control panel) to override"
+            u" (e.g. icon, tile, thumb, mini, preview, ... )."
+            u" Leave empty to use default (see 'Site' control panel)."
+        ),
         required=False,
         default=u'')
 
     no_thumbs = schema.Bool(
-        title=_(u"Suppress thumbs "),
+        title=_(u"Suppress thumbs"),
         description=_(
             u"If enabled, the portlet will not show thumbs"),
         required=True,
@@ -59,12 +60,16 @@ class INewsPortlet(IPortletDataProvider):
 @implementer(INewsPortlet)
 class Assignment(base.Assignment):
 
+    thumb_scale = None
+    no_thumbs = False
+
     def __init__(self, count=5, state=('published',),
-                 ov_thumbsize = '', no_thumbs = False):
+                 thumb_scale=None, no_thumbs=False):
         self.count = count
         self.state = state
-        self.ov_thumbsize = ov_thumbsize
+        self.thumb_scale = thumb_scale
         self.no_thumbs = no_thumbs
+
     @property
     def title(self):
         return _(u"News")
@@ -113,24 +118,24 @@ class Renderer(base.Renderer):
                        sort_order='reverse',
                        sort_limit=limit)[:limit]
 
-    def thumb_size(self):
-        ''' use  overrride value or read thumb_size from registry
-            image sizes must fit to value in allowed image sizes
-            none will suppress thumb!
-        '''
-        if getattr(self.data,'no_thumbs',False):
-            #individual setting overrides ...
-            return 'none'
-        thsize=getattr(self.data,'ov_thumbsize','')
-        if thsize > ' ':
+    def thumb_scale(self):
+        """Use override value or read thumb_scale from registry.
+        Image sizes must fit to value in allowed image sizes.
+        None will suppress thumb.
+        """
+        if getattr(self.data, 'no_thumbs', False):
+            # Individual setting overrides ...
+            return None
+        thsize = getattr(self.data, 'thumb_scale', '')
+        if thsize:
             return thsize
         registry = getUtility(IRegistry)
         settings = registry.forInterface(
             ISiteSchema, prefix="plone", check=False)
         if settings.no_thumbs_portlet:
-            return 'none'
-        thumb_size_portlet = settings.thumb_size_portlet
-        return thumb_size_portlet
+            return None
+        thumb_scale_portlet = settings.thumb_scale_portlet
+        return thumb_scale_portlet
 
 
 class AddForm(base.AddForm):
