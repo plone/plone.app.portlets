@@ -40,6 +40,10 @@ New features:
 
 Bug fixes:
 
+- fixed css-classes for thumb scales ...
+  https://github.com/plone/Products.CMFPlone/issues/2077
+  [fgrcon]
+
 - Fix regression where navigation portlet ignored unlimited setting for
   *Navigation tree depth* setting
   [datakurre]
