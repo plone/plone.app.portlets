@@ -28,7 +28,7 @@ class IReviewPortlet(IPortletDataProvider):
         default=False)
 
     thumb_scale = schema.TextLine(
-        title=_(u"Override thumb size"),
+        title=_(u"Override thumb scale"),
         description=_(
             u"Enter a valid scale name"
             u" (see 'Image Handling' control panel) to override"
