@@ -5,10 +5,6 @@ Changelog
 4.3.1 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
 New features:
 
 - navigation-, news-, recent-,review-portlets: add options to supress icons,
