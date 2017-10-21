@@ -29,7 +29,7 @@ class PortletManagerRenderer(BasePortletManagerRenderer, Explicit):
         """
         portlet = getMultiAdapter((self.context, self.request, self.__parent__,
                                   self.manager, data, ), IPortletRenderer)
-        return portlet.__of__(self.context)
+        return portlet
 
 
 class ColumnPortletManagerRenderer(PortletManagerRenderer):

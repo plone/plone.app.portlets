@@ -115,13 +115,14 @@ class TestRenderer(PortletsTestCase):
         self.assertEqual(False, self.renderer(request=request).show())
 
     def testCanRegister(self):
-        request = self.folder.REQUEST
         r = self.renderer()
         self.assertFalse(r.can_register())
 
         #Enable self-registration to ensure that the register link is shown
         self.portal.manage_permission('Add portal member', roles=['Anonymous'])
         logout()
+
+        self.folder.REQUEST['_plone_ec_cache'] = {}
         self.assertTrue(r.can_register())
 
         #Hiding the Register action hides the register link
