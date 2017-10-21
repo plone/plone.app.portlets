@@ -15,7 +15,9 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- base.Renderer no longer mixes in Acquisition.Explicit,
+  so attributes of the renderer will no longer be wrapped.
+  [davisagli]
 
 
 4.3.1 (2017-08-07)

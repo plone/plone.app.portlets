@@ -102,7 +102,6 @@ class TestRenderer(PortletsTestCase):
 
         r = self.renderer(context=self.portal,
                           assignment=actions.Assignment(ptitle=u'actions', category=u'site_actions', show_icons=True))
-        r = r.__of__(self.folder)
         r.update()
         output = r.actionLinks()
 
@@ -121,7 +120,6 @@ class TestRenderer(PortletsTestCase):
             context=self.portal,
             assignment=actions.Assignment(
                 ptitle=u'actions', category=u'site_actions', show_icons=False))
-        r = r.__of__(self.folder)
         r.update()
         output = r.actionLinks()
         first = output[0]
@@ -142,11 +140,9 @@ class TestRenderer(PortletsTestCase):
         # thus for the same REQUEST, plone memoize uses REQUEST to cache data
         r1 = self.renderer(assignment=actions.Assignment(
             ptitle=u'tabs', category=u'portal_tabs', show_icons=True))
-        r1 = r1.__of__(self.folder)
         r1.update()
         links1 = r1.actionLinks()
         r2 = self.renderer(assignment=actions.Assignment(ptitle=u'site actions', category=u'site_actions', show_icons=False))
-        r2 = r2.__of__(self.folder)
         r2.update()
         links2 = r2.actionLinks()
 
@@ -173,7 +169,6 @@ class TestRenderer(PortletsTestCase):
             context=self.portal,
             assignment=actions.Assignment(
                 ptitle=u'actions', category=u'portal_tabs', show_icons=True))
-        r = r.__of__(self.folder)
         r.update()
         output = r.actionLinks()
 
@@ -189,7 +184,6 @@ class TestRenderer(PortletsTestCase):
             context=self.portal['news'],
             assignment=actions.Assignment(
                 ptitle=u'actions', category=u'object_buttons', show_icons=False))
-        r = r.__of__(self.folder)
         r.update()
         output = r.actionLinks()
 
@@ -203,7 +197,6 @@ class TestRenderer(PortletsTestCase):
             context=self.portal['news'],
             assignment=actions.Assignment(
                 ptitle=u'actions', category=u'object_buttons', show_icons=False))
-        r = r.__of__(self.folder)
         r.update()
         self.assertEqual(r.category, 'object_buttons')
 
@@ -220,7 +213,6 @@ class TestRenderer(PortletsTestCase):
             context=self.portal['news'],
             assignment=actions.Assignment(
                 ptitle=u'actions', category=u'object_buttons', show_icons=True))
-        r = r.__of__(self.folder)
         r.update()
         self.failUnless(r.actionLinks)
         output = r.actionLinks()

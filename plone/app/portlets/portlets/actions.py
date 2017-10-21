@@ -145,7 +145,7 @@ class Renderer(base.Renderer):
                 result.append(link)
         else:
             if actions_category == 'object_buttons':
-                actions_tool = getMultiAdapter((aq_inner(self.context), self.context.request), name=u'plone_tools').actions()
+                actions_tool = getMultiAdapter((aq_inner(self.context), self.request), name=u'plone_tools').actions()
                 actions = actions_tool.listActionInfos(object=aq_inner(self.context), categories=(actions_category,))
             for action in actions:
                 if not (action['available']

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from Acquisition import Explicit
 from OFS.SimpleItem import SimpleItem
 from plone.app.portlets.interfaces import IDeferredPortletRenderer
 from plone.portlets.interfaces import IPortletAssignment
@@ -45,7 +44,7 @@ class Assignment(SimpleItem, Contained):
 
 
 @implementer(IPortletRenderer)
-class Renderer(Explicit):
+class Renderer(object):
     """Base class for portlet renderers.
 
     You must override render() to return a string to render. One way of
