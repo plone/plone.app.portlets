@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from z3c.form import button
+from z3c.form import field
 from z3c.form import form
 from zope.component import getMultiAdapter
 from zope.interface import implementer
@@ -60,7 +61,14 @@ class AddForm(AutoExtensibleForm, form.AddForm):
         return super(AddForm, self).__call__()
 
     def createAndAdd(self, data):
-        obj = self.create(data)
+        # Filter away data values that does not come from the 'core' schema.
+        # Additional values can come from AutoExtensibleForm/FormExtender schemas,
+        # and the portlet Assignment creation will fail if using "Assignment(**data)".
+        # Extender values are set in form.applyChanges  below.
+        schema_keys = field.Fields(self.schema).keys()
+        unextended_data = { key: data[key] for key in schema_keys }
+
+        obj = self.create(unextended_data)
 
         # Acquisition wrap temporarily to satisfy things like vocabularies
         # depending on tools
