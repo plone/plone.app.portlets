@@ -19,6 +19,13 @@ Bug fixes:
   so attributes of the renderer will no longer be wrapped.
   [davisagli]
 
+- Portlet add and edit forms AutoExtensibleForm. But some portlet
+  addforms fail on creating the Assignment, if there is a FormExtender
+  for the form, and the addform uses "Assignment(**data)" for creation
+  and not "Assignment(key=data.get(key, None))". Fix this by filtering
+  away data values that does not come from the 'core' schema.
+  [sunew]
+
 
 4.3.1 (2017-08-07)
 ------------------
