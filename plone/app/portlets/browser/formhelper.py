@@ -66,7 +66,7 @@ class AddForm(AutoExtensibleForm, form.AddForm):
         # and the portlet Assignment creation will fail if using "Assignment(**data)".
         # Extender values are set in form.applyChanges  below.
         schema_keys = field.Fields(self.schema).keys()
-        unextended_data = { key: data[key] for key in schema_keys }
+        unextended_data = { key: data[key] for key in schema_keys if data.has_key(key)}
 
         obj = self.create(unextended_data)
 
