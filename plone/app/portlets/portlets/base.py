@@ -91,7 +91,7 @@ class DeferredRenderer(Renderer):
     render_preload = ViewPageTemplateFile('deferred_portlet.pt')
 
     def render_full(self):
-        raise NotImplemented, "You must implement 'render_full' as a method or page template file attribute"
+        raise NotImplemented("You must implement 'render_full' as a method or page template file attribute")
 
     def render(self):
         """render the portlet

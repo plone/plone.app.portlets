@@ -53,7 +53,7 @@ def assignment_mapping_from_key(context, manager_name, category, key, create=Fal
             path = path.encode('utf-8')  # OFS.traversable cannot do unicode
             obj = portal.restrictedTraverse(path, None)
         if obj is None:
-            raise KeyError, "Cannot find object at path %s" % path
+            raise KeyError("Cannot find object at path %s" % path)
         return getMultiAdapter((obj, manager), IPortletAssignmentMapping)
     else:
         mapping = manager[category]

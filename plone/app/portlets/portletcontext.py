@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-from types import StringTypes
-
 from zope.interface import implementer, Interface
 from zope.component import adapts
 
@@ -13,6 +11,8 @@ from plone.portlets.interfaces import IPortletContext
 from plone.portlets.constants import USER_CATEGORY
 from plone.portlets.constants import GROUP_CATEGORY
 from plone.portlets.constants import CONTENT_TYPE_CATEGORY
+
+import six
 
 
 @implementer(IPortletContext)
@@ -86,7 +86,7 @@ class ContentContext(object):
         # ambiguity - the Plone member-data version returns ids.
 
         for group in groups:
-            if type(group) not in StringTypes:
+            if not isinstance(group, six.text_type):
                 return ()
 
         return sorted(groups)
