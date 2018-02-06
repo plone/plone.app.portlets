@@ -2,6 +2,7 @@
 from setuptools import find_packages
 from setuptools import setup
 
+
 version = '4.3.2.dev0'
 
 setup(
@@ -47,6 +48,7 @@ setup(
         'plone.app.layout >= 1.2dev',
         'plone.app.vocabularies >= 2.1.15.dev0',
         'plone.app.z3cform',
+        'six',
         'transaction',
         'zope.annotation',
         'zope.browser',

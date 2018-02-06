@@ -78,57 +78,46 @@ any assignments:
 """  # noqa
 
 from operator import attrgetter
-
-from zope.interface import implementer
-from zope.interface import Interface
-from zope.interface import alsoProvides
-from zope.interface import providedBy
-
-from zope.component import adapts
-from zope.component import getSiteManager
-from zope.component import getUtilitiesFor
-from zope.component import queryMultiAdapter
-from zope.component import queryUtility
-from zope.component import getUtility
-
-from zope.component.interfaces import IFactory
-from zope.component.interfaces import IComponentRegistry
-
-from zope.schema.interfaces import IField
-from zope.schema.interfaces import ICollection
-from zope.schema.interfaces import IFromUnicode
-
-from zope.container.interfaces import INameChooser
-
-from Products.GenericSetup.interfaces import IBody
-from Products.GenericSetup.interfaces import ISetupEnviron
-
-from Products.GenericSetup.utils import XMLAdapterBase
-from Products.GenericSetup.utils import _getDottedName
-from Products.GenericSetup.utils import _resolveDottedName
-
-from plone.portlets.interfaces import IPortletType
-from plone.portlets.interfaces import IPortletManager
-from plone.portlets.interfaces import IPortletManagerRenderer
-from plone.portlets.interfaces import ILocalPortletAssignmentManager
-from plone.portlets.interfaces import IPortletAssignmentMapping
-from plone.portlets.interfaces import IPortletAssignmentSettings
-
+from plone.app.portlets.exportimport.interfaces import IPortletAssignmentExportImportHandler
 from plone.app.portlets.interfaces import IDefaultPortletManager
 from plone.app.portlets.interfaces import IPortletTypeInterface
 from plone.app.portlets.utils import assignment_mapping_from_key
-
-from plone.app.portlets.exportimport.interfaces import IPortletAssignmentExportImportHandler
-
-from plone.portlets.constants import USER_CATEGORY
-from plone.portlets.constants import GROUP_CATEGORY
 from plone.portlets.constants import CONTENT_TYPE_CATEGORY
 from plone.portlets.constants import CONTEXT_CATEGORY
-
+from plone.portlets.constants import GROUP_CATEGORY
+from plone.portlets.constants import USER_CATEGORY
+from plone.portlets.interfaces import ILocalPortletAssignmentManager
+from plone.portlets.interfaces import IPortletAssignmentMapping
+from plone.portlets.interfaces import IPortletAssignmentSettings
+from plone.portlets.interfaces import IPortletManager
+from plone.portlets.interfaces import IPortletManagerRenderer
+from plone.portlets.interfaces import IPortletType
 from plone.portlets.manager import PortletManager
-from plone.portlets.storage import PortletCategoryMapping
 from plone.portlets.registration import PortletType
+from plone.portlets.storage import PortletCategoryMapping
+from Products.GenericSetup.interfaces import IBody
+from Products.GenericSetup.interfaces import ISetupEnviron
+from Products.GenericSetup.utils import _getDottedName
+from Products.GenericSetup.utils import _resolveDottedName
+from Products.GenericSetup.utils import XMLAdapterBase
+from zope.component import adapts
+from zope.component import getSiteManager
+from zope.component import getUtilitiesFor
+from zope.component import getUtility
+from zope.component import queryMultiAdapter
+from zope.component import queryUtility
+from zope.component.interfaces import IComponentRegistry
+from zope.component.interfaces import IFactory
+from zope.container.interfaces import INameChooser
+from zope.interface import alsoProvides
+from zope.interface import implementer
+from zope.interface import Interface
+from zope.interface import providedBy
+from zope.schema.interfaces import ICollection
+from zope.schema.interfaces import IField
+from zope.schema.interfaces import IFromUnicode
 
+import six
 
 
 def dummyGetId():
@@ -235,7 +224,7 @@ class PropertyPortletAssignmentExportImportHandler(object):
                     list_element.appendChild(doc.createTextNode(str(e)))
                     child.appendChild(list_element)
             else:
-                child.appendChild(doc.createTextNode(unicode(value)))
+                child.appendChild(doc.createTextNode(six.text_type(value)))
 
         return child
 

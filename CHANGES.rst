@@ -15,6 +15,8 @@ New features:
 
 Bug fixes:
 
+- Imports are Python3 compatible
+  [ale-rt]
 - base.Renderer no longer mixes in Acquisition.Explicit,
   so attributes of the renderer will no longer be wrapped.
   [davisagli]

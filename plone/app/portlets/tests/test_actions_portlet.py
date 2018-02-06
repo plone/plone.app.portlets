@@ -1,19 +1,19 @@
 # -*- coding: utf-8 -*-
-from zope.component import getUtility, getMultiAdapter
-
-from plone.portlets.interfaces import IPortletType
-from plone.portlets.interfaces import IPortletManager
-from plone.portlets.interfaces import IPortletAssignment
-from plone.portlets.interfaces import IPortletDataProvider
-from plone.portlets.interfaces import IPortletRenderer
-
 from plone.app.portlets.portlets import actions
-
 from plone.app.portlets.storage import PortletAssignmentMapping
 from plone.app.portlets.tests.base import PortletsTestCase
-from plone.app.testing import TEST_USER_ID
 from plone.app.testing import setRoles
+from plone.app.testing import TEST_USER_ID
+from plone.portlets.interfaces import IPortletAssignment
+from plone.portlets.interfaces import IPortletDataProvider
+from plone.portlets.interfaces import IPortletManager
+from plone.portlets.interfaces import IPortletRenderer
+from plone.portlets.interfaces import IPortletType
 from Products.CMFCore.utils import getToolByName
+from zope.component import getMultiAdapter
+from zope.component import getUtility
+
+import six
 
 
 class TestPortlet(PortletsTestCase):
@@ -174,7 +174,7 @@ class TestRenderer(PortletsTestCase):
 
         # Have our expected tabs ?
         expected = set([u'Test Folder', u'Home', u'Users', u'News', u'Events'])
-        got = set([unicode(link['title']) for link in output])
+        got = set([six.text_type(link['title']) for link in output])
         self.failUnlessEqual(got, expected)
 
     def test_object_buttons(self):
@@ -189,7 +189,7 @@ class TestRenderer(PortletsTestCase):
 
         # Have our expected tabs ?
         expected = set([u'Cut', u'Copy', u'Rename', u'Delete'])
-        got = set([unicode(link['title']) for link in output])
+        got = set([six.text_type(link['title']) for link in output])
         self.failUnlessEqual(got, expected)
 
     def test_category(self):
@@ -219,5 +219,5 @@ class TestRenderer(PortletsTestCase):
 
         # Have our expected tabs ?
         expected = set([u'Cut', u'Copy', u'Rename', u'Delete'])
-        got = set([unicode(link['title']) for link in output])
+        got = set([six.text_type(link['title']) for link in output])
         self.failUnlessEqual(got, expected)

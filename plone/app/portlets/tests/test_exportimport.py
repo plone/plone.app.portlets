@@ -1,19 +1,4 @@
 # -*- coding: utf-8 -*-
-from StringIO import StringIO
-
-from zope.component import getSiteManager
-from zope.component import getUtility
-from zope.component import queryUtility
-from zope.i18nmessageid import Message
-from zope.interface import Interface
-
-from xml.dom.minidom import parseString
-
-from Products.GenericSetup.testing import DummySetupEnviron
-
-from plone.portlets.interfaces import IPortletManager
-from plone.portlets.interfaces import IPortletType
-from plone.portlets.manager import PortletManager
 
 from plone.app.portlets.exportimport.portlets import PortletsXMLAdapter
 from plone.app.portlets.interfaces import IColumn
@@ -21,6 +6,16 @@ from plone.app.portlets.interfaces import IDashboard
 from plone.app.portlets.interfaces import IDefaultPortletManager
 from plone.app.portlets.tests.base import PortletsTestCase
 from plone.app.portlets.tests.utils import FooPortletManager
+from plone.portlets.interfaces import IPortletManager
+from plone.portlets.interfaces import IPortletType
+from plone.portlets.manager import PortletManager
+from Products.GenericSetup.testing import DummySetupEnviron
+from six import StringIO
+from xml.dom.minidom import parseString
+from zope.component import getSiteManager
+from zope.component import getUtility
+from zope.component import queryUtility
+from zope.i18nmessageid import Message
 
 
 class PortletsExportImportTestCase(PortletsTestCase):
