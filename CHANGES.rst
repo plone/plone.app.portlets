@@ -15,6 +15,10 @@ New features:
 
 Bug fixes:
 
+- Catch NotFound while trying to traverse to portlet add views
+  to check permission.
+  [davisagli]
+
 - *add item here*
 
 
