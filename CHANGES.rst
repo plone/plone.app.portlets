@@ -22,6 +22,12 @@ Bug fixes:
   so attributes of the renderer will no longer be wrapped.
   [davisagli]
 
+- Catch NotFound while trying to traverse to portlet add views
+  to check permission.
+  [davisagli]
+
+- *add item here*
+
 
 4.3.1 (2017-08-07)
 ------------------
