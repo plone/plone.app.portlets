@@ -24,6 +24,7 @@ from Acquisition import Explicit, aq_parent, aq_inner
 from Acquisition.interfaces import IAcquirer
 
 from AccessControl import Unauthorized
+from zExceptions import NotFound
 
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -37,6 +38,7 @@ from plone.app.portlets.browser.interfaces import IManageDashboardPortletsView
 from plone.app.portlets.interfaces import IDashboard, IPortletPermissionChecker
 
 from plone.portlets.interfaces import IPortletAssignmentSettings
+
 
 @implementer(IPortletManagerRenderer)
 class EditPortletManagerRenderer(Explicit):
@@ -162,7 +164,7 @@ class EditPortletManagerRenderer(Explicit):
                 addview = addview[1:]
             try:
                 self.context.restrictedTraverse(str(addview))
-            except (AttributeError, KeyError, Unauthorized,):
+            except (AttributeError, KeyError, Unauthorized, NotFound):
                 return False
             return True
 

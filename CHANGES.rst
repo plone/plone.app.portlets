@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-4.3.2 (unreleased)
+4.4.0 (unreleased)
 ------------------
 
 Breaking changes:
@@ -17,9 +17,16 @@ Bug fixes:
 
 - Imports are Python3 compatible
   [ale-rt]
+
 - base.Renderer no longer mixes in Acquisition.Explicit,
   so attributes of the renderer will no longer be wrapped.
   [davisagli]
+
+- Catch NotFound while trying to traverse to portlet add views
+  to check permission.
+  [davisagli]
+
+- *add item here*
 
 
 4.3.1 (2017-08-07)
