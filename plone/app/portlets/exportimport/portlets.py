@@ -172,7 +172,7 @@ class PropertyPortletAssignmentExportImportHandler(object):
         """Import a single <property /> node
         """
         property_name = child.getAttribute('name')
-        
+
         __traceback_info__ = "Property name: " + property_name
 
         field = interface.get(property_name, None)
@@ -467,7 +467,8 @@ class PortletsXMLAdapter(XMLAdapterBase):
         key = node.getAttribute('key')
         # convert unicode to str as unicode paths are not allowed in
         # restrictedTraverse called in assignment_mapping_from_key
-        key = key.encode()
+        if six.PY2:
+            key = key.encode()
 
         purge = False
         if node.hasAttribute('purge'):
@@ -482,7 +483,7 @@ class PortletsXMLAdapter(XMLAdapterBase):
         if name:
             name = str(name)
             assignment = mapping.get(name, None)
-            
+
         __traceback_info__ = "Assignment name: " + name
 
         if node.hasAttribute('remove'):
