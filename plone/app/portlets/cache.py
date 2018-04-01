@@ -3,6 +3,8 @@ from zope import component
 from Acquisition import aq_inner
 from Products.CMFCore.utils import getToolByName
 
+import six
+
 
 def get_language(context, request):
     portal_state = component.getMultiAdapter(
@@ -25,7 +27,9 @@ def render_cachekey(fun, self):
     context = aq_inner(self.context)
 
     def add(brain):
-        path = brain.getPath().decode('ascii', 'replace')
+        path = brain.getPath()
+        if six.PY2:
+            path = path.encode('ascii', 'replace')
         return "%s\n%s\n\n" % (path, brain.modified)
     fingerprint = "".join(map(add, self._data()))
 
