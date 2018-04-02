@@ -86,7 +86,7 @@ class ContentContext(object):
         # ambiguity - the Plone member-data version returns ids.
 
         for group in groups:
-            if not isinstance(group, six.text_type):
+            if not isinstance(group, (six.text_type, six.binary_type)):
                 return ()
 
         return sorted(groups)
