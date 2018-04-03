@@ -5,21 +5,11 @@ Changelog
 4.3.2 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - Catch NotFound while trying to traverse to portlet add views
   to check permission.
   [davisagli]
-
-- *add item here*
 
 
 4.3.1 (2017-08-07)
