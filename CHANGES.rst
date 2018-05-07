@@ -15,7 +15,8 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Test against plone.app.contenttypes instead of ATContentTypes.
+  [davisagli]
 
 
 4.3.2 (2018-04-03)
