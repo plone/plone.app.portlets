@@ -94,7 +94,7 @@ class TestRenderer(PortletsTestCase):
         self.assertEqual('context/portlet_recent', r.path_expression())
 
     def testRenderClassicPortlet(self):
-        r = self.renderer(assignment=classic.Assignment(template='base_view', macro='content-core'))
+        r = self.renderer(assignment=classic.Assignment(template='@@view', macro='content-core'))
         r.render()
 
 

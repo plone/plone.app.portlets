@@ -26,6 +26,9 @@ Bug fixes:
   to check permission.
   [davisagli]
 
+- Test against plone.app.contenttypes instead of ATContentTypes.
+  [davisagli]
+
 - *add item here*
 
 

@@ -17,8 +17,6 @@ class PloneAppPortlets(PloneSandboxLayer):
     defaultBases = (PLONE_FIXTURE,)
 
     def setUpZope(self, app, configurationContext):
-        z2.installProduct(app, 'Products.ATContentTypes')
-        z2.installProduct(app, 'plone.app.blob')
         z2.installProduct(app, 'plone.app.portlets')
 
         # Include testing profile
@@ -28,7 +26,7 @@ class PloneAppPortlets(PloneSandboxLayer):
                        context=configurationContext)
 
     def setUpPloneSite(self, portal):
-        applyProfile(portal, 'Products.ATContentTypes:default')
+        applyProfile(portal, 'plone.app.contenttypes:default')
 
         setRoles(portal, TEST_USER_ID, ['Manager'])
         login(portal, TEST_USER_NAME)
