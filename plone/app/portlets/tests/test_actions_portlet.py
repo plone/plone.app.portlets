@@ -190,7 +190,7 @@ class TestRenderer(PortletsTestCase):
         # Have our expected tabs ?
         expected = set([u'Cut', u'Copy', u'Rename', u'Delete'])
         got = set([six.text_type(link['title']) for link in output])
-        self.failUnlessEqual(got, expected)
+        self.assertTrue(expected.issubset(got))
 
     def test_category(self):
         r = self.renderer(
@@ -220,4 +220,4 @@ class TestRenderer(PortletsTestCase):
         # Have our expected tabs ?
         expected = set([u'Cut', u'Copy', u'Rename', u'Delete'])
         got = set([six.text_type(link['title']) for link in output])
-        self.failUnlessEqual(got, expected)
+        self.assertTrue(expected.issubset(got))
