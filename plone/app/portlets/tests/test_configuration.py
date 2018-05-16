@@ -431,7 +431,7 @@ class TestGenericSetup(PortletsTestCase):
         portal_setup.runAllImportStepsFromProfile('profile-plone.app.portlets:testing')
 
         expected = """\
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <portlets>
  <portletmanager name="test.testcolumn"
     type="plone.app.portlets.tests.test_configuration.ITestColumn"/>
