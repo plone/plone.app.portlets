@@ -7,13 +7,13 @@ Changelog
 
 Breaking changes:
 
-- Adapt tests to `Products.GenericSetup >= 2.0` thus requiring at least that
-  version.
-  [icemac]
+- *add item here*
 
 New features:
 
-- *add item here*
+- Adapt tests to `Products.GenericSetup >= 2.0` thus requiring at least that
+  version.
+  [icemac]
 
 Bug fixes:
 
@@ -30,8 +30,6 @@ Bug fixes:
 
 - Test against plone.app.contenttypes instead of ATContentTypes.
   [davisagli]
-
-- *add item here*
 
 
 4.3.1 (2017-08-07)
