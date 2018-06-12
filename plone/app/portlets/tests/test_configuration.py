@@ -420,6 +420,7 @@ class TestGenericSetup(PortletsTestCase):
         self.assertEqual(0, len(mapping))
 
     def testExport(self):
+        self.maxDiff = None
         sm = getSiteManager()
         context = TarballExportContext(self.portal.portal_setup)
         handler = getMultiAdapter((sm, context), IBody, name=u'plone.portlets')
@@ -510,7 +511,7 @@ class TestGenericSetup(PortletsTestCase):
 """
 
         body = handler.body
-        self.assertEqual(expected.strip(), body.strip(), body)
+        self.assertEqual(expected.strip(), body.strip().decode('utf8'), body.decode('utf8'))
 
 
 def test_suite():

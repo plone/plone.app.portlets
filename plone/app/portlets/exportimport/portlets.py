@@ -667,7 +667,7 @@ class PortletsXMLAdapter(XMLAdapterBase):
             child.setAttribute('class', _getDottedName(r.component.__class__))
         child.setAttribute('name', r.name)
 
-        specificInterface = providedBy(r.component).flattened().next()
+        specificInterface = next(providedBy(r.component).flattened())
         if specificInterface != IPortletManager:
             child.setAttribute('type', _getDottedName(specificInterface))
 
