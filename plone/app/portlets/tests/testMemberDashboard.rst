@@ -21,7 +21,7 @@ Login as the 'user1' user
     >>> browser.open(portalURL + '/login_form')
     >>> browser.getControl(name='__ac_name').value = 'user1'
     >>> browser.getControl(name='__ac_password').value = 'pass1'
-    >>> browser.getControl(name='submit').click()
+    >>> browser.getControl('Log in').click()
 
 Go to the dashboard and check that portlets are addable here
 
