@@ -17,6 +17,9 @@ New features:
 
 Bug fixes:
 
+- Fix browser tests to work with merged plone.login.
+  [jensens]
+
 - Imports are Python3 compatible
   [ale-rt]
 
