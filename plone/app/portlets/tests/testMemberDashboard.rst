@@ -68,7 +68,7 @@ Using the addview, let's see that we cannot add a portlet for another user
     >>> browser.open(portalURL + '/login_form')
     >>> browser.getControl(name='__ac_name').value = 'user2'
     >>> browser.getControl(name='__ac_password').value = 'pass2'
-    >>> browser.getControl(name='submit').click()
+    >>> browser.getControl('Log in').click()
 
     >>> browser.open(portalURL+'/@@manage-dashboard?_authenticator=' + createToken())
     >>> bool(re.search('\<\/span\>\s+Search\s+\<\/div\>', browser.contents))
