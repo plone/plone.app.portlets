@@ -5,14 +5,6 @@ Changelog
 4.3.3 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - Test against plone.app.contenttypes instead of ATContentTypes.
