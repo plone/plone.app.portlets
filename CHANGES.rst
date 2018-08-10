@@ -36,6 +36,17 @@ Bug fixes:
   to check permission.
   [davisagli]
 
+- Test against plone.app.contenttypes instead of ATContentTypes.
+  [davisagli]
+
+- Portlet add and edit forms already extend AutoExtensibleForm from
+  plone.autoform. But some portlet
+  addforms fail on creating the Assignment, if there is a FormExtender
+  for the form, and the addform uses `Assignment(**data)` for creation
+  instead of explicit parameters. Fix this by filtering
+  away data values that does not come from the 'core' schema.
+  [sunew]
+
 
 4.3.1 (2017-08-07)
 ------------------
