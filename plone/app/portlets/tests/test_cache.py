@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-from plone.app.portlets.tests.base import PortletsTestCase
 from plone.app.portlets.cache import render_cachekey
+from plone.app.portlets.tests.base import PortletsTestCase
 from plone.app.testing import logout
 
 
 class MockBrain(object):
 
-    def __init__(self, path=u"some/path", modified=u"2002-01-01"):
+    def __init__(self, path="some/path", modified="2002-01-01"):
         self.path = path
         self.modified = modified
 
