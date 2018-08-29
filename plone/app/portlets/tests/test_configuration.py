@@ -431,7 +431,7 @@ class TestGenericSetup(PortletsTestCase):
         portal_setup = self.portal.portal_setup
         portal_setup.runAllImportStepsFromProfile('profile-plone.app.portlets:testing')
 
-        expected = """\
+        expected = u"""\
 <?xml version="1.0" encoding="utf-8"?>
 <portlets>
  <portletmanager name="test.testcolumn"
@@ -443,53 +443,53 @@ class TestGenericSetup(PortletsTestCase):
  <assignment name="test.portlet6" category="group" key="Reviewers"
     manager="test.testcolumn" type="portlets.test.Test" visible="True">
   <property name="test_bool"/>
-  <property name="test_tuple"/>
   <property name="test_text"/>
+  <property name="test_tuple"/>
  </assignment>
  <assignment name="test.portlet4" category="content_type" key="Folder"
     manager="test.testcolumn" type="portlets.test.Test" visible="True">
   <property name="test_bool"/>
-  <property name="test_tuple"/>
   <property name="test_text"/>
+  <property name="test_tuple"/>
  </assignment>
  <assignment name="test.portlet5" category="content_type" key="Folder"
     manager="test.testcolumn" type="portlets.test.Test" visible="True">
   <property name="test_bool"/>
-  <property name="test_tuple"/>
   <property name="test_text"/>
+  <property name="test_tuple"/>
  </assignment>
  <assignment name="test.portlet3" category="context" key="/"
     manager="test.testcolumn" type="portlets.test.Test" visible="True">
   <property name="test_bool"/>
-  <property name="test_tuple"/>
   <property name="test_text"/>
+  <property name="test_tuple"/>
  </assignment>
  <assignment name="test.portlet2" category="context" key="/"
     manager="test.testcolumn" type="portlets.test.Test" visible="False">
   <property name="test_bool">True</property>
-  <property name="test_tuple"/>
   <property name="test_text">Test prop 2</property>
+  <property name="test_tuple"/>
  </assignment>
  <assignment name="test.portlet1" category="context" key="/"
     manager="test.testcolumn" type="portlets.test.Test" visible="True">
   <property name="test_bool">False</property>
+  <property name="test_text">Test pröp 1</property>
   <property name="test_tuple">
    <element>published</element>
    <element>private</element>
   </property>
-  <property name="test_text">Test pröp 1</property>
  </assignment>
  <assignment name="navigation" category="context" key="/"
     manager="test.testcolumn2" type="portlets.Navigation" visible="True">
-  <property name="name"></property>
-  <property name="root_uid"/>
-  <property name="thumb_scale"></property>
-  <property name="no_thumbs">False</property>
-  <property name="topLevel">1</property>
+  <property name="bottomLevel">0</property>
   <property name="currentFolderOnly">False</property>
   <property name="includeTop">False</property>
+  <property name="name"></property>
   <property name="no_icons">False</property>
-  <property name="bottomLevel">0</property>
+  <property name="no_thumbs">False</property>
+  <property name="root_uid"/>
+  <property name="thumb_scale"></property>
+  <property name="topLevel">1</property>
  </assignment>
  <blacklist category="user" location="/" manager="test.testcolumn"
     status="acquire"/>
@@ -511,7 +511,7 @@ class TestGenericSetup(PortletsTestCase):
 """
 
         body = handler.body
-        self.assertEqual(expected.strip(), body.strip().decode('utf8'), body.decode('utf8'))
+        self.assertEqual(expected.strip(), body.strip().decode('utf8'))
 
 
 def test_suite():

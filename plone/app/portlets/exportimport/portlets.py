@@ -157,7 +157,7 @@ class PropertyPortletAssignmentExportImportHandler(object):
                 self.import_node(interface, child)
 
     def export_assignment(self, interface, doc, node):
-        for field_name in interface:
+        for field_name in sorted(interface):
             field = interface[field_name]
 
             if not IField.providedBy(field):
