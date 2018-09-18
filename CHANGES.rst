@@ -15,6 +15,9 @@ New features:
   version.
   [icemac]
 
+- Add python 3 compatability
+  [pbauer, ale-rt]
+
 Bug fixes:
 
 - Fix browser tests to work with merged plone.login.
