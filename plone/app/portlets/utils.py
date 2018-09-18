@@ -27,6 +27,8 @@ if HAS_PLONE_APP_EVENT:
     from plone.app.event.portlets import portlet_calendar as calendar
     from plone.app.event.portlets import portlet_events as events
 
+import six
+
 
 def assignment_mapping_from_key(context, manager_name, category, key, create=False):
     """Given the name of a portlet manager, the name of a category, and a
@@ -50,10 +52,11 @@ def assignment_mapping_from_key(context, manager_name, category, key, create=Fal
                 path = path[len(portal_path)+1:]
             while path.startswith('/'):
                 path = path[1:]
-            path = path.encode('utf-8')  # OFS.traversable cannot do unicode
+            if six.PY2 and isinstance(path, six.text_type):
+                path = path.encode('utf-8')  # OFS.traversable cannot do unicode
             obj = portal.restrictedTraverse(path, None)
         if obj is None:
-            raise KeyError, "Cannot find object at path %s" % path
+            raise KeyError("Cannot find object at path %s" % path)
         return getMultiAdapter((obj, manager), IPortletAssignmentMapping)
     else:
         mapping = manager[category]

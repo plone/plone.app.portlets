@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
-from zope import component
 from Acquisition import aq_inner
 from Products.CMFCore.utils import getToolByName
+from zope import component
+
+import six
 
 
 def get_language(context, request):
@@ -25,15 +27,16 @@ def render_cachekey(fun, self):
     context = aq_inner(self.context)
 
     def add(brain):
-        path = brain.getPath().decode('ascii', 'replace')
+        path = brain.getPath()
         return "%s\n%s\n\n" % (path, brain.modified)
+
     fingerprint = "".join(map(add, self._data()))
 
     anonymous = getToolByName(context, 'portal_membership').isAnonymousUser()
 
     return "".join((
         getToolByName(aq_inner(self.context), 'portal_url')(),
-        get_language(aq_inner(self.context), self.request),
+        str(get_language(aq_inner(self.context), self.request)),
         str(anonymous),
         self.manager.__name__,
         self.data.__name__,

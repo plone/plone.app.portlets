@@ -157,7 +157,7 @@ class PropertyPortletAssignmentExportImportHandler(object):
                 self.import_node(interface, child)
 
     def export_assignment(self, interface, doc, node):
-        for field_name in interface:
+        for field_name in sorted(interface):
             field = interface[field_name]
 
             if not IField.providedBy(field):
@@ -172,7 +172,7 @@ class PropertyPortletAssignmentExportImportHandler(object):
         """Import a single <property /> node
         """
         property_name = child.getAttribute('name')
-        
+
         __traceback_info__ = "Property name: " + property_name
 
         field = interface.get(property_name, None)
@@ -467,7 +467,8 @@ class PortletsXMLAdapter(XMLAdapterBase):
         key = node.getAttribute('key')
         # convert unicode to str as unicode paths are not allowed in
         # restrictedTraverse called in assignment_mapping_from_key
-        key = key.encode()
+        if six.PY2:
+            key = key.encode()
 
         purge = False
         if node.hasAttribute('purge'):
@@ -482,7 +483,7 @@ class PortletsXMLAdapter(XMLAdapterBase):
         if name:
             name = str(name)
             assignment = mapping.get(name, None)
-            
+
         __traceback_info__ = "Assignment name: " + name
 
         if node.hasAttribute('remove'):
@@ -666,7 +667,7 @@ class PortletsXMLAdapter(XMLAdapterBase):
             child.setAttribute('class', _getDottedName(r.component.__class__))
         child.setAttribute('name', r.name)
 
-        specificInterface = providedBy(r.component).flattened().next()
+        specificInterface = next(providedBy(r.component).flattened())
         if specificInterface != IPortletManager:
             child.setAttribute('type', _getDottedName(specificInterface))
 
