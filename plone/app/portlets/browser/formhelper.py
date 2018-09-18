@@ -70,7 +70,7 @@ class AddForm(AutoExtensibleForm, form.AddForm):
         # z3cform adapter lookups.
         schema_keys = field.Fields(self.schema).keys()
         unextended_data = {key: data[key]
-                           for key in schema_keys if data.has_key(key)}
+                           for key in schema_keys if key in data}
         obj = self.create(unextended_data)
 
         # Acquisition wrap temporarily to satisfy things like vocabularies
