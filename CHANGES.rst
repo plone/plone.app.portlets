@@ -5,17 +5,15 @@ Changelog
 4.3.4 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
-- *add item here*
+- Portlet add and edit forms already extend AutoExtensibleForm from
+  plone.autoform. But some portlet
+  addforms fail on creating the Assignment, if there is a FormExtender
+  for the form, and the addform uses `Assignment(**data)` for creation
+  instead of explicit parameters. Fix this by filtering
+  away data values that does not come from the 'core' schema.
+  [sunew]
 
 
 4.3.3 (2018-06-19)
@@ -35,17 +33,6 @@ Bug fixes:
 - Catch NotFound while trying to traverse to portlet add views
   to check permission.
   [davisagli]
-
-- Test against plone.app.contenttypes instead of ATContentTypes.
-  [davisagli]
-
-- Portlet add and edit forms already extend AutoExtensibleForm from
-  plone.autoform. But some portlet
-  addforms fail on creating the Assignment, if there is a FormExtender
-  for the form, and the addform uses `Assignment(**data)` for creation
-  instead of explicit parameters. Fix this by filtering
-  away data values that does not come from the 'core' schema.
-  [sunew]
 
 
 4.3.1 (2017-08-07)
