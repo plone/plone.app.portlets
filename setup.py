@@ -26,7 +26,7 @@ setup(
     keywords='portlets viewlets plone',
     author='Plone Foundation',
     author_email='plone-developers@lists.sourceforge.net',
-    url='https://pypi.python.org/pypi/plone.app.portlets',
+    url='https://pypi.org/project/plone.app.portlets',
     license='GPL version 2',
     packages=find_packages(exclude=['ez_setup']),
     namespace_packages=['plone', 'plone.app'],
