@@ -16,7 +16,7 @@ New features:
   [icemac]
 
 - Add python 3 compatability
-  [pbauer, ale-rt]
+  [pbauer, ale-rt, jensens]
 
 Bug fixes:
 

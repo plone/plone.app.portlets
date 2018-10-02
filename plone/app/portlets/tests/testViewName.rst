@@ -23,7 +23,7 @@ Now customize the manage dashboard view and check the name is in place too::
 
     >>> browser = self.site_administrator_browser
     >>> browser.open(portal.absolute_url()+'/portal_view_customizations/registrations.html')
-    >>> browser.getLink(url='manage-dashboard').click()
+    >>> browser.getLink('manage-dashboard').click()
     >>> managedashboard_template = """
     ... <html xmlns="http://www.w3.org/1999/xhtml"
     ...       xmlns:tal="http://xml.zope.org/namespaces/tal"
