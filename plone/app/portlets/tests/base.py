@@ -5,13 +5,12 @@ Note that importing this module has various side-effects: it registers a set of
 products with Zope, and it sets up a sandbox Plone site with the appropriate
 products installed.
 """
-
-import unittest
-
-from Testing.ZopeTestCase import Functional
 from plone.app.portlets.testing import PLONE_APP_PORTLETS_INTEGRATION_TESTING
 from plone.app.testing import PLONE_FUNCTIONAL_TESTING
 from plone.testing.z2 import Browser
+from Testing.ZopeTestCase import Functional
+
+import unittest
 
 
 class PortletsTestCase(unittest.TestCase):

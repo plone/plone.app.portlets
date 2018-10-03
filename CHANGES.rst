@@ -45,6 +45,9 @@ Bug fixes:
   away data values that does not come from the 'core' schema.
   [sunew]
 
+- Remove an outdated test and some cleanup.
+  [jensens]
+
 
 4.3.1 (2017-08-07)
 ------------------
