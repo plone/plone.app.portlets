@@ -41,7 +41,8 @@
     </a>
 
     <div class="portalMessage info"
-        tal:condition="plone_view/isDefaultPageInFolder|nothing">
+         role="status"
+         tal:condition="plone_view/isDefaultPageInFolder|nothing">
       <strong>
           Info
       </strong>

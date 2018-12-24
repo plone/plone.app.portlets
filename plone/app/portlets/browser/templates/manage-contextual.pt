@@ -33,7 +33,8 @@
     </tal:block>
 
       <div class="portalMessage info"
-          tal:condition="plone_view/isDefaultPageInFolder|nothing">
+           role="status"
+           tal:condition="plone_view/isDefaultPageInFolder|nothing">
         <strong i18n:translate="">
             Info
         </strong>
