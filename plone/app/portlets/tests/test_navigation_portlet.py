@@ -270,8 +270,8 @@ class TestRenderer(PortletsTestCase):
             assignment=navigation.Assignment(
                 topLevel=0, root_uid=None, includeTop=True))
         tree = view.getNavTree()
-        self.failUnless(tree)
-        self.failUnless(view.root_is_portal())
+        self.assertTrue(tree)
+        self.assertTrue(view.root_is_portal())
         self.assertEqual(len(tree['children']), 6)
         self.assertEqual(view.getNavRootPath(), '/plone')
 
