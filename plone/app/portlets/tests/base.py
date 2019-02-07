@@ -1,14 +1,8 @@
 # -*- coding: utf-8 -*-
-"""Base class for integration tests, based on ZopeTestCase.
-
-Note that importing this module has various side-effects: it registers a set of
-products with Zope, and it sets up a sandbox Plone site with the appropriate
-products installed.
-"""
+"""Base class for integration tests."""
 from plone.app.portlets.testing import PLONE_APP_PORTLETS_INTEGRATION_TESTING
 from plone.app.testing import PLONE_FUNCTIONAL_TESTING
 from plone.testing.z2 import Browser
-from Testing.ZopeTestCase import Functional
 
 import unittest
 
@@ -33,7 +27,7 @@ class PortletsTestCase(unittest.TestCase):
         pass
 
 
-class PortletsFunctionalTestCase(unittest.TestCase, Functional):
+class PortletsFunctionalTestCase(unittest.TestCase):
     """Base class for functional integration tests for plone.app.portlets.
     This may provide specific set-up and tear-down operations, or provide
     convenience methods.
