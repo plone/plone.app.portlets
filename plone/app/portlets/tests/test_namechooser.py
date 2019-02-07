@@ -2,19 +2,21 @@
 import unittest
 import doctest
 
-from plone.app.portlets.tests.base import PortletsTestCase
+from plone.testing import layered
+from plone.app.portlets.testing import PLONE_APP_PORTLETS_INTEGRATION_TESTING
+from plone.app.portlets.testing import OPTIONFLAGS
 
-from Testing import ZopeTestCase as ztc
 
 def test_suite():
 
     import plone.app.portlets.storage
 
     return unittest.TestSuite([
-
-        ztc.ZopeDocTestSuite(
-            module=plone.app.portlets.storage,
-            test_class=PortletsTestCase,
-            optionflags=doctest.REPORT_ONLY_FIRST_FAILURE | doctest.NORMALIZE_WHITESPACE | doctest.ELLIPSIS),
-
-        ])
+        layered(
+            doctest.DocTestSuite(
+                module=plone.app.portlets.storage,
+                optionflags=OPTIONFLAGS,
+            ),
+            layer=PLONE_APP_PORTLETS_INTEGRATION_TESTING,
+        )
+    ])
