@@ -1,23 +1,12 @@
 Changelog
 =========
 
+.. You should *NOT* be adding new change log entries to this file.
+   You should create a file in the news directory instead.
+   For helpful instructions, please see:
+   https://github.com/plone/plone.releaser/blob/master/ADD-A-NEWS-ITEM.rst
 
-4.4.1 (unreleased)
-------------------
-
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
-Bug fixes:
-
-- a11y: Added role attribute for portalMessage
-  [nzambello]
-
+.. towncrier release notes start
 
 4.4.0 (2018-10-31)
 ------------------
