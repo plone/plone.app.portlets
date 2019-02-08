@@ -8,6 +8,16 @@ Changelog
 
 .. towncrier release notes start
 
+4.4.1 (2019-02-08)
+------------------
+
+Bug fixes:
+
+
+- a11y: Added role attribute for portalMessage [nzambello] (#119)
+- Remove last traces of ZopeTestCase. [gforcada] (#121)
+
+
 4.4.0 (2018-10-31)
 ------------------
 
