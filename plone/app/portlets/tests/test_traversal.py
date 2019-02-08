@@ -3,8 +3,6 @@ from Acquisition import aq_base
 from Acquisition import aq_parent
 from AccessControl import Unauthorized
 
-from Testing.ZopeTestCase import user_name
-
 from zope.component import getMultiAdapter, getUtility
 
 from plone.portlets.interfaces import IPortletManager, IPortletAssignmentMapping
@@ -38,11 +36,11 @@ class TestTraversal(PortletsTestCase):
     def testDashboardNamespace(self):
         assignment = classic.Assignment()
         manager = getUtility(IPortletManager, name='plone.dashboard1')
-        mapping = self.portal.restrictedTraverse('++dashboard++plone.dashboard1+' + user_name)
+        mapping = self.portal.restrictedTraverse('++dashboard++plone.dashboard1+' + TEST_USER_ID)
         self._assertSameObject(aq_parent(mapping), self.portal)
         mapping['foo'] = assignment
-        self._assertSameObject(manager[USER_CATEGORY][user_name]['foo'], assignment)
-        self.assertEqual('++dashboard++plone.dashboard1+' + user_name, mapping.id)
+        self._assertSameObject(manager[USER_CATEGORY][TEST_USER_ID]['foo'], assignment)
+        self.assertEqual('++dashboard++plone.dashboard1+' + TEST_USER_ID, mapping.id)
 
     def testGroupDashboardNamespace(self):
         assignment = classic.Assignment()

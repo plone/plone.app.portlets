@@ -31,8 +31,8 @@ class TestPortlet(PortletsTestCase):
 
     def test_interfaces(self):
         portlet = actions.Assignment(ptitle=u'actions', category=u'document', show_icons=True)
-        self.failUnless(IPortletAssignment.providedBy(portlet))
-        self.failUnless(IPortletDataProvider.providedBy(portlet.data))
+        self.assertTrue(IPortletAssignment.providedBy(portlet))
+        self.assertTrue(IPortletDataProvider.providedBy(portlet.data))
         return
 
     def test_invoke_add_view(self):
@@ -52,7 +52,7 @@ class TestPortlet(PortletsTestCase):
         addview.createAndAdd(data=data)
 
         self.assertEquals(len(mapping), 1)
-        self.failUnless(isinstance(mapping.values()[0],
+        self.assertTrue(isinstance(mapping.values()[0],
                                    actions.Assignment))
         return
 
@@ -62,7 +62,7 @@ class TestPortlet(PortletsTestCase):
 
         mapping['foo'] = actions.Assignment(ptitle=u'actions', category=u'document', show_icons=True)
         editview = getMultiAdapter((mapping['foo'], request), name='edit')
-        self.failUnless(isinstance(editview, actions.EditForm))
+        self.assertTrue(isinstance(editview, actions.EditForm))
         return
 
     def test_obtain_renderer(self):
@@ -76,7 +76,7 @@ class TestPortlet(PortletsTestCase):
 
         renderer = getMultiAdapter(
             (context, request, view, manager, assignment), IPortletRenderer)
-        self.failUnless(isinstance(renderer, actions.Renderer))
+        self.assertTrue(isinstance(renderer, actions.Renderer))
         return
 
 
@@ -106,13 +106,13 @@ class TestRenderer(PortletsTestCase):
         output = r.actionLinks()
 
         if int(migtool.getInstanceVersion()[0]) >= 4:
-            self.failUnlessEqual(len(output), 3)
+            self.assertEqual(len(output), 3)
         else:
-            self.failUnlessEqual(len(output), 4)
+            self.assertEqual(len(output), 4)
 
         first = output[0]
-        self.failUnlessEqual(first['url'], 'http://nohost/plone/sitemap')
-        self.failUnlessEqual(first['title'], u"Site Map")
+        self.assertEqual(first['url'], 'http://nohost/plone/sitemap')
+        self.assertEqual(first['title'], u"Site Map")
 
     def test_render_woicon(self):
         """Without icons"""
@@ -123,7 +123,7 @@ class TestRenderer(PortletsTestCase):
         r.update()
         output = r.actionLinks()
         first = output[0]
-        self.failUnless(first['icon'] is None, "We should not have an icon")
+        self.assertTrue(first['icon'] is None, "We should not have an icon")
         return
 
     def test_multiple_portlets(self):
@@ -175,7 +175,7 @@ class TestRenderer(PortletsTestCase):
         # Have our expected tabs ?
         expected = set([u'Test Folder', u'Home', u'Users', u'News', u'Events'])
         got = set([six.text_type(link['title']) for link in output])
-        self.failUnlessEqual(got, expected)
+        self.assertEqual(got, expected)
 
     def test_object_buttons(self):
         """Special stuff for the object_buttons category
@@ -214,7 +214,7 @@ class TestRenderer(PortletsTestCase):
             assignment=actions.Assignment(
                 ptitle=u'actions', category=u'object_buttons', show_icons=True))
         r.update()
-        self.failUnless(r.actionLinks)
+        self.assertTrue(r.actionLinks)
         output = r.actionLinks()
 
         # Have our expected tabs ?

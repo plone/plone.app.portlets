@@ -2,6 +2,7 @@ Setup::
 
     >>> user1, pass1 = 'user1', 'pass1'
     >>> user2, pass2 = 'user2', 'pass2'
+    >>> portal = layer['portal']
     >>> uf = portal.acl_users
     >>> uf.userFolderAddUser(user1, pass1, ['Member'], [])
     >>> uf.userFolderAddUser(user2, pass2, ['Member'], [])
@@ -15,7 +16,8 @@ bug: 11174: Portal Members can't add portlets to their dashboard
 ----------------------
 Login as the 'user1' user
 
-    >>> browser = self.browser
+    >>> from plone.testing.z2 import Browser
+    >>> browser = Browser(layer['app'])
     >>> portalURL = portal.absolute_url()
 
     >>> browser.open(portalURL + '/login_form')

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from Testing.ZopeTestCase import user_name
+from plone.app.testing import TEST_USER_ID
 
 from zope.component import getUtility, getMultiAdapter
 
@@ -19,9 +19,9 @@ class TestAssignmentFromKey(PortletsTestCase):
     def afterSetUp(self):
         self.manager = getUtility(IPortletManager, name=u'plone.leftcolumn')
         self.cat = self.manager[USER_CATEGORY]
-        self.cat[user_name] = PortletAssignmentMapping(manager=u'plone.leftcolumn',
+        self.cat[TEST_USER_ID] = PortletAssignmentMapping(manager=u'plone.leftcolumn',
                                                        category=USER_CATEGORY,
-                                                       name=user_name)
+                                                       name=TEST_USER_ID)
 
     def testGetPortletFromContext(self):
         mapping = getMultiAdapter((self.portal, self.manager), IPortletAssignmentMapping)
@@ -44,8 +44,8 @@ class TestAssignmentFromKey(PortletsTestCase):
 
     def testGetPortletFromUserCategory(self):
         c = classic.Assignment()
-        self.cat[user_name]['foo'] = c
-        a = assignment_from_key(self.portal, u'plone.leftcolumn', USER_CATEGORY, user_name, 'foo')
+        self.cat[TEST_USER_ID]['foo'] = c
+        a = assignment_from_key(self.portal, u'plone.leftcolumn', USER_CATEGORY, TEST_USER_ID, 'foo')
         self.assertEqual(c, a)
 
 

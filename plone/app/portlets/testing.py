@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from Products.CMFCore.utils import getToolByName
+from plone.app.testing import FunctionalTesting
 from plone.app.testing import IntegrationTesting
 from plone.app.testing import PLONE_FIXTURE
 from plone.app.testing import PloneSandboxLayer
@@ -10,6 +11,8 @@ from plone.app.testing import login
 from plone.app.testing import setRoles
 from plone.testing import z2
 from zope.configuration import xmlconfig
+
+import doctest
 
 
 class PloneAppPortlets(PloneSandboxLayer):
@@ -45,4 +48,12 @@ PLONE_APP_PORTLETS_FIXTURE = PloneAppPortlets()
 PLONE_APP_PORTLETS_INTEGRATION_TESTING = IntegrationTesting(
     bases=(PLONE_APP_PORTLETS_FIXTURE,),
     name="PloneAppPortlets:Integration",
+)
+PLONE_APP_PORTLETS_FUNCTIONAL_TESTING = FunctionalTesting(
+    bases=(PLONE_APP_PORTLETS_FIXTURE,),
+    name="PloneAppPortlets:Functional",
+)
+
+OPTIONFLAGS = (
+    doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE | doctest.REPORT_ONLY_FIRST_FAILURE
 )
