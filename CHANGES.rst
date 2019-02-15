@@ -15,7 +15,8 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Fix portlet types from removed code breaking @@manage-portlets.
+  [rpatterson]
 
 
 3.1.5 (2016-09-23)
