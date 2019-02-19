@@ -159,9 +159,8 @@ class EditPortletManagerRenderer(Explicit):
             addview = "%s/+/%s" % (addviewbase, addview,)
             if addview.startswith('/'):
                 addview = addview[1:]
-            try:
-                self.context.restrictedTraverse(str(addview))
-            except (AttributeError, KeyError, Unauthorized,):
+            if self.context.restrictedTraverse(
+                    str(addview), default=None) is None:
                 return False
             return True
 
