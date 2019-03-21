@@ -27,7 +27,6 @@ class PortletUtilities(BrowserView):
                  manager, assignment.data),
                 IPortletRenderer
             )
-        renderer = renderer.__of__(self.context)
 
         renderer.update()
         if IDeferredPortletRenderer.providedBy(renderer):
