@@ -8,6 +8,15 @@ Changelog
 
 .. towncrier release notes start
 
+4.4.2 (2019-03-21)
+------------------
+
+Bug fixes:
+
+
+- Fix loading portlets with `@@render-portlet` [petschki] (#124)
+
+
 4.4.1 (2019-02-08)
 ------------------
 
