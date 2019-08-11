@@ -15,10 +15,7 @@
            tal:content="view/title" />
   </header>
   <div class="portletContent"
-       tal:define="plone_layout context/@@plone_layout;
-                   portal context/@@plone_portal_state/portal;
-                   
-                   supress_icon    view/data/no_icons;
+       tal:define="supress_icon    view/data/no_icons;
                    supress_thumb   view/data/no_thumbs;
                    thumb_scale python:view.thumb_scale();
                    ">
@@ -26,7 +23,6 @@
       <tal:items tal:repeat="obj view/review_items">
           <li class="portletItem"
               tal:define="oddrow repeat/obj/odd;
-                          imagescale context/@@images;
                           review_state_class obj/review_state_class;
                           image obj/images;
                           hasImage obj/hasImage;
@@ -37,9 +33,9 @@
                  tal:attributes="href string:${obj/path}/view;
                                  title obj/description;
                                  class string:$review_state_class tile $item_class">
-                                 
-            <img  tal:condition="python:hasImage and thumb_scale!='none' and imagescale is not None"
-                   tal:replace="structure python:image.scale('image', scale=thumb_scale).tag(css_class='pull-right thumb-'+thumb_scale)"/>
+
+            <img tal:condition="python:not supress_thumb and hasImage and thumb_scale"
+                 tal:replace="structure python:image.scale('image', scale=thumb_scale).tag(css_class='pull-right thumb-'+thumb_scale)"/>
 
                   <span tal:replace="obj/title">
                       Title
