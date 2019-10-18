@@ -45,7 +45,7 @@
               <tal:email condition="use_email_as_login">
                 <label for=""
                        tal:attributes="for ac_name"
-                       i18n:translate="label_email">E-mail</label>
+                       i18n:translate="label_email">Email</label>
                 <br />
                 <input type="text"
                        size="10"
