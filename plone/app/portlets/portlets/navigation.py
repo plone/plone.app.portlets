@@ -507,14 +507,17 @@ def getRootPath(context, currentFolderOnly, topLevel, root):
         else:
             return '/'.join(context.getPhysicalPath())
 
-    root = uuidToObject(root)
-    if root is not None:
-        rootPath = '/'.join(root.getPhysicalPath())
-    else:
+    if not root:
         rootPath = getNavigationRoot(context)
+    else:
+        root = uuidToObject(root)
+        if root is not None:
+            rootPath = '/'.join(root.getPhysicalPath())
+        else:
+            rootPath = None
 
     # Adjust for topLevel
-    if topLevel > 0:
+    if rootPath and topLevel > 0:
         contextPath = '/'.join(context.getPhysicalPath())
         if not contextPath.startswith(rootPath):
             return None
