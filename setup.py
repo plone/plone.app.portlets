@@ -70,7 +70,6 @@ setup(
         'Products.CMFCore',
         'Products.CMFDynamicViewFTI',
         'Products.GenericSetup >= 2.0.dev0',
-        'Products.GenericSetup',
         'Products.PluggableAuthService',
         'ZODB3',
         'Acquisition',
