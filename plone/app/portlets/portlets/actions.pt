@@ -15,7 +15,7 @@
   <div class="portletContent">
     <ul tal:attributes="class string:actions-${view/category}">
       <tal:loop tal:repeat="link view/actionLinks">
-        <li class="portletItem"
+        <li tal:attributes="class python: 'portletItem ' + link['id']"
             tal:define="icon nocall:link/icon">
           <a href="#"
              tal:define="modal link/modal|nothing"
