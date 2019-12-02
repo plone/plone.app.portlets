@@ -8,6 +8,17 @@ Changelog
 
 .. towncrier release notes start
 
+4.4.4 (2019-12-02)
+------------------
+
+Bug fixes:
+
+
+- - Remove role="navigation" from Navigation portlet.
+    [ericof] (#128) (#128)
+- Fix review portlet when show on the portal-root (#130)
+
+
 4.4.3 (2019-10-21)
 ------------------
 
