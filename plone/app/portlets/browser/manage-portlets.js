@@ -92,14 +92,14 @@ define([
 
       var $message = $('#portlet-message');
       if($message.size() === 0){
-        $message = $('<div class="portalMessage info" id="portlet-message" style="opacity: 0"></div>');
+        $message = $('<div class="alert alert-info" role="alert" id="portlet-message" style="opacity: 0"></div>');
         if(that.isModal){
           $('.plone-modal-body:visible').prepend($message);
         }else{
           $('#content-core').prepend($message);
         }
       }
-      $message.html('<strong>' + _t("Info") + '</strong>' + msg);
+      $message.html('<strong class="mr-1">' + _t("Info") + '</strong>' + msg);
       clearTimeout(that.messageTimeout);
       $message.fadeTo(500, 1);
       that.messageTimeout = window.setTimeout(function(){
