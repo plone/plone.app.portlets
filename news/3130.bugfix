@@ -1,0 +1,2 @@
+Fixed deprecation warning for ``zope.component.interfaces.IComponentRegistry``.
+[maurits]
