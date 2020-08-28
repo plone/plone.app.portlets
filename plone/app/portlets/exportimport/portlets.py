@@ -106,13 +106,13 @@ from zope.component import getUtilitiesFor
 from zope.component import getUtility
 from zope.component import queryMultiAdapter
 from zope.component import queryUtility
-from zope.component.interfaces import IComponentRegistry
 from zope.component.interfaces import IFactory
 from zope.container.interfaces import INameChooser
 from zope.interface import alsoProvides
 from zope.interface import implementer
 from zope.interface import Interface
 from zope.interface import providedBy
+from zope.interface.interfaces import IComponentRegistry
 from zope.schema.interfaces import ICollection
 from zope.schema.interfaces import IField
 from zope.schema.interfaces import IFromUnicode
