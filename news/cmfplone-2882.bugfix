@@ -1,0 +1,4 @@
+fixes  index error in navigation portlet caused by unknown mimetypes without
+entry in mimetype registry
+https://github.com/plone/Products.CMFPlone/issues/2882)
+

@@ -356,6 +356,8 @@ class Renderer(base.Renderer):
             mtt = getToolByName(self.context, 'mimetypes_registry')
             if fileo.contentType:
                 ctype = mtt.lookup(fileo.contentType)
+                if not ctype:
+                    return None
                 return os.path.join(
                     portal_url,
                     guess_icon_path(ctype[0])
