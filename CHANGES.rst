@@ -8,6 +8,19 @@ Changelog
 
 .. towncrier release notes start
 
+4.4.6 (2020-09-28)
+------------------
+
+Bug fixes:
+
+
+- fixes  index error in navigation portlet caused by unknown mimetypes without
+  entry in mimetype registry
+  https://github.com/plone/Products.CMFPlone/issues/2882) (cmfplone-2882)
+- Fixed deprecation warning for ``zope.component.interfaces.IComponentRegistry``.
+  [maurits] (#3130)
+
+
 4.4.5 (2020-04-20)
 ------------------
 
