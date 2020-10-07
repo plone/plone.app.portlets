@@ -33,7 +33,7 @@ class INewsPortlet(IPortletDataProvider):
         title=_(u"Workflow state"),
         description=_(u"Items in which workflow state to show."),
         default=('published', ),
-        required=True,
+        required=False,
         value_type=schema.Choice(
             vocabulary="plone.app.vocabularies.WorkflowStates")
         )
@@ -53,7 +53,7 @@ class INewsPortlet(IPortletDataProvider):
         title=_(u"Suppress thumbs"),
         description=_(
             u"If enabled, the portlet will not show thumbs"),
-        required=True,
+        required=False,
         default=False)
 
 
