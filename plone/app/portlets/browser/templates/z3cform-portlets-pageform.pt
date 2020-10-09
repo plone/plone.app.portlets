@@ -13,6 +13,8 @@
     <metal:block fill-slot="main">
 
         <h1 class="documentFirstHeading" tal:content="view/label | nothing" />
+        
+        <div class="text-muted" tal:condition="view/description | nothing" tal:content="view/description" />
 
         <div id="content-core">
             <metal:block use-macro="context/@@ploneform-macros/titlelessform" >
