@@ -8,46 +8,48 @@
 <body>
 <metal:main fill-slot="main" tal:define="plone_view context/@@plone">
 
-  <h1 class="documentFirstHeading"
-      i18n:translate="title_manage_contextual_portlets">
-      Manage portlets for
-      <q i18n:name="context_title" tal:content="context/Title">title</q>
-  </h1>
-
-  <div id="content-core">
-      <a href=""
-           class="link-parent"
-           tal:attributes="href string:${context/absolute_url}"
-           i18n:translate="return_to_view">
-        Return
-      </a>
+  <header>
+    <h1 class="documentFirstHeading"
+        i18n:translate="title_manage_contextual_portlets">
+        Manage portlets for
+        <q i18n:name="context_title" tal:content="context/Title">title</q>
+    </h1>
+    <a href=""
+        class="link-parent"
+        tal:attributes="href string:${context/absolute_url}"
+        i18n:translate="return_to_view">
+      Return
+    </a>
 
     <tal:block tal:define="is_portal_root context/@@plone_context_state/is_portal_root;"
-               tal:condition="not:is_portal_root">
+            tal:condition="not:is_portal_root">
     -
     <a class="link-parent" tal:condition="plone_view/getParentObject|nothing"
-       tal:attributes="href python:plone_view.getParentObject().absolute_url()+'/@@manage-portlets'"
-       i18n:translate="">
-       Go to parent folder
+    tal:attributes="href python:plone_view.getParentObject().absolute_url()+'/@@manage-portlets'"
+    i18n:translate="">
+    Go to parent folder
     </a>
     </tal:block>
 
-      <div class="portalMessage info"
-           role="status"
-           tal:condition="plone_view/isDefaultPageInFolder|nothing">
-        <strong i18n:translate="">
-            Info
-        </strong>
-        <span tal:omit-tag=""
-            i18n:translate="label_manage_portlets_default_view_container">
-            You are managing the portlets of the default view of a container. If
-            you wanted to manage the portlets of the container itself,
-            <a href=""
-                i18n:name="go_here"
-                i18n:translate="label_manage_portlets_default_view_container_go_here"
-                tal:attributes="href string:${context/aq_inner/aq_parent/absolute_url}/@@manage-portlets">go here</a>.
-        </span>
-      </div>
+    <div class="alert alert-info"
+        role="status"
+        tal:condition="plone_view/isDefaultPageInFolder|nothing">
+      <strong i18n:translate="">
+          Info
+      </strong>
+      <span tal:omit-tag=""
+          i18n:translate="label_manage_portlets_default_view_container">
+          You are managing the portlets of the default view of a container. If
+          you wanted to manage the portlets of the container itself,
+          <a href=""
+              i18n:name="go_here"
+              i18n:translate="label_manage_portlets_default_view_container_go_here"
+              tal:attributes="href string:${context/aq_inner/aq_parent/absolute_url}/@@manage-portlets">go here</a>.
+      </span>
+    </div>
+  </header>
+
+  <div id="content-core">
 
       <p i18n:translate="description_manage_contextual_portlets">
         The portlet columns will first display portlets
