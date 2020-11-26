@@ -178,7 +178,7 @@
 
         <noscript>
         <div class="formControls">
-            <input class="context"
+            <input class="btn btn-primary"
                   type="submit"
                   value="Save settings"
                   i18n:attributes="value label_save_settings"/>

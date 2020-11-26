@@ -77,7 +77,7 @@
               tal:attributes="action string:${context/absolute_url}/@@convert-legacy-portlets">
 
             <input type="submit"
-                   class="context"
+                   class="btn btn-primary"
                    value="Convert portlets"
                    i18n:attributes="value label_convert_portlets"
                    name="convert" />

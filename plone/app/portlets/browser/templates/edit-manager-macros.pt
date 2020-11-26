@@ -27,7 +27,7 @@
         </select>
 
         <noscript>
-            <input class="standalone"
+            <input class="btn btn-secondary"
                    type="submit"
                    value="Add portlet"
                    i18n:attributes="value label_add_portlet;"/>
