@@ -3,186 +3,191 @@
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       tal:omit-tag="">
-<div class="portlets-manager pat-manage-portlets"
+<div class="portlets-manager pat-manage-portlets row"
      tal:attributes="id string:portletmanager-${view/normalized_manager_name};"
      i18n:domain="plone">
 
-  <div metal:use-macro="context/@@manage-portlets-macros/macros/portlet-add-form" />
+  <div class="container">
+    <div metal:use-macro="context/@@manage-portlets-macros/macros/portlet-add-form" />
+  </div>
 
   <div metal:use-macro="context/@@manage-portlets-macros/macros/current-portlets-list" />
 
-  <div class="portletAssignments">
+  <div class="container portletAssignments">
 
-    <h4 i18n:translate="heading_un_block_portlets">
+    <h5 i18n:translate="heading_un_block_portlets">
         Block/unblock portlets
-    </h4>
+    </h5>
 
     <form method="post" tal:attributes="action view/blacklist_status_action" class="portlets-settings">
-      <span tal:replace="structure context/@@authenticator/authenticator" />
-      <input type="hidden" name="manager" tal:attributes="value view/manager_name" />
 
-      <div tal:define="status view/context_blacklist_status" class="portlet-group">
+        <span tal:replace="structure context/@@authenticator/authenticator" />
+        <input type="hidden" name="manager" tal:attributes="value view/manager_name" />
 
-        <span tal:omit-tag=""
-              i18n:translate="label_portlets_parent_folders">
-            Parent portlets:
-        </span>
+        <div tal:define="status view/context_blacklist_status" class="mb-3 portlet-group">
 
-        <select name="context_status:int" size="1">
+          <div class="mb-3">
 
-            <option value="1"
-                    tal:attributes="selected python:status == True and 'selected' or None"
-                    i18n:translate="portlets_value_block">
-                Block
-            </option>
+            <label i18n:translate="label_portlets_parent_folders">Parent portlets:</label>
 
-            <option value="-1"
-                    tal:attributes="selected python:(status == False or status == None) and 'selected' or None"
-                    i18n:translate="portlets_value_show">
-                Do not block
-            </option>
+            <select name="context_status:int" size="1" class="form-select">
 
-        </select>
+                <option value="1"
+                        tal:attributes="selected python:status == True and 'selected' or None"
+                        i18n:translate="portlets_value_block">
+                    Block
+                </option>
 
-        <tal:block define="portlets view/inherited_portlets;"
-                   condition="portlets">
+                <option value="-1"
+                        tal:attributes="selected python:(status == False or status == None) and 'selected' or None"
+                        i18n:translate="portlets_value_show">
+                    Do not block
+                </option>
 
-          <div tal:attributes="class python:status and 'managedPortlet inheritedPortlet blockedPortlet' or 'managedPortlet inheritedPortlet'" tal:repeat="portlet portlets">
-            <div class="portletHeader">
+            </select>
 
-              <a tal:omit-tag="not:portlet/editview"
-                tal:attributes="href string:${portlet/editview}?referer=${view/url_quote_referer}"
-                tal:content="portlet/title" />
-
-              <span class="portletBlockedMessage hiddenStructure"
-                tal:condition="status"
-                title="Blocked"
-                i18n:translate="label_portlet_blocked"
-                i18n:attributes="title title_portlet_blocked;">
-                (Blocked)
-              </span>
-
-            </div>
-          </div>
-        </tal:block>
-
-      </div>
-
-      <div tal:define="status view/group_blacklist_status" class="portlet-group">
-
-        <span tal:omit-tag=""
-              i18n:translate="label_portlets_group_portlets">Group portlets:</span>
-
-        <select name="group_status:int" size="1">
-
-            <option value="0"
-                    tal:attributes="selected python:status == None and 'selected' or None"
-                    i18n:translate="portlets_value_use_parent">
-                Use parent settings
-            </option>
-
-            <option value="1"
-                    tal:attributes="selected python:status == True and 'selected' or None"
-                    i18n:translate="portlets_value_block">
-                Block
-            </option>
-
-            <option value="-1"
-                    tal:attributes="selected python:status == False and 'selected' or None"
-                    i18n:translate="portlets_value_show">
-                Do not block
-            </option>
-
-        </select>
-
-        <tal:block define="portlets view/group_portlets;
-                           status python:view.group_blacklist_status(check_parent=True)">
-
-          <div tal:attributes="class python:status and 'managedPortlet inheritedPortlet blockedPortlet' or 'managedPortlet inheritedPortlet'" tal:repeat="portlet portlets">
-            <div class="portletHeader">
-
-              <a tal:omit-tag="not:portlet/editview"
-                tal:attributes="href string:${portlet/editview}?referer=${view/url_quote_referer}"
-                tal:content="portlet/title" />
-
-              <span class="portletBlockedMessage hiddenStructure"
-                tal:condition="status"
-                title="Blocked"
-                i18n:translate="label_portlet_blocked"
-                i18n:attributes="title title_portlet_blocked;">
-                (Blocked)
-              </span>
-
-            </div>
           </div>
 
-        </tal:block>
+          <tal:block define="portlets view/inherited_portlets;"
+                    condition="portlets">
 
-      </div>
+            <div tal:attributes="class python:status and 'managedPortlet inheritedPortlet blockedPortlet list-group' or 'managedPortlet inheritedPortlet list-group'" tal:repeat="portlet portlets">
 
+              <div class="list-group-item">
 
-      <div tal:define="status view/content_type_blacklist_status" class="portlet-group">
+                <a tal:omit-tag="not:portlet/editview"
+                  tal:attributes="href string:${portlet/editview}?referer=${view/url_quote_referer}"
+                  tal:content="portlet/title" />
 
-        <span tal:omit-tag=""
-              i18n:translate="label_portlets_content_type_portlets">
-            Content type portlets:
-        </span>
-
-        <select name="content_type_status:int" size="1">
-
-            <option value="0"
-                    tal:attributes="selected python:status == None and 'selected' or None"
-                    i18n:translate="portlets_value_use_parent">
-                Use parent settings
-            </option>
-
-            <option value="1"
-                    tal:attributes="selected python:status == True and 'selected' or None"
-                    i18n:translate="portlets_value_block">
-                Block
-            </option>
-
-            <option value="-1"
-                    tal:attributes="selected python:status == False and 'selected' or None"
-                    i18n:translate="portlets_value_show">
-                Do not block
-            </option>
-        </select>
-
-        <tal:block define="portlets view/content_type_portlets;
-                   status python:view.content_type_blacklist_status(check_parent=True)">
-
-          <div tal:attributes="class python:status and 'managedPortlet inheritedPortlet blockedPortlet' or 'managedPortlet inheritedPortlet'"
-            tal:repeat="portlet portlets">
-            <div class="portletHeader">
-              <a tal:omit-tag="not:portlet/editview"
-                tal:attributes="href string:${portlet/editview}?referer=${view/url_quote_referer}"
-                tal:content="portlet/title" />
-
-              <span class="portletBlockedMessage hiddenStructure"
-                tal:condition="status"
-                title="Blocked"
-                i18n:translate="label_portlet_blocked"
-                i18n:attributes="title title_portlet_blocked;">
-                (Blocked)
-              </span>
+                <span class="portletBlockedMessage hiddenStructure"
+                  tal:condition="status"
+                  title="Blocked"
+                  i18n:translate="label_portlet_blocked"
+                  i18n:attributes="title title_portlet_blocked;">
+                  (Blocked)
+                </span>
+              </div>
 
             </div>
-          </div>
-        </tal:block>
+          </tal:block>
 
-      </div>
+        </div>
 
-      <noscript>
-      <div class="formControls">
-          <input class="context"
-                 type="submit"
-                 value="Save settings"
-                 i18n:attributes="value label_save_settings"/>
-      </div>
-      </noscript>
+        <div tal:define="status view/group_blacklist_status" class="mb-3 portlet-group">
 
-    </form>
+          <label i18n:translate="label_portlets_group_portlets">Group portlets:</label>
+
+          <select name="group_status:int" size="1" class="form-select">
+
+              <option value="0"
+                      tal:attributes="selected python:status == None and 'selected' or None"
+                      i18n:translate="portlets_value_use_parent">
+                  Use parent settings
+              </option>
+
+              <option value="1"
+                      tal:attributes="selected python:status == True and 'selected' or None"
+                      i18n:translate="portlets_value_block">
+                  Block
+              </option>
+
+              <option value="-1"
+                      tal:attributes="selected python:status == False and 'selected' or None"
+                      i18n:translate="portlets_value_show">
+                  Do not block
+              </option>
+
+          </select>
+
+          <tal:block define="portlets view/group_portlets;
+                            status python:view.group_blacklist_status(check_parent=True)">
+
+            <div tal:attributes="class python:status and 'managedPortlet inheritedPortlet blockedPortlet' or 'managedPortlet inheritedPortlet'" tal:repeat="portlet portlets">
+
+              <div class="portletHeader">
+
+                <a tal:omit-tag="not:portlet/editview"
+                  tal:attributes="href string:${portlet/editview}?referer=${view/url_quote_referer}"
+                  tal:content="portlet/title" />
+
+                <span class="portletBlockedMessage hiddenStructure"
+                  tal:condition="status"
+                  title="Blocked"
+                  i18n:translate="label_portlet_blocked"
+                  i18n:attributes="title title_portlet_blocked;">
+                  (Blocked)
+                </span>
+
+              </div>
+
+            </div>
+
+          </tal:block>
+
+        </div>
+
+
+        <div tal:define="status view/content_type_blacklist_status" class="mb-3 portlet-group">
+
+          <label i18n:translate="label_portlets_content_type_portlets">Content type portlets:</label>
+
+          <select name="content_type_status:int" size="1"  class="form-select">
+
+              <option value="0"
+                      tal:attributes="selected python:status == None and 'selected' or None"
+                      i18n:translate="portlets_value_use_parent">
+                  Use parent settings
+              </option>
+
+              <option value="1"
+                      tal:attributes="selected python:status == True and 'selected' or None"
+                      i18n:translate="portlets_value_block">
+                  Block
+              </option>
+
+              <option value="-1"
+                      tal:attributes="selected python:status == False and 'selected' or None"
+                      i18n:translate="portlets_value_show">
+                  Do not block
+              </option>
+          </select>
+
+          <tal:block define="portlets view/content_type_portlets;
+                    status python:view.content_type_blacklist_status(check_parent=True)">
+
+            <div tal:attributes="class python:status and 'managedPortlet inheritedPortlet blockedPortlet' or 'managedPortlet inheritedPortlet'"
+              tal:repeat="portlet portlets">
+              <div class="portletHeader">
+                <a tal:omit-tag="not:portlet/editview"
+                  tal:attributes="href string:${portlet/editview}?referer=${view/url_quote_referer}"
+                  tal:content="portlet/title" />
+
+                <span class="portletBlockedMessage hiddenStructure"
+                  tal:condition="status"
+                  title="Blocked"
+                  i18n:translate="label_portlet_blocked"
+                  i18n:attributes="title title_portlet_blocked;">
+                  (Blocked)
+                </span>
+
+              </div>
+            </div>
+          </tal:block>
+
+        </div>
+
+        <noscript>
+        <div class="formControls">
+            <input class="btn btn-primary"
+                  type="submit"
+                  value="Save settings"
+                  i18n:attributes="value label_save_settings"/>
+        </div>
+        </noscript>
+
+      </form>
+
   </div>
+
 </div>
 </html>

@@ -109,7 +109,7 @@ class INavigationPortlet(IPortletDataProvider):
         title=_(u"Suppress Icons"),
         description=_(
             u"If enabled, the portlet will not show document type icons."),
-        required=True,
+        required=False,
         default=False)
 
     thumb_scale = schema.TextLine(
@@ -127,7 +127,7 @@ class INavigationPortlet(IPortletDataProvider):
         title=_(u"Suppress thumbs"),
         description=_(
             u"If enabled, the portlet will not show thumbs."),
-        required=True,
+        required=False,
         default=False)
 
 

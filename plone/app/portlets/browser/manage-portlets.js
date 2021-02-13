@@ -23,7 +23,7 @@ define([
     init: function(){
       var that = this;
       var $modal = that.$el.parents('.plone-modal');
-      if($modal.size() === 1){
+      if($modal.length === 1){
         this.isModal = true;
         /* want to do something on exit from modal now */
         var modal = $modal.data('pattern-plone-modal');
@@ -91,15 +91,15 @@ define([
       var that = this;
 
       var $message = $('#portlet-message');
-      if($message.size() === 0){
-        $message = $('<div class="portalMessage info" id="portlet-message" style="opacity: 0"></div>');
+      if($message.length === 0){
+        $message = $('<div class="alert alert-info" role="alert" id="portlet-message" style="opacity: 0"></div>');
         if(that.isModal){
           $('.plone-modal-body:visible').prepend($message);
         }else{
           $('#content-core').prepend($message);
         }
       }
-      $message.html('<strong>' + _t("Info") + '</strong>' + msg);
+      $message.html('<strong class="mr-1">' + _t("Info") + '</strong>' + msg);
       clearTimeout(that.messageTimeout);
       $message.fadeTo(500, 1);
       that.messageTimeout = window.setTimeout(function(){
@@ -131,7 +131,7 @@ define([
            create the portlet without an actual form.
            If element is found here, we can short circuit and
            continue on. */
-        if($el.size() === 1){
+        if($el.length === 1){
           /* hacky, trying to prevent modal parts from flickering here */
           $el = $el.clone();
           pattern.on('shown', function(){
