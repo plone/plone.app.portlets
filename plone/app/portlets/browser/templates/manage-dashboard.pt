@@ -22,8 +22,8 @@
       <h1
           class="documentFirstHeading"
           i18n:translate="title_edit_dashboard">
-      Edit your dashboard
-  </h1>
+        Edit your dashboard
+      </h1>
     </metal:b>
 
     <metal:b fill-slot="content-core">
@@ -32,35 +32,24 @@
 
         <div class="autotabs">
           <nav class="autotoc-nav nav nav-tabs mb-3">
-            <span class="nav-item">
-              <a
-                  class="nav-link"
-                  href="${context/@@plone_portal_state/navigation_root_url}/dashboard"
-                  i18n:translate="label_dashboard">Dashboard</a>
-            </span>
-
-            <span class="nav-item">
-              <a
-                  class="active nav-link"
-                  href="${context/@@plone_portal_state/navigation_root_url}/@@manage-dashboard?_authenticator=${view/auth_token}"
-                  i18n:translate="label_edit">Edit</a>
-            </span>
+              <a class="nav-link"
+                 href="${context/@@plone_portal_state/navigation_root_url}/dashboard"
+                 i18n:translate="label_dashboard">Dashboard</a>
+              <a class="active nav-link"
+                 href="${context/@@plone_portal_state/navigation_root_url}/@@manage-dashboard?_authenticator=${view/auth_token}"
+                 i18n:translate="label_edit">Edit</a>
           </nav>
-          <div
-              id="dashboard"
-              class="row row-cols-1 row-cols-md-2 gy-5">
-            <div
-                id="dashboard-portlets1"
-                tal:content="structure provider:plone.dashboard1" />
-            <div
-                id="dashboard-portlets2"
-                tal:content="structure provider:plone.dashboard2" />
-            <div
-                id="dashboard-portlets3"
-                tal:content="structure provider:plone.dashboard3" />
-            <div
-                id="dashboard-portlets4"
-                tal:content="structure provider:plone.dashboard4" />
+
+          <div id="dashboard"
+              class="row row-cols-1 row-cols-md-2 gx-5 gy-5">
+            <div id="dashboard-portlets1" class=""
+              tal:content="structure provider:plone.dashboard1" />
+            <div id="dashboard-portlets2"
+              tal:content="structure provider:plone.dashboard2" />
+            <div id="dashboard-portlets3"
+              tal:content="structure provider:plone.dashboard3" />
+            <div id="dashboard-portlets4"
+              tal:content="structure provider:plone.dashboard4" />
           </div>
         </div>
 
