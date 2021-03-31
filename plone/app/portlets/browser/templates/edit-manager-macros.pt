@@ -36,7 +36,7 @@
     </form>
 </div>
 
-<div metal:define-macro="current-portlets-list" class="container portletAssignment"
+<div metal:define-macro="current-portlets-list" class="portletAssignment"
     i18n:domain="plone"
     tal:define="portlets view/portlets">
 
