@@ -19,7 +19,7 @@
            tal:define="prevMonthMonth view/prevMonthMonth;
                        prevMonthYear view/prevMonthYear"
            tal:attributes="id python:showPrevMonth and 'calendar-previous' or '';
-                           href python:'?%smonth:int=%d&amp;year:int=%d&amp;orig_query=%s' % (query_string, prevMonthMonth, prevMonthYear, url_quote_plus(query_string));
+                           href python:'?%smonth:int=%d&year:int=%d&orig_query=%s' % (query_string, prevMonthMonth, prevMonthYear, url_quote_plus(query_string));
                            data-year prevMonthYear;
                            data-month prevMonthMonth;"
            tal:condition="showPrevMonth"
@@ -40,7 +40,7 @@
            tal:define="nextMonthMonth view/nextMonthMonth;
                        nextMonthYear view/nextMonthYear"
            tal:attributes="id python:showNextMonth and 'calendar-next' or '';
-                           href python:'?%smonth:int=%d&amp;year:int=%d&amp;orig_query=%s' % (query_string, nextMonthMonth, nextMonthYear, url_quote_plus(query_string));
+                           href python:'?%smonth:int=%d&year:int=%d&orig_query=%s' % (query_string, nextMonthMonth, nextMonthYear, url_quote_plus(query_string));
                            data-year nextMonthYear;
                            data-month nextMonthMonth;"
            tal:condition="showNextMonth"
@@ -75,7 +75,7 @@
                                         tal:condition="day_event"
                                         tal:attributes="class python:is_today and 'todayevent' or 'event'"
                                        ><strong><a href=""
-                                           tal:attributes="href string:${navigation_root_url}/@@search?advanced_search=True&amp;${view/getReviewStateString}start.query:record:list:date=${day/date_string}+23%3A59%3A59&amp;start.range:record=max&amp;end.query:record:list:date=${day/date_string}+00%3A00%3A00&amp;end.range:record=min&amp;list:&amp;${view/getEventTypes};
+                                           tal:attributes="href string:${navigation_root_url}/@@search?advanced_search=True&${view/getReviewStateString}start.query:record:list:date=${day/date_string}+23:59:59&start.range:record=max&end.query:record:list:date=${day/date_string}+00:00:00&end.range:record=min&list:&${view/getEventTypes};
                                                            title day/eventstring;"
                                            tal:content="daynumber">
                                            31

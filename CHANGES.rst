@@ -14,7 +14,9 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Links in the portlet calendar were with ``&amp;`` which were not always interpreted by recent browsers.
+  Replaced them by standards '&'. [jihaisse]
+- Same for ``%3A`` replaced by ':' [jihaisse]
 
 
 2.5.6 (2016-10-03)
