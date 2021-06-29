@@ -3,6 +3,7 @@ from zope.component import getUtility, getMultiAdapter
 
 from Products.GenericSetup.utils import _getDottedName
 
+from plone.namedfile.file import NamedBlobFile
 from plone.portlets.interfaces import IPortletType
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPortletAssignment
@@ -10,9 +11,21 @@ from plone.portlets.interfaces import IPortletDataProvider
 from plone.portlets.interfaces import IPortletRenderer
 
 from plone.app.portlets.portlets import rss
+from plone.app.portlets.testing import PLONE_APP_PORTLETS_FUNCTIONAL_TESTING
 from plone.app.portlets.tests.base import PortletsTestCase
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import setRoles
+
+
+import os
+import transaction
+import unittest
+
+
+# Take a sample feed.  In this case an atom feed instead of RSS.
+# Taken from https://maurits.vanrees.org/weblog/topics/plone/@@atom.xml
+here = os.path.dirname(__file__)
+sample_feed = os.path.join(here, "atom_feed_maurits.xml")
 
 
 class TestPortlet(PortletsTestCase):
@@ -59,6 +72,17 @@ class TestPortlet(PortletsTestCase):
         renderer = getMultiAdapter((context, request, view, manager, assignment), IPortletRenderer)
         self.assertTrue(isinstance(renderer, rss.Renderer))
 
+    def testRSSFeedFile(self):
+        # We should not be able to read a file from the file system.
+        # We pass a url and a timeout in minutes
+        feed = rss.RSSFeed("file://" + sample_feed, 1)
+        feed._retrieveFeed()
+        self.assertTrue(feed._loaded)
+        self.assertTrue(feed._failed)
+        self.assertFalse(feed.ok)
+        self.assertFalse(feed.siteurl)
+        self.assertEqual(len(feed.items), 0)
+
 
 class TestRenderer(PortletsTestCase):
 
@@ -80,6 +104,31 @@ class TestRenderer(PortletsTestCase):
         self.assertEqual(r.title, u'')
         r.data.portlet_title = u'Overridden title'
         self.assertEqual(r.title, u'Overridden title')
+
+
+class TestFunctional(unittest.TestCase):
+    layer = PLONE_APP_PORTLETS_FUNCTIONAL_TESTING
+
+    def test_rss_feed_http(self):
+        # First prepare a file in the current site,
+        # so that we can try to load this via http.
+        with open(sample_feed, "rb") as myfile:
+            data = myfile.read()
+        file_field = NamedBlobFile(data, filename=u"feed.xml")
+        portal = self.layer["portal"]
+        feed_id = portal.invokeFactory("File", "feed")
+        feed = portal[feed_id]
+        feed.file = file_field
+        transaction.commit()
+
+        # Eat the feed.
+        feed = rss.RSSFeed(feed.absolute_url(), 1)
+        feed._retrieveFeed()
+        self.assertTrue(feed._loaded)
+        self.assertFalse(feed._failed)
+        self.assertTrue(feed.ok)
+        self.assertEqual(feed.siteurl, u"https://maurits.vanrees.org/weblog")
+        self.assertEqual(len(feed.items), 15)
 
 
 def test_suite():

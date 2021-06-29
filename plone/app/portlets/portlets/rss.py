@@ -11,6 +11,13 @@ from zope.interface import implementer, Interface
 import feedparser
 import time
 
+try:
+    # Py 3
+    from urllib.parse import urlparse
+except ImportError:
+    # Py 2
+    from urlparse import urlparse
+
 
 # Accept these bozo_exceptions encountered by feedparser when parsing
 # the feed:
@@ -153,6 +160,13 @@ class RSSFeed(object):
     def _retrieveFeed(self):
         """do the actual work and try to retrieve the feed"""
         url = self.url
+        if url:
+            if len(url.splitlines()) > 1:
+                # More than one line in a url: probably a hacker.
+                url = ""
+            elif urlparse(url).scheme not in ("https", "http"):
+                # Mostly: prevent loading local file: urls.
+                url = ""
         if url != '':
             self._last_update_time_in_minutes = time.time() / 60
             self._last_update_time = DateTime()
