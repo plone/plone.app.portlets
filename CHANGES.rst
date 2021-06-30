@@ -8,6 +8,17 @@ Changelog
 
 .. towncrier release notes start
 
+4.4.7 (2021-06-30)
+------------------
+
+Bug fixes:
+
+
+- Only allow http and https urls in RSS portlet.
+  From `Products.PloneHotfix20210518 <https://plone.org/security/hotfix/20210518/blind-ssrf-via-feedparser-accessing-an-internal-url>`_.
+  [maurits] (#3274)
+
+
 4.4.6 (2020-09-28)
 ------------------
 
