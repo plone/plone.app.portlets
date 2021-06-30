@@ -21,7 +21,7 @@ from zope.interface import Interface
 class IReviewPortlet(IPortletDataProvider):
 
     no_icons = schema.Bool(
-        title=_(u"Suppress Icons "),
+        title=_(u"Suppress Icons"),
         description=_(
             u"If enabled, the portlet will not show document type icons"),
         required=False,

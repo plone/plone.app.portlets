@@ -30,7 +30,7 @@ class IRecentPortlet(IPortletDataProvider):
                        min=1)
 
     no_icons = schema.Bool(
-        title=_(u"Suppress Icons "),
+        title=_(u"Suppress Icons"),
         description=_(
             u"If enabled, the portlet will not show document type icons"),
         required=False,
