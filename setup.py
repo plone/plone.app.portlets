@@ -3,7 +3,7 @@ from setuptools import find_packages
 from setuptools import setup
 
 
-version = '4.4.7'
+version = '4.4.8.dev0'
 
 setup(
     name='plone.app.portlets',
