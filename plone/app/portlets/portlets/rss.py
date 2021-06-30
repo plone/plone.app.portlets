@@ -6,6 +6,7 @@ from plone.app.portlets import PloneMessageFactory as _
 from plone.app.portlets.portlets import base
 from plone.portlets.interfaces import IPortletDataProvider
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
+from urllib.parse import urlparse
 from zope import schema
 from zope.interface import implementer, Interface
 import feedparser
@@ -153,6 +154,13 @@ class RSSFeed(object):
     def _retrieveFeed(self):
         """do the actual work and try to retrieve the feed"""
         url = self.url
+        if url:
+            if len(url.splitlines()) > 1:
+                # More than one line in a url: probably a hacker.
+                url = ""
+            elif urlparse(url).scheme not in ("https", "http"):
+                # Mostly: prevent loading local file: urls.
+                url = ""
         if url != '':
             self._last_update_time_in_minutes = time.time() / 60
             self._last_update_time = DateTime()
@@ -167,10 +175,10 @@ class RSSFeed(object):
                                        ACCEPTED_FEEDPARSER_EXCEPTIONS)):
                 self._loaded = True  # we tried at least but have a failed load
                 self._failed = True
-                logger.info('failed to update RSS feed %s', 
+                logger.info('failed to update RSS feed %s',
                             d.get('bozo_exception', None))
                 return False
-            
+
             #  If the response was 304, nothing changed!
             #  Don't change anything...
             if d.status != 304:
@@ -185,14 +193,14 @@ class RSSFeed(object):
                     self._siteurl = d.feed.link
                 except AttributeError:
                     self._siteurl = ""
-            
+
                 self._items = []
                 for item in d['items']:
                     try:
                         itemdict = self._buildItemDict(item)
                     except AttributeError:
                         continue
-  
+
                     self._items.append(itemdict)
 
             self._loaded = True
