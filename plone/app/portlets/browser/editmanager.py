@@ -26,7 +26,7 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.PythonScripts.standard import url_quote
 from Products.PythonScripts.standard import url_unquote
 from zExceptions import NotFound
-from zope.component import adapts
+from zope.component import adapter
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.component import queryAdapter
@@ -41,6 +41,7 @@ import logging
 
 
 @implementer(IPortletManagerRenderer)
+@adapter(Interface, IDefaultBrowserLayer, IManageColumnPortletsView, IPortletManager)
 class EditPortletManagerRenderer(Explicit):
     """Render a portlet manager in edit mode.
 
@@ -48,8 +49,6 @@ class EditPortletManagerRenderer(Explicit):
     which assignments to display.
 
     """
-
-    adapts(Interface, IDefaultBrowserLayer, IManageColumnPortletsView, IPortletManager)
 
     template = ViewPageTemplateFile("templates/edit-manager.pt")
 
@@ -231,12 +230,11 @@ class EditPortletManagerRenderer(Explicit):
         return str(getMultiAdapter((self.context, self.request), name="absolute_url"))
 
 
+@adapter(
+    Interface, IDefaultBrowserLayer, IManageContextualPortletsView, IPortletManager
+)
 class ContextualEditPortletManagerRenderer(EditPortletManagerRenderer):
     """Render a portlet manager in edit mode for contextual portlets"""
-
-    adapts(
-        Interface, IDefaultBrowserLayer, IManageContextualPortletsView, IPortletManager
-    )
 
     template = ViewPageTemplateFile("templates/edit-manager-contextual.pt")
 
@@ -385,7 +383,7 @@ class ContextualEditPortletManagerRenderer(EditPortletManagerRenderer):
 
         portal_state = getMultiAdapter(
             (context, self.request), name="plone_portal_state"
-        )  # noqa
+        )
         base_url = portal_state.portal_url()
 
         portlets = []
@@ -396,7 +394,7 @@ class ContextualEditPortletManagerRenderer(EditPortletManagerRenderer):
                 if mapping is not None:
                     is_visible = lambda a: IPortletAssignmentSettings(a).get(
                         "visible", True
-                    )  # noqa
+                    )
                     assignments.extend(
                         [a for a in mapping.get(key, {}).values() if is_visible(a)]
                     )
@@ -426,10 +424,9 @@ class ContextualEditPortletManagerRenderer(EditPortletManagerRenderer):
         return self.global_portlets(CONTENT_TYPE_CATEGORY, "contenttypeportlets")
 
 
+@adapter(Interface, IDefaultBrowserLayer, IManageDashboardPortletsView, IDashboard)
 class DashboardEditPortletManagerRenderer(EditPortletManagerRenderer):
     """Render a portlet manager in edit mode for the dashboard"""
-
-    adapts(Interface, IDefaultBrowserLayer, IManageDashboardPortletsView, IDashboard)
 
 
 class ManagePortletAssignments(BrowserView):

@@ -9,7 +9,7 @@ from plone.portlets.constants import CONTEXT_ASSIGNMENT_KEY
 from plone.portlets.interfaces import IPortletAssignmentMapping
 from plone.portlets.storage import PortletAssignmentMapping as BaseMapping
 from zope.annotation.interfaces import IAnnotations
-from zope.component import adapts
+from zope.component import adapter
 from zope.component import getUtility
 from zope.container.contained import NameChooser
 from zope.container.interfaces import INameChooser
@@ -88,10 +88,9 @@ class GroupDashboardPortletAssignmentMapping(PortletAssignmentMapping):
 
 
 @implementer(IBrowserPublisher)
+@adapter(IPortletAssignmentMapping, IDefaultBrowserLayer)
 class PortletAssignmentMappingTraverser(ItemTraverser):
     """A traverser for portlet assignment mappings, that is acqusition-aware"""
-
-    adapts(IPortletAssignmentMapping, IDefaultBrowserLayer)
 
     def publishTraverse(self, request, name):
         ob = ItemTraverser.publishTraverse(self, request, name)

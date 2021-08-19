@@ -74,7 +74,7 @@ any assignments:
 .. These docs are used in http://docs.plone.org/develop/addons/components/genericsetup.html
 .. original content from http://www.sixfeetup.com/company/technologies/plone-content-management-new/quick-reference-cards/swag/swag-images-files/generic_setup.pdf
 
-"""  # noqa
+"""
 
 from operator import attrgetter
 from plone.app.portlets.exportimport.interfaces import (
@@ -97,11 +97,12 @@ from plone.portlets.manager import PortletManager
 from plone.portlets.registration import PortletType
 from plone.portlets.storage import PortletCategoryMapping
 from Products.GenericSetup.interfaces import IBody
+from Products.GenericSetup.interfaces import IComponentsHandlerBlacklist
 from Products.GenericSetup.interfaces import ISetupEnviron
 from Products.GenericSetup.utils import _getDottedName
 from Products.GenericSetup.utils import _resolveDottedName
 from Products.GenericSetup.utils import XMLAdapterBase
-from zope.component import adapts
+from zope.component import adapter
 from zope.component import getSiteManager
 from zope.component import getUtilitiesFor
 from zope.component import getUtility
@@ -114,40 +115,30 @@ from zope.interface import implementer
 from zope.interface import Interface
 from zope.interface import providedBy
 from zope.interface.interfaces import IComponentRegistry
+from zope.schema import Bool
 from zope.schema.interfaces import ICollection
 from zope.schema.interfaces import IField
 from zope.schema.interfaces import IFromUnicode
-
-import six
 
 
 def dummyGetId():
     return ""
 
 
-HAS_BLACKLIST = True
-try:
-    from Products.GenericSetup.interfaces import IComponentsHandlerBlacklist
-except ImportError:
-    HAS_BLACKLIST = False
-
-if HAS_BLACKLIST:
-
-    @implementer(IComponentsHandlerBlacklist)
-    class Blacklist:
-        def getExcludedInterfaces(self):
-            return (
-                _getDottedName(IPortletType),
-                _getDottedName(IPortletManager),
-                _getDottedName(IPortletManagerRenderer),
-            )
+@implementer(IComponentsHandlerBlacklist)
+class Blacklist:
+    def getExcludedInterfaces(self):
+        return (
+            _getDottedName(IPortletType),
+            _getDottedName(IPortletManager),
+            _getDottedName(IPortletManagerRenderer),
+        )
 
 
 @implementer(IPortletAssignmentExportImportHandler)
+@adapter(Interface)
 class PropertyPortletAssignmentExportImportHandler:
     """Import portlet assignment settings based on zope.schema properties"""
-
-    adapts(Interface)
 
     def __init__(self, assignment):
         self.assignment = assignment
@@ -239,15 +230,11 @@ class PropertyPortletAssignmentExportImportHandler:
         return text
 
     def from_unicode(self, field, value):
-
         # XXX: Bool incorrectly omits to declare that it implements
         # IFromUnicode, even though it does.
-        import zope.schema
-
-        if IFromUnicode.providedBy(field) or isinstance(field, zope.schema.Bool):
+        if IFromUnicode.providedBy(field) or isinstance(field, Bool):
             return field.fromUnicode(value)
-        else:
-            return self.field_typecast(field, value)
+        return self.field_typecast(field, value)
 
     def field_typecast(self, field, value):
         # A slight hack to force sequence types to the right type
@@ -266,10 +253,9 @@ class PropertyPortletAssignmentExportImportHandler:
 
 
 @implementer(IBody)
+@adapter(IComponentRegistry, ISetupEnviron)
 class PortletsXMLAdapter(XMLAdapterBase):
     """In- and exporter for a local portlet configuration"""
-
-    adapts(IComponentRegistry, ISetupEnviron)
 
     name = "portlets"
     _LOGGER_ID = "portlets"
@@ -476,8 +462,6 @@ class PortletsXMLAdapter(XMLAdapterBase):
         key = node.getAttribute("key")
         # convert unicode to str as unicode paths are not allowed in
         # restrictedTraverse called in assignment_mapping_from_key
-        if six.PY2:
-            key = key.encode()
 
         purge = False
         if node.hasAttribute("purge"):

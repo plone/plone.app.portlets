@@ -5,14 +5,13 @@ from plone.app.portlets.interfaces import IGroupDashboardPortletAssignmentMappin
 from plone.app.portlets.interfaces import IPortletPermissionChecker
 from plone.app.portlets.interfaces import IUserPortletAssignmentMapping
 from plone.portlets.interfaces import IPortletAssignmentMapping
-from zope.component import adapts
+from zope.component import adapter
 from zope.interface import implementer
 
 
 @implementer(IPortletPermissionChecker)
+@adapter(IPortletAssignmentMapping)
 class DefaultPortletPermissionChecker:
-    adapts(IPortletAssignmentMapping)
-
     def __init__(self, context):
         self.context = context
 
@@ -27,9 +26,8 @@ class DefaultPortletPermissionChecker:
 
 
 @implementer(IPortletPermissionChecker)
+@adapter(IUserPortletAssignmentMapping)
 class UserPortletPermissionChecker:
-    adapts(IUserPortletAssignmentMapping)
-
     def __init__(self, context):
         self.context = context
 
@@ -49,9 +47,8 @@ class UserPortletPermissionChecker:
 
 
 @implementer(IPortletPermissionChecker)
+@adapter(IGroupDashboardPortletAssignmentMapping)
 class GroupDashboardPortletPermissionChecker:
-    adapts(IGroupDashboardPortletAssignmentMapping)
-
     def __init__(self, context):
         self.context = context
 

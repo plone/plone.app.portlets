@@ -4,7 +4,7 @@ from plone.app.portlets.storage import UserPortletAssignmentMapping
 from plone.portlets.constants import USER_CATEGORY
 from plone.portlets.interfaces import IPortletManager
 from Products.PluggableAuthService.interfaces.authservice import IPropertiedUser
-from zope.component import adapts
+from zope.component import adapter
 from zope.component import queryUtility
 from zope.container.interfaces import INameChooser
 from zope.interface import implementer
@@ -42,10 +42,9 @@ def new_user(principal, event):
 
 
 @implementer(IDefaultDashboard)
+@adapter(IPropertiedUser)
 class DefaultDashboard:
     """The default default dashboard."""
-
-    adapts(IPropertiedUser)
 
     def __init__(self, principal):
         self.principal = principal

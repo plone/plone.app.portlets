@@ -152,9 +152,7 @@ class NullAddForm(BrowserView):
             addview = aq_parent(aq_inner(self.context))
             context = aq_parent(aq_inner(addview))
             try:
-                url = str(
-                    getMultiAdapter((context, self.request), name="absolute_url")
-                )
+                url = str(getMultiAdapter((context, self.request), name="absolute_url"))
             except (TypeError, AttributeError):
                 url = self.context.absolute_url()
             return url + "/@@manage-portlets"

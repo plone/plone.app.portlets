@@ -7,7 +7,7 @@ from plone.portlets.interfaces import IPortletRenderer
 from plone.portlets.manager import PortletManagerRenderer as BasePortletManagerRenderer
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from ZODB.POSException import ConflictError
-from zope.component import adapts
+from zope.component import adapter
 from zope.component import getMultiAdapter
 from zope.interface import Interface
 from zope.publisher.interfaces.browser import IBrowserView
@@ -40,10 +40,10 @@ class PortletManagerRenderer(BasePortletManagerRenderer, Explicit):
         return portlet
 
 
+@adapter(Interface, IDefaultBrowserLayer, IBrowserView, IColumn)
 class ColumnPortletManagerRenderer(PortletManagerRenderer):
     """A renderer for the column portlets"""
 
-    adapts(Interface, IDefaultBrowserLayer, IBrowserView, IColumn)
     template = ViewPageTemplateFile("browser/templates/column.pt")
     error_message = ViewPageTemplateFile("browser/templates/error_message.pt")
 
@@ -75,8 +75,8 @@ class ColumnPortletManagerRenderer(PortletManagerRenderer):
             return self.error_message()
 
 
+@adapter(Interface, IDefaultBrowserLayer, IBrowserView, IDashboard)
 class DashboardPortletManagerRenderer(ColumnPortletManagerRenderer):
     """Render a column of the dashboard"""
 
-    adapts(Interface, IDefaultBrowserLayer, IBrowserView, IDashboard)
     template = ViewPageTemplateFile("browser/templates/dashboard-column.pt")

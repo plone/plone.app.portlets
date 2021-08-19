@@ -57,9 +57,7 @@ class Renderer(base.Renderer):
 class AddForm(base.AddForm):
     schema = IClassicPortlet
     label = _("Add Classic Portlet")
-    description = _(
-        "A classic portlet allows you to use legacy portlet " "templates."
-    )
+    description = _("A classic portlet allows you to use legacy portlet " "templates.")
 
     def create(self, data):
         return Assignment(
@@ -70,6 +68,4 @@ class AddForm(base.AddForm):
 class EditForm(base.EditForm):
     schema = IClassicPortlet
     label = _("Edit Classic Portlet")
-    description = _(
-        "A classic portlet allows you to use legacy portlet " "templates."
-    )
+    description = _("A classic portlet allows you to use legacy portlet " "templates.")

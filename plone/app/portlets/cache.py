@@ -2,8 +2,6 @@ from Acquisition import aq_inner
 from Products.CMFCore.utils import getToolByName
 from zope import component
 
-import six
-
 
 def get_language(context, request):
     portal_state = component.getMultiAdapter(

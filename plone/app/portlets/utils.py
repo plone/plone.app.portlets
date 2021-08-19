@@ -1,4 +1,6 @@
 from Acquisition import aq_base
+from plone.app.event.portlets import portlet_calendar as calendar
+from plone.app.event.portlets import portlet_events as events
 from plone.app.portlets import HAS_PLONE_APP_EVENT
 from plone.app.portlets.interfaces import IPortletPermissionChecker
 from plone.app.portlets.portlets import classic
@@ -17,13 +19,6 @@ from Products.CMFCore.utils import getToolByName
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.container.interfaces import INameChooser
-
-
-if HAS_PLONE_APP_EVENT:
-    from plone.app.event.portlets import portlet_calendar as calendar
-    from plone.app.event.portlets import portlet_events as events
-
-import six
 
 
 def assignment_mapping_from_key(context, manager_name, category, key, create=False):
@@ -48,8 +43,6 @@ def assignment_mapping_from_key(context, manager_name, category, key, create=Fal
                 path = path[len(portal_path) + 1 :]
             while path.startswith("/"):
                 path = path[1:]
-            if six.PY2 and isinstance(path, str):
-                path = path.encode("utf-8")  # OFS.traversable cannot do unicode
             obj = portal.restrictedTraverse(path, None)
         if obj is None:
             raise KeyError("Cannot find object at path %s" % path)
@@ -90,15 +83,9 @@ def convert_legacy_portlets(context):
         "portlet_languages": DONT_MIGRATE,
         "portlet_calendar": DONT_MIGRATE,
         "portlet_events": DONT_MIGRATE,
+        "portlet_calendar": calendar.Assignment(),
+        "portlet_events": events.Assignment(count=5),
     }
-
-    if HAS_PLONE_APP_EVENT:
-        portletsMapping.update(
-            {
-                "portlet_calendar": calendar.Assignment(),
-                "portlet_events": events.Assignment(count=5),
-            }
-        )
 
     # Convert left_slots and right_slots to portlets
 

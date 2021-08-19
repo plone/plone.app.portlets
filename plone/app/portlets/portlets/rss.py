@@ -239,8 +239,7 @@ class IRSSPortlet(IPortletDataProvider):
     portlet_title = schema.TextLine(
         title=_("Title"),
         description=_(
-            "Title of the portlet.  If omitted, the title of the "
-            "feed will be used."
+            "Title of the portlet.  If omitted, the title of the " "feed will be used."
         ),
         required=False,
         default="",

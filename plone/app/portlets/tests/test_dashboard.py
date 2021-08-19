@@ -5,12 +5,12 @@ from plone.portlets.interfaces import IPortletRetriever
 from plone.portlets.interfaces import IPortletType
 from Products.PluggableAuthService.events import PrincipalCreated
 from Products.PluggableAuthService.PropertiedUser import PropertiedUser
+from unittest import makeSuite
+from unittest import TestSuite
 from zExceptions import Unauthorized
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.event import notify
-
-import six
 
 
 class TestDashboard(PortletsTestCase):
@@ -46,8 +46,6 @@ class TestDashboard(PortletsTestCase):
 
 
 def test_suite():
-    from unittest import makeSuite
-    from unittest import TestSuite
 
     suite = TestSuite()
     suite.addTest(makeSuite(TestDashboard))

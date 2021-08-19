@@ -1,3 +1,4 @@
+from io import StringIO
 from plone.app.portlets.exportimport.portlets import PortletsXMLAdapter
 from plone.app.portlets.interfaces import IColumn
 from plone.app.portlets.interfaces import IDashboard
@@ -8,7 +9,6 @@ from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPortletType
 from plone.portlets.manager import PortletManager
 from Products.GenericSetup.testing import DummySetupEnviron
-from six import StringIO
 from xml.dom.minidom import parseString
 from zope.component import getSiteManager
 from zope.component import getUtility

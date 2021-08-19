@@ -7,14 +7,13 @@ from plone.portlets.constants import USER_CATEGORY
 from plone.portlets.interfaces import IPortletContext
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName
-from zope.component import adapts
+from zope.component import adapter
 from zope.interface import implementer
 from zope.interface import Interface
 
-import six
-
 
 @implementer(IPortletContext)
+@adapter(Interface)
 class ContentContext:
     """A portlet context for regular content items.
 
@@ -22,8 +21,6 @@ class ContentContext:
     tools and other non-content items. This may hijack the context in non-CMF
     contexts, but that is doubtfully going to be an issue.
     """
-
-    adapts(Interface)
 
     def __init__(self, context):
         self.context = context
@@ -104,10 +101,9 @@ class ContentContext:
 
 
 @implementer(IPortletContext)
+@adapter(ISiteRoot)
 class PortalRootContext(ContentContext):
     """A portlet context for the site root."""
-
-    adapts(ISiteRoot)
 
     def __init__(self, context):
         self.context = context

@@ -8,7 +8,7 @@ from plone.portlets.interfaces import ILocalPortletAssignable
 from plone.portlets.interfaces import IPortletAssignmentMapping
 from plone.portlets.interfaces import IPortletManager
 from Products.CMFCore.interfaces import ISiteRoot
-from zope.component import adapts
+from zope.component import adapter
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.interface import implementer
@@ -17,10 +17,9 @@ from zope.traversing.interfaces import ITraversable
 
 
 @implementer(ITraversable)
+@adapter(ILocalPortletAssignable, IHTTPRequest)
 class ContextPortletNamespace:
     """Used to traverse to a contextual portlet assignable"""
-
-    adapts(ILocalPortletAssignable, IHTTPRequest)
 
     def __init__(self, context, request=None):
         self.context = context
@@ -39,12 +38,11 @@ class ContextPortletNamespace:
 
 
 @implementer(ITraversable)
+@adapter(ISiteRoot, IHTTPRequest)
 class DashboardNamespace:
     """Used to traverse to a portlet assignable for the current user for
     the dashboard.
     """
-
-    adapts(ISiteRoot, IHTTPRequest)
 
     def __init__(self, context, request=None):
         self.context = context
@@ -72,10 +70,9 @@ class DashboardNamespace:
 
 
 @implementer(ITraversable)
+@adapter(ISiteRoot, IHTTPRequest)
 class GroupDashboardNamespace:
     """Used to traverse to a portlet assignable for a group for the dashboard"""
-
-    adapts(ISiteRoot, IHTTPRequest)
 
     def __init__(self, context, request=None):
         self.context = context
@@ -94,10 +91,9 @@ class GroupDashboardNamespace:
 
 
 @implementer(ITraversable)
+@adapter(ISiteRoot, IHTTPRequest)
 class GroupPortletNamespace:
     """Used to traverse to a group portlet assignable"""
-
-    adapts(ISiteRoot, IHTTPRequest)
 
     def __init__(self, context, request=None):
         self.context = context
@@ -125,10 +121,9 @@ class GroupPortletNamespace:
 
 
 @implementer(ITraversable)
+@adapter(ISiteRoot, IHTTPRequest)
 class ContentTypePortletNamespace:
     """Used to traverse to a content type portlet assignable"""
-
-    adapts(ISiteRoot, IHTTPRequest)
 
     def __init__(self, context, request=None):
         self.context = context

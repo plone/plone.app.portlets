@@ -29,7 +29,7 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.MimetypesRegistry.MimeTypeItem import guess_icon_path
 from zExceptions import NotFound
 from zope import schema
-from zope.component import adapts
+from zope.component import adapter
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.component import queryUtility
@@ -415,12 +415,11 @@ class EditForm(base.EditForm):
 
 
 @implementer(INavigationQueryBuilder)
+@adapter(Interface, INavigationPortlet)
 class QueryBuilder:
     """Build a navtree query based on the settings in INavigationSchema
     and those set on the portlet.
     """
-
-    adapts(Interface, INavigationPortlet)
 
     def __init__(self, context, portlet):
         self.context = context
@@ -484,10 +483,9 @@ class QueryBuilder:
 
 
 @implementer(INavtreeStrategy)
+@adapter(Interface, INavigationPortlet)
 class NavtreeStrategy(SitemapNavtreeStrategy):
     """The navtree strategy used for the default navigation portlet"""
-
-    adapts(Interface, INavigationPortlet)
 
     def __init__(self, context, portlet):
         SitemapNavtreeStrategy.__init__(self, context, portlet)
