@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from AccessControl import getSecurityManager
 from AccessControl import Unauthorized
 from Acquisition import aq_inner
@@ -11,7 +10,7 @@ from zope.interface import implementer
 
 
 @implementer(IPortletPermissionChecker)
-class DefaultPortletPermissionChecker(object):
+class DefaultPortletPermissionChecker:
     adapts(IPortletAssignmentMapping)
 
     def __init__(self, context):
@@ -28,7 +27,7 @@ class DefaultPortletPermissionChecker(object):
 
 
 @implementer(IPortletPermissionChecker)
-class UserPortletPermissionChecker(object):
+class UserPortletPermissionChecker:
     adapts(IUserPortletAssignmentMapping)
 
     def __init__(self, context):
@@ -50,7 +49,7 @@ class UserPortletPermissionChecker(object):
 
 
 @implementer(IPortletPermissionChecker)
-class GroupDashboardPortletPermissionChecker(object):
+class GroupDashboardPortletPermissionChecker:
     adapts(IGroupDashboardPortletAssignmentMapping)
 
     def __init__(self, context):

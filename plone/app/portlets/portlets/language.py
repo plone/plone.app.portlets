@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.i18n.locales.browser.selector import LanguageSelector
 from plone.app.portlets import PloneMessageFactory as _
 from plone.app.portlets.portlets import base
@@ -15,7 +14,7 @@ class ILanguagePortlet(IPortletDataProvider):
 @implementer(ILanguagePortlet)
 class Assignment(base.Assignment):
 
-    title = _(u"label_languages", default=u"Languages")
+    title = _("label_languages", default="Languages")
 
 
 class Renderer(base.Renderer):

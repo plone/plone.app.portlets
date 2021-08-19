@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.portlets import portlets
 from plone.app.portlets.interfaces import IDefaultDashboard
 from plone.app.portlets.storage import UserPortletAssignmentMapping
@@ -43,7 +42,7 @@ def new_user(principal, event):
 
 
 @implementer(IDefaultDashboard)
-class DefaultDashboard(object):
+class DefaultDashboard:
     """The default default dashboard."""
 
     adapts(IPropertiedUser)

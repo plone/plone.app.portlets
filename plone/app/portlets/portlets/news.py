@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Acquisition import aq_inner
 from plone.app.layout.navigation.root import getNavigationRootObject
 from plone.app.portlets import PloneMessageFactory as _
@@ -23,8 +22,8 @@ from zope.interface import implementer
 class INewsPortlet(IPortletDataProvider):
 
     count = schema.Int(
-        title=_(u"Number of items to display"),
-        description=_(u"How many items to list."),
+        title=_("Number of items to display"),
+        description=_("How many items to list."),
         required=True,
         default=5,
         min=1,
@@ -32,28 +31,28 @@ class INewsPortlet(IPortletDataProvider):
 
     widget(state=SelectFieldWidget)
     state = schema.Tuple(
-        title=_(u"Workflow state"),
-        description=_(u"Items in which workflow state to show."),
+        title=_("Workflow state"),
+        description=_("Items in which workflow state to show."),
         default=("published",),
         required=False,
         value_type=schema.Choice(vocabulary="plone.app.vocabularies.WorkflowStates"),
     )
 
     thumb_scale = schema.TextLine(
-        title=_(u"Override thumb scale"),
+        title=_("Override thumb scale"),
         description=_(
-            u"Enter a valid scale name"
-            u" (see 'Image Handling' control panel) to override"
-            u" (e.g. icon, tile, thumb, mini, preview, ... )."
-            u" Leave empty to use default (see 'Site' control panel)."
+            "Enter a valid scale name"
+            " (see 'Image Handling' control panel) to override"
+            " (e.g. icon, tile, thumb, mini, preview, ... )."
+            " Leave empty to use default (see 'Site' control panel)."
         ),
         required=False,
-        default=u"",
+        default="",
     )
 
     no_thumbs = schema.Bool(
-        title=_(u"Suppress thumbs"),
-        description=_(u"If enabled, the portlet will not show thumbs"),
+        title=_("Suppress thumbs"),
+        description=_("If enabled, the portlet will not show thumbs"),
         required=False,
         default=False,
     )
@@ -75,7 +74,7 @@ class Assignment(base.Assignment):
 
     @property
     def title(self):
-        return _(u"News")
+        return _("News")
 
 
 class Renderer(base.Renderer):
@@ -146,8 +145,8 @@ class Renderer(base.Renderer):
 
 class AddForm(base.AddForm):
     schema = INewsPortlet
-    label = _(u"Add News Portlet")
-    description = _(u"This portlet displays recent News Items.")
+    label = _("Add News Portlet")
+    description = _("This portlet displays recent News Items.")
 
     def create(self, data):
         return Assignment(
@@ -158,5 +157,5 @@ class AddForm(base.AddForm):
 
 class EditForm(base.EditForm):
     schema = INewsPortlet
-    label = _(u"Edit News Portlet")
-    description = _(u"This portlet displays recent News Items.")
+    label = _("Edit News Portlet")
+    description = _("This portlet displays recent News Items.")

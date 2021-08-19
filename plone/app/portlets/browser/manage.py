@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from AccessControl import Unauthorized
 from Acquisition import aq_base
 from Acquisition import aq_inner
@@ -34,7 +33,7 @@ from zope.publisher.interfaces.browser import IBrowserView
 @implementer(IManageContextualPortletsView)
 class ManageContextualPortlets(BrowserView):
     def __init__(self, context, request):
-        super(ManageContextualPortlets, self).__init__(context, request)
+        super().__init__(context, request)
         self.request.set("disable_border", True)
 
     # IManagePortletsView implementation
@@ -55,7 +54,7 @@ class ManageContextualPortlets(BrowserView):
         baseUrl = str(
             getMultiAdapter((self.context, self.request), name="absolute_url")
         )
-        return "%s/++contextportlets++%s" % (baseUrl, manager.__name__)
+        return f"{baseUrl}/++contextportlets++{manager.__name__}"
 
     def getAssignmentsForManager(self, manager):
         assignments = getMultiAdapter(
@@ -76,7 +75,7 @@ class ManageContextualPortlets(BrowserView):
         self, manager, group_status, content_type_status, context_status
     ):
         authenticator = getMultiAdapter(
-            (self.context, self.request), name=u"authenticator"
+            (self.context, self.request), name="authenticator"
         )
         if not authenticator.verify():
             raise Unauthorized
@@ -145,7 +144,7 @@ class ManageDashboardPortlets(BrowserView):
             getMultiAdapter((self.context, self.request), name="absolute_url")
         )
         userId = self._getUserId()
-        return "%s/++dashboard++%s+%s" % (baseUrl, manager.__name__, userId)
+        return f"{baseUrl}/++dashboard++{manager.__name__}+{userId}"
 
     def getAssignmentsForManager(self, manager):
         userId = self._getUserId()
@@ -198,7 +197,7 @@ class ManageGroupDashboardPortlets(BrowserView):
         baseUrl = str(
             getMultiAdapter((self.context, self.request), name="absolute_url")
         )
-        return "%s/++groupdashboard++%s+%s" % (baseUrl, manager.__name__, self.group)
+        return f"{baseUrl}/++groupdashboard++{manager.__name__}+{self.group}"
 
     def getAssignmentsForManager(self, manager):
         column = getUtility(IPortletManager, name=manager.__name__)
@@ -229,7 +228,7 @@ class ManageGroupPortlets(BrowserView):
         return self.request["key"]
 
     def __init__(self, context, request):
-        super(ManageGroupPortlets, self).__init__(context, request)
+        super().__init__(context, request)
         self.request.set("disable_border", True)
 
     def getAssignmentMappingUrl(self, manager):
@@ -237,7 +236,7 @@ class ManageGroupPortlets(BrowserView):
             getMultiAdapter((self.context, self.request), name="absolute_url")
         )
         key = self.request["key"]
-        return "%s/++groupportlets++%s+%s" % (baseUrl, manager.__name__, key)
+        return f"{baseUrl}/++groupportlets++{manager.__name__}+{key}"
 
     def getAssignmentsForManager(self, manager):
         key = self.request["key"]
@@ -259,7 +258,7 @@ class ManageGroupPortlets(BrowserView):
 @implementer(IManageContentTypePortletsView)
 class ManageContentTypePortlets(BrowserView):
     def __init__(self, context, request):
-        super(ManageContentTypePortlets, self).__init__(context, request)
+        super().__init__(context, request)
         self.request.set("disable_border", True)
 
     # IManagePortletsView implementation
@@ -281,7 +280,7 @@ class ManageContentTypePortlets(BrowserView):
             getMultiAdapter((self.context, self.request), name="absolute_url")
         )
         pt = self.request["key"]
-        return "%s/++contenttypeportlets++%s+%s" % (baseUrl, manager.__name__, pt)
+        return f"{baseUrl}/++contenttypeportlets++{manager.__name__}+{pt}"
 
     def getAssignmentsForManager(self, manager):
         pt = self.request["key"]
@@ -301,7 +300,7 @@ class ManageContentTypePortlets(BrowserView):
 
     def portal_type_icon(self):
         plone_layout = getMultiAdapter(
-            (self.context, self.request), name=u"plone_layout"
+            (self.context, self.request), name="plone_layout"
         )
         return plone_layout.getIcon(self.fti())
 
@@ -325,7 +324,7 @@ class ManagePortletsViewlet(BrowserView):
     """
 
     def __init__(self, context, request, view, manager):
-        super(ManagePortletsViewlet, self).__init__(context, request)
+        super().__init__(context, request)
         self.__parent__ = view
         self.context = context
         self.request = request
@@ -349,7 +348,7 @@ class ManagePortletsViewlet(BrowserView):
         # so a simple property or attribute does not work
         if name == "__name__":
             return self.ultimate_parent().__name__
-        return super(ManagePortletsViewlet, self).__getattribute__(name)
+        return super().__getattribute__(name)
 
     def getAssignmentMappingUrl(self, manager):
         return self.ultimate_parent().getAssignmentMappingUrl(manager)
@@ -396,7 +395,7 @@ class ManageContentTypePortletsViewlet(ManagePortletsViewlet):
 @implementer_only(ITopbarManagePortlets)
 class TopbarManagePortlets(ManageContextualPortlets):
     def __init__(self, context, request):
-        super(TopbarManagePortlets, self).__init__(context, request)
+        super().__init__(context, request)
         # Disable the left and right columns
         self.request.set("disable_plone.leftcolumn", 1)
         self.request.set("disable_plone.rightcolumn", 1)

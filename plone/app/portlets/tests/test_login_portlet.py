@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.portlets.portlets import login
 from plone.app.portlets.storage import PortletAssignmentMapping
 from plone.app.portlets.tests.base import PortletsTestCase

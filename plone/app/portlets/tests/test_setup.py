@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.portlets.interfaces import IDashboard
 from plone.app.portlets.interfaces import ILeftColumn
 from plone.app.portlets.interfaces import IRightColumn

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Acquisition import aq_inner
 from plone.app.portlets import PloneMessageFactory as _
 from plone.app.portlets.portlets import base
@@ -16,41 +15,41 @@ class IActionsPortlet(IPortletDataProvider):
     """A portlet that shows an action category"""
 
     ptitle = schema.TextLine(
-        title=_(u"label_title", default=u"Title"),
-        description=_(u"help_title", default=u"Displayed title of this portlet"),
-        default=u"",
+        title=_("label_title", default="Title"),
+        description=_("help_title", default="Displayed title of this portlet"),
+        default="",
         required=False,
     )
 
     show_title = schema.Bool(
-        title=_(u"label_show_title", default=u"Show title"),
-        description=_(u"help_show_title", default=u"Show title of this portlet."),
+        title=_("label_show_title", default="Show title"),
+        description=_("help_show_title", default="Show title of this portlet."),
         required=True,
         default=True,
     )
 
     category = schema.Choice(
-        title=_(u"label_actions_category", default=u"Actions category"),
-        description=_(u"help_actions_category", default=u"Select an action category"),
+        title=_("label_actions_category", default="Actions category"),
+        description=_("help_actions_category", default="Select an action category"),
         required=True,
         vocabulary="plone.app.vocabularies.Actions",
     )
 
     show_icons = schema.Bool(
-        title=_(u"label_show_icons", default=u"Show icons"),
+        title=_("label_show_icons", default="Show icons"),
         description=_(
-            u"help_show_icons",
-            default=u"Show icons or default icon for actions without icon.",
+            "help_show_icons",
+            default="Show icons or default icon for actions without icon.",
         ),
         required=True,
         default=True,
     )
 
     default_icon = schema.ASCIILine(
-        title=_(u"label_default_icon", default=u"Default icon"),
+        title=_("label_default_icon", default="Default icon"),
         description=_(
-            u"help_default_icon",
-            default=u"What icon we should use for actions with no specific icons. A 16*16 pixels image.",
+            "help_default_icon",
+            default="What icon we should use for actions with no specific icons. A 16*16 pixels image.",
         ),
         required=False,
         default="action_icon.png",
@@ -64,17 +63,17 @@ class Assignment(base.Assignment):
     with columns.
     """
 
-    ptitle = u""
+    ptitle = ""
     show_title = True
-    category = u""
+    category = ""
     show_icons = True
     default_icon = "action_icon.png"
 
     def __init__(
         self,
-        ptitle=u"",
+        ptitle="",
         show_title=True,
-        category=u"",
+        category="",
         show_icons=True,
         default_icon="action_icon.png",
     ):
@@ -90,7 +89,7 @@ class Assignment(base.Assignment):
         """This property is used to give the title of the portlet in the
         "manage portlets" screen.
         """
-        return _(u"Actions portlet") + ' "%s"' % (self.ptitle or self.category)
+        return _("Actions portlet") + ' "%s"' % (self.ptitle or self.category)
 
 
 class Renderer(base.Renderer):
@@ -126,7 +125,7 @@ class Renderer(base.Renderer):
     @pm_view.memoize
     def cachedLinks(self, actions_category, default_icon, show_icons):
         context_state = getMultiAdapter(
-            (aq_inner(self.context), self.request), name=u"plone_context_state"
+            (aq_inner(self.context), self.request), name="plone_context_state"
         )
         actions = context_state.actions(actions_category)
 
@@ -154,7 +153,7 @@ class Renderer(base.Renderer):
         else:
             if actions_category == "object_buttons":
                 actions_tool = getMultiAdapter(
-                    (aq_inner(self.context), self.request), name=u"plone_tools"
+                    (aq_inner(self.context), self.request), name="plone_tools"
                 ).actions()
                 actions = actions_tool.listActionInfos(
                     object=aq_inner(self.context), categories=(actions_category,)
@@ -186,10 +185,10 @@ class AddForm(base.AddForm):
     """
 
     schema = IActionsPortlet
-    label = _(u"heading_add_actions_portlet", default=u"Add actions portlet")
+    label = _("heading_add_actions_portlet", default="Add actions portlet")
     description = _(
-        u"help_add_actions_portlet",
-        default=u"An action portlet displays actions from a category",
+        "help_add_actions_portlet",
+        default="An action portlet displays actions from a category",
     )
 
     def create(self, data):

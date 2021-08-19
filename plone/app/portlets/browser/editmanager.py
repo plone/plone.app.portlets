@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from AccessControl import Unauthorized
 from Acquisition import aq_inner
 from Acquisition import aq_parent
@@ -126,7 +125,7 @@ class EditPortletManagerRenderer(Explicit):
             if editview is None:
                 editviewName = ""
             else:
-                editviewName = "%s/%s/edit" % (base_url, name)
+                editviewName = f"{base_url}/{name}/edit"
 
             portlet_hash = hashPortletInfo(
                 dict(
@@ -174,7 +173,7 @@ class EditPortletManagerRenderer(Explicit):
             if not addview:
                 return False
 
-            addview = "%s/+/%s" % (
+            addview = "{}/+/{}".format(
                 addviewbase,
                 addview,
             )
@@ -190,7 +189,7 @@ class EditPortletManagerRenderer(Explicit):
             {
                 "title": p.title,
                 "description": p.description,
-                "addview": "%s/+/%s" % (addviewbase, p.addview),
+                "addview": f"{addviewbase}/+/{p.addview}",
             }
             for p in self.manager.getAddablePortletTypes()
             if check_permission(p)
@@ -385,7 +384,7 @@ class ContextualEditPortletManagerRenderer(EditPortletManagerRenderer):
         pcontext = IPortletContext(self.context)
 
         portal_state = getMultiAdapter(
-            (context, self.request), name=u"plone_portal_state"
+            (context, self.request), name="plone_portal_state"
         )  # noqa
         base_url = portal_state.portal_url()
 
@@ -402,7 +401,7 @@ class ContextualEditPortletManagerRenderer(EditPortletManagerRenderer):
                         [a for a in mapping.get(key, {}).values() if is_visible(a)]
                     )
                 if assignments:
-                    edit_url = "%s/++%s++%s+%s" % (
+                    edit_url = "{}/++{}++{}+{}".format(
                         base_url,
                         prefix,
                         self.manager.__name__,
@@ -438,7 +437,7 @@ class ManagePortletAssignments(BrowserView):
 
     def authorize(self):
         authenticator = getMultiAdapter(
-            (self.context, self.request), name=u"authenticator"
+            (self.context, self.request), name="authenticator"
         )
         if not authenticator.verify():
             raise Unauthorized
@@ -520,8 +519,8 @@ class ManagePortletAssignments(BrowserView):
 
         if not referer or not urltool.isURLInPortal(referer):
             context = aq_parent(aq_inner(self.context))
-            url = str(getMultiAdapter((context, self.request), name=u"absolute_url"))
-            referer = "%s/@@manage-portlets" % (url,)
+            url = str(getMultiAdapter((context, self.request), name="absolute_url"))
+            referer = f"{url}/@@manage-portlets"
         return referer
 
     def toggle_visibility(self, name):

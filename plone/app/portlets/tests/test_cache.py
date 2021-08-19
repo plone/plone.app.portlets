@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
 from plone.app.portlets.cache import render_cachekey
 from plone.app.portlets.tests.base import PortletsTestCase
 from plone.app.testing import logout
 
 
-class MockBrain(object):
+class MockBrain:
     def __init__(self, path="some/path", modified="2002-01-01"):
         self.path = path
         self.modified = modified
@@ -13,12 +12,12 @@ class MockBrain(object):
         return self.path
 
 
-class MockLocation(object):
+class MockLocation:
     def __init__(self, name):
         self.__name__ = name
 
 
-class MockRenderer(object):
+class MockRenderer:
     manager = MockLocation("some_manager")
     data = MockLocation("some_assignment")
     data_brains = [MockBrain(), MockBrain()]

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from plone.app.portlets.exportimport.portlets import PortletsXMLAdapter
 from plone.app.portlets.interfaces import IColumn
 from plone.app.portlets.interfaces import IDashboard
@@ -103,12 +101,12 @@ class TestImportPortlets(PortletsExportImportTestCase):
             isinstance(portlet.description, Message),
             "Portlet description should be a Message instance",
         )
-        self.assertEqual(u"title_foo_portlet", portlet.title)
-        self.assertEqual(u"description_foo_portlet", portlet.description)
-        self.assertEqual(u"Foo", portlet.title.default)
-        self.assertEqual(u"Bar", portlet.description.default)
-        self.assertEqual(u"foodomain", portlet.title.domain)
-        self.assertEqual(u"foodomain", portlet.description.domain)
+        self.assertEqual("title_foo_portlet", portlet.title)
+        self.assertEqual("description_foo_portlet", portlet.description)
+        self.assertEqual("Foo", portlet.title.default)
+        self.assertEqual("Bar", portlet.description.default)
+        self.assertEqual("foodomain", portlet.title.domain)
+        self.assertEqual("foodomain", portlet.description.domain)
 
     def test_initPortletNode_multipleInterfaces(self):
         node = parseString(_XML_MULTIPLE_INTERFACES).documentElement

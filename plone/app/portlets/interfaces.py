@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.portlets.interfaces import IPlacelessPortletManager
 from plone.portlets.interfaces import IPortletAssignmentMapping
 from plone.portlets.interfaces import IPortletManager

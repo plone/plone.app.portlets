@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from DateTime import DateTime
 from DateTime.interfaces import DateTimeError
 from logging import getLogger
@@ -68,7 +67,7 @@ class IFeed(Interface):
 
 
 @implementer(IFeed)
-class RSSFeed(object):
+class RSSFeed:
     """an RSS feed"""
 
     def __init__(self, url, timeout):
@@ -238,32 +237,32 @@ class RSSFeed(object):
 class IRSSPortlet(IPortletDataProvider):
 
     portlet_title = schema.TextLine(
-        title=_(u"Title"),
+        title=_("Title"),
         description=_(
-            u"Title of the portlet.  If omitted, the title of the "
-            u"feed will be used."
+            "Title of the portlet.  If omitted, the title of the "
+            "feed will be used."
         ),
         required=False,
-        default=u"",
+        default="",
     )
 
     count = schema.Int(
-        title=_(u"Number of items to display"),
-        description=_(u"How many items to list."),
+        title=_("Number of items to display"),
+        description=_("How many items to list."),
         required=True,
         default=5,
     )
 
     url = schema.TextLine(
-        title=_(u"URL of RSS feed"),
-        description=_(u"Link of the RSS feed to display."),
+        title=_("URL of RSS feed"),
+        description=_("Link of the RSS feed to display."),
         required=True,
-        default=u"",
+        default="",
     )
 
     timeout = schema.Int(
-        title=_(u"Feed reload timeout"),
-        description=_(u"Time in minutes after which the feed should be " u"reloaded."),
+        title=_("Feed reload timeout"),
+        description=_("Time in minutes after which the feed should be " "reloaded."),
         required=True,
         default=100,
     )
@@ -272,18 +271,18 @@ class IRSSPortlet(IPortletDataProvider):
 @implementer(IRSSPortlet)
 class Assignment(base.Assignment):
 
-    portlet_title = u""
+    portlet_title = ""
 
     @property
     def title(self):
         """return the title with RSS feed title or from URL"""
         feed = FEED_DATA.get(self.data.url, None)
         if feed is None:
-            return u"RSS: " + self.url[:20]
+            return "RSS: " + self.url[:20]
         else:
-            return u"RSS: " + feed.title[:20]
+            return "RSS: " + feed.title[:20]
 
-    def __init__(self, portlet_title=u"", count=5, url=u"", timeout=100):
+    def __init__(self, portlet_title="", count=5, url="", timeout=100):
         self.portlet_title = portlet_title
         self.count = count
         self.url = url
@@ -358,12 +357,12 @@ class Renderer(base.DeferredRenderer):
 
 class AddForm(base.AddForm):
     schema = IRSSPortlet
-    label = _(u"Add RSS Portlet")
-    description = _(u"This portlet displays an RSS feed.")
+    label = _("Add RSS Portlet")
+    description = _("This portlet displays an RSS feed.")
 
     def create(self, data):
         return Assignment(
-            portlet_title=data.get("portlet_title", u""),
+            portlet_title=data.get("portlet_title", ""),
             count=data.get("count", 5),
             url=data.get("url", ""),
             timeout=data.get("timeout", 100),
@@ -372,5 +371,5 @@ class AddForm(base.AddForm):
 
 class EditForm(base.EditForm):
     schema = IRSSPortlet
-    label = _(u"Edit RSS Portlet")
-    description = _(u"This portlet displays an RSS feed.")
+    label = _("Edit RSS Portlet")
+    description = _("This portlet displays an RSS feed.")

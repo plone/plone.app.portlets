@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Base class for integration tests."""
 from plone.app.portlets.testing import PLONE_APP_PORTLETS_INTEGRATION_TESTING
 

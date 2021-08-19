@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.portlets.browser.interfaces import IPortletAdding
 from plone.app.portlets.interfaces import IPortletTypeInterface
 from plone.portlets.interfaces import IPortletManager
@@ -27,7 +26,7 @@ def portletDirective(
     assignment,
     renderer,
     addview,
-    view_permission=u"zope2.View",
+    view_permission="zope2.View",
     edit_permission="plone.app.portlets.ManageOwnPortlets",
     editview=None,
 ):

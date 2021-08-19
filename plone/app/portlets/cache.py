@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Acquisition import aq_inner
 from Products.CMFCore.utils import getToolByName
 from zope import component
@@ -8,7 +7,7 @@ import six
 
 def get_language(context, request):
     portal_state = component.getMultiAdapter(
-        (context, request), name=u"plone_portal_state"
+        (context, request), name="plone_portal_state"
     )
     return portal_state.locale().getLocaleID()
 
@@ -29,7 +28,7 @@ def render_cachekey(fun, self):
 
     def add(brain):
         path = brain.getPath()
-        return "%s\n%s\n\n" % (path, brain.modified)
+        return f"{path}\n{brain.modified}\n\n"
 
     fingerprint = "".join(map(add, self._data()))
 

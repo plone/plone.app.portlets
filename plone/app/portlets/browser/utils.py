@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.portlets.interfaces import IDeferredPortletRenderer
 from plone.app.portlets.utils import assignment_from_key
 from plone.portlets.interfaces import IPortletManager

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Acquisition import aq_acquire
 from Acquisition import aq_inner
 from Acquisition import Explicit
@@ -61,7 +60,7 @@ class ColumnPortletManagerRenderer(PortletManagerRenderer):
                     self._context(),
                     self.request,
                 ),
-                name=u"absolute_url",
+                name="absolute_url",
             )
         )
 

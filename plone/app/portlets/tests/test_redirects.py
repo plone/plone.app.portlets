@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.portlets.browser.adding import PortletAdding
 from plone.app.portlets.browser.editmanager import ManagePortletAssignments
 from plone.app.portlets.browser.formhelper import AddForm

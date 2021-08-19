@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from plone.app.portlets.browser.interfaces import IPortletAddForm
 from plone.app.portlets.browser.interfaces import IPortletEditForm
 from plone.app.portlets.portlets import news
@@ -35,7 +33,7 @@ class IPortletCssClass(Interface):
     # css_class is just an example.
     # In real life a css_class implementation would be a
     # Choice field with a vocabulary, editable in a controlpanel.
-    css_class = schema.TextLine(title=u"Portlet appearance", required=False)
+    css_class = schema.TextLine(title="Portlet appearance", required=False)
 
 
 class PortletCssClassFormExtender(FormExtender):
@@ -45,7 +43,7 @@ class PortletCssClassFormExtender(FormExtender):
 
 @adapter(IPortletAssignment)
 @implementer(IPortletCssClass)
-class PortletCssClassAdapter(object):
+class PortletCssClassAdapter:
     def __init__(self, context):
         # avoid recursion
         self.__dict__["context"] = context

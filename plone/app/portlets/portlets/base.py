@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from OFS.SimpleItem import SimpleItem
 
 # Convenience imports
@@ -42,7 +41,7 @@ class Assignment(SimpleItem, Contained):
 
 
 @implementer(IPortletRenderer)
-class Renderer(object):
+class Renderer:
     """Base class for portlet renderers.
 
     You must override render() to return a string to render. One way of

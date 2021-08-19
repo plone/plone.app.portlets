@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.portlets import PloneMessageFactory as _
 from plone.portlets.interfaces import IPortletManager
 from zope import schema
@@ -16,52 +15,52 @@ class IPortletDirective(Interface):
     """
 
     name = schema.TextLine(
-        title=_(u"Name"),
-        description=_(u"A unique name for the portlet. Also used for its add view."),
+        title=_("Name"),
+        description=_("A unique name for the portlet. Also used for its add view."),
         required=True,
     )
 
     interface = configuration_fields.GlobalInterface(
-        title=_(u"Assignment type interface"),
-        description=_(u"Should correspond to the public interface of the assignment"),
+        title=_("Assignment type interface"),
+        description=_("Should correspond to the public interface of the assignment"),
         required=True,
     )
 
     assignment = configuration_fields.GlobalObject(
-        title=_(u"Assignment class"),
-        description=_(u"A persistent class storing the portlet assignment"),
+        title=_("Assignment class"),
+        description=_("A persistent class storing the portlet assignment"),
         required=True,
     )
 
     view_permission = schema.TextLine(
-        title=_(u"View permission"),
-        description=_(u"Permission used for viewing the portlet."),
+        title=_("View permission"),
+        description=_("Permission used for viewing the portlet."),
         required=False,
-        default=u"zope2.View",
+        default="zope2.View",
     )
 
     edit_permission = schema.TextLine(
-        title=_(u"Edit permission"),
-        description=_(u"Permission used for editing the portlet assignment."),
+        title=_("Edit permission"),
+        description=_("Permission used for editing the portlet assignment."),
         required=False,
-        default=u"plone.app.portlets.ManageOwnPortlets",
+        default="plone.app.portlets.ManageOwnPortlets",
     )
 
     renderer = configuration_fields.GlobalObject(
-        title=_(u"Renderer"),
-        description=_(u"A class which renders the portlet data provider"),
+        title=_("Renderer"),
+        description=_("A class which renders the portlet data provider"),
         required=True,
     )
 
     addview = configuration_fields.GlobalObject(
-        title=_(u"Add view"),
-        description=_(u"View used to add the assignment object"),
+        title=_("Add view"),
+        description=_("View used to add the assignment object"),
         required=True,
     )
 
     editview = configuration_fields.GlobalObject(
-        title=_(u"Edit view"),
-        description=_(u"View used to edit the assignment object (if appropriate)"),
+        title=_("Edit view"),
+        description=_("View used to edit the assignment object (if appropriate)"),
         required=False,
     )
 
@@ -86,9 +85,9 @@ class IPortletRendererDirective(Interface):
     )
 
     template = configuration_fields.Path(
-        title=_(u"The name of a template that implements the renderer."),
+        title=_("The name of a template that implements the renderer."),
         description=_(
-            u"If given, the default renderer for this portlet will be used, but with this template"
+            "If given, the default renderer for this portlet will be used, but with this template"
         ),
         required=False,
     )

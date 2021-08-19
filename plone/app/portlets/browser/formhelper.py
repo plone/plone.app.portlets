@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
@@ -45,7 +44,7 @@ class AddForm(AutoExtensibleForm, form.AddForm):
 
     template = ViewPageTemplateFile("templates/z3cform-portlets-pageform.pt")
 
-    label = _(u"Configure portlet")
+    label = _("Configure portlet")
 
     def add(self, object):
         ob = self.context.add(object)
@@ -57,7 +56,7 @@ class AddForm(AutoExtensibleForm, form.AddForm):
         self.request.set("disable_plone.leftcolumn", 1)
         self.request.set("disable_plone.rightcolumn", 1)
         IPortletPermissionChecker(aq_parent(aq_inner(self.context)))()
-        return super(AddForm, self).__call__()
+        return super().__call__()
 
     def createAndAdd(self, data):
         # Filter away data values that does not come from the 'core' schema.
@@ -95,7 +94,7 @@ class AddForm(AutoExtensibleForm, form.AddForm):
         addview = aq_parent(aq_inner(self.context))
         context = aq_parent(aq_inner(addview))
         try:
-            url = str(getMultiAdapter((context, self.request), name=u"absolute_url"))
+            url = str(getMultiAdapter((context, self.request), name="absolute_url"))
         except (TypeError, AttributeError):
             # At least in tests we can get a TypeError: "There isn't enough
             # context to get URL information. This is probably due to a bug in
@@ -103,7 +102,7 @@ class AddForm(AutoExtensibleForm, form.AddForm):
             url = self.context.absolute_url()
         return url + "/@@manage-portlets"
 
-    @button.buttonAndHandler(_(u"label_save", default=u"Save"), name="add")
+    @button.buttonAndHandler(_("label_save", default="Save"), name="add")
     def handleAdd(self, action):
         data, errors = self.extractData()
         if errors:
@@ -114,7 +113,7 @@ class AddForm(AutoExtensibleForm, form.AddForm):
             # mark only as finished if we get the new object
             self._finishedAdd = True
 
-    @button.buttonAndHandler(_(u"label_cancel", default=u"Cancel"), name="cancel_add")
+    @button.buttonAndHandler(_("label_cancel", default="Cancel"), name="cancel_add")
     def handleCancel(self, action):
         nextURL = self.nextURL()
         if nextURL:
@@ -154,7 +153,7 @@ class NullAddForm(BrowserView):
             context = aq_parent(aq_inner(addview))
             try:
                 url = str(
-                    getMultiAdapter((context, self.request), name=u"absolute_url")
+                    getMultiAdapter((context, self.request), name="absolute_url")
                 )
             except (TypeError, AttributeError):
                 url = self.context.absolute_url()
@@ -170,14 +169,14 @@ class EditForm(AutoExtensibleForm, form.EditForm):
 
     template = ViewPageTemplateFile("templates/z3cform-portlets-pageform.pt")
 
-    label = _(u"Modify portlet")
+    label = _("Modify portlet")
 
     def __call__(self):
         self.request.set("disable_border", 1)
         self.request.set("disable_plone.leftcolumn", 1)
         self.request.set("disable_plone.rightcolumn", 1)
         IPortletPermissionChecker(aq_parent(aq_inner(self.context)))()
-        return super(EditForm, self).__call__()
+        return super().__call__()
 
     @property
     def referer(self):
@@ -190,12 +189,12 @@ class EditForm(AutoExtensibleForm, form.EditForm):
         editview = aq_parent(aq_inner(self.context))
         context = aq_parent(aq_inner(editview))
         try:
-            url = str(getMultiAdapter((context, self.request), name=u"absolute_url"))
+            url = str(getMultiAdapter((context, self.request), name="absolute_url"))
         except (TypeError, AttributeError):
             url = self.context.absolute_url()
         return url + "/@@manage-portlets"
 
-    @button.buttonAndHandler(_(u"label_save", default=u"Save"), name="apply")
+    @button.buttonAndHandler(_("label_save", default="Save"), name="apply")
     def handleSave(self, action):
         data, errors = self.extractData()
         if errors:
@@ -204,17 +203,17 @@ class EditForm(AutoExtensibleForm, form.EditForm):
         changes = self.applyChanges(data)
         if changes:
             self.status = "Changes saved"
-            IStatusMessage(self.request).addStatusMessage(_(u"Changes saved"), "info")
+            IStatusMessage(self.request).addStatusMessage(_("Changes saved"), "info")
         else:
             self.status = "No changes"
-            IStatusMessage(self.request).addStatusMessage(_(u"No changes"), "info")
+            IStatusMessage(self.request).addStatusMessage(_("No changes"), "info")
 
         nextURL = self.nextURL()
         if nextURL:
             self.request.response.redirect(self.nextURL())
         return ""
 
-    @button.buttonAndHandler(_(u"label_cancel", default=u"Cancel"), name="cancel_add")
+    @button.buttonAndHandler(_("label_cancel", default="Cancel"), name="cancel_add")
     def handleCancel(self, action):
         nextURL = self.nextURL()
         if nextURL:

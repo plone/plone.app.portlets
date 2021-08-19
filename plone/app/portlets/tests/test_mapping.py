@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Acquisition import aq_base
 from plone.app.portlets.browser.adding import PortletAdding
 from plone.app.portlets.portlets import classic
@@ -26,7 +25,7 @@ class TestNameChooser(PortletsTestCase):
 
 class TestContextMapping(PortletsTestCase):
     def afterSetUp(self):
-        self.manager = getUtility(IPortletManager, name=u"plone.leftcolumn")
+        self.manager = getUtility(IPortletManager, name="plone.leftcolumn")
 
     def testAdapting(self):
         mapping = getMultiAdapter(

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.portlets.tests.base import PortletsTestCase
 from plone.portlets.constants import USER_CATEGORY
 from plone.portlets.interfaces import IPortletManager
@@ -31,10 +30,7 @@ class TestDashboard(PortletsTestCase):
         self.assertTrue(len(user_portlets["fakeuser"]) > 0)
 
     def test_non_ascii_usernames_created(self):
-        if six.PY2:
-            user1, pass1 = u"user1\xa9".encode("utf-8"), "pass1"
-        else:
-            user1, pass1 = "user1\xa9", "pass1"
+        user1, pass1 = "user1\xa9", "pass1"
         uf = self.portal.acl_users
 
         # Bug #6100 - Would throw a unicode decode error in event handler

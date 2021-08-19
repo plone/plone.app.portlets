@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.portlets.portlets import review
 from plone.app.portlets.tests.base import PortletsTestCase
 from plone.app.testing import login

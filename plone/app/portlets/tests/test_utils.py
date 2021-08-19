@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.portlets.browser.utils import PortletUtilities
 from plone.app.portlets.portlets import classic
 from plone.app.portlets.portlets import news
@@ -19,10 +18,10 @@ from zope.component import getUtility
 
 class TestAssignmentFromKey(PortletsTestCase):
     def afterSetUp(self):
-        self.manager = getUtility(IPortletManager, name=u"plone.leftcolumn")
+        self.manager = getUtility(IPortletManager, name="plone.leftcolumn")
         self.cat = self.manager[USER_CATEGORY]
         self.cat[TEST_USER_ID] = PortletAssignmentMapping(
-            manager=u"plone.leftcolumn", category=USER_CATEGORY, name=TEST_USER_ID
+            manager="plone.leftcolumn", category=USER_CATEGORY, name=TEST_USER_ID
         )
 
     def testGetPortletFromContext(self):
@@ -33,7 +32,7 @@ class TestAssignmentFromKey(PortletsTestCase):
         mapping["foo"] = c
         path = "/".join(self.portal.getPhysicalPath())
         a = assignment_from_key(
-            self.portal, u"plone.leftcolumn", CONTEXT_CATEGORY, path, "foo"
+            self.portal, "plone.leftcolumn", CONTEXT_CATEGORY, path, "foo"
         )
         self.assertEqual(c, a)
 
@@ -46,9 +45,9 @@ class TestAssignmentFromKey(PortletsTestCase):
         )
         c = classic.Assignment()
         mapping["foo"] = c
-        path = u"/".join(self.portal.getPhysicalPath())
+        path = "/".join(self.portal.getPhysicalPath())
         a = assignment_from_key(
-            self.portal, u"plone.leftcolumn", CONTEXT_CATEGORY, path, "foo"
+            self.portal, "plone.leftcolumn", CONTEXT_CATEGORY, path, "foo"
         )
         self.assertEqual(c, a)
 
@@ -56,14 +55,14 @@ class TestAssignmentFromKey(PortletsTestCase):
         c = classic.Assignment()
         self.cat[TEST_USER_ID]["foo"] = c
         a = assignment_from_key(
-            self.portal, u"plone.leftcolumn", USER_CATEGORY, TEST_USER_ID, "foo"
+            self.portal, "plone.leftcolumn", USER_CATEGORY, TEST_USER_ID, "foo"
         )
         self.assertEqual(c, a)
 
 
 class TestRendering(PortletsTestCase):
     def afterSetUp(self):
-        self.portal.invokeFactory("News Item", "testnews", title=u"Test News")
+        self.portal.invokeFactory("News Item", "testnews", title="Test News")
 
     def testTraversalRendererWithHash(self):
         context = self.folder
@@ -86,8 +85,8 @@ class TestRendering(PortletsTestCase):
         rendered_portlet = render_portlet_view.render_portlet(
             safe_unicode(portlet_hash)
         )
-        self.assertIn(u"portletNews", rendered_portlet)
-        self.assertIn(u"Test News", rendered_portlet)
+        self.assertIn("portletNews", rendered_portlet)
+        self.assertIn("Test News", rendered_portlet)
 
 
 def test_suite():

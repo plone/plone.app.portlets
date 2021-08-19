@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.portlets.portlets import actions
 from plone.app.portlets.storage import PortletAssignmentMapping
 from plone.app.portlets.tests.base import PortletsTestCase
@@ -27,7 +26,7 @@ class TestPortlet(PortletsTestCase):
 
     def test_interfaces(self):
         portlet = actions.Assignment(
-            ptitle=u"actions", category=u"document", show_icons=True
+            ptitle="actions", category="document", show_icons=True
         )
         self.assertTrue(IPortletAssignment.providedBy(portlet))
         self.assertTrue(IPortletDataProvider.providedBy(portlet.data))
@@ -40,7 +39,7 @@ class TestPortlet(PortletsTestCase):
             del mapping[m]
         addview = mapping.restrictedTraverse("+/" + portlet.addview)
 
-        data = {"ptitle": u"Actions", "category": u"document", "show_icons": True}
+        data = {"ptitle": "Actions", "category": "document", "show_icons": True}
         addview.createAndAdd(data=data)
 
         self.assertEquals(len(mapping), 1)
@@ -52,7 +51,7 @@ class TestPortlet(PortletsTestCase):
         request = self.folder.REQUEST
 
         mapping["foo"] = actions.Assignment(
-            ptitle=u"actions", category=u"document", show_icons=True
+            ptitle="actions", category="document", show_icons=True
         )
         editview = getMultiAdapter((mapping["foo"], request), name="edit")
         self.assertTrue(isinstance(editview, actions.EditForm))
@@ -67,7 +66,7 @@ class TestPortlet(PortletsTestCase):
         )
 
         assignment = actions.Assignment(
-            ptitle=u"actions", category=u"document", show_icons=True
+            ptitle="actions", category="document", show_icons=True
         )
 
         renderer = getMultiAdapter(
@@ -92,7 +91,7 @@ class TestRenderer(PortletsTestCase):
         )
 
         assignment = assignment or actions.Assignment(
-            ptitle=u"actions", category=u"site_actions", show_icons=True
+            ptitle="actions", category="site_actions", show_icons=True
         )
         return getMultiAdapter(
             (context, request, view, manager, assignment), IPortletRenderer
@@ -104,7 +103,7 @@ class TestRenderer(PortletsTestCase):
         r = self.renderer(
             context=self.portal,
             assignment=actions.Assignment(
-                ptitle=u"actions", category=u"site_actions", show_icons=True
+                ptitle="actions", category="site_actions", show_icons=True
             ),
         )
         r.update()
@@ -117,14 +116,14 @@ class TestRenderer(PortletsTestCase):
 
         first = output[0]
         self.assertEqual(first["url"], "http://nohost/plone/sitemap")
-        self.assertEqual(first["title"], u"Site Map")
+        self.assertEqual(first["title"], "Site Map")
 
     def test_render_woicon(self):
         """Without icons"""
         r = self.renderer(
             context=self.portal,
             assignment=actions.Assignment(
-                ptitle=u"actions", category=u"site_actions", show_icons=False
+                ptitle="actions", category="site_actions", show_icons=False
             ),
         )
         r.update()
@@ -147,14 +146,14 @@ class TestRenderer(PortletsTestCase):
         # thus for the same REQUEST, plone memoize uses REQUEST to cache data
         r1 = self.renderer(
             assignment=actions.Assignment(
-                ptitle=u"tabs", category=u"portal_tabs", show_icons=True
+                ptitle="tabs", category="portal_tabs", show_icons=True
             )
         )
         r1.update()
         links1 = r1.actionLinks()
         r2 = self.renderer(
             assignment=actions.Assignment(
-                ptitle=u"site actions", category=u"site_actions", show_icons=False
+                ptitle="site actions", category="site_actions", show_icons=False
             )
         )
         r2.update()
@@ -162,7 +161,7 @@ class TestRenderer(PortletsTestCase):
 
         # check the portal_tabs links (portal_tabs is somehow special)
         self.assertEquals(len(links1), 5)
-        self.assertEquals(links1[0]["title"], u"Home")
+        self.assertEquals(links1[0]["title"], "Home")
 
         # now check the site_actions links
         # this was failing until the caching of actionLinks method was fixed
@@ -170,7 +169,7 @@ class TestRenderer(PortletsTestCase):
             self.assertEquals(len(links2), 3)
         else:
             self.assertEquals(len(links2), 4)
-        self.assertEquals(links2[0]["title"], u"Site Map")
+        self.assertEquals(links2[0]["title"], "Site Map")
         self.assertEquals(links2[0]["url"], "http://nohost/plone/sitemap")
         self.assertEquals(links2[0]["icon"], None)
         return
@@ -182,15 +181,15 @@ class TestRenderer(PortletsTestCase):
         r = self.renderer(
             context=self.portal,
             assignment=actions.Assignment(
-                ptitle=u"actions", category=u"portal_tabs", show_icons=True
+                ptitle="actions", category="portal_tabs", show_icons=True
             ),
         )
         r.update()
         output = r.actionLinks()
 
         # Have our expected tabs ?
-        expected = set([u"Test Folder", u"Home", u"Users", u"News", u"Events"])
-        got = set([six.text_type(link["title"]) for link in output])
+        expected = {"Test Folder", "Home", "Users", "News", "Events"}
+        got = {str(link["title"]) for link in output}
         self.assertEqual(got, expected)
 
     def test_object_buttons(self):
@@ -198,29 +197,29 @@ class TestRenderer(PortletsTestCase):
         r = self.renderer(
             context=self.portal["news"],
             assignment=actions.Assignment(
-                ptitle=u"actions", category=u"object_buttons", show_icons=False
+                ptitle="actions", category="object_buttons", show_icons=False
             ),
         )
         r.update()
         output = r.actionLinks()
 
         # Have our expected tabs ?
-        expected = set([u"Cut", u"Copy", u"Rename", u"Delete"])
-        got = set([six.text_type(link["title"]) for link in output])
+        expected = {"Cut", "Copy", "Rename", "Delete"}
+        got = {str(link["title"]) for link in output}
         self.assertTrue(expected.issubset(got))
 
     def test_category(self):
         r = self.renderer(
             context=self.portal["news"],
             assignment=actions.Assignment(
-                ptitle=u"actions", category=u"object_buttons", show_icons=False
+                ptitle="actions", category="object_buttons", show_icons=False
             ),
         )
         r.update()
         self.assertEqual(r.category, "object_buttons")
 
     def test_category_normalize(self):
-        class DummyData(object):
+        class DummyData:
             category = "Complex Category"
 
         r = actions.Renderer(None, None, None, None, DummyData())
@@ -231,7 +230,7 @@ class TestRenderer(PortletsTestCase):
         r = self.renderer(
             context=self.portal["news"],
             assignment=actions.Assignment(
-                ptitle=u"actions", category=u"object_buttons", show_icons=True
+                ptitle="actions", category="object_buttons", show_icons=True
             ),
         )
         r.update()
@@ -239,6 +238,6 @@ class TestRenderer(PortletsTestCase):
         output = r.actionLinks()
 
         # Have our expected tabs ?
-        expected = set([u"Cut", u"Copy", u"Rename", u"Delete"])
-        got = set([six.text_type(link["title"]) for link in output])
+        expected = {"Cut", "Copy", "Rename", "Delete"}
+        got = {str(link["title"]) for link in output}
         self.assertTrue(expected.issubset(got))

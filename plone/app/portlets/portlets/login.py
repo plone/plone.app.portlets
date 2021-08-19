@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.portlets import PloneMessageFactory as _
 from plone.app.portlets.portlets import base
 from plone.memoize.instance import memoize
@@ -16,7 +15,7 @@ class ILoginPortlet(IPortletDataProvider):
 @implementer(ILoginPortlet)
 class Assignment(base.Assignment):
 
-    title = _(u"label_log_in", default=u"Log in")
+    title = _("label_log_in", default="Log in")
 
 
 class Renderer(base.Renderer):

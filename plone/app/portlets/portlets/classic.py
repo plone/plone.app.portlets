@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.portlets import PloneMessageFactory as _
 from plone.app.portlets.portlets import base
 from plone.portlets.interfaces import IPortletDataProvider
@@ -11,15 +10,15 @@ class IClassicPortlet(IPortletDataProvider):
     """A portlet which can render a classic Plone portlet macro"""
 
     template = schema.ASCIILine(
-        title=_(u"Template"),
-        description=_(u"The template containing the portlet."),
+        title=_("Template"),
+        description=_("The template containing the portlet."),
         required=True,
     )
 
     macro = schema.ASCIILine(
-        title=_(u"Macro"),
+        title=_("Macro"),
         description=_(
-            u"The macro containing the portlet. " u"Leave blank if there is no macro."
+            "The macro containing the portlet. " "Leave blank if there is no macro."
         ),
         default="portlet",
         required=False,
@@ -57,9 +56,9 @@ class Renderer(base.Renderer):
 
 class AddForm(base.AddForm):
     schema = IClassicPortlet
-    label = _(u"Add Classic Portlet")
+    label = _("Add Classic Portlet")
     description = _(
-        u"A classic portlet allows you to use legacy portlet " u"templates."
+        "A classic portlet allows you to use legacy portlet " "templates."
     )
 
     def create(self, data):
@@ -70,7 +69,7 @@ class AddForm(base.AddForm):
 
 class EditForm(base.EditForm):
     schema = IClassicPortlet
-    label = _(u"Edit Classic Portlet")
+    label = _("Edit Classic Portlet")
     description = _(
-        u"A classic portlet allows you to use legacy portlet " u"templates."
+        "A classic portlet allows you to use legacy portlet " "templates."
     )

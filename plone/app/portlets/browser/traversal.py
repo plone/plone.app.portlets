@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.portlets.storage import GroupDashboardPortletAssignmentMapping
 from plone.app.portlets.storage import PortletAssignmentMapping
 from plone.app.portlets.storage import UserPortletAssignmentMapping
@@ -18,7 +17,7 @@ from zope.traversing.interfaces import ITraversable
 
 
 @implementer(ITraversable)
-class ContextPortletNamespace(object):
+class ContextPortletNamespace:
     """Used to traverse to a contextual portlet assignable"""
 
     adapts(ILocalPortletAssignable, IHTTPRequest)
@@ -40,7 +39,7 @@ class ContextPortletNamespace(object):
 
 
 @implementer(ITraversable)
-class DashboardNamespace(object):
+class DashboardNamespace:
     """Used to traverse to a portlet assignable for the current user for
     the dashboard.
     """
@@ -73,7 +72,7 @@ class DashboardNamespace(object):
 
 
 @implementer(ITraversable)
-class GroupDashboardNamespace(object):
+class GroupDashboardNamespace:
     """Used to traverse to a portlet assignable for a group for the dashboard"""
 
     adapts(ISiteRoot, IHTTPRequest)
@@ -95,7 +94,7 @@ class GroupDashboardNamespace(object):
 
 
 @implementer(ITraversable)
-class GroupPortletNamespace(object):
+class GroupPortletNamespace:
     """Used to traverse to a group portlet assignable"""
 
     adapts(ISiteRoot, IHTTPRequest)
@@ -126,7 +125,7 @@ class GroupPortletNamespace(object):
 
 
 @implementer(ITraversable)
-class ContentTypePortletNamespace(object):
+class ContentTypePortletNamespace:
     """Used to traverse to a content type portlet assignable"""
 
     adapts(ISiteRoot, IHTTPRequest)

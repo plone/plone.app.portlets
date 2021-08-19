@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Acquisition import aq_inner
 from plone.app.layout.navigation.root import getNavigationRoot
 from plone.app.portlets import PloneMessageFactory as _
@@ -24,35 +23,35 @@ import os
 class IRecentPortlet(IPortletDataProvider):
 
     count = schema.Int(
-        title=_(u"Number of items to display"),
-        description=_(u"How many items to list."),
+        title=_("Number of items to display"),
+        description=_("How many items to list."),
         required=True,
         default=5,
         min=1,
     )
 
     no_icons = schema.Bool(
-        title=_(u"Suppress Icons"),
-        description=_(u"If enabled, the portlet will not show document type icons"),
+        title=_("Suppress Icons"),
+        description=_("If enabled, the portlet will not show document type icons"),
         required=False,
         default=False,
     )
 
     thumb_scale = schema.TextLine(
-        title=_(u"Override thumb scale"),
+        title=_("Override thumb scale"),
         description=_(
-            u"Enter a valid scale name"
-            u" (see 'Image Handling' control panel) to override"
-            u" (e.g. icon, tile, thumb, mini, preview, ... )."
-            u" Leave empty to use default (see 'Site' control panel)."
+            "Enter a valid scale name"
+            " (see 'Image Handling' control panel) to override"
+            " (e.g. icon, tile, thumb, mini, preview, ... )."
+            " Leave empty to use default (see 'Site' control panel)."
         ),
         required=False,
-        default=u"",
+        default="",
     )
 
     no_thumbs = schema.Bool(
-        title=_(u"Suppress thumbs"),
-        description=_(u"If enabled, the portlet will not show thumbs."),
+        title=_("Suppress thumbs"),
+        description=_("If enabled, the portlet will not show thumbs."),
         required=False,
         default=False,
     )
@@ -71,7 +70,7 @@ class Assignment(base.Assignment):
 
     @property
     def title(self):
-        return _(u"Recent items")
+        return _("Recent items")
 
 
 def _render_cachekey(fun, self):
@@ -83,7 +82,7 @@ def _render_cachekey(fun, self):
 class Renderer(base.Renderer):
     _template = ViewPageTemplateFile("recent.pt")
 
-    title = _("box_recent_changes", default=u"Recent Changes")
+    title = _("box_recent_changes", default="Recent Changes")
 
     def __init__(self, *args):
         base.Renderer.__init__(self, *args)
@@ -156,8 +155,8 @@ class Renderer(base.Renderer):
 
 class AddForm(base.AddForm):
     schema = IRecentPortlet
-    label = _(u"Add Recent Portlet")
-    description = _(u"This portlet displays recently modified content.")
+    label = _("Add Recent Portlet")
+    description = _("This portlet displays recently modified content.")
 
     def create(self, data):
         return Assignment(count=data.get("count", 5))
@@ -165,5 +164,5 @@ class AddForm(base.AddForm):
 
 class EditForm(base.EditForm):
     schema = IRecentPortlet
-    label = _(u"Edit Recent Portlet")
-    description = _(u"This portlet displays recently modified content.")
+    label = _("Edit Recent Portlet")
+    description = _("This portlet displays recently modified content.")

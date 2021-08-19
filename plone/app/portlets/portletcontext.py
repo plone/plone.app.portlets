@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
@@ -16,7 +15,7 @@ import six
 
 
 @implementer(IPortletContext)
-class ContentContext(object):
+class ContentContext:
     """A portlet context for regular content items.
 
     Note - we register this for Interface so that it can also work for
@@ -87,7 +86,7 @@ class ContentContext(object):
         # ambiguity - the Plone member-data version returns ids.
 
         for group in groups:
-            if not isinstance(group, (six.text_type, six.binary_type)):
+            if not isinstance(group, (str, bytes)):
                 return ()
 
         return sorted(groups)

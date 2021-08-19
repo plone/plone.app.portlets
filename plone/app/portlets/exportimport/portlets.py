@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 In ``portlets.xml`` you can register various objects.
 
@@ -135,7 +134,7 @@ except ImportError:
 if HAS_BLACKLIST:
 
     @implementer(IComponentsHandlerBlacklist)
-    class Blacklist(object):
+    class Blacklist:
         def getExcludedInterfaces(self):
             return (
                 _getDottedName(IPortletType),
@@ -145,7 +144,7 @@ if HAS_BLACKLIST:
 
 
 @implementer(IPortletAssignmentExportImportHandler)
-class PropertyPortletAssignmentExportImportHandler(object):
+class PropertyPortletAssignmentExportImportHandler:
     """Import portlet assignment settings based on zope.schema properties"""
 
     adapts(Interface)
@@ -224,13 +223,13 @@ class PropertyPortletAssignmentExportImportHandler(object):
                     list_element.appendChild(doc.createTextNode(str(e)))
                     child.appendChild(list_element)
             else:
-                child.appendChild(doc.createTextNode(six.text_type(value)))
+                child.appendChild(doc.createTextNode(str(value)))
 
         return child
 
     def extract_text(self, node):
         node.normalize()
-        text = u""
+        text = ""
         for child in node.childNodes:
             if (
                 child.nodeType == node.TEXT_NODE
@@ -597,9 +596,9 @@ class PortletsXMLAdapter(XMLAdapterBase):
             if r.provided.isOrExtends(IPortletManager)
         ]
 
-        portletSchemata = dict(
-            [(iface, name) for name, iface in getUtilitiesFor(IPortletTypeInterface)]
-        )
+        portletSchemata = {
+            iface: name for name, iface in getUtilitiesFor(IPortletTypeInterface)
+        }
 
         # Export portlet manager registrations
 
@@ -649,7 +648,7 @@ class PortletsXMLAdapter(XMLAdapterBase):
         for manager_name, manager in getUtilitiesFor(IPortletManager):
             mapping = queryMultiAdapter((site, manager), IPortletAssignmentMapping)
             mapping = mapping.__of__(site)
-            extractMapping(manager_name, CONTEXT_CATEGORY, u"/", mapping)
+            extractMapping(manager_name, CONTEXT_CATEGORY, "/", mapping)
 
         # Export blacklistings in the portal root
         for manager_name, manager in getUtilitiesFor(IPortletManager):
@@ -667,15 +666,15 @@ class PortletsXMLAdapter(XMLAdapterBase):
                 child = self._doc.createElement("blacklist")
                 child.setAttribute("manager", manager_name)
                 child.setAttribute("category", category)
-                child.setAttribute("location", u"/")
+                child.setAttribute("location", "/")
 
                 status = assignable.getBlacklistStatus(category)
                 if status == True:
-                    child.setAttribute("status", u"block")
+                    child.setAttribute("status", "block")
                 elif status == False:
-                    child.setAttribute("status", u"show")
+                    child.setAttribute("status", "show")
                 else:
-                    child.setAttribute("status", u"acquire")
+                    child.setAttribute("status", "acquire")
 
                 fragment.appendChild(child)
 
@@ -793,7 +792,7 @@ def importPortlets(context):
     # object, which in case of a component registry is crucial.
     importer = queryMultiAdapter((sm, context), IBody, name="plone.portlets")
     if importer:
-        filename = "%s%s" % (importer.name, importer.suffix)
+        filename = f"{importer.name}{importer.suffix}"
         body = context.readDataFile(filename)
         if body is not None:
             importer.filename = filename  # for error reporting
@@ -812,9 +811,9 @@ def exportPortlets(context):
     # and slightly simplified. The main difference is the lookup of a named
     # adapter to make it possible to have more than one handler for the same
     # object, which in case of a component registry is crucial.
-    exporter = queryMultiAdapter((sm, context), IBody, name=u"plone.portlets")
+    exporter = queryMultiAdapter((sm, context), IBody, name="plone.portlets")
     if exporter:
-        filename = "%s%s" % (exporter.name, exporter.suffix)
+        filename = f"{exporter.name}{exporter.suffix}"
         body = exporter.body
         if body is not None:
             context.writeDataFile(filename, body, exporter.mime_type)

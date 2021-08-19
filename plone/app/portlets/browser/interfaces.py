@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from zope.browser.interfaces import IAdding
 from zope.interface import Attribute
 from zope.interface import Interface

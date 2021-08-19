@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from five.intid.intid import IntIds
 from five.intid.site import addUtility
 from plone.app.layout.navigation.interfaces import INavigationRoot
@@ -199,7 +198,7 @@ class TestRenderer(PortletsTestCase):
         tree = view.getNavTree()
         self.assertEqual(tree["children"][-1]["show_children"], True)
         registry = self.portal.portal_registry
-        registry["plone.parent_types_not_to_query"] = [u"Folder"]
+        registry["plone.parent_types_not_to_query"] = ["Folder"]
         view = self.renderer(self.portal.folder2.file21)
         tree = view.getNavTree()
         self.assertEqual(tree["children"][-1]["show_children"], False)
@@ -455,7 +454,7 @@ class TestRenderer(PortletsTestCase):
 
     def testAboveRoot(self):
         registry = getUtility(IRegistry)
-        registry["plone.root"] = u"/folder2"
+        registry["plone.root"] = "/folder2"
         view = self.renderer(self.portal)
         tree = view.getNavTree()
         self.assertTrue(tree)
@@ -539,7 +538,7 @@ class TestRenderer(PortletsTestCase):
 
     def testPrunedRootNode(self):
         registry = self.portal.portal_registry
-        registry["plone.parent_types_not_to_query"] = [u"Folder"]
+        registry["plone.parent_types_not_to_query"] = ["Folder"]
 
         assignment = navigation.Assignment(topLevel=0)
         assignment.topLevel = 1
@@ -550,7 +549,7 @@ class TestRenderer(PortletsTestCase):
 
     def testPrunedRootNodeShowsAllParents(self):
         registry = self.portal.portal_registry
-        registry["plone.parent_types_not_to_query"] = [u"Folder"]
+        registry["plone.parent_types_not_to_query"] = ["Folder"]
 
         assignment = navigation.Assignment(topLevel=0)
         assignment.topLevel = 1

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Acquisition import aq_base
 from plone.app.portlets import HAS_PLONE_APP_EVENT
 from plone.app.portlets.interfaces import IPortletPermissionChecker
@@ -49,7 +48,7 @@ def assignment_mapping_from_key(context, manager_name, category, key, create=Fal
                 path = path[len(portal_path) + 1 :]
             while path.startswith("/"):
                 path = path[1:]
-            if six.PY2 and isinstance(path, six.text_type):
+            if six.PY2 and isinstance(path, str):
                 path = path.encode("utf-8")  # OFS.traversable cannot do unicode
             obj = portal.restrictedTraverse(path, None)
         if obj is None:

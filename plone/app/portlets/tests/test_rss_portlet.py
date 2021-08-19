@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.portlets.portlets import rss
 from plone.app.portlets.testing import PLONE_APP_PORTLETS_FUNCTIONAL_TESTING
 from plone.app.portlets.tests.base import PortletsTestCase
@@ -110,9 +109,9 @@ class TestRenderer(PortletsTestCase):
 
     def testTitle(self):
         r = self.renderer(assignment=rss.Assignment())
-        self.assertEqual(r.title, u"")
-        r.data.portlet_title = u"Overridden title"
-        self.assertEqual(r.title, u"Overridden title")
+        self.assertEqual(r.title, "")
+        r.data.portlet_title = "Overridden title"
+        self.assertEqual(r.title, "Overridden title")
 
 
 class TestFunctional(unittest.TestCase):
@@ -123,7 +122,7 @@ class TestFunctional(unittest.TestCase):
         # so that we can try to load this via http.
         with open(sample_feed, "rb") as myfile:
             data = myfile.read()
-        file_field = NamedBlobFile(data, filename=u"feed.xml")
+        file_field = NamedBlobFile(data, filename="feed.xml")
         portal = self.layer["portal"]
         feed_id = portal.invokeFactory("File", "feed")
         feed = portal[feed_id]
@@ -136,7 +135,7 @@ class TestFunctional(unittest.TestCase):
         self.assertTrue(feed._loaded)
         self.assertFalse(feed._failed)
         self.assertTrue(feed.ok)
-        self.assertEqual(feed.siteurl, u"https://maurits.vanrees.org/weblog")
+        self.assertEqual(feed.siteurl, "https://maurits.vanrees.org/weblog")
         self.assertEqual(len(feed.items), 15)
 
 

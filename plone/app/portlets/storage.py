@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Acquisition import aq_base
 from BTrees.OOBTree import OOBTree
 from OFS.SimpleItem import SimpleItem
@@ -33,8 +32,8 @@ category_to_name = {
 class PortletAssignmentMapping(BaseMapping, SimpleItem):
     """A Zope 2 version of the default assignment mapping storage."""
 
-    def __init__(self, manager=u"", category=u"", name=u"", context=None):
-        super(PortletAssignmentMapping, self).__init__(manager, category, name)
+    def __init__(self, manager="", category="", name="", context=None):
+        super().__init__(manager, category, name)
         # Keep track of context so we can avoid storing anything
         # until an assignment is actually added.
         self._v_context = context
@@ -49,9 +48,9 @@ class PortletAssignmentMapping(BaseMapping, SimpleItem):
         suffix = manager
 
         if category != constants.CONTEXT_CATEGORY and key:
-            suffix = "%s+%s" % (manager, key)
+            suffix = f"{manager}+{key}"
 
-        return "++%s++%s" % (prefix, suffix)
+        return f"++{prefix}++{suffix}"
 
     def __getitem__(self, key):
         return BaseMapping.__getitem__(self, key).__of__(self)
@@ -85,7 +84,7 @@ class GroupDashboardPortletAssignmentMapping(PortletAssignmentMapping):
         manager = self.__manager__
         key = self.__name__
 
-        return "++groupdashboard++%s+%s" % (manager, key)
+        return f"++groupdashboard++{manager}+{key}"
 
 
 @implementer(IBrowserPublisher)

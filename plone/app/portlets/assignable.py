@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.portlets.storage import PortletAssignmentMapping
 from plone.portlets.constants import CONTEXT_ASSIGNMENT_KEY
 from plone.portlets.constants import CONTEXT_CATEGORY

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Acquisition import aq_inner
 from plone.app.portlets import PloneMessageFactory as _
 from plone.app.portlets.browser import formhelper
@@ -21,27 +20,27 @@ from zope.interface import Interface
 class IReviewPortlet(IPortletDataProvider):
 
     no_icons = schema.Bool(
-        title=_(u"Suppress Icons"),
-        description=_(u"If enabled, the portlet will not show document type icons"),
+        title=_("Suppress Icons"),
+        description=_("If enabled, the portlet will not show document type icons"),
         required=False,
         default=False,
     )
 
     thumb_scale = schema.TextLine(
-        title=_(u"Override thumb scale"),
+        title=_("Override thumb scale"),
         description=_(
-            u"Enter a valid scale name"
-            u" (see 'Image Handling' control panel) to override"
-            u" (e.g. icon, tile, thumb, mini, preview, ... )."
-            u" Leave empty to use default (see 'Site' control panel)."
+            "Enter a valid scale name"
+            " (see 'Image Handling' control panel) to override"
+            " (e.g. icon, tile, thumb, mini, preview, ... )."
+            " Leave empty to use default (see 'Site' control panel)."
         ),
         required=False,
-        default=u"",
+        default="",
     )
 
     no_thumbs = schema.Bool(
-        title=_(u"Suppress thumbs"),
-        description=_(u"If enabled, the portlet will not show thumbs."),
+        title=_("Suppress thumbs"),
+        description=_("If enabled, the portlet will not show thumbs."),
         required=False,
         default=False,
     )
@@ -60,14 +59,14 @@ class Assignment(base.Assignment):
 
     @property
     def title(self):
-        return _(u"Review list")
+        return _("Review list")
 
 
 class Renderer(base.Renderer):
 
     render = ViewPageTemplateFile("review.pt")
 
-    title = _("box_review_list", default=u"Review List")
+    title = _("box_review_list", default="Review List")
 
     def __init__(self, *args):
         base.Renderer.__init__(self, *args)
@@ -157,8 +156,8 @@ class Renderer(base.Renderer):
 
 class AddForm(formhelper.AddForm):
     schema = IReviewPortlet
-    label = _(u"Add Review Portlet")
-    description = _(u"This portlet displays a queue of documents awaiting " u"review.")
+    label = _("Add Review Portlet")
+    description = _("This portlet displays a queue of documents awaiting " "review.")
 
     def create(self, data):
         return Assignment(**data)
@@ -166,5 +165,5 @@ class AddForm(formhelper.AddForm):
 
 class EditForm(formhelper.EditForm):
     schema = IReviewPortlet
-    label = _(u"Edit Review Portlet")
-    description = _(u"displays a queue of documents awaiting " u"review.")
+    label = _("Edit Review Portlet")
+    description = _("displays a queue of documents awaiting " "review.")

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.layout.navigation.root import getNavigationRoot
 from plone.app.portlets import PloneMessageFactory as _
 from plone.app.portlets.portlets import base
@@ -13,11 +12,11 @@ class ISearchPortlet(IPortletDataProvider):
     """A portlet displaying a (live) search box"""
 
     enableLivesearch = schema.Bool(
-        title=_(u"Enable LiveSearch"),
+        title=_("Enable LiveSearch"),
         description=_(
-            u"Enables the LiveSearch feature, which shows "
-            u"live results if the browser supports "
-            u"JavaScript."
+            "Enables the LiveSearch feature, which shows "
+            "live results if the browser supports "
+            "JavaScript."
         ),
         default=True,
         required=False,
@@ -31,7 +30,7 @@ class Assignment(base.Assignment):
 
     @property
     def title(self):
-        return _(u"Search")
+        return _("Search")
 
 
 class Renderer(base.Renderer):
@@ -50,7 +49,7 @@ class Renderer(base.Renderer):
         return self.data.enableLivesearch
 
     def search_action(self):
-        return "{0}/{1}".format(self.navigation_root_url, self.action)
+        return f"{self.navigation_root_url}/{self.action}"
 
     def navigation_root_url(self):
         return getNavigationRoot(self.context)
@@ -58,8 +57,8 @@ class Renderer(base.Renderer):
 
 class AddForm(base.AddForm):
     schema = ISearchPortlet
-    label = _(u"Add Search Portlet")
-    description = _(u"This portlet shows a search box.")
+    label = _("Add Search Portlet")
+    description = _("This portlet shows a search box.")
 
     def create(self, data):
         return Assignment()
@@ -67,5 +66,5 @@ class AddForm(base.AddForm):
 
 class EditForm(base.EditForm):
     schema = ISearchPortlet
-    label = _(u"Edit Search Portlet")
-    description = _(u"This portlet shows a search box.")
+    label = _("Edit Search Portlet")
+    description = _("This portlet shows a search box.")

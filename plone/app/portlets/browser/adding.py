@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
@@ -42,7 +41,7 @@ class PortletAdding(SimpleItem, BrowserView):
         referer = self.referer
         if not referer or not urltool.isURLInPortal(referer):
             context = aq_parent(aq_inner(self.context))
-            url = str(getMultiAdapter((context, self.request), name=u"absolute_url"))
+            url = str(getMultiAdapter((context, self.request), name="absolute_url"))
             referer = url + "/@@manage-portlets"
         return referer
 

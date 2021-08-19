@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.testing import applyProfile
 from plone.app.testing import FunctionalTesting
 from plone.app.testing import IntegrationTesting
@@ -38,10 +37,10 @@ class PloneAppPortlets(PloneSandboxLayer):
         # Prepare test content
         pw = getToolByName(portal, "portal_workflow")
         pw.setDefaultChain("simple_publication_workflow")
-        portal.invokeFactory("Folder", id="folder", title=u"Test Folder")
-        portal.invokeFactory("Folder", id="news", title=u"News")
-        portal.invokeFactory("Folder", id="users", title=u"Users")
-        portal.invokeFactory("Folder", id="events", title=u"Events")
+        portal.invokeFactory("Folder", id="folder", title="Test Folder")
+        portal.invokeFactory("Folder", id="news", title="News")
+        portal.invokeFactory("Folder", id="users", title="Users")
+        portal.invokeFactory("Folder", id="events", title="Events")
         pw.doActionFor(portal.news, "publish")
 
 
