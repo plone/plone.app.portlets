@@ -14,10 +14,10 @@ class PortletsTestCase(unittest.TestCase):
     layer = PLONE_APP_PORTLETS_INTEGRATION_TESTING
 
     def setUp(self):
-        self.app = self.layer['app']
-        self.portal = self.layer['portal']
-        self.folder = self.portal['folder']
-        self.request = self.layer['request']
+        self.app = self.layer["app"]
+        self.portal = self.layer["portal"]
+        self.folder = self.portal["folder"]
+        self.request = self.layer["request"]
 
         self.afterSetUp()
 

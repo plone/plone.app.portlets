@@ -10,21 +10,22 @@ from zope.interface import implementer
 
 
 class ISearchPortlet(IPortletDataProvider):
-    """ A portlet displaying a (live) search box
-    """
+    """A portlet displaying a (live) search box"""
 
     enableLivesearch = schema.Bool(
         title=_(u"Enable LiveSearch"),
-        description=_(u"Enables the LiveSearch feature, which shows "
-                      u"live results if the browser supports "
-                      u"JavaScript."),
+        description=_(
+            u"Enables the LiveSearch feature, which shows "
+            u"live results if the browser supports "
+            u"JavaScript."
+        ),
         default=True,
-        required=False)
+        required=False,
+    )
 
 
 @implementer(ISearchPortlet)
 class Assignment(base.Assignment):
-
     def __init__(self, enableLivesearch=True):
         self.enableLivesearch = enableLivesearch
 
@@ -35,22 +36,21 @@ class Assignment(base.Assignment):
 
 class Renderer(base.Renderer):
 
-    render = ViewPageTemplateFile('search.pt')
-    action = '@@search'
-    livesearch_action = 'livesearch_reply'
+    render = ViewPageTemplateFile("search.pt")
+    action = "@@search"
+    livesearch_action = "livesearch_reply"
 
     def __init__(self, context, request, view, manager, data):
         base.Renderer.__init__(self, context, request, view, manager, data)
 
-        portal_state = getMultiAdapter(
-            (context, request), name='plone_portal_state')
+        portal_state = getMultiAdapter((context, request), name="plone_portal_state")
         self.navigation_root_url = portal_state.navigation_root_url()
 
     def enable_livesearch(self):
         return self.data.enableLivesearch
 
     def search_action(self):
-        return '{0}/{1}'.format(self.navigation_root_url, self.action)
+        return "{0}/{1}".format(self.navigation_root_url, self.action)
 
     def navigation_root_url(self):
         return getNavigationRoot(self.context)

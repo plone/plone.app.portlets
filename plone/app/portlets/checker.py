@@ -1,15 +1,13 @@
 # -*- coding: utf-8 -*-
-from zope.interface import implementer
-from zope.component import adapts
-
-from plone.portlets.interfaces import IPortletAssignmentMapping
-
-from plone.app.portlets.interfaces import IUserPortletAssignmentMapping
+from AccessControl import getSecurityManager
+from AccessControl import Unauthorized
+from Acquisition import aq_inner
 from plone.app.portlets.interfaces import IGroupDashboardPortletAssignmentMapping
 from plone.app.portlets.interfaces import IPortletPermissionChecker
-
-from AccessControl import getSecurityManager, Unauthorized
-from Acquisition import aq_inner
+from plone.app.portlets.interfaces import IUserPortletAssignmentMapping
+from plone.portlets.interfaces import IPortletAssignmentMapping
+from zope.component import adapts
+from zope.interface import implementer
 
 
 @implementer(IPortletPermissionChecker)

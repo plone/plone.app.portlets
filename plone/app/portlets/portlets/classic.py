@@ -8,26 +8,27 @@ from zope.interface import implementer
 
 
 class IClassicPortlet(IPortletDataProvider):
-    """A portlet which can render a classic Plone portlet macro
-    """
+    """A portlet which can render a classic Plone portlet macro"""
 
     template = schema.ASCIILine(
-        title=_(u'Template'),
-        description=_(u'The template containing the portlet.'),
-        required=True)
+        title=_(u"Template"),
+        description=_(u"The template containing the portlet."),
+        required=True,
+    )
 
     macro = schema.ASCIILine(
-        title=_(u'Macro'),
-        description=_(u"The macro containing the portlet. "
-                      u"Leave blank if there is no macro."),
-        default='portlet',
-        required=False)
+        title=_(u"Macro"),
+        description=_(
+            u"The macro containing the portlet. " u"Leave blank if there is no macro."
+        ),
+        default="portlet",
+        required=False,
+    )
 
 
 @implementer(IClassicPortlet)
 class Assignment(base.Assignment):
-
-    def __init__(self, template='', macro=''):
+    def __init__(self, template="", macro=""):
         self.template = template
         self.macro = macro
 
@@ -37,37 +38,39 @@ class Assignment(base.Assignment):
 
 
 class Renderer(base.Renderer):
-
     def __init__(self, context, request, view, manager, data):
         self.context = context
         self.request = request
         self.data = data
 
-    render = ViewPageTemplateFile('classic.pt')
+    render = ViewPageTemplateFile("classic.pt")
 
     def use_macro(self):
         return bool(self.data.macro)
 
     def path_expression(self):
-        expr = 'context/%s' % self.data.template
+        expr = "context/%s" % self.data.template
         if self.use_macro():
-            expr += '/macros/%s' % self.data.macro
+            expr += "/macros/%s" % self.data.macro
         return expr
 
 
 class AddForm(base.AddForm):
     schema = IClassicPortlet
     label = _(u"Add Classic Portlet")
-    description = _(u"A classic portlet allows you to use legacy portlet "
-                    u"templates.")
+    description = _(
+        u"A classic portlet allows you to use legacy portlet " u"templates."
+    )
 
     def create(self, data):
-        return Assignment(template=data.get('template', ''),
-                          macro=data.get('macro', ''))
+        return Assignment(
+            template=data.get("template", ""), macro=data.get("macro", "")
+        )
 
 
 class EditForm(base.EditForm):
     schema = IClassicPortlet
     label = _(u"Edit Classic Portlet")
-    description = _(u"A classic portlet allows you to use legacy portlet "
-                    u"templates.")
+    description = _(
+        u"A classic portlet allows you to use legacy portlet " u"templates."
+    )

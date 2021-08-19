@@ -22,10 +22,10 @@ class IReviewPortlet(IPortletDataProvider):
 
     no_icons = schema.Bool(
         title=_(u"Suppress Icons"),
-        description=_(
-            u"If enabled, the portlet will not show document type icons"),
+        description=_(u"If enabled, the portlet will not show document type icons"),
         required=False,
-        default=False)
+        default=False,
+    )
 
     thumb_scale = schema.TextLine(
         title=_(u"Override thumb scale"),
@@ -36,14 +36,15 @@ class IReviewPortlet(IPortletDataProvider):
             u" Leave empty to use default (see 'Site' control panel)."
         ),
         required=False,
-        default=u'')
+        default=u"",
+    )
 
     no_thumbs = schema.Bool(
         title=_(u"Suppress thumbs"),
-        description=_(
-            u"If enabled, the portlet will not show thumbs."),
+        description=_(u"If enabled, the portlet will not show thumbs."),
         required=False,
-        default=False)
+        default=False,
+    )
 
 
 @implementer(IReviewPortlet)
@@ -52,8 +53,7 @@ class Assignment(base.Assignment):
     thumb_scale = None
     no_thumbs = False
 
-    def __init__(self, no_icons=False,
-                 thumb_scale=None, no_thumbs=False):
+    def __init__(self, no_icons=False, thumb_scale=None, no_thumbs=False):
         self.no_icons = no_icons
         self.thumb_scale = thumb_scale
         self.no_thumbs = no_thumbs
@@ -62,11 +62,12 @@ class Assignment(base.Assignment):
     def title(self):
         return _(u"Review list")
 
+
 class Renderer(base.Renderer):
 
-    render = ViewPageTemplateFile('review.pt')
+    render = ViewPageTemplateFile("review.pt")
 
-    title = _('box_review_list', default=u"Review List")
+    title = _("box_review_list", default=u"Review List")
 
     def __init__(self, *args):
         base.Renderer.__init__(self, *args)
@@ -74,8 +75,9 @@ class Renderer(base.Renderer):
     @property
     def anonymous(self):
         context = aq_inner(self.context)
-        portal_state = getMultiAdapter((context, self.request),
-                                       name='plone_portal_state')
+        portal_state = getMultiAdapter(
+            (context, self.request), name="plone_portal_state"
+        )
         return portal_state.anonymous()
 
     @property
@@ -87,10 +89,10 @@ class Renderer(base.Renderer):
 
     def full_review_link(self):
         context = aq_inner(self.context)
-        mtool = getToolByName(context, 'portal_membership')
+        mtool = getToolByName(context, "portal_membership")
         # check if user is allowed to Review Portal Content here
-        if mtool.checkPermission('Review portal content', context):
-            return '%s/full_review_list' % context.absolute_url()
+        if mtool.checkPermission("Review portal content", context):
+            return "%s/full_review_list" % context.absolute_url()
         else:
             return None
 
@@ -99,10 +101,10 @@ class Renderer(base.Renderer):
         if self.anonymous:
             return []
         context = aq_inner(self.context)
-        workflow = getToolByName(context, 'portal_workflow')
+        workflow = getToolByName(context, "portal_workflow")
 
-        plone_view = getMultiAdapter((context, self.request), name='plone')
-        getMember = getToolByName(context, 'portal_membership').getMemberById
+        plone_view = getMultiAdapter((context, self.request), name="plone")
+        getMember = getToolByName(context, "portal_membership").getMemberById
         toLocalizedTime = plone_view.toLocalizedTime
 
         idnormalizer = queryUtility(IIDNormalizer)
@@ -110,27 +112,29 @@ class Renderer(base.Renderer):
         objects = workflow.getWorklistsResults()
         items = []
         for obj in objects:
-            review_state = workflow.getInfoFor(obj, 'review_state')
+            review_state = workflow.getInfoFor(obj, "review_state")
             creator_id = obj.Creator()
             creator = getMember(creator_id)
             if creator:
-                creator_name = creator.getProperty('fullname', '') or creator_id
+                creator_name = creator.getProperty("fullname", "") or creator_id
             else:
                 creator_name = creator_id
-            hasImage = True if getattr(obj, 'image', None) else False
-            images = obj.restrictedTraverse('@@images') if hasImage else None
-            items.append(dict(
-                path=obj.absolute_url(),
-                title=obj.pretty_title_or_id(),
-                item_class = 'contenttype-' + norm(obj.portal_type),
-                description=obj.Description(),
-                creator=creator_name,
-                review_state=review_state,
-                review_state_class='state-%s ' % norm(review_state),
-                mod_date=toLocalizedTime(obj.ModificationDate()),
-                hasImage=hasImage,
-                images=images,
-            ))
+            hasImage = True if getattr(obj, "image", None) else False
+            images = obj.restrictedTraverse("@@images") if hasImage else None
+            items.append(
+                dict(
+                    path=obj.absolute_url(),
+                    title=obj.pretty_title_or_id(),
+                    item_class="contenttype-" + norm(obj.portal_type),
+                    description=obj.Description(),
+                    creator=creator_name,
+                    review_state=review_state,
+                    review_state_class="state-%s " % norm(review_state),
+                    mod_date=toLocalizedTime(obj.ModificationDate()),
+                    hasImage=hasImage,
+                    images=images,
+                )
+            )
         return items
 
     @memoize
@@ -139,15 +143,14 @@ class Renderer(base.Renderer):
         Image sizes must fit to value in allowed image sizes.
         None will suppress thumb.
         """
-        if getattr(self.data, 'no_thumbs', False):
+        if getattr(self.data, "no_thumbs", False):
             # Individual setting overrides ...
             return None
-        thsize = getattr(self.data, 'thumb_scale', '')
+        thsize = getattr(self.data, "thumb_scale", "")
         if thsize:
             return thsize
         registry = getUtility(IRegistry)
-        settings = registry.forInterface(
-            ISiteSchema, prefix="plone", check=False)
+        settings = registry.forInterface(ISiteSchema, prefix="plone", check=False)
         thumb_scale_portlet = settings.thumb_scale_portlet
         return thumb_scale_portlet
 
@@ -155,14 +158,13 @@ class Renderer(base.Renderer):
 class AddForm(formhelper.AddForm):
     schema = IReviewPortlet
     label = _(u"Add Review Portlet")
-    description = _(u"This portlet displays a queue of documents awaiting "
-                    u"review.")
+    description = _(u"This portlet displays a queue of documents awaiting " u"review.")
 
     def create(self, data):
         return Assignment(**data)
 
+
 class EditForm(formhelper.EditForm):
     schema = IReviewPortlet
     label = _(u"Edit Review Portlet")
-    description = _(u"displays a queue of documents awaiting "
-                    u"review.")
+    description = _(u"displays a queue of documents awaiting " u"review.")

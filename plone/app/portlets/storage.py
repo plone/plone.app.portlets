@@ -1,45 +1,39 @@
 # -*- coding: utf-8 -*-
-from zope.annotation.interfaces import IAnnotations
-from zope.interface import implementer
-from zope.component import adapts
-from zope.component import getUtility
-
-from zope.publisher.interfaces.browser import IDefaultBrowserLayer
-from zope.publisher.interfaces.browser import IBrowserPublisher
-
-from zope.container.interfaces import INameChooser
-from zope.container.contained import NameChooser
-from zope.container.traversal import ItemTraverser
-
 from Acquisition import aq_base
 from BTrees.OOBTree import OOBTree
 from OFS.SimpleItem import SimpleItem
-
+from plone.app.portlets.interfaces import IGroupDashboardPortletAssignmentMapping
+from plone.app.portlets.interfaces import IUserPortletAssignmentMapping
 from plone.i18n.normalizer.interfaces import IIDNormalizer
-
+from plone.portlets import constants
 from plone.portlets.constants import CONTEXT_ASSIGNMENT_KEY
 from plone.portlets.interfaces import IPortletAssignmentMapping
-from plone.portlets import constants
 from plone.portlets.storage import PortletAssignmentMapping as BaseMapping
+from zope.annotation.interfaces import IAnnotations
+from zope.component import adapts
+from zope.component import getUtility
+from zope.container.contained import NameChooser
+from zope.container.interfaces import INameChooser
+from zope.container.traversal import ItemTraverser
+from zope.interface import implementer
+from zope.publisher.interfaces.browser import IBrowserPublisher
+from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 
-from plone.app.portlets.interfaces import IUserPortletAssignmentMapping
-from plone.app.portlets.interfaces import IGroupDashboardPortletAssignmentMapping
 
 ATTEMPTS = 10000
 
 category_to_name = {
-    constants.CONTEXT_CATEGORY: 'contextportlets',
-    constants.USER_CATEGORY: 'dashboard',
-    constants.GROUP_CATEGORY: 'groupportlets',
-    constants.CONTENT_TYPE_CATEGORY: 'contenttypeportlets',
+    constants.CONTEXT_CATEGORY: "contextportlets",
+    constants.USER_CATEGORY: "dashboard",
+    constants.GROUP_CATEGORY: "groupportlets",
+    constants.CONTENT_TYPE_CATEGORY: "contenttypeportlets",
 }
 
 
 class PortletAssignmentMapping(BaseMapping, SimpleItem):
-    """A Zope 2 version of the default assignment mapping storage.
-    """
+    """A Zope 2 version of the default assignment mapping storage."""
 
-    def __init__(self, manager=u'', category=u'', name=u'', context=None):
+    def __init__(self, manager=u"", category=u"", name=u"", context=None):
         super(PortletAssignmentMapping, self).__init__(manager, category, name)
         # Keep track of context so we can avoid storing anything
         # until an assignment is actually added.
@@ -64,7 +58,7 @@ class PortletAssignmentMapping(BaseMapping, SimpleItem):
 
     def __setitem__(self, key, assignment):
         # add the assignment mapping to the object graph, if it's not there yet
-        if getattr(self, '_v_context', None) is not None:
+        if getattr(self, "_v_context", None) is not None:
             annotations = IAnnotations(self._v_context)
             assignments = annotations.get(CONTEXT_ASSIGNMENT_KEY, None)
             if assignments is None:
@@ -79,14 +73,12 @@ class PortletAssignmentMapping(BaseMapping, SimpleItem):
 
 @implementer(IUserPortletAssignmentMapping)
 class UserPortletAssignmentMapping(PortletAssignmentMapping):
-    """An assignment mapping for user/dashboard portlets
-    """
+    """An assignment mapping for user/dashboard portlets"""
 
 
 @implementer(IGroupDashboardPortletAssignmentMapping)
 class GroupDashboardPortletAssignmentMapping(PortletAssignmentMapping):
-    """An assignment mapping for group dashboard portlets
-    """
+    """An assignment mapping for group dashboard portlets"""
 
     @property
     def id(self):
@@ -98,8 +90,8 @@ class GroupDashboardPortletAssignmentMapping(PortletAssignmentMapping):
 
 @implementer(IBrowserPublisher)
 class PortletAssignmentMappingTraverser(ItemTraverser):
-    """A traverser for portlet assignment mappings, that is acqusition-aware
-    """
+    """A traverser for portlet assignment mappings, that is acqusition-aware"""
+
     adapts(IPortletAssignmentMapping, IDefaultBrowserLayer)
 
     def publishTraverse(self, request, name):
@@ -109,8 +101,7 @@ class PortletAssignmentMappingTraverser(ItemTraverser):
 
 @implementer(INameChooser)
 class PortletsNameChooser(NameChooser):
-    """A name chooser for portlets
-    """
+    """A name chooser for portlets"""
 
     def __init__(self, context):
         self.context = context
@@ -157,7 +148,7 @@ class PortletsNameChooser(NameChooser):
         container = self.context
 
         if not name:
-            name = getattr(object, 'title', None)
+            name = getattr(object, "title", None)
 
         if not name:
             name = object.__class__.__name__

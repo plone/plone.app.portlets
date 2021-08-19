@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
-from zope.interface import implementer, Interface
-from zope.component import adapts
-
-from Acquisition import aq_parent, aq_inner, aq_base
-
+from Acquisition import aq_base
+from Acquisition import aq_inner
+from Acquisition import aq_parent
+from plone.portlets.constants import CONTENT_TYPE_CATEGORY
+from plone.portlets.constants import GROUP_CATEGORY
+from plone.portlets.constants import USER_CATEGORY
+from plone.portlets.interfaces import IPortletContext
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName
-
-from plone.portlets.interfaces import IPortletContext
-from plone.portlets.constants import USER_CATEGORY
-from plone.portlets.constants import GROUP_CATEGORY
-from plone.portlets.constants import CONTENT_TYPE_CATEGORY
+from zope.component import adapts
+from zope.interface import implementer
+from zope.interface import Interface
 
 import six
 
@@ -23,6 +23,7 @@ class ContentContext(object):
     tools and other non-content items. This may hijack the context in non-CMF
     contexts, but that is doubtfully going to be an issue.
     """
+
     adapts(Interface)
 
     def __init__(self, context):
@@ -30,7 +31,7 @@ class ContentContext(object):
 
     @property
     def uid(self):
-        return '/'.join(self.context.getPhysicalPath())
+        return "/".join(self.context.getPhysicalPath())
 
     def getParent(self):
         return aq_parent(aq_inner(self.context))
@@ -49,7 +50,7 @@ class ContentContext(object):
         return cats
 
     def _getUserId(self):
-        membership = getToolByName(self.context, 'portal_membership', None)
+        membership = getToolByName(self.context, "portal_membership", None)
         if membership is None:
             return None
 
@@ -72,7 +73,7 @@ class ContentContext(object):
         return memberId
 
     def _getGroupIds(self):
-        membership = getToolByName(self.context, 'portal_membership', None)
+        membership = getToolByName(self.context, "portal_membership", None)
         if membership is None or membership.isAnonymousUser():
             return ()
 
@@ -80,7 +81,7 @@ class ContentContext(object):
         if not member:
             return ()
 
-        groups = hasattr(member, 'getGroups') and member.getGroups() or []
+        groups = hasattr(member, "getGroups") and member.getGroups() or []
 
         # Ensure we get the list of ids - getGroups() suffers some acquision
         # ambiguity - the Plone member-data version returns ids.
@@ -92,12 +93,12 @@ class ContentContext(object):
         return sorted(groups)
 
     def _getContentType(self):
-        typeInfo = getattr(aq_base(self.context), 'getTypeInfo', None)
+        typeInfo = getattr(aq_base(self.context), "getTypeInfo", None)
         if typeInfo is not None:
             fti = typeInfo()
             if fti is not None:
                 return fti.getId()
-        portal_type = getattr(aq_base(self.context), 'portal_type', None)
+        portal_type = getattr(aq_base(self.context), "portal_type", None)
         if portal_type is not None:
             return portal_type
         return None
@@ -105,8 +106,8 @@ class ContentContext(object):
 
 @implementer(IPortletContext)
 class PortalRootContext(ContentContext):
-    """A portlet context for the site root.
-    """
+    """A portlet context for the site root."""
+
     adapts(ISiteRoot)
 
     def __init__(self, context):

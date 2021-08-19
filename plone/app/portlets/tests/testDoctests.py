@@ -12,9 +12,7 @@ import six
 class Py23DocChecker(doctest.OutputChecker):
     def check_output(self, want, got, optionflags):
         if six.PY2:
-            got = re.sub(
-                'LocationError', 'zope.location.interfaces.LocationError', got
-            )
+            got = re.sub("LocationError", "zope.location.interfaces.LocationError", got)
             got = re.sub("u'(.*?)'", "'\\1'", got)
         return doctest.OutputChecker.check_output(self, want, got, optionflags)
 
@@ -24,12 +22,12 @@ def test_suite():
     suite.addTest(
         layered(
             doctest.DocFileSuite(
-                'testMemberDashboard.rst',
+                "testMemberDashboard.rst",
                 checker=Py23DocChecker(),
-                package='plone.app.portlets.tests',
+                package="plone.app.portlets.tests",
                 optionflags=OPTIONFLAGS,
             ),
-            layer=PLONE_APP_PORTLETS_FUNCTIONAL_TESTING
+            layer=PLONE_APP_PORTLETS_FUNCTIONAL_TESTING,
         )
     )
     return suite
