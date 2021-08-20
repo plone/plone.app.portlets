@@ -1,23 +1,17 @@
-# -*- coding: utf-8 -*-
-from zope.interface import implementer
-from zope.component import adapts, queryUtility
-
-from zope.container.interfaces import INameChooser
-
-from Products.PluggableAuthService.interfaces.authservice import IPropertiedUser
-
-from plone.portlets.interfaces import IPortletManager
-from plone.portlets.constants import USER_CATEGORY
-
-from plone.app.portlets.interfaces import IDefaultDashboard
 from plone.app.portlets import portlets
-
+from plone.app.portlets.interfaces import IDefaultDashboard
 from plone.app.portlets.storage import UserPortletAssignmentMapping
+from plone.portlets.constants import USER_CATEGORY
+from plone.portlets.interfaces import IPortletManager
+from Products.PluggableAuthService.interfaces.authservice import IPropertiedUser
+from zope.component import adapter
+from zope.component import queryUtility
+from zope.container.interfaces import INameChooser
+from zope.interface import implementer
 
 
 def new_user(principal, event):
-    """Initialise the dashboard for a new user
-    """
+    """Initialise the dashboard for a new user"""
     defaults = IDefaultDashboard(principal, None)
     if defaults is None:
         return
@@ -25,7 +19,12 @@ def new_user(principal, event):
     userid = principal.getId()
     portlets = defaults()
 
-    for name in ('plone.dashboard1', 'plone.dashboard2', 'plone.dashboard3', 'plone.dashboard4'):
+    for name in (
+        "plone.dashboard1",
+        "plone.dashboard2",
+        "plone.dashboard3",
+        "plone.dashboard4",
+    ):
         assignments = portlets.get(name)
         if assignments:
             column = queryUtility(IPortletManager, name=name)
@@ -34,27 +33,26 @@ def new_user(principal, event):
                 if category is not None:
                     manager = category.get(userid, None)
                     if manager is None:
-                        manager = category[userid] = UserPortletAssignmentMapping(manager=name,
-                                                                                  category=USER_CATEGORY,
-                                                                                  name=userid)
+                        manager = category[userid] = UserPortletAssignmentMapping(
+                            manager=name, category=USER_CATEGORY, name=userid
+                        )
                     chooser = INameChooser(manager)
                     for assignment in assignments:
                         manager[chooser.chooseName(None, assignment)] = assignment
 
 
 @implementer(IDefaultDashboard)
-class DefaultDashboard(object):
-    """The default default dashboard.
-    """
-    adapts(IPropertiedUser)
+@adapter(IPropertiedUser)
+class DefaultDashboard:
+    """The default default dashboard."""
 
     def __init__(self, principal):
         self.principal = principal
 
     def __call__(self):
         return {
-            'plone.dashboard1': (portlets.news.Assignment(), ),
-            'plone.dashboard2': (portlets.recent.Assignment(), ),
-            'plone.dashboard3': (),
-            'plone.dashboard4': (portlets.review.Assignment(), ),
+            "plone.dashboard1": (portlets.news.Assignment(),),
+            "plone.dashboard2": (portlets.recent.Assignment(),),
+            "plone.dashboard3": (),
+            "plone.dashboard4": (portlets.review.Assignment(),),
         }

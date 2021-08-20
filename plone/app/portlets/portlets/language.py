@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.i18n.locales.browser.selector import LanguageSelector
 from plone.app.portlets import PloneMessageFactory as _
 from plone.app.portlets.portlets import base
@@ -9,18 +8,16 @@ from zope.interface import implementer
 
 
 class ILanguagePortlet(IPortletDataProvider):
-    """A portlet which shows the available portal languages.
-    """
+    """A portlet which shows the available portal languages."""
 
 
 @implementer(ILanguagePortlet)
 class Assignment(base.Assignment):
 
-    title = _(u'label_languages', default=u'Languages')
+    title = _("label_languages", default="Languages")
 
 
 class Renderer(base.Renderer):
-
     def __init__(self, context, request, view, manager, data):
         base.Renderer.__init__(self, context, request, view, manager, data)
         self.selector = LanguageSelector(context, request, None, None)
@@ -29,9 +26,9 @@ class Renderer(base.Renderer):
 
         def key(info):
             return info.get("native", info["name"])
+
         self.languages.sort(key=key)
-        portal_state = getMultiAdapter(
-            (context, request), name='plone_portal_state')
+        portal_state = getMultiAdapter((context, request), name="plone_portal_state")
         self.navigation_root_url = portal_state.navigation_root_url()
 
     def show(self):
@@ -47,10 +44,9 @@ class Renderer(base.Renderer):
     def update(self):
         pass
 
-    render = ViewPageTemplateFile('language.pt')
+    render = ViewPageTemplateFile("language.pt")
 
 
 class AddForm(base.NullAddForm):
-
     def create(self):
         return Assignment()

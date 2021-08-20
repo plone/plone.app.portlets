@@ -1,21 +1,17 @@
-# -*- coding: utf-8 -*-
-from zope.interface import implementer
-from zope.component import adapts
-
-from plone.portlets.interfaces import IPortletAssignmentMapping
-
-from plone.app.portlets.interfaces import IUserPortletAssignmentMapping
+from AccessControl import getSecurityManager
+from AccessControl import Unauthorized
+from Acquisition import aq_inner
 from plone.app.portlets.interfaces import IGroupDashboardPortletAssignmentMapping
 from plone.app.portlets.interfaces import IPortletPermissionChecker
-
-from AccessControl import getSecurityManager, Unauthorized
-from Acquisition import aq_inner
+from plone.app.portlets.interfaces import IUserPortletAssignmentMapping
+from plone.portlets.interfaces import IPortletAssignmentMapping
+from zope.component import adapter
+from zope.interface import implementer
 
 
 @implementer(IPortletPermissionChecker)
-class DefaultPortletPermissionChecker(object):
-    adapts(IPortletAssignmentMapping)
-
+@adapter(IPortletAssignmentMapping)
+class DefaultPortletPermissionChecker:
     def __init__(self, context):
         self.context = context
 
@@ -30,9 +26,8 @@ class DefaultPortletPermissionChecker(object):
 
 
 @implementer(IPortletPermissionChecker)
-class UserPortletPermissionChecker(object):
-    adapts(IUserPortletAssignmentMapping)
-
+@adapter(IUserPortletAssignmentMapping)
+class UserPortletPermissionChecker:
     def __init__(self, context):
         self.context = context
 
@@ -52,9 +47,8 @@ class UserPortletPermissionChecker(object):
 
 
 @implementer(IPortletPermissionChecker)
-class GroupDashboardPortletPermissionChecker(object):
-    adapts(IGroupDashboardPortletAssignmentMapping)
-
+@adapter(IGroupDashboardPortletAssignmentMapping)
+class GroupDashboardPortletPermissionChecker:
     def __init__(self, context):
         self.context = context
 

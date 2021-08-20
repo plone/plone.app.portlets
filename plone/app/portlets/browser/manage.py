@@ -1,49 +1,40 @@
-# -*- coding: utf-8 -*-
-from zope.interface import implementer_only
-from zope.interface import implementer
-from zope.component import getMultiAdapter, getUtility
-from zope.publisher.interfaces.browser import IBrowserView
-
 from AccessControl import Unauthorized
-from Acquisition import aq_inner
 from Acquisition import aq_base
-from Products.Five import BrowserView
-
-from Products.CMFCore.utils import getToolByName
-
-from plone.portlets.interfaces import IPortletManager
-from plone.portlets.interfaces import IPortletAssignmentMapping
-from plone.portlets.interfaces import ILocalPortletAssignmentManager
-
-from plone.portlets.constants import USER_CATEGORY
-from plone.portlets.constants import GROUP_CATEGORY
-from plone.portlets.constants import CONTENT_TYPE_CATEGORY
-from plone.portlets.constants import CONTEXT_CATEGORY
-
-from plone.app.portlets.storage import PortletAssignmentMapping
-from plone.app.portlets.storage import UserPortletAssignmentMapping
-from plone.app.portlets.storage import GroupDashboardPortletAssignmentMapping
-
-from plone.app.portlets.interfaces import IPortletPermissionChecker
-from plone.app.portlets.interfaces import ITopbarManagePortlets
-
-from plone.app.portlets.browser.interfaces import IManagePortletsView
+from Acquisition import aq_inner
+from plone.app.portlets import utils
+from plone.app.portlets.browser.interfaces import IManageContentTypePortletsView
 from plone.app.portlets.browser.interfaces import IManageContextualPortletsView
 from plone.app.portlets.browser.interfaces import IManageDashboardPortletsView
 from plone.app.portlets.browser.interfaces import IManageGroupPortletsView
-from plone.app.portlets.browser.interfaces import IManageContentTypePortletsView
-
-from plone.app.portlets import utils
+from plone.app.portlets.browser.interfaces import IManagePortletsView
+from plone.app.portlets.interfaces import IPortletPermissionChecker
+from plone.app.portlets.interfaces import ITopbarManagePortlets
+from plone.app.portlets.storage import GroupDashboardPortletAssignmentMapping
+from plone.app.portlets.storage import PortletAssignmentMapping
+from plone.app.portlets.storage import UserPortletAssignmentMapping
 from plone.memoize.view import memoize
+from plone.portlets.constants import CONTENT_TYPE_CATEGORY
+from plone.portlets.constants import CONTEXT_CATEGORY
+from plone.portlets.constants import GROUP_CATEGORY
+from plone.portlets.constants import USER_CATEGORY
+from plone.portlets.interfaces import ILocalPortletAssignmentManager
+from plone.portlets.interfaces import IPortletAssignmentMapping
+from plone.portlets.interfaces import IPortletManager
 from plone.protect.authenticator import createToken
+from Products.CMFCore.utils import getToolByName
+from Products.Five import BrowserView
+from zope.component import getMultiAdapter
+from zope.component import getUtility
+from zope.interface import implementer
+from zope.interface import implementer_only
+from zope.publisher.interfaces.browser import IBrowserView
 
 
 @implementer(IManageContextualPortletsView)
 class ManageContextualPortlets(BrowserView):
-
     def __init__(self, context, request):
-        super(ManageContextualPortlets, self).__init__(context, request)
-        self.request.set('disable_border', True)
+        super().__init__(context, request)
+        self.request.set("disable_border", True)
 
     # IManagePortletsView implementation
 
@@ -57,36 +48,44 @@ class ManageContextualPortlets(BrowserView):
 
     @property
     def key(self):
-        return '/'.join(self.context.getPhysicalPath())
+        return "/".join(self.context.getPhysicalPath())
 
     def getAssignmentMappingUrl(self, manager):
-        baseUrl = str(getMultiAdapter((self.context, self.request), name='absolute_url'))
-        return '%s/++contextportlets++%s' % (baseUrl, manager.__name__)
+        baseUrl = str(
+            getMultiAdapter((self.context, self.request), name="absolute_url")
+        )
+        return f"{baseUrl}/++contextportlets++{manager.__name__}"
 
     def getAssignmentsForManager(self, manager):
-        assignments = getMultiAdapter((self.context, manager), IPortletAssignmentMapping)
+        assignments = getMultiAdapter(
+            (self.context, manager), IPortletAssignmentMapping
+        )
         return assignments.values()
 
     # view @@manage-portlets
 
     def has_legacy_portlets(self):
-        left_slots = getattr(aq_base(self.context), 'left_slots', [])
-        right_slots = getattr(aq_base(self.context), 'right_slots', [])
+        left_slots = getattr(aq_base(self.context), "left_slots", [])
+        right_slots = getattr(aq_base(self.context), "right_slots", [])
 
-        return (left_slots or right_slots)
+        return left_slots or right_slots
 
     # view @@set-portlet-blacklist-status
-    def set_blacklist_status(self, manager, group_status, content_type_status,
-                             context_status):
-        authenticator = getMultiAdapter((self.context, self.request),
-                                        name=u"authenticator")
+    def set_blacklist_status(
+        self, manager, group_status, content_type_status, context_status
+    ):
+        authenticator = getMultiAdapter(
+            (self.context, self.request), name="authenticator"
+        )
         if not authenticator.verify():
             raise Unauthorized
         portletManager = getUtility(IPortletManager, name=manager)
-        assignable = getMultiAdapter((self.context, portletManager),
-                                     ILocalPortletAssignmentManager)
-        assignments = getMultiAdapter((self.context, portletManager),
-                                      IPortletAssignmentMapping)
+        assignable = getMultiAdapter(
+            (self.context, portletManager), ILocalPortletAssignmentManager
+        )
+        assignments = getMultiAdapter(
+            (self.context, portletManager), IPortletAssignmentMapping
+        )
 
         IPortletPermissionChecker(assignments.__of__(aq_inner(self.context)))()
 
@@ -99,19 +98,24 @@ class ManageContextualPortlets(BrowserView):
                 return False
 
         assignable.setBlacklistStatus(GROUP_CATEGORY, int2status(group_status))
-        assignable.setBlacklistStatus(CONTENT_TYPE_CATEGORY,
-                                      int2status(content_type_status))
+        assignable.setBlacklistStatus(
+            CONTENT_TYPE_CATEGORY, int2status(content_type_status)
+        )
         assignable.setBlacklistStatus(CONTEXT_CATEGORY, int2status(context_status))
 
-        baseUrl = str(getMultiAdapter((self.context, self.request), name='absolute_url'))
-        self.request.response.redirect(baseUrl + '/@@manage-portlets')
-        return ''
+        baseUrl = str(
+            getMultiAdapter((self.context, self.request), name="absolute_url")
+        )
+        self.request.response.redirect(baseUrl + "/@@manage-portlets")
+        return ""
 
     # view @@convert-legacy-portlets
 
     def convert_legacy_portlets(self):
         utils.convert_legacy_portlets(self.context)
-        self.request.response.redirect(self.context.absolute_url() + '/@@manage-portlets')
+        self.request.response.redirect(
+            self.context.absolute_url() + "/@@manage-portlets"
+        )
 
 
 @implementer(IManageDashboardPortletsView)
@@ -136,9 +140,11 @@ class ManageDashboardPortlets(BrowserView):
         return self._getUserId()
 
     def getAssignmentMappingUrl(self, manager):
-        baseUrl = str(getMultiAdapter((self.context, self.request), name='absolute_url'))
+        baseUrl = str(
+            getMultiAdapter((self.context, self.request), name="absolute_url")
+        )
         userId = self._getUserId()
-        return '%s/++dashboard++%s+%s' % (baseUrl, manager.__name__, userId)
+        return f"{baseUrl}/++dashboard++{manager.__name__}+{userId}"
 
     def getAssignmentsForManager(self, manager):
         userId = self._getUserId()
@@ -147,14 +153,16 @@ class ManageDashboardPortlets(BrowserView):
         mapping = category.get(userId, None)
         if mapping is None:
             mapping = category[userId] = UserPortletAssignmentMapping(
-                manager=manager.__name__, category=USER_CATEGORY, name=userId)
+                manager=manager.__name__, category=USER_CATEGORY, name=userId
+            )
         return mapping.values()
 
     def _getUserId(self):
-        membership = getToolByName(aq_inner(self.context), 'portal_membership', None)
+        membership = getToolByName(aq_inner(self.context), "portal_membership", None)
         if membership.isAnonymousUser():
-            raise Unauthorized("Cannot get portlet assignments for anonymous "
-                               "through this view")
+            raise Unauthorized(
+                "Cannot get portlet assignments for anonymous " "through this view"
+            )
 
         member = membership.getAuthenticatedMember()
         memberId = member.getId()
@@ -167,10 +175,9 @@ class ManageDashboardPortlets(BrowserView):
 
 @implementer(IManageDashboardPortletsView)
 class ManageGroupDashboardPortlets(BrowserView):
-
     @property
     def group(self):
-        return self.request.get('key', None)
+        return self.request.get("key", None)
 
     # IManagePortletsView implementation
 
@@ -187,18 +194,19 @@ class ManageGroupDashboardPortlets(BrowserView):
         return self.group
 
     def getAssignmentMappingUrl(self, manager):
-        baseUrl = str(getMultiAdapter((self.context, self.request), name='absolute_url'))
-        return '%s/++groupdashboard++%s+%s' % (baseUrl, manager.__name__, self.group)
+        baseUrl = str(
+            getMultiAdapter((self.context, self.request), name="absolute_url")
+        )
+        return f"{baseUrl}/++groupdashboard++{manager.__name__}+{self.group}"
 
     def getAssignmentsForManager(self, manager):
         column = getUtility(IPortletManager, name=manager.__name__)
         category = column[GROUP_CATEGORY]
         mapping = category.get(self.group, None)
         if mapping is None:
-            mapping = category[self.group] = \
-                GroupDashboardPortletAssignmentMapping(manager=manager.__name__,
-                                                       category=GROUP_CATEGORY,
-                                                       name=self.group)
+            mapping = category[self.group] = GroupDashboardPortletAssignmentMapping(
+                manager=manager.__name__, category=GROUP_CATEGORY, name=self.group
+            )
         return mapping.values()
 
 
@@ -217,40 +225,41 @@ class ManageGroupPortlets(BrowserView):
 
     @property
     def key(self):
-        return self.request['key']
+        return self.request["key"]
 
     def __init__(self, context, request):
-        super(ManageGroupPortlets, self).__init__(context, request)
-        self.request.set('disable_border', True)
+        super().__init__(context, request)
+        self.request.set("disable_border", True)
 
     def getAssignmentMappingUrl(self, manager):
-        baseUrl = str(getMultiAdapter((self.context, self.request), name='absolute_url'))
-        key = self.request['key']
-        return '%s/++groupportlets++%s+%s' % (baseUrl, manager.__name__, key)
+        baseUrl = str(
+            getMultiAdapter((self.context, self.request), name="absolute_url")
+        )
+        key = self.request["key"]
+        return f"{baseUrl}/++groupportlets++{manager.__name__}+{key}"
 
     def getAssignmentsForManager(self, manager):
-        key = self.request['key']
+        key = self.request["key"]
         column = getUtility(IPortletManager, name=manager.__name__)
         category = column[GROUP_CATEGORY]
         mapping = category.get(key, None)
         if mapping is None:
-            mapping = category[key] = PortletAssignmentMapping(manager=manager.__name__,
-                                                               category=GROUP_CATEGORY,
-                                                               name=key)
+            mapping = category[key] = PortletAssignmentMapping(
+                manager=manager.__name__, category=GROUP_CATEGORY, name=key
+            )
         return mapping.values()
 
     # View attributes
 
     def group(self):
-        return self.request['key']
+        return self.request["key"]
 
 
 @implementer(IManageContentTypePortletsView)
 class ManageContentTypePortlets(BrowserView):
-
     def __init__(self, context, request):
-        super(ManageContentTypePortlets, self).__init__(context, request)
-        self.request.set('disable_border', True)
+        super().__init__(context, request)
+        self.request.set("disable_border", True)
 
     # IManagePortletsView implementation
 
@@ -264,21 +273,24 @@ class ManageContentTypePortlets(BrowserView):
 
     @property
     def key(self):
-        return self.request['key']
+        return self.request["key"]
 
     def getAssignmentMappingUrl(self, manager):
-        baseUrl = str(getMultiAdapter((self.context, self.request), name='absolute_url'))
-        pt = self.request['key']
-        return '%s/++contenttypeportlets++%s+%s' % (baseUrl, manager.__name__, pt)
+        baseUrl = str(
+            getMultiAdapter((self.context, self.request), name="absolute_url")
+        )
+        pt = self.request["key"]
+        return f"{baseUrl}/++contenttypeportlets++{manager.__name__}+{pt}"
 
     def getAssignmentsForManager(self, manager):
-        pt = self.request['key']
+        pt = self.request["key"]
         column = getUtility(IPortletManager, name=manager.__name__)
         category = column[CONTENT_TYPE_CATEGORY]
         mapping = category.get(pt, None)
         if mapping is None:
             mapping = category[pt] = PortletAssignmentMapping(
-                manager=manager.__name__, category=CONTENT_TYPE_CATEGORY, name=pt)
+                manager=manager.__name__, category=CONTENT_TYPE_CATEGORY, name=pt
+            )
         return mapping.values()
 
     # View attributes
@@ -288,13 +300,14 @@ class ManageContentTypePortlets(BrowserView):
 
     def portal_type_icon(self):
         plone_layout = getMultiAdapter(
-            (self.context, self.request), name=u"plone_layout")
+            (self.context, self.request), name="plone_layout"
+        )
         return plone_layout.getIcon(self.fti())
 
     @memoize
     def fti(self):
-        portal_types = getToolByName(aq_inner(self.context), 'portal_types')
-        portal_type = self.request['key']
+        portal_types = getToolByName(aq_inner(self.context), "portal_types")
+        portal_type = self.request["key"]
         for fti in portal_types.listTypeInfo():
             if fti.getId() == portal_type:
                 return fti
@@ -311,7 +324,7 @@ class ManagePortletsViewlet(BrowserView):
     """
 
     def __init__(self, context, request, view, manager):
-        super(ManagePortletsViewlet, self).__init__(context, request)
+        super().__init__(context, request)
         self.__parent__ = view
         self.context = context
         self.request = request
@@ -333,9 +346,9 @@ class ManagePortletsViewlet(BrowserView):
     def __getattribute__(self, name):
         # Products.Five.viewlet.viewlet.SimpleViewletClass redefines __name__
         # so a simple property or attribute does not work
-        if name == '__name__':
+        if name == "__name__":
             return self.ultimate_parent().__name__
-        return super(ManagePortletsViewlet, self).__getattribute__(name)
+        return super().__getattribute__(name)
 
     def getAssignmentMappingUrl(self, manager):
         return self.ultimate_parent().getAssignmentMappingUrl(manager)
@@ -347,8 +360,9 @@ class ManagePortletsViewlet(BrowserView):
     def ultimate_parent(self):
         # Walk the __parent__ chain to find the principal view
         parent = self.__parent__
-        while (hasattr(parent, '__parent__') and
-                IBrowserView.providedBy(parent.__parent__)):
+        while hasattr(parent, "__parent__") and IBrowserView.providedBy(
+            parent.__parent__
+        ):
             parent = parent.__parent__
         return parent
 
@@ -380,15 +394,14 @@ class ManageContentTypePortletsViewlet(ManagePortletsViewlet):
 
 @implementer_only(ITopbarManagePortlets)
 class TopbarManagePortlets(ManageContextualPortlets):
-
     def __init__(self, context, request):
-        super(TopbarManagePortlets, self).__init__(context, request)
+        super().__init__(context, request)
         # Disable the left and right columns
-        self.request.set('disable_plone.leftcolumn', 1)
-        self.request.set('disable_plone.rightcolumn', 1)
+        self.request.set("disable_plone.leftcolumn", 1)
+        self.request.set("disable_plone.rightcolumn", 1)
         # Initialize the manager name in case there is nothing
         # in the traversal path
-        self.manager_name = 'plone.leftcolumn'
+        self.manager_name = "plone.leftcolumn"
 
     def publishTraverse(self, request, name):
         """Get the portlet manager via traversal so that we can re-use
@@ -402,8 +415,9 @@ class TopbarManagePortlets(ManageContextualPortlets):
         # Here we manually render the portlets instead of doing
         # something like provider:${view/manager_name} in the template
         manager_view = ManageContextualPortlets(self.context, self.request)
-        manager_view.__name__ = 'manage-portlets'
+        manager_view.__name__ = "manage-portlets"
         portlet_manager = getMultiAdapter(
-            (self.context, self.request, manager_view), name=self.manager_name)
+            (self.context, self.request, manager_view), name=self.manager_name
+        )
         portlet_manager.update()
         return portlet_manager.render()

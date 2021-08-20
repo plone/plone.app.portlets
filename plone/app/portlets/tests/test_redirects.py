@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.portlets.browser.adding import PortletAdding
 from plone.app.portlets.browser.editmanager import ManagePortletAssignments
 from plone.app.portlets.browser.formhelper import AddForm
@@ -8,30 +7,26 @@ from plone.app.portlets.tests.base import PortletsTestCase
 
 class TestRedirects(PortletsTestCase):
     _test_methods = [
-        (PortletAdding, 'nextURL'),
-        (ManagePortletAssignments, '_nextUrl'),
-        (AddForm, 'nextURL'),
-        (EditForm, 'nextURL'),
+        (PortletAdding, "nextURL"),
+        (ManagePortletAssignments, "_nextUrl"),
+        (AddForm, "nextURL"),
+        (EditForm, "nextURL"),
     ]
 
     def test_regression(self):
         portal_url = self.portal.absolute_url()
-        self.request.form.update({
-            'referer': portal_url
-        })
+        self.request.form.update({"referer": portal_url})
         for Klass, method in self._test_methods:
             view = Klass(self.portal, self.request)
             view.__parent__ = self.portal
             self.assertEqual(getattr(view, method)(), portal_url)
 
     def test_valid_next_url(self):
-        self.request.form.update({
-            'referer': 'http://attacker.com'
-        })
+        self.request.form.update({"referer": "http://attacker.com"})
         for Klass, method in self._test_methods:
             view = Klass(self.portal, self.request)
             view.__parent__ = self.portal
-            self.assertNotEqual('http://attacker.com', getattr(view, method)())
+            self.assertNotEqual("http://attacker.com", getattr(view, method)())
 
 
 def test_suite():
@@ -52,7 +47,9 @@ def test_suite():
     # bin/test -s plone.app.portlets -m test_redirects
     # But the error *is* in this test_redirects.py file,
     # because it goes away when I delete this file.
-    from unittest import TestSuite, makeSuite
+    from unittest import makeSuite
+    from unittest import TestSuite
+
     suite = TestSuite()
     suite.addTest(makeSuite(TestRedirects))
     return suite

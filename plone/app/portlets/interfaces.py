@@ -1,10 +1,8 @@
-# -*- coding: utf-8 -*-
-from zope.interface import Interface
-
+from plone.portlets.interfaces import IPlacelessPortletManager
 from plone.portlets.interfaces import IPortletAssignmentMapping
 from plone.portlets.interfaces import IPortletManager
-from plone.portlets.interfaces import IPlacelessPortletManager
 from plone.portlets.interfaces import IPortletRenderer
+from zope.interface import Interface
 
 
 class IPortletTypeInterface(Interface):
@@ -15,13 +13,11 @@ class IPortletTypeInterface(Interface):
 
 
 class IUserPortletAssignmentMapping(IPortletAssignmentMapping):
-    """A portlet assignment mapping that's user-specific
-    """
+    """A portlet assignment mapping that's user-specific"""
 
 
 class IGroupDashboardPortletAssignmentMapping(IPortletAssignmentMapping):
-    """Group portlets storage. Has its own security checker.
-    """
+    """Group portlets storage. Has its own security checker."""
 
 
 class IPortletPermissionChecker(Interface):
@@ -36,8 +32,7 @@ class IPortletPermissionChecker(Interface):
 
 
 class IDefaultPortletManager(IPortletManager):
-    """Default registration for portlets
-    """
+    """Default registration for portlets"""
 
 
 class IColumn(IDefaultPortletManager):
@@ -61,11 +56,13 @@ class IRightColumn(IColumn):
     Normally, you will register portlets for IColumn instead.
     """
 
+
 class IFooter(IColumn):
     """The footer
 
     Normally, you will register portlets for IColumn instead.
     """
+
 
 class IDashboard(IDefaultPortletManager, IPlacelessPortletManager):
     """Common base class for dashboard columns

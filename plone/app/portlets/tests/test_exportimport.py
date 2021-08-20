@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-
+from io import StringIO
 from plone.app.portlets.exportimport.portlets import PortletsXMLAdapter
 from plone.app.portlets.interfaces import IColumn
 from plone.app.portlets.interfaces import IDashboard
@@ -10,7 +9,6 @@ from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPortletType
 from plone.portlets.manager import PortletManager
 from Products.GenericSetup.testing import DummySetupEnviron
-from six import StringIO
 from xml.dom.minidom import parseString
 from zope.component import getSiteManager
 from zope.component import getUtility
@@ -19,15 +17,16 @@ from zope.i18nmessageid import Message
 
 
 class PortletsExportImportTestCase(PortletsTestCase):
-
     def afterSetUp(self):
         self.sm = getSiteManager(self.portal)
-        self.importer = self.exporter = PortletsXMLAdapter(self.sm,
-          DummySetupEnviron())
+        self.importer = self.exporter = PortletsXMLAdapter(self.sm, DummySetupEnviron())
 
-    def _searchPortletManagerRegistrations(self, name = None):
-        results = [r for r in self.sm.registeredUtilities()
-          if r.provided.isOrExtends(IPortletManager)]
+    def _searchPortletManagerRegistrations(self, name=None):
+        results = [
+            r
+            for r in self.sm.registeredUtilities()
+            if r.provided.isOrExtends(IPortletManager)
+        ]
         if name:
             results = [r for r in results if r.name == name]
         return results
@@ -40,37 +39,36 @@ class PortletsExportImportTestCase(PortletsTestCase):
 
 
 class TestImportPortlets(PortletsExportImportTestCase):
-
     def test_removePortlet(self):
-        self.assertTrue(queryUtility(IPortletType,
-          name='portlets.News') is not None)
-        self.assertEqual(True,
-          self.importer._removePortlet('portlets.News'))
-        self.assertTrue(queryUtility(IPortletType,
-          name='portlets.News') is None)
-        self.assertEqual(False, self.importer._removePortlet('foo'))
+        self.assertTrue(queryUtility(IPortletType, name="portlets.News") is not None)
+        self.assertEqual(True, self.importer._removePortlet("portlets.News"))
+        self.assertTrue(queryUtility(IPortletType, name="portlets.News") is None)
+        self.assertEqual(False, self.importer._removePortlet("foo"))
 
     def test_checkBasicPortletNodeErrors(self):
         node = parseString(_XML_INVALID_EXTEND_AND_PURGE).documentElement
-        self.assertEqual(True,
-            self.importer._checkBasicPortletNodeErrors(node, ['portlets.Exists']))
+        self.assertEqual(
+            True, self.importer._checkBasicPortletNodeErrors(node, ["portlets.Exists"])
+        )
 
         node = parseString(_XML_INVALID_EXTEND_NONEXISTS).documentElement
-        self.assertEqual(True,
-          self.importer._checkBasicPortletNodeErrors(node, ['portlets.Exists']))
+        self.assertEqual(
+            True, self.importer._checkBasicPortletNodeErrors(node, ["portlets.Exists"])
+        )
 
         node = parseString(_XML_INVALID_ADD_EXISTING).documentElement
-        self.assertEqual(True,
-            self.importer._checkBasicPortletNodeErrors(node, ['portlets.Exists']))
+        self.assertEqual(
+            True, self.importer._checkBasicPortletNodeErrors(node, ["portlets.Exists"])
+        )
 
         node = parseString(_XML_EXTEND_EXISTING).documentElement
-        self.assertEqual(False,
-          self.importer._checkBasicPortletNodeErrors(node, ['portlets.Exists']))
+        self.assertEqual(
+            False, self.importer._checkBasicPortletNodeErrors(node, ["portlets.Exists"])
+        )
 
     def test_modifyForList(self):
         node = parseString(_XML_SWITCH_COLUMNS).documentElement
-        self.assertEqual([IColumn],
-          self.importer._modifyForList(node, [IDashboard]))
+        self.assertEqual([IColumn], self.importer._modifyForList(node, [IDashboard]))
 
     def test_initPortletNode_duplicateInterfaces(self):
         node = parseString(_XML_DUPLICATE_INTERFACES).documentElement
@@ -84,8 +82,8 @@ class TestImportPortlets(PortletsExportImportTestCase):
         self.importer._initPortletNode(node)
         portlet = queryUtility(IPortletType, name="portlets.New")
         self.assertTrue(portlet is not None)
-        self.assertEqual('Foo', portlet.title)
-        self.assertEqual('Bar', portlet.description)
+        self.assertEqual("Foo", portlet.title)
+        self.assertEqual("Bar", portlet.description)
         self.assertEqual([IColumn], portlet.for_)
 
     def disabled_test_initPortletNode_i18n(self):
@@ -95,16 +93,20 @@ class TestImportPortlets(PortletsExportImportTestCase):
         self.assertTrue(portlet is not None)
         self.assertEqual([IColumn], portlet.for_)
         # XXX Missing i18n support in the exportimport code
-        self.assertTrue(isinstance(portlet.title, Message),
-                        "Portlet title should be a Message instance")
-        self.assertTrue(isinstance(portlet.description, Message),
-                        "Portlet description should be a Message instance")
-        self.assertEqual(u"title_foo_portlet", portlet.title)
-        self.assertEqual(u"description_foo_portlet", portlet.description)
-        self.assertEqual(u"Foo", portlet.title.default)
-        self.assertEqual(u"Bar", portlet.description.default)
-        self.assertEqual(u"foodomain", portlet.title.domain)
-        self.assertEqual(u"foodomain", portlet.description.domain)
+        self.assertTrue(
+            isinstance(portlet.title, Message),
+            "Portlet title should be a Message instance",
+        )
+        self.assertTrue(
+            isinstance(portlet.description, Message),
+            "Portlet description should be a Message instance",
+        )
+        self.assertEqual("title_foo_portlet", portlet.title)
+        self.assertEqual("description_foo_portlet", portlet.description)
+        self.assertEqual("Foo", portlet.title.default)
+        self.assertEqual("Bar", portlet.description.default)
+        self.assertEqual("foodomain", portlet.title.domain)
+        self.assertEqual("foodomain", portlet.description.domain)
 
     def test_initPortletNode_multipleInterfaces(self):
         node = parseString(_XML_MULTIPLE_INTERFACES).documentElement
@@ -132,8 +134,8 @@ class TestImportPortlets(PortletsExportImportTestCase):
         portlet = queryUtility(IPortletType, name="portlets.ExtendMe")
         self.assertTrue(portlet is not None)
         self.assertEqual([IDashboard], portlet.for_)
-        self.assertEqual('Bar', portlet.title)
-        self.assertEqual('Bar', portlet.description)
+        self.assertEqual("Bar", portlet.title)
+        self.assertEqual("Bar", portlet.description)
 
     def test_initPortletNode_purge(self):
         node = parseString(_XML_PURGEME_SETUP).documentElement
@@ -143,50 +145,54 @@ class TestImportPortlets(PortletsExportImportTestCase):
         portlet = queryUtility(IPortletType, name="portlets.PurgeMe")
         self.assertTrue(portlet is not None)
         self.assertEqual([IColumn], portlet.for_)
-        self.assertEqual('Bar', portlet.title)
-        self.assertEqual('Bar', portlet.description)
+        self.assertEqual("Bar", portlet.title)
+        self.assertEqual("Bar", portlet.description)
 
     def test_initPortletNode_remove(self):
         node = parseString(_XML_REMOVEME_SETUP).documentElement
         self.importer._initPortletNode(node)
-        portlet = queryUtility(IPortletType, name='portlets.RemoveMe')
+        portlet = queryUtility(IPortletType, name="portlets.RemoveMe")
         self.assertTrue(portlet is not None)
         node = parseString(_XML_REMOVEME_REMOVE).documentElement
         self.importer._initPortletNode(node)
-        portlet = queryUtility(IPortletType, name='portlets.RemoveMe')
+        portlet = queryUtility(IPortletType, name="portlets.RemoveMe")
         self.assertTrue(portlet is None)
 
 
 class TestExportPortlets(PortletsExportImportTestCase):
-
     def test_extractPortletNode(self):
         node = parseString(_XML_MULTIPLE_INTERFACES).documentElement
         self.importer._initPortletNode(node)
-        portlet = getUtility(IPortletType, 'portlets.New')
-        node = self.exporter._extractPortletNode('portlets.New', portlet)
+        portlet = getUtility(IPortletType, "portlets.New")
+        node = self.exporter._extractPortletNode("portlets.New", portlet)
         file = StringIO()
         node.writexml(file)
         file.seek(0)
-        self.assertEqual("""<portlet title="Foo" addview="portlets.New" description="Foo"><for interface="plone.app.portlets.interfaces.IColumn"/><for interface="plone.app.portlets.interfaces.IDashboard"/></portlet>""", file.read())
+        self.assertEqual(
+            """<portlet title="Foo" addview="portlets.New" description="Foo"><for interface="plone.app.portlets.interfaces.IColumn"/><for interface="plone.app.portlets.interfaces.IDashboard"/></portlet>""",
+            file.read(),
+        )
 
     def test_extractPortletNode_defaultManagerInterface(self):
         node = parseString(_XML_EXPLICIT_DEFAULT_INTERFACE).documentElement
         self.importer._initPortletNode(node)
-        portlet = getUtility(IPortletType, 'portlets.New')
-        node = self.exporter._extractPortletNode('portlets.New', portlet)
+        portlet = getUtility(IPortletType, "portlets.New")
+        node = self.exporter._extractPortletNode("portlets.New", portlet)
         file = StringIO()
         node.writexml(file)
         file.seek(0)
-        self.assertEqual("""<portlet title="Foo" addview="portlets.New" description="Foo"/>""", file.read())
+        self.assertEqual(
+            """<portlet title="Foo" addview="portlets.New" description="Foo"/>""",
+            file.read(),
+        )
 
 
 class TestImportPortletManagers(PortletsExportImportTestCase):
-
     def test_initPortletManagerNode_basic(self):
         node = parseString(_XML_PORTLET_MANAGER_BASIC).documentElement
         self.importer._initPortletManagerNode(node)
 
-        manager = queryUtility(IPortletManager, name='plone.foo_column')
+        manager = queryUtility(IPortletManager, name="plone.foo_column")
         self.assertTrue(manager is not None)
         self.assertEqual(PortletManager, manager.__class__)
 
@@ -194,7 +200,7 @@ class TestImportPortletManagers(PortletsExportImportTestCase):
         node = parseString(_XML_PORTLET_MANAGER_CUSTOM_TYPE).documentElement
         self.importer._initPortletManagerNode(node)
 
-        manager = queryUtility(IPortletManager, name='plone.foo_column')
+        manager = queryUtility(IPortletManager, name="plone.foo_column")
         self.assertTrue(manager is not None)
         self.assertTrue(IColumn.providedBy(manager))
 
@@ -202,46 +208,56 @@ class TestImportPortletManagers(PortletsExportImportTestCase):
         node = parseString(_XML_PORTLET_MANAGER_CUSTOM_CLASS).documentElement
         self.importer._initPortletManagerNode(node)
 
-        manager = queryUtility(IPortletManager, name='plone.foo_column')
+        manager = queryUtility(IPortletManager, name="plone.foo_column")
         self.assertTrue(manager is not None)
         self.assertEqual(FooPortletManager, manager.__class__)
 
 
 class TestExportPortletManagers(PortletsExportImportTestCase):
-
     def test_extractPortletManagerNode_defaultTypeAndClass(self):
         node = parseString(_XML_PORTLET_MANAGER_BASIC).documentElement
         self.importer._initPortletManagerNode(node)
-        results = self._searchPortletManagerRegistrations('plone.foo_column')
+        results = self._searchPortletManagerRegistrations("plone.foo_column")
         r = results[0]
         node = self.exporter._extractPortletManagerNode(r)
-        self.assertEqual('<portletmanager name="plone.foo_column"/>', self._node_as_string(node))
+        self.assertEqual(
+            '<portletmanager name="plone.foo_column"/>', self._node_as_string(node)
+        )
 
     def test_extractPortletManagerNode_customType(self):
         node = parseString(_XML_PORTLET_MANAGER_CUSTOM_TYPE).documentElement
         self.importer._initPortletManagerNode(node)
-        results = self._searchPortletManagerRegistrations('plone.foo_column')
+        results = self._searchPortletManagerRegistrations("plone.foo_column")
         r = results[0]
         node = self.exporter._extractPortletManagerNode(r)
-        self.assertEqual('<portletmanager name="plone.foo_column"  type="plone.app.portlets.interfaces.IColumn"/>', self._node_as_string(node))
+        self.assertEqual(
+            '<portletmanager name="plone.foo_column"  type="plone.app.portlets.interfaces.IColumn"/>',
+            self._node_as_string(node),
+        )
 
     def test_extractPortletManagerNode_customClass(self):
         node = parseString(_XML_PORTLET_MANAGER_CUSTOM_CLASS).documentElement
         self.importer._initPortletManagerNode(node)
-        results = self._searchPortletManagerRegistrations('plone.foo_column')
+        results = self._searchPortletManagerRegistrations("plone.foo_column")
         r = results[0]
         node = self.exporter._extractPortletManagerNode(r)
-        self.assertEqual('<portletmanager name="plone.foo_column"  class="plone.app.portlets.tests.utils.FooPortletManager"/>', self._node_as_string(node))
+        self.assertEqual(
+            '<portletmanager name="plone.foo_column"  class="plone.app.portlets.tests.utils.FooPortletManager"/>',
+            self._node_as_string(node),
+        )
 
 
 def test_suite():
-    from unittest import TestSuite, makeSuite
+    from unittest import makeSuite
+    from unittest import TestSuite
+
     suite = TestSuite()
     suite.addTest(makeSuite(TestImportPortlets))
     suite.addTest(makeSuite(TestExportPortlets))
     suite.addTest(makeSuite(TestImportPortletManagers))
     suite.addTest(makeSuite(TestExportPortletManagers))
     return suite
+
 
 _XML_INVALID_EXTEND_AND_PURGE = """<?xml version="1.0"?>
 <portlet addview="portlets.Exists" extend="" purge="" />

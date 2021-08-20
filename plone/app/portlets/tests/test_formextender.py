@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from plone.app.portlets.browser.interfaces import IPortletAddForm
 from plone.app.portlets.browser.interfaces import IPortletEditForm
 from plone.app.portlets.portlets import news
@@ -26,33 +24,29 @@ from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 # A sample schemaextender:
 
 
-EXTENDER_PREFIX = 'portletcssclass'
+EXTENDER_PREFIX = "portletcssclass"
 
 
 class IPortletCssClass(Interface):
-    """ Schema for portlet css class  """
+    """Schema for portlet css class"""
 
     # css_class is just an example.
     # In real life a css_class implementation would be a
     # Choice field with a vocabulary, editable in a controlpanel.
-    css_class = schema.TextLine(
-        title=u'Portlet appearance',
-        required=False
-    )
+    css_class = schema.TextLine(title="Portlet appearance", required=False)
 
 
 class PortletCssClassFormExtender(FormExtender):
-
     def update(self):
         self.add(IPortletCssClass, prefix=EXTENDER_PREFIX)
 
 
 @adapter(IPortletAssignment)
 @implementer(IPortletCssClass)
-class PortletCssClassAdapter(object):
+class PortletCssClassAdapter:
     def __init__(self, context):
         # avoid recursion
-        self.__dict__['context'] = context
+        self.__dict__["context"] = context
 
     def __setattr__(self, attr, value):
         settings = IPortletAssignmentSettings(self.context)
@@ -64,16 +58,14 @@ class PortletCssClassAdapter(object):
 
 
 class TestSchemaExtender(PortletsTestCase):
-
     def test_addform_fields(self):
         schema_field_names = field.Fields(news.INewsPortlet).keys()
 
         # We use the news portlet as a random example of a portlet
-        portlet = getUtility(IPortletType, name='portlets.News')
+        portlet = getUtility(IPortletType, name="portlets.News")
 
-        mapping = self.portal.restrictedTraverse(
-            '++contextportlets++plone.leftcolumn')
-        addview = mapping.restrictedTraverse('+/' + portlet.addview)
+        mapping = self.portal.restrictedTraverse("++contextportlets++plone.leftcolumn")
+        addview = mapping.restrictedTraverse("+/" + portlet.addview)
         addview.update()
         addview_field_names = addview.fields.keys()
 
@@ -82,82 +74,79 @@ class TestSchemaExtender(PortletsTestCase):
 
         # Register our schemaextender
         gsm = getGlobalSiteManager()
-        gsm.registerAdapter(PortletCssClassAdapter,
-                            (IPortletAssignment,))
-        gsm.registerAdapter(PortletCssClassFormExtender,
-                            (Interface,
-                             IDefaultBrowserLayer,
-                             IPortletAddForm),
-                            IFormExtender,
-                            'portletcssclass.extender')
+        gsm.registerAdapter(PortletCssClassAdapter, (IPortletAssignment,))
+        gsm.registerAdapter(
+            PortletCssClassFormExtender,
+            (Interface, IDefaultBrowserLayer, IPortletAddForm),
+            IFormExtender,
+            "portletcssclass.extender",
+        )
 
-        mapping = self.portal.restrictedTraverse(
-            '++contextportlets++plone.leftcolumn')
-        addview = mapping.restrictedTraverse('+/' + portlet.addview)
+        mapping = self.portal.restrictedTraverse("++contextportlets++plone.leftcolumn")
+        addview = mapping.restrictedTraverse("+/" + portlet.addview)
         addview.update()
         addview_field_names = addview.fields.keys()
 
-        gsm.unregisterAdapter(PortletCssClassFormExtender,
-                              (Interface,
-                               IDefaultBrowserLayer,
-                               IPortletAddForm),
-                              IFormExtender,
-                              'portletcssclass.extender')
-        gsm.unregisterAdapter(PortletCssClassAdapter,
-                              (IPortletAssignment,))
+        gsm.unregisterAdapter(
+            PortletCssClassFormExtender,
+            (Interface, IDefaultBrowserLayer, IPortletAddForm),
+            IFormExtender,
+            "portletcssclass.extender",
+        )
+        gsm.unregisterAdapter(PortletCssClassAdapter, (IPortletAssignment,))
 
         # Our addview schema now includes our extended schema:
-        self.assertEqual(addview_field_names,
-                         schema_field_names + [EXTENDER_PREFIX+'.css_class'])
+        self.assertEqual(
+            addview_field_names, schema_field_names + [EXTENDER_PREFIX + ".css_class"]
+        )
 
     def test_invoke_add_form(self):
-        portlet = getUtility(IPortletType, name='portlets.News')
-        mapping = self.portal.restrictedTraverse(
-            '++contextportlets++plone.leftcolumn')
+        portlet = getUtility(IPortletType, name="portlets.News")
+        mapping = self.portal.restrictedTraverse("++contextportlets++plone.leftcolumn")
         for m in mapping.keys():
             del mapping[m]
-        addview = mapping.restrictedTraverse('+/' + portlet.addview)
+        addview = mapping.restrictedTraverse("+/" + portlet.addview)
         addview.update()
-        addview.createAndAdd(data={'count': 5,
-                                   EXTENDER_PREFIX+'.css_class': 'my-class'})
+        addview.createAndAdd(
+            data={"count": 5, EXTENDER_PREFIX + ".css_class": "my-class"}
+        )
         portlet_assignment = mapping.values()[0]
         settings = IPortletAssignmentSettings(portlet_assignment)
 
         self.assertEqual(portlet_assignment.count, 5)
         # We have not extended our storage adapter, so nothing gets saved:
-        self.assertIsNone(settings.get('css_class', None))
+        self.assertIsNone(settings.get("css_class", None))
 
         # Register our schemaextender
         gsm = getGlobalSiteManager()
-        gsm.registerAdapter(PortletCssClassAdapter,
-                            (IPortletAssignment,))
-        gsm.registerAdapter(PortletCssClassFormExtender,
-                            (Interface,
-                             IDefaultBrowserLayer,
-                             IPortletAddForm),
-                            IFormExtender,
-                            'portletcssclass.extender')
+        gsm.registerAdapter(PortletCssClassAdapter, (IPortletAssignment,))
+        gsm.registerAdapter(
+            PortletCssClassFormExtender,
+            (Interface, IDefaultBrowserLayer, IPortletAddForm),
+            IFormExtender,
+            "portletcssclass.extender",
+        )
         for m in mapping.keys():
             del mapping[m]
-        addview = mapping.restrictedTraverse('+/' + portlet.addview)
+        addview = mapping.restrictedTraverse("+/" + portlet.addview)
         addview.update()
-        addview.createAndAdd(data={'count': 5,
-                                   EXTENDER_PREFIX+'.css_class': 'my-class'})
+        addview.createAndAdd(
+            data={"count": 5, EXTENDER_PREFIX + ".css_class": "my-class"}
+        )
         portlet_assignment = mapping.values()[0]
         settings = IPortletAssignmentSettings(portlet_assignment)
 
-        gsm.unregisterAdapter(PortletCssClassFormExtender,
-                              (Interface,
-                               IDefaultBrowserLayer,
-                               IPortletAddForm),
-                              IFormExtender,
-                              'portletcssclass.extender')
-        gsm.unregisterAdapter(PortletCssClassAdapter,
-                              (IPortletAssignment,))
+        gsm.unregisterAdapter(
+            PortletCssClassFormExtender,
+            (Interface, IDefaultBrowserLayer, IPortletAddForm),
+            IFormExtender,
+            "portletcssclass.extender",
+        )
+        gsm.unregisterAdapter(PortletCssClassAdapter, (IPortletAssignment,))
 
         self.assertEqual(portlet_assignment.count, 5)
         # The prefix is used for the form field, not for the stored data:
-        self.assertEqual(settings.get('css_class'), 'my-class')
+        self.assertEqual(settings.get("css_class"), "my-class")
 
     def test_editform_fields(self):
 
@@ -165,8 +154,8 @@ class TestSchemaExtender(PortletsTestCase):
 
         mapping = PortletAssignmentMapping()
         request = self.folder.REQUEST
-        mapping['foo'] = news.Assignment(count=5)
-        editview = getMultiAdapter((mapping['foo'], request), name='edit')
+        mapping["foo"] = news.Assignment(count=5)
+        editview = getMultiAdapter((mapping["foo"], request), name="edit")
         editview.update()
         editview_field_names = editview.fields.keys()
 
@@ -175,100 +164,103 @@ class TestSchemaExtender(PortletsTestCase):
 
         # Register our schemaextender
         gsm = getGlobalSiteManager()
-        gsm.registerAdapter(PortletCssClassAdapter,
-                            (IPortletAssignment,))
-        gsm.registerAdapter(PortletCssClassFormExtender,
-                            (Interface,
-                             IDefaultBrowserLayer,
-                             IPortletEditForm),
-                            IFormExtender,
-                            'portletcssclass.extender')
+        gsm.registerAdapter(PortletCssClassAdapter, (IPortletAssignment,))
+        gsm.registerAdapter(
+            PortletCssClassFormExtender,
+            (Interface, IDefaultBrowserLayer, IPortletEditForm),
+            IFormExtender,
+            "portletcssclass.extender",
+        )
 
         mapping = PortletAssignmentMapping()
         request = self.folder.REQUEST
-        mapping['foo'] = news.Assignment(count=5)
-        editview = getMultiAdapter((mapping['foo'], request), name='edit')
+        mapping["foo"] = news.Assignment(count=5)
+        editview = getMultiAdapter((mapping["foo"], request), name="edit")
         editview.update()
         editview_field_names = editview.fields.keys()
 
-        gsm.unregisterAdapter(PortletCssClassFormExtender,
-                              (Interface,
-                               IDefaultBrowserLayer,
-                               IPortletEditForm),
-                              IFormExtender,
-                              'portletcssclass.extender')
-        gsm.unregisterAdapter(PortletCssClassAdapter,
-                              (IPortletAssignment,))
+        gsm.unregisterAdapter(
+            PortletCssClassFormExtender,
+            (Interface, IDefaultBrowserLayer, IPortletEditForm),
+            IFormExtender,
+            "portletcssclass.extender",
+        )
+        gsm.unregisterAdapter(PortletCssClassAdapter, (IPortletAssignment,))
 
         # Our editview schema now includes our extended schema:
-        self.assertEqual(editview_field_names,
-                         schema_field_names + [EXTENDER_PREFIX+'.css_class'])
+        self.assertEqual(
+            editview_field_names, schema_field_names + [EXTENDER_PREFIX + ".css_class"]
+        )
 
     def test_invoke_edit_form(self):
         mapping = PortletAssignmentMapping()
         request = self.folder.REQUEST
 
-        mapping['foo'] = news.Assignment(count=5)
-        editview = getMultiAdapter((mapping['foo'], request), name='edit')
+        mapping["foo"] = news.Assignment(count=5)
+        editview = getMultiAdapter((mapping["foo"], request), name="edit")
         editview.update()
-        editview.applyChanges(data={'count': 6,
-                                    EXTENDER_PREFIX+'.css_class': 'my-class'})
+        editview.applyChanges(
+            data={"count": 6, EXTENDER_PREFIX + ".css_class": "my-class"}
+        )
         portlet_assignment = mapping.values()[0]
         settings = IPortletAssignmentSettings(portlet_assignment)
 
         self.assertEqual(portlet_assignment.count, 6)
         # We have not extended our storage adapter, so nothing gets saved:
-        self.assertIsNone(settings.get('css_class', None))
+        self.assertIsNone(settings.get("css_class", None))
 
         # Register our schemaextender
         gsm = getGlobalSiteManager()
-        gsm.registerAdapter(PortletCssClassAdapter,
-                            (IPortletAssignment,))
-        gsm.registerAdapter(PortletCssClassFormExtender,
-                            (Interface,
-                             IDefaultBrowserLayer,
-                             IPortletEditForm),
-                            IFormExtender,
-                            'portletcssclass.extender')
+        gsm.registerAdapter(PortletCssClassAdapter, (IPortletAssignment,))
+        gsm.registerAdapter(
+            PortletCssClassFormExtender,
+            (Interface, IDefaultBrowserLayer, IPortletEditForm),
+            IFormExtender,
+            "portletcssclass.extender",
+        )
         mapping = PortletAssignmentMapping()
         request = self.folder.REQUEST
 
-        mapping['foo'] = news.Assignment(count=5)
-        editview = getMultiAdapter((mapping['foo'], request), name='edit')
+        mapping["foo"] = news.Assignment(count=5)
+        editview = getMultiAdapter((mapping["foo"], request), name="edit")
         editview.update()
-        editview.applyChanges(data={'count': 6,
-                                    EXTENDER_PREFIX+'.css_class': 'my-class'})
+        editview.applyChanges(
+            data={"count": 6, EXTENDER_PREFIX + ".css_class": "my-class"}
+        )
         portlet_assignment = mapping.values()[0]
         settings = IPortletAssignmentSettings(portlet_assignment)
 
-        gsm.unregisterAdapter(PortletCssClassFormExtender,
-                              (Interface,
-                               IDefaultBrowserLayer,
-                               IPortletEditForm),
-                              IFormExtender,
-                              'portletcssclass.extender')
-        gsm.unregisterAdapter(PortletCssClassAdapter,
-                              (IPortletAssignment,))
+        gsm.unregisterAdapter(
+            PortletCssClassFormExtender,
+            (Interface, IDefaultBrowserLayer, IPortletEditForm),
+            IFormExtender,
+            "portletcssclass.extender",
+        )
+        gsm.unregisterAdapter(PortletCssClassAdapter, (IPortletAssignment,))
 
         self.assertEqual(portlet_assignment.count, 6)
         # The prefix is used for the form field, not for the stored data:
-        self.assertEqual(settings.get('css_class'), 'my-class')
+        self.assertEqual(settings.get("css_class"), "my-class")
 
     def test_renderer(self):
         context = self.folder
         request = self.folder.REQUEST
-        view = self.folder.restrictedTraverse('@@plone')
+        view = self.folder.restrictedTraverse("@@plone")
         manager = getUtility(
-            IPortletManager, name='plone.leftcolumn', context=self.portal)
+            IPortletManager, name="plone.leftcolumn", context=self.portal
+        )
         assignment = news.Assignment(count=5)
 
         renderer = getMultiAdapter(
-            (context, request, view, manager, assignment), IPortletRenderer)
+            (context, request, view, manager, assignment), IPortletRenderer
+        )
         self.assertTrue(isinstance(renderer, news.Renderer))
 
 
 def test_suite():
-    from unittest import TestSuite, makeSuite
+    from unittest import makeSuite
+    from unittest import TestSuite
+
     suite = TestSuite()
     suite.addTest(makeSuite(TestSchemaExtender))
     return suite
