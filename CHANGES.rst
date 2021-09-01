@@ -8,6 +8,16 @@ Changelog
 
 .. towncrier release notes start
 
+5.0.0a3 (2021-09-01)
+--------------------
+
+Bug fixes:
+
+
+- Codestyle (black/isort/pycln), Pyupgrade, plus minor manual cleanup.
+  [jensens] (#151)
+
+
 5.0.0a2 (2021-06-30)
 --------------------
 

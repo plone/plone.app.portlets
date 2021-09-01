@@ -2,7 +2,7 @@ from setuptools import find_packages
 from setuptools import setup
 
 
-version = "5.0.0a3.dev0"
+version = "5.0.0a3"
 
 setup(
     name="plone.app.portlets",
