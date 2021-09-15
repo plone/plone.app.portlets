@@ -8,6 +8,16 @@ Changelog
 
 .. towncrier release notes start
 
+5.0.0a4 (2021-09-15)
+--------------------
+
+Bug fixes:
+
+
+- Remove cyclic dependency with Products.CMFPlone, plone.app.layouts
+  [ericof] (#152)
+
+
 5.0.0a3 (2021-09-01)
 --------------------
 
