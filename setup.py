@@ -45,7 +45,6 @@ setup(
         "plone.memoize",
         "plone.portlets>=1.1",
         "plone.app.i18n",
-        "plone.app.event",
         "plone.app.vocabularies >= 2.1.15.dev0",
         "plone.app.z3cform",
         "transaction",
