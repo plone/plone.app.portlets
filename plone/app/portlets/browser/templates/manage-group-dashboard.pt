@@ -17,7 +17,7 @@
 <metal:b fill-slot="prefs_configlet_main">
 
     <header>
-      <h1 class="documentFirstHeading">Group: ${view/group}</h1>
+      <h1 class="documentFirstHeading" i18n:translate="">Group: <span i18n:name="groupname" tal:content="view/group" tal:omit-tag=""/></h1>
     </header>
 
     <div metal:use-macro="context/global_statusmessage/macros/portal_message">
@@ -25,7 +25,7 @@
     </div>
 
     <div id="content-core" tal:define="token context/@@authenticator/token">
-      <div class="autotabs">        
+      <div class="autotabs">
         <nav class="autotoc-nav nav nav-tabs mb-3">
           <a class="nav-link" href="${portal_url}/@@usergroup-groupmembership?groupname=${request/key}"
              i18n:translate="label_group_members">Group Members</a>
@@ -33,7 +33,7 @@
              i18n:translate="label_group_properties">Group Properties</a>
           <a class="nav-link" href="${portal_url}/@@manage-group-portlets?key=${request/key}&_authenticator=${token}"
              i18n:translate="label_group_portlets">Group Portlets</a>
-          <a class="active nav-link" 
+          <a class="active nav-link"
              href="${portal_url}/@@manage-group-dashboard?key=${request/key}&_authenticator=${token}"
              i18n:translate="label_group_dashboard">Group Dashboard</a>
         </nav>
