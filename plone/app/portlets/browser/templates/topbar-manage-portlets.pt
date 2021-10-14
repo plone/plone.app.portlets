@@ -44,7 +44,7 @@
       <div class="alert alert-info"
           role="status"
           tal:condition="plone_view/isDefaultPageInFolder|nothing">
-        <strong>
+        <strong i18n:translate="">
             Info
         </strong>
         <div i18n:translate="label_manage_portlets_default_view_container">

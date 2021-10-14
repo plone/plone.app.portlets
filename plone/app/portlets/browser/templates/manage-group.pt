@@ -21,13 +21,13 @@
     Up to Groups Overview
   </a>
 
-  <h1 class="documentFirstHeading">Group: ${view/group}</h1>
+  <h1 class="documentFirstHeading" i18n:translate="">Group: <span i18n:name="groupname" tal:content="view/group" tal:omit-tag=""/></h1>
 </metal:b>
 
 <metal:b fill-slot="content-core">
   <metal:b metal:define-macro="props" tal:omit-tag="">
 
-    <div class="autotabs" tal:define="token context/@@authenticator/token">        
+    <div class="autotabs" tal:define="token context/@@authenticator/token">
       <nav class="autotoc-nav">
         <a href="${portal_url}/@@usergroup-groupmembership?groupname=${request/key}"
            i18n:translate="label_group_members">Group Members</a>
