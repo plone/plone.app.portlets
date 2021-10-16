@@ -8,6 +8,16 @@ Changelog
 
 .. towncrier release notes start
 
+5.0.0a6 (2021-10-16)
+--------------------
+
+Bug fixes:
+
+
+- Add missing i18n:translate tags
+  [erral] (#158)
+
+
 5.0.0a5 (2021-09-15)
 --------------------
 
