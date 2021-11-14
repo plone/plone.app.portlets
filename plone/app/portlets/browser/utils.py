@@ -1,5 +1,5 @@
-from plone.app.portlets.interfaces import IDeferredPortletRenderer
-from plone.app.portlets.utils import assignment_from_key
+from ..interfaces import IDeferredPortletRenderer
+from ..utils import assignment_from_key
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPortletRenderer
 from plone.portlets.utils import unhashPortletInfo

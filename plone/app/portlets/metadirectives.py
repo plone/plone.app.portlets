@@ -1,4 +1,4 @@
-from plone.app.portlets import PloneMessageFactory as _
+from . import PloneMessageFactory as _
 from plone.portlets.interfaces import IPortletManager
 from zope import schema
 from zope.configuration import fields as configuration_fields

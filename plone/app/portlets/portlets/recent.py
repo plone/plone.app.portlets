@@ -1,8 +1,8 @@
+from .. import PloneMessageFactory as _
+from ..cache import render_cachekey
+from ..portlets import base
 from Acquisition import aq_inner
 from plone.app.layout.navigation.root import getNavigationRoot
-from plone.app.portlets import PloneMessageFactory as _
-from plone.app.portlets.cache import render_cachekey
-from plone.app.portlets.portlets import base
 from plone.memoize import ram
 from plone.memoize.compress import xhtml_compress
 from plone.memoize.instance import memoize

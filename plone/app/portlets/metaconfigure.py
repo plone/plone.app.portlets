@@ -1,5 +1,5 @@
-from plone.app.portlets.browser.interfaces import IPortletAdding
-from plone.app.portlets.interfaces import IPortletTypeInterface
+from .browser.interfaces import IPortletAdding
+from .interfaces import IPortletTypeInterface
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPortletRenderer
 from Products.Five.browser.metaconfigure import page

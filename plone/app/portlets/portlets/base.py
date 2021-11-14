@@ -1,9 +1,7 @@
+from ..browser.formhelper import AddForm
+from ..browser.formhelper import EditForm
+from ..browser.formhelper import NullAddForm
 from OFS.SimpleItem import SimpleItem
-
-# Convenience imports
-from plone.app.portlets.browser.formhelper import AddForm
-from plone.app.portlets.browser.formhelper import EditForm
-from plone.app.portlets.browser.formhelper import NullAddForm
 from plone.app.portlets.interfaces import IDeferredPortletRenderer
 from plone.portlets.interfaces import IPortletAssignment
 from plone.portlets.interfaces import IPortletRenderer

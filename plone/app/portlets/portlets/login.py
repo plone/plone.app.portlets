@@ -1,5 +1,5 @@
-from plone.app.portlets import PloneMessageFactory as _
-from plone.app.portlets.portlets import base
+from .. import PloneMessageFactory as _
+from ..portlets import base
 from plone.memoize.instance import memoize
 from plone.portlets.interfaces import IPortletDataProvider
 from Products.CMFCore.utils import getToolByName
