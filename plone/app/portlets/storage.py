@@ -1,5 +1,5 @@
-from .portlets.interfaces import IGroupDashboardPortletAssignmentMapping
-from .portlets.interfaces import IUserPortletAssignmentMapping
+from .interfaces import IGroupDashboardPortletAssignmentMapping
+from .interfaces import IUserPortletAssignmentMapping
 from Acquisition import aq_base
 from BTrees.OOBTree import OOBTree
 from OFS.SimpleItem import SimpleItem
