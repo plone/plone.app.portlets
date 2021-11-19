@@ -1,4 +1,4 @@
-from plone.app.portlets.storage import PortletAssignmentMapping
+from .storage import PortletAssignmentMapping
 from plone.portlets.constants import CONTEXT_ASSIGNMENT_KEY
 from plone.portlets.constants import CONTEXT_CATEGORY
 from plone.portlets.interfaces import ILocalPortletAssignable

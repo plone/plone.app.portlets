@@ -1,11 +1,11 @@
+from .. import PloneMessageFactory as _
+from ..browser.interfaces import IPortletAddForm
+from ..browser.interfaces import IPortletEditForm
+from ..interfaces import IPortletPermissionChecker
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
 from Acquisition.interfaces import IAcquirer
-from plone.app.portlets import PloneMessageFactory as _
-from plone.app.portlets.browser.interfaces import IPortletAddForm
-from plone.app.portlets.browser.interfaces import IPortletEditForm
-from plone.app.portlets.interfaces import IPortletPermissionChecker
 from plone.autoform.form import AutoExtensibleForm
 from Products.CMFCore.utils import getToolByName
 from Products.Five.browser import BrowserView

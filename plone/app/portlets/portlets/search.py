@@ -1,6 +1,6 @@
+from .. import PloneMessageFactory as _
+from ..portlets import base
 from plone.app.layout.navigation.root import getNavigationRoot
-from plone.app.portlets import PloneMessageFactory as _
-from plone.app.portlets.portlets import base
 from plone.portlets.interfaces import IPortletDataProvider
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope import schema

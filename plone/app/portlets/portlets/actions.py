@@ -1,6 +1,6 @@
+from .. import PloneMessageFactory as _
+from ..portlets import base
 from Acquisition import aq_inner
-from plone.app.portlets import PloneMessageFactory as _
-from plone.app.portlets.portlets import base
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.memoize import view as pm_view
 from plone.portlets.interfaces import IPortletDataProvider

@@ -1,8 +1,8 @@
+from .. import PloneMessageFactory as _
+from ..portlets import base
 from DateTime import DateTime
 from DateTime.interfaces import DateTimeError
 from logging import getLogger
-from plone.app.portlets import PloneMessageFactory as _
-from plone.app.portlets.portlets import base
 from plone.portlets.interfaces import IPortletDataProvider
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
 from urllib.parse import urlparse

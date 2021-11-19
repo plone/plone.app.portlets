@@ -1,8 +1,8 @@
+from .interfaces import IColumn
+from .interfaces import IDashboard
 from Acquisition import aq_acquire
 from Acquisition import aq_inner
 from Acquisition import Explicit
-from plone.app.portlets.interfaces import IColumn
-from plone.app.portlets.interfaces import IDashboard
 from plone.portlets.interfaces import IPortletRenderer
 from plone.portlets.manager import PortletManagerRenderer as BasePortletManagerRenderer
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
