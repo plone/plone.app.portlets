@@ -8,6 +8,18 @@ Changelog
 
 .. towncrier release notes start
 
+5.0.0a7 (2021-11-23)
+--------------------
+
+Breaking changes:
+
+
+- Move most (hard dependency) portlet related from `plone.app.layout`:
+  Dashboard, Portlet related viewlets.
+  A first step towards a Portlet-as-an-Addon story.
+  [jensens] (#160)
+
+
 5.0.0a6 (2021-10-16)
 --------------------
 
