@@ -8,6 +8,16 @@ Changelog
 
 .. towncrier release notes start
 
+5.0.0a8 (2022-03-23)
+--------------------
+
+New features:
+
+
+- Fixes for latest z3c.form
+  [petschki] (#161)
+
+
 5.0.0a7 (2021-11-23)
 --------------------
 
