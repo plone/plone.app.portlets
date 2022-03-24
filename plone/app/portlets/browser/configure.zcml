@@ -213,12 +213,6 @@
 
     </configure>
 
-    <!-- Resources -->
-    <browser:resource
-        name="manage-portlets.js"
-        file="manage-portlets.js"
-        />
-
     <browser:page
         for="*"
         name="render-portlet"
