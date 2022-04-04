@@ -8,6 +8,15 @@ Changelog
 
 .. towncrier release notes start
 
+5.0.0a9 (2022-04-04)
+--------------------
+
+Breaking changes:
+
+
+- Remove manage-portlets.js, this is part of mockup now [MrTango] (#159)
+
+
 5.0.0a8 (2022-03-23)
 --------------------
 
