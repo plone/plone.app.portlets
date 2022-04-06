@@ -4,7 +4,8 @@
                     supress_icon    view/data/no_icons;
                     supress_thumb   view/data/no_thumbs;
                     thumb_scale view/thumb_scale;
-                    icons nocall:context/@@iconresolver;"
+                    icons nocall:context/@@iconresolver;
+                    normalizeString nocall: context/plone_utils/normalizeString;"
             i18n:domain="plone">
 
 <metal:main define-macro="nav_main"
@@ -23,8 +24,7 @@
                 is_in_path      node/currentParent;
                 li_class        python:' navTreeCurrentNode' if is_current else '';
                 li_extr_class   python:' navTreeItemInPath' if is_in_path else '';
-                li_folder_class python:' navTreeFolderish' if show_children else '';
-                normalizeString nocall: context/plone_utils/normalizeString;"
+                li_folder_class python:' navTreeFolderish' if show_children else '';"
     tal:condition="python:bottomLevel &lt;= 0 or level &lt;= bottomLevel"
     tal:attributes="class string:navTreeItem visualNoMarker${li_class}${li_extr_class}${li_folder_class} section-${node/normalized_id}">
 
