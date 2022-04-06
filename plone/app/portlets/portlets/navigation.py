@@ -369,22 +369,6 @@ class Renderer(base.Renderer):
         thumb_scale_portlet = settings.thumb_scale_portlet
         return thumb_scale_portlet
 
-    def getMimeTypeIcon(self, node):
-        try:
-            if not node["normalized_portal_type"] == "file":
-                return None
-            fileo = node["item"].getObject().file
-            portal_url = getNavigationRoot(self.context)
-            mtt = getToolByName(self.context, "mimetypes_registry")
-            if fileo.contentType:
-                ctype = mtt.lookup(fileo.contentType)
-                if not ctype:
-                    return None
-                return os.path.join(portal_url, guess_icon_path(ctype[0]))
-        except AttributeError:
-            return None
-        return None
-
     def update(self):
         pass
 
