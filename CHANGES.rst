@@ -8,6 +8,16 @@ Changelog
 
 .. towncrier release notes start
 
+5.0.0a10 (2022-04-08)
+---------------------
+
+Bug fixes:
+
+
+- Use @@iconresolver to display icons in navigation portlet.
+  [pbauer] (#162)
+
+
 5.0.0a9 (2022-04-04)
 --------------------
 
