@@ -35,13 +35,13 @@
         <q i18n:name="context_title" tal:content="context/Title">title</q>
       </h1>
 
-      <a class="link-parent"
+      <a class="link-parent btn btn-success" role="button"
           tal:attributes="href context/absolute_url"
           i18n:translate="return_to_view">
         Return
       </a>
 
-      <div class="alert alert-info"
+      <div class="alert alert-info mt-3"
           role="status"
           tal:condition="plone_view/isDefaultPageInFolder|nothing">
         <strong i18n:translate="">
