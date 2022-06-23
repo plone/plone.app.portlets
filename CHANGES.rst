@@ -8,6 +8,16 @@ Changelog
 
 .. towncrier release notes start
 
+5.0.0b1 (2022-06-23)
+--------------------
+
+Bug fixes:
+
+
+- Styling Links as Buttons in Portlet Management View
+  [1letter] (#164)
+
+
 5.0.0a10 (2022-04-08)
 ---------------------
 
