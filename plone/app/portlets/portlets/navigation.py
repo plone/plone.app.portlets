@@ -1,3 +1,5 @@
+from .. import PloneMessageFactory as _
+from ..portlets import base
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
@@ -8,8 +10,6 @@ from plone.app.layout.navigation.interfaces import INavtreeStrategy
 from plone.app.layout.navigation.navtree import buildFolderTree
 from plone.app.layout.navigation.root import getNavigationRoot
 from plone.app.layout.navigation.root import getNavigationRootObject
-from plone.app.portlets import PloneMessageFactory as _
-from plone.app.portlets.portlets import base
 from plone.app.uuid.utils import uuidToObject
 from plone.app.vocabularies.catalog import CatalogSource
 from plone.i18n.normalizer.interfaces import IIDNormalizer
@@ -368,22 +368,6 @@ class Renderer(base.Renderer):
             return "none"
         thumb_scale_portlet = settings.thumb_scale_portlet
         return thumb_scale_portlet
-
-    def getMimeTypeIcon(self, node):
-        try:
-            if not node["normalized_portal_type"] == "file":
-                return None
-            fileo = node["item"].getObject().file
-            portal_url = getNavigationRoot(self.context)
-            mtt = getToolByName(self.context, "mimetypes_registry")
-            if fileo.contentType:
-                ctype = mtt.lookup(fileo.contentType)
-                if not ctype:
-                    return None
-                return os.path.join(portal_url, guess_icon_path(ctype[0]))
-        except AttributeError:
-            return None
-        return None
 
     def update(self):
         pass

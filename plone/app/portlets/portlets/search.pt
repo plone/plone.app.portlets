@@ -31,7 +31,7 @@
                 i18n:attributes="title title_search_title; placeholder title_search_site"
                 tal:attributes="value request/SearchableText|nothing; class python:livesearch and 'form-control portlet-search-gadget' or 'form-control portlet-search-gadget-nols'"/>
             <div class="input-group-append">
-              <button type="submit" class="btn btn-primary" value="Search" i18n:attributes="value label_search">Submit</button>
+              <button type="submit" class="btn btn-primary" value="Search" i18n:attributes="value label_search" i18n:translate="label_submit">Submit</button>
             </div>
           </div>
           <div class="LSResult" style="" tal:condition="livesearch" tal:attributes="data-livesearch view/livesearch_action;">

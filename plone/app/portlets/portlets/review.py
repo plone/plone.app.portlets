@@ -1,7 +1,7 @@
+from .. import PloneMessageFactory as _
+from ..browser import formhelper
+from ..portlets import base
 from Acquisition import aq_inner
-from plone.app.portlets import PloneMessageFactory as _
-from plone.app.portlets.browser import formhelper
-from plone.app.portlets.portlets import base
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.memoize.instance import memoize
 from plone.portlets.interfaces import IPortletDataProvider

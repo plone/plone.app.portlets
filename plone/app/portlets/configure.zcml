@@ -12,6 +12,7 @@
     <include file="permissions.zcml" />
 
     <include package=".browser" />
+    <include package=".dashboard" />
     <include package=".exportimport" />
     <include package=".portlets" />
 

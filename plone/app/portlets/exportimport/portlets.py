@@ -76,13 +76,11 @@ any assignments:
 
 """
 
+from ..interfaces import IDefaultPortletManager
+from ..interfaces import IPortletTypeInterface
+from ..utils import assignment_mapping_from_key
+from .interfaces import IPortletAssignmentExportImportHandler
 from operator import attrgetter
-from plone.app.portlets.exportimport.interfaces import (
-    IPortletAssignmentExportImportHandler,
-)
-from plone.app.portlets.interfaces import IDefaultPortletManager
-from plone.app.portlets.interfaces import IPortletTypeInterface
-from plone.app.portlets.utils import assignment_mapping_from_key
 from plone.portlets.constants import CONTENT_TYPE_CATEGORY
 from plone.portlets.constants import CONTEXT_CATEGORY
 from plone.portlets.constants import GROUP_CATEGORY

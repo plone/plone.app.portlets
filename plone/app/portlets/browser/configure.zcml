@@ -213,17 +213,30 @@
 
     </configure>
 
-    <!-- Resources -->
-    <browser:resource
-        name="manage-portlets.js"
-        file="manage-portlets.js"
-        />
-
     <browser:page
         for="*"
         name="render-portlet"
         class=".utils.PortletUtilities"
         attribute="render_portlet"
+        permission="zope2.View"
+        />
+
+    <!-- Portlets Footer -->
+    <browser:viewlet
+        name="plone.footer"
+        for="*"
+        manager="plone.app.layout.viewlets.interfaces.IPortalFooter"
+        class=".viewlets.FooterViewlet"
+        permission="zope.Public"
+        />
+
+    <!-- Manage portlets Fallback link -->
+    <browser:viewlet
+        name="plone.manage_portlets_fallback"
+        for="plone.portlets.interfaces.ILocalPortletAssignable"
+        view="plone.app.layout.globals.interfaces.IViewView"
+        manager="plone.app.layout.viewlets.interfaces.IBelowContent"
+        class=".viewlets.ManagePortletsFallbackViewlet"
         permission="zope2.View"
         />
 

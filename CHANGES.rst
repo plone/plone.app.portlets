@@ -8,6 +8,67 @@ Changelog
 
 .. towncrier release notes start
 
+5.0.0b1 (2022-06-23)
+--------------------
+
+Bug fixes:
+
+
+- Styling Links as Buttons in Portlet Management View
+  [1letter] (#164)
+
+
+5.0.0a10 (2022-04-08)
+---------------------
+
+Bug fixes:
+
+
+- Use @@iconresolver to display icons in navigation portlet.
+  [pbauer] (#162)
+
+
+5.0.0a9 (2022-04-04)
+--------------------
+
+Breaking changes:
+
+
+- Remove manage-portlets.js, this is part of mockup now [MrTango] (#159)
+
+
+5.0.0a8 (2022-03-23)
+--------------------
+
+New features:
+
+
+- Fixes for latest z3c.form
+  [petschki] (#161)
+
+
+5.0.0a7 (2021-11-23)
+--------------------
+
+Breaking changes:
+
+
+- Move most (hard dependency) portlet related from `plone.app.layout`:
+  Dashboard, Portlet related viewlets.
+  A first step towards a Portlet-as-an-Addon story.
+  [jensens] (#160)
+
+
+5.0.0a6 (2021-10-16)
+--------------------
+
+Bug fixes:
+
+
+- Add missing i18n:translate tags
+  [erral] (#158)
+
+
 5.0.0a5 (2021-09-15)
 --------------------
 

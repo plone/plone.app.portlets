@@ -1,8 +1,8 @@
+from .. import PloneMessageFactory as _
+from ..cache import render_cachekey
+from ..portlets import base
 from Acquisition import aq_inner
 from plone.app.layout.navigation.root import getNavigationRootObject
-from plone.app.portlets import PloneMessageFactory as _
-from plone.app.portlets.cache import render_cachekey
-from plone.app.portlets.portlets import base
 from plone.app.z3cform.widget import SelectFieldWidget
 from plone.autoform.directives import widget
 from plone.memoize import ram
