@@ -8,6 +8,151 @@ Changelog
 
 .. towncrier release notes start
 
+5.0.0b1 (2022-06-23)
+--------------------
+
+Bug fixes:
+
+
+- Styling Links as Buttons in Portlet Management View
+  [1letter] (#164)
+
+
+5.0.0a10 (2022-04-08)
+---------------------
+
+Bug fixes:
+
+
+- Use @@iconresolver to display icons in navigation portlet.
+  [pbauer] (#162)
+
+
+5.0.0a9 (2022-04-04)
+--------------------
+
+Breaking changes:
+
+
+- Remove manage-portlets.js, this is part of mockup now [MrTango] (#159)
+
+
+5.0.0a8 (2022-03-23)
+--------------------
+
+New features:
+
+
+- Fixes for latest z3c.form
+  [petschki] (#161)
+
+
+5.0.0a7 (2021-11-23)
+--------------------
+
+Breaking changes:
+
+
+- Move most (hard dependency) portlet related from `plone.app.layout`:
+  Dashboard, Portlet related viewlets.
+  A first step towards a Portlet-as-an-Addon story.
+  [jensens] (#160)
+
+
+5.0.0a6 (2021-10-16)
+--------------------
+
+Bug fixes:
+
+
+- Add missing i18n:translate tags
+  [erral] (#158)
+
+
+5.0.0a5 (2021-09-15)
+--------------------
+
+Bug fixes:
+
+
+- Remove cyclic dependency with Products.CMFPlone
+  [ericof] (#155)
+
+
+5.0.0a4 (2021-09-15)
+--------------------
+
+Bug fixes:
+
+
+- Remove cyclic dependency with Products.CMFPlone, plone.app.layouts
+  [ericof] (#152)
+
+
+5.0.0a3 (2021-09-01)
+--------------------
+
+Bug fixes:
+
+
+- Codestyle (black/isort/pycln), Pyupgrade, plus minor manual cleanup.
+  [jensens] (#151)
+
+
+5.0.0a2 (2021-06-30)
+--------------------
+
+Bug fixes:
+
+
+- Only allow http and https urls in RSS portlet.
+  From `Products.PloneHotfix20210518 <https://plone.org/security/hotfix/20210518/blind-ssrf-via-feedparser-accessing-an-internal-url>`_.
+  [maurits] (#3274)
+
+
+5.0.0a1 (2021-04-20)
+--------------------
+
+Breaking changes:
+
+
+- Update dashboard for Plone 6 with Bootstrap markup
+  [1letter] (#144)
+
+
+4.4.6 (2020-09-28)
+------------------
+
+Bug fixes:
+
+
+- fixes  index error in navigation portlet caused by unknown mimetypes without
+  entry in mimetype registry
+  https://github.com/plone/Products.CMFPlone/issues/2882) (cmfplone-2882)
+- Fixed deprecation warning for ``zope.component.interfaces.IComponentRegistry``.
+  [maurits] (#3130)
+
+
+4.4.5 (2020-04-20)
+------------------
+
+Bug fixes:
+
+
+- Minor packaging updates. (#1)
+
+
+4.4.4 (2019-12-02)
+------------------
+
+Bug fixes:
+
+
+- - Remove role="navigation" from Navigation portlet.
+    [ericof] (#128) (#128)
+- Fix review portlet when show on the portal-root (#130)
+
+
 4.4.3 (2019-10-21)
 ------------------
 

@@ -1,4 +1,6 @@
-# -*- coding: utf-8 -*-
+from ..browser.formhelper import AddForm
+from ..browser.formhelper import EditForm
+from ..browser.formhelper import NullAddForm
 from OFS.SimpleItem import SimpleItem
 from plone.app.portlets.interfaces import IDeferredPortletRenderer
 from plone.portlets.interfaces import IPortletAssignment
@@ -6,11 +8,6 @@ from plone.portlets.interfaces import IPortletRenderer
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.container.contained import Contained
 from zope.interface import implementer
-
-# Convenience imports
-from plone.app.portlets.browser.formhelper import AddForm
-from plone.app.portlets.browser.formhelper import NullAddForm
-from plone.app.portlets.browser.formhelper import EditForm
 
 
 @implementer(IPortletAssignment)
@@ -21,30 +18,28 @@ class Assignment(SimpleItem, Contained):
     may
     """
 
-    __name__ = ''
+    __name__ = ""
 
     @property
     def id(self):
-        return getattr(self, '__name__', '')
+        return getattr(self, "__name__", "")
 
     @property
     def title(self):
         return self.id
 
     def available(self, context, request):
-        """By default, this portlet is always available
-        """
+        """By default, this portlet is always available"""
         return True
 
     @property
     def data(self):
-        """Make the assignment itself represent the data object that is being rendered.
-        """
+        """Make the assignment itself represent the data object that is being rendered."""
         return self
 
 
 @implementer(IPortletRenderer)
-class Renderer(object):
+class Renderer:
     """Base class for portlet renderers.
 
     You must override render() to return a string to render. One way of
@@ -70,13 +65,13 @@ class Renderer(object):
         pass
 
     def render(self):
-        raise NotImplementedError("You must implement 'render' as a method "
-                                  "or page template file attribute")
+        raise NotImplementedError(
+            "You must implement 'render' as a method " "or page template file attribute"
+        )
 
     @property
     def available(self):
-        """By default, portlets are available
-        """
+        """By default, portlets are available"""
         return True
 
 
@@ -88,10 +83,12 @@ class DeferredRenderer(Renderer):
 
     """
 
-    render_preload = ViewPageTemplateFile('deferred_portlet.pt')
+    render_preload = ViewPageTemplateFile("deferred_portlet.pt")
 
     def render_full(self):
-        raise NotImplemented("You must implement 'render_full' as a method or page template file attribute")
+        raise NotImplemented(
+            "You must implement 'render_full' as a method or page template file attribute"
+        )
 
     def render(self):
         """render the portlet

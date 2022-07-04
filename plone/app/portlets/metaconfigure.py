@@ -1,31 +1,35 @@
-# -*- coding: utf-8 -*-
-from zope.interface import Interface, alsoProvides
-
-from zope.publisher.interfaces.browser import IDefaultBrowserLayer
-from zope.publisher.interfaces.browser import IBrowserView
-
+from .browser.interfaces import IPortletAdding
+from .interfaces import IPortletTypeInterface
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPortletRenderer
-
-from plone.app.portlets.interfaces import IPortletTypeInterface
-from plone.app.portlets.browser.interfaces import IPortletAdding
-
+from Products.Five.browser.metaconfigure import page
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from zope.component.factory import Factory
+from zope.component.interfaces import IFactory
 from zope.component.zcml import adapter
 from zope.component.zcml import utility
+from zope.interface import alsoProvides
+from zope.interface import Interface
+from zope.publisher.interfaces.browser import IBrowserView
+from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 
-from zope.component.interfaces import IFactory
-from zope.component.factory import Factory
-
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from Products.Five.browser.metaconfigure import page
 
 # Keep track of which renderers we've registered so that we can artifically
 # subclass them in portletRendererDirective. Yes, this is evil.
 _default_renderers = {}
 
 
-def portletDirective(_context, name, interface, assignment, renderer, addview,
-        view_permission=u"zope2.View", edit_permission="plone.app.portlets.ManageOwnPortlets", editview=None):
+def portletDirective(
+    _context,
+    name,
+    interface,
+    assignment,
+    renderer,
+    addview,
+    view_permission="zope2.View",
+    edit_permission="plone.app.portlets.ManageOwnPortlets",
+    editview=None,
+):
     """Register a portlet assignment type using typical options.
 
     Portlets that consist of a simple assignment class deriving form
@@ -45,17 +49,11 @@ def portletDirective(_context, name, interface, assignment, renderer, addview,
     # again (in the GS handler)
 
     alsoProvides(interface, IPortletTypeInterface)
-    utility(_context,
-            provides=IPortletTypeInterface,
-            name=name,
-            component=interface)
+    utility(_context, provides=IPortletTypeInterface, name=name, component=interface)
 
     # Register a factory
 
-    utility(_context,
-            provides=IFactory,
-            name=name,
-            component=Factory(assignment))
+    utility(_context, provides=IFactory, name=name, component=Factory(assignment))
 
     # Set permissions on the assignment class
 
@@ -81,8 +79,18 @@ def portletDirective(_context, name, interface, assignment, renderer, addview,
     #   provides="plone.portlets.interfaces.IPortletRenderer"
     #   />
 
-    adapter(_context, (renderer, ), provides=IPortletRenderer,
-            for_=(Interface, IDefaultBrowserLayer, IBrowserView, IPortletManager, interface))
+    adapter(
+        _context,
+        (renderer,),
+        provides=IPortletRenderer,
+        for_=(
+            Interface,
+            IDefaultBrowserLayer,
+            IBrowserView,
+            IPortletManager,
+            interface,
+        ),
+    )
     _default_renderers[interface] = renderer
 
     # Register the adding view
@@ -94,11 +102,13 @@ def portletDirective(_context, name, interface, assignment, renderer, addview,
     #   permission="[edit_permission]"
     #   />
 
-    page(_context,
-         for_=IPortletAdding,
-         name=name,
-         class_=addview,
-         permission=edit_permission)
+    page(
+        _context,
+        for_=IPortletAdding,
+        name=name,
+        class_=addview,
+        permission=edit_permission,
+    )
 
     # Register the edit view, if applicable
 
@@ -110,17 +120,26 @@ def portletDirective(_context, name, interface, assignment, renderer, addview,
     #   />
 
     if editview is not None:
-        page(_context,
-             for_=interface,
-             name="edit",
-             class_=editview,
-             permission=edit_permission)
+        page(
+            _context,
+            for_=interface,
+            name="edit",
+            class_=editview,
+            permission=edit_permission,
+        )
 
 
-def portletRendererDirective(_context, portlet, class_=None, template=None,
-        for_=Interface, layer=IDefaultBrowserLayer, view=IBrowserView, manager=IPortletManager):
-    """Register a custom/override portlet renderer
-    """
+def portletRendererDirective(
+    _context,
+    portlet,
+    class_=None,
+    template=None,
+    for_=Interface,
+    layer=IDefaultBrowserLayer,
+    view=IBrowserView,
+    manager=IPortletManager,
+):
+    """Register a custom/override portlet renderer"""
 
     if class_ is None and template is None:
         raise TypeError("Either 'template' or 'class' must be given")
@@ -132,12 +151,22 @@ def portletRendererDirective(_context, portlet, class_=None, template=None,
         # Look up the default renderer for this portlet
         base_class = _default_renderers.get(portlet, None)
         if base_class is None:
-            raise TypeError("Can't find default renderer for %s. "
-                            "Perhaps the portlet has not been registered yet?" % portlet.__identifier__)
+            raise TypeError(
+                "Can't find default renderer for %s. "
+                "Perhaps the portlet has not been registered yet?"
+                % portlet.__identifier__
+            )
 
         # Generate a subclass with 'renderer' using this template
-        class_ = type("PortletRenderer from %s" % template.encode('UTF-8'),
-                            (base_class, ), {'render': ViewPageTemplateFile(template)})
+        class_ = type(
+            "PortletRenderer from %s" % template.encode("UTF-8"),
+            (base_class,),
+            {"render": ViewPageTemplateFile(template)},
+        )
 
-    adapter(_context, (class_, ), provides=IPortletRenderer,
-                for_=(for_, layer, view, manager, portlet))
+    adapter(
+        _context,
+        (class_,),
+        provides=IPortletRenderer,
+        for_=(for_, layer, view, manager, portlet),
+    )

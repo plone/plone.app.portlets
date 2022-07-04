@@ -3,7 +3,9 @@
                     bottomLevel options/bottomLevel | nothing;
                     supress_icon    view/data/no_icons;
                     supress_thumb   view/data/no_thumbs;
-                    thumb_scale view/thumb_scale"
+                    thumb_scale view/thumb_scale;
+                    icons nocall:context/@@iconresolver;
+                    normalizeString nocall: context/plone_utils/normalizeString;"
             i18n:domain="plone">
 
 <metal:main define-macro="nav_main"
@@ -22,8 +24,7 @@
                 is_in_path      node/currentParent;
                 li_class        python:' navTreeCurrentNode' if is_current else '';
                 li_extr_class   python:' navTreeItemInPath' if is_in_path else '';
-                li_folder_class python:' navTreeFolderish' if show_children else '';
-                normalizeString nocall: context/plone_utils/normalizeString;"
+                li_folder_class python:' navTreeFolderish' if show_children else '';"
     tal:condition="python:bottomLevel &lt;= 0 or level &lt;= bottomLevel"
     tal:attributes="class string:navTreeItem visualNoMarker${li_class}${li_extr_class}${li_folder_class} section-${node/normalized_id}">
 
@@ -35,12 +36,14 @@
                            title node/Description;
                            class string:${item_class}${li_class}${li_extr_class}${li_folder_class} ${item_type_class}">
 
-             <img class="mime-icon" tal:condition="python:item_type =='File' and not supress_icon"
-                             tal:attributes="href node/getURL;
-                                             src python:view.getMimeTypeIcon(node);">
+            <tal:icon tal:condition="python: not supress_icon and item_type != 'File'"
+                      tal:replace="structure python:icons.tag(f'contenttype/{normalizeString(item_type)}')" />
+
+            <tal:icon tal:condition="python: not supress_icon and item_type == 'File'"
+                      tal:replace="structure python:icons.tag(f'mimetype-{item.mime_type}')" />
 
             <img tal:condition="python:has_thumb and thumb_scale"
-                 tal:replace="structure python:image_scale.tag(item, 'image', scale=thumb_scale, css_class='pull-right thumb-'+thumb_scale)">
+                 tal:replace="structure python:image_scale.tag(item, 'image', scale=thumb_scale, css_class='float-end thumb-'+thumb_scale)">
 
             <span tal:replace="node/Title">Selected Item Title</span>
         </a>

@@ -1,0 +1,1520 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet href="atom.css" type="text/css"?>
+
+<feed xmlns="http://www.w3.org/2005/Atom"
+      xmlns:atom="http://www.w3.org/2005/Atom"
+      xmlns:dc="http://purl.org/dc/elements/1.1/"
+      xml:base="https://maurits.vanrees.org" xml:lang="en">
+  <link rel="self"
+        href="https://maurits.vanrees.org/weblog/topics/plone/@@atom.xml" />
+  <div xmlns="http://www.w3.org/1999/xhtml">
+    <a href="http://www.atomenabled.org/feedvalidator/check.cgi?url=https://maurits.vanrees.org/weblog/atom.xml">
+      <img title="Validate my Atom feed" width="88"
+           height="31"
+           src="http://www.atomenabled.org/feedvalidator/images/valid-atom.png"
+           alt="[Valid Atom]" border="0px" />
+    </a>
+    <p>
+      <span>
+        This is an Atom formatted XML site feed. It is intended to be viewed in
+        a Newsreader or syndicated to another site. Please visit
+      </span>
+      <a href="http://www.atomenabled.org/">Atom Enabled</a>
+      <span>
+        for more info.
+      </span>
+    </p>
+  </div>
+
+  <title type="html">Weblog</title>
+
+
+  <updated>2021-01-05T10:33:42+00:00</updated>
+
+  <link href="https://maurits.vanrees.org/weblog"
+        rel="alternate" type="text/html" />
+
+
+
+  <id>urn:syndication:3a1d81067fb16b9d671c9ee4a6efa204</id>
+
+  <generator uri="http://plone.org/products/fatsyndication/" version="0.1">fatsyndication</generator>
+
+
+
+    <entry>
+
+      <title>Philip Bauer: Growing Pains: PosKeyErrors and Other Malaises</title>
+
+      <link rel="alternate" type="text/html"
+            href="https://maurits.vanrees.org/weblog/archive/2020/12/philip-bauer-growing-pains-poskeyerrors-and-other-malaises" />
+
+
+
+      <id>urn:syndication:a2e343ca7c1c64182bc128b9a4f0be0b</id>
+
+
+
+
+
+
+      <content type="html"
+               xml:base="https://maurits.vanrees.org"
+               xml:lang="en-US" xml:space="preserve">
+          <![CDATA[
+          <p>This talk is about the issues that you face when your project grows, the code base grows, the database grows, the problems grow.
+This is about the causes and some of the remedies.</p>
+<div class="section" id="symptom-1-huge-database">
+<h3><a name="symptom-1-huge-database">Symptom 1: huge database</a></h3>
+<p>Cause 1: a huge number of revisions or versions.</p>
+<p>Remedies:</p>
+<ul class="simple">
+<li>Remove all versions and pack the database. When you migrate to a new Plone version, and you ask your client, they will usually be okay with this.</li>
+<li>Manage or limit revisions. Easiest is to use <a class="reference" href="https://github.com/collective/collective.revisionmanager">collective.revisionmanager</a> for this. Especially, revisions may have been left behind for content that no longer exists. You can easily remove it with this tool.</li>
+<li>Disable versioning of Files. It is disabled by default, but maybe someone has switched it on.</li>
+<li>Enable manual versioning instead of automatic. Then the editor needs to check a box when they make a major change that they want to be able to rollback.</li>
+</ul>
+<p>Cause 2: no packing.</p>
+<p>Remedy: just pack it. Use the <tt class="docutils literal"><span class="pre">zeopack</span></tt> script, which part of <tt class="docutils literal"><span class="pre">plone.recipe.zeoserver</span></tt>. Add a cronjob for this, weekly seems best for most sites.</p>
+<p>Cause 3: unused content.</p>
+<p>Remedy: delete it. You have to find it first.
+Of course no code can tell you which content is safe to delete.
+You could use <tt class="docutils literal"><span class="pre">statistics.py</span></tt> from <a class="reference" href="https://github.com/collective/collective.migrationhelpers">collective.migrationhelpers</a> to get an idea of where which content is.</p>
+<p>Cause 4: the SearchableText index is huge</p>
+<p>Remedies:</p>
+<ul class="simple">
+<li>Use solr or elasticsearch and possibly remove the <tt class="docutils literal"><span class="pre">SearchableText</span></tt> index.</li>
+<li>Don't index files. They are converted to text, but this may not be needed for your site.</li>
+</ul>
+<p>Cause 5: large blobs
+For example, plone.de had a Linux <tt class="docutils literal"><span class="pre">iso</span></tt> image, which was huge.</p>
+<p>Remedies:</p>
+<ul class="simple">
+<li>Limit the upload size. You could do this in nginx/apache. Archetypes had something, you can likely do this in Dexterity too.</li>
+<li>Get stats and remove or replace too large items.</li>
+</ul>
+<p>Cause 6: aborted uploads (rare)</p>
+<p>Remedy: check <tt class="docutils literal"><span class="pre">IAnnotations(portal).get('file_upload_map')</span></tt>.</p>
+</div>
+<div class="section" id="symptom-2-slow-site">
+<h3><a name="symptom-2-slow-site">Symptom 2: slow site</a></h3>
+<p>Cause 1: unneeded full renders of content</p>
+<p>Remedy: use Python in page templates.
+By default, page templates use path expressions like this: <tt class="docutils literal"><span class="pre">tal:define=&quot;foo</span> <span class="pre">context/foo&quot;</span></tt>.
+But this tries to render&nbsp; foo as html if possible.
+Use <tt class="docutils literal"><span class="pre">foo</span> <span class="pre">python:context.foo</span></tt> instead.</p>
+<p>Cause 2: wake up many objects</p>
+<p>Remedies:</p>
+<ul class="simple">
+<li>Always try to use brains and metadata. The difference is huge, also with Dexterity.</li>
+<li>Listing 3000 brains: 0.2 seconds</li>
+<li>Listing 3000 objects: 2 seconds</li>
+<li>Same is true for Volto when you use the search-endpoint with <tt class="docutils literal"><span class="pre">fullobjects</span></tt>.</li>
+</ul>
+<p>Of course most page templates in Plone will not list thousands of objects, but will be paginated.
+Still: just use brains, they are so much tastier.</p>
+<p>Cause 3: no caching</p>
+<p>Remedies:</p>
+<ul class="simple">
+<li>Switch on the built-in caching</li>
+<li>Add varnish</li>
+<li>Manage the zeocache (that is a bit of science, ask the community)</li>
+<li>Use <tt class="docutils literal"><span class="pre">memoize</span></tt> in your code.</li>
+</ul>
+<p>Cause 4: hardware</p>
+<p>Remedies:</p>
+<ul class="simple">
+<li>Don't be cheap.</li>
+<li>Buy enough ram to keep the database in memory.</li>
+<li>Remember that your consulting time probably costs more than buying better hardware would.</li>
+</ul>
+<p>Cause 5: slow code</p>
+<p>Remedies:</p>
+<ul class="simple">
+<li>Learn and use profiling. A very handy toy for that is <a class="reference" href="https://pypi.org/project/py-spy/">py-spy</a>. Sample use: <tt class="docutils literal"><span class="pre">sudo</span> <span class="pre">py-spy</span> <span class="pre">top</span> <span class="pre">--pid</span> <span class="pre">12345</span></tt></li>
+<li>Do not call methods multiple times from templates. Call them once, store the result, and use this.</li>
+</ul>
+<p>Cause 6: slow data sources</p>
+<p>Remedies:</p>
+<ul class="simple">
+<li>decouple, for example using redis or celery</li>
+<li>Use your choice of async implementations</li>
+<li>Use lazyloading of images if they come from outside of your Plone site.</li>
+</ul>
+</div>
+<div class="section" id="symptom-3-conflict-errors">
+<h3><a name="symptom-3-conflict-errors">Symptom 3: conflict errors</a></h3>
+<p>Conflict errors happen when two requests work at the same time and both change the same object.
+This is complicated, but Zope and the ZODB have built-in conflict resolution.</p>
+<p>Cause 1: conflict resolving is not enabled.
+The zeoserver needs access to the same code that your zeoclient has, otherwise conflicts cannot be resolved and the transaction will be aborted.</p>
+<p>Remedy: add all application code to the zeoserver:</p>
+<pre class="literal-block">
+[zeoserver]
+eggs = ${buildout:eggs}
+</pre>
+<p>Cause 2: long running requests change data</p>
+<p>Remedies:</p>
+<ul class="simple">
+<li>Prevent writes.</li>
+<li>If it takes long, do intermediate commits when possible.</li>
+<li>Prevent crossfire: disable cronjobs and editors when a long request needs to run.</li>
+<li>Use async. Talk to Asko about that probably.</li>
+</ul>
+</div>
+<div class="section" id="symptom-4-poskeyerrors">
+<h3><a name="symptom-4-poskeyerrors">Symptom 4: PosKeyErrors</a></h3>
+<p>Cause 1: missing blobs</p>
+<p>Remedies:</p>
+<ul class="simple">
+<li>Copy all blobs of course.</li>
+<li>Use <a class="reference" href="https://pypi.org/project/experimental.gracefulblobmissing/">experimental.gracefulblobmissing</a> in development to create dummy blobs where needed.</li>
+<li>Find and delete afflicted content in a browser view.</li>
+<li>There can be cases when you have two zeoclients and the syncing does not work well. Talk to Alessandro about that.</li>
+</ul>
+</div>
+<div class="section" id="symptom-5-broken-data">
+<h3><a name="symptom-5-broken-data">Symptom 5: broken data</a></h3>
+<p>Now for the really interesting part.
+These are errors like:</p>
+<pre class="literal-block">
+ModuleNotFoundError
+AttributeError
+ImportError
+PostKeyError
+BrokenObject
+</pre>
+<p>I could read you my whole blog post about <a class="reference" href="https://www.starzel.de/blog/zodb-debugging">zodb debugging</a>.</p>
+<p>Cause 1: code to unpickle som data is missing</p>
+<p>Remedies:</p>
+<ul class="simple">
+<li>Ignore the errors, if normal operation still works, and the site only has to stay up for a limited time, because <tt class="docutils literal"><span class="pre">zeopack</span></tt> probably also fails.</li>
+<li>Fix it with a <a class="reference" href="https://github.com/zopefoundation/zodbupdate#id4">rename_dict</a>. See <a class="reference" href="https://github.com/zestsoftware/zest.zodbupdate">zest.zodbupdate</a> for some examples that are actually really useful. [Thanks! MvR]</li>
+<li>Work around it with an <tt class="docutils literal"><span class="pre">alias_module</span></tt> patch, like <tt class="docutils literal"><span class="pre">plone.app.upgrade</span></tt> does in several cases. Then imports can work again.</li>
+<li>Find out what and where broken objects are and then fix or remove them safely. Use <a class="reference" href="https://pypi.org/project/zodbverify/">zodbverify</a>.</li>
+</ul>
+<p>Steps for the last one:</p>
+<ul class="simple">
+<li>Call <tt class="docutils literal"><span class="pre">bin/zodbverify</span> <span class="pre">-f</span> <span class="pre">var/filestorage/Data.fs</span></tt> to get all broken objects.</li>
+<li>Pick one error type at a time, with an oid (object id) that has a problem.</li>
+<li>Call <tt class="docutils literal"><span class="pre">bin/zodbverify</span> <span class="pre">-f</span> <span class="pre">var/filestorage/Data.fs</span> <span class="pre">-o</span> <span class="pre">&lt;oid&gt;</span> <span class="pre">-D</span></tt> to inspect one object and find out where it is referenced.</li>
+<li>For the extra options, you should use the branch from my <a class="reference" href="https://github.com/plone/zodbverify/pull/8">pull request</a>, which I still have not finished yet, but it runs fine.</li>
+<li>Remove or fix the object.</li>
+<li>Important: make notes, write upgrade steps, keep the terminal log, because you will forget it and need it again.</li>
+</ul>
+<p>To remove or fix the object, it helps to start the actual Plone site with some special zodbverify sauce:</p>
+<pre class="literal-block">
+./bin/instance zodbverify -f var/filestorage/Data.fs -o &lt;oid&gt; -D
+</pre>
+<p>Then you can use your debugging skills to try and fix things.
+Note that after you fixed it, you need to commit the changes explicitly:</p>
+<pre class="literal-block">
+import transaction
+transaction.commit()
+</pre>
+<p>Note that the bad object is still in the database, until you pack it.</p>
+<p>Frequent culprits are IntIds and Relations, especially if you migrated from Archetypes to Dexterity.
+Using <a class="reference" href="https://github.com/collective/collective.relationhelpers/blob/master/src/collective/relationhelpers/api.py">collective.relationhelpers</a> you can clean this up:</p>
+<pre class="literal-block">
+from collective.relationhelpers.api import cleanup_intids
+from collective.relationhelpers.api import purge_relations
+from collective.relationhelpers.api import restore_relations
+from collective.relationhelpers.api import store_relations
+# store all relations in a annotation on the portal
+store_relations()
+# empty the relation-catalog
+purge_relations()
+# remove all relationvalues and refs to broken objects from intid
+cleanup_intids()
+# recreate all relations from a annotation on the portal
+restore_relations()
+</pre>
+</div>
+<div class="section" id="symptom-6-bad-code">
+<h3><a name="symptom-6-bad-code">Symptom 6: bad code</a></h3>
+<p>Unreadable, untested, unused, undocumented, unmaintained, complicated, overly complex, too much code.
+If you can convince a client to <em>not</em> want a feature because they will only use it once, that is a win.
+Every line of code that is <em>not</em> written, is a good line of code.</p>
+</div>
+
+          ]]>
+      </content>
+
+
+
+      <author>
+        <name>Maurits van Rees</name>
+      </author>
+
+      <published>2020-12-11T17:08:38+00:00</published>
+
+      <updated>2021-01-05T10:33:42+00:00</updated>
+
+
+        <category term="plone" />
+
+
+        <category term="ploneconf2020" />
+
+
+    </entry>
+
+
+
+
+    <entry>
+
+      <title>Maik Derstappen: Plone 6 Theming with Diazo</title>
+
+      <link rel="alternate" type="text/html"
+            href="https://maurits.vanrees.org/weblog/archive/2020/12/maik-derstappen-plone-6-theming-with-diazo" />
+
+
+
+      <id>urn:syndication:3ba6d872864981f8695780e8de6d246f</id>
+
+
+
+
+
+
+      <content type="html"
+               xml:base="https://maurits.vanrees.org"
+               xml:lang="en-US" xml:space="preserve">
+          <![CDATA[
+          <p>How does Plone theming look in classic UI?</p>
+<ul class="simple">
+<li>html5 theme plus a mapping configuration</li>
+<li>deploying themes as ZIP-file for shared hosting is possible</li>
+<li>With Diazo you can map any Plone html to a static theme layout.</li>
+</ul>
+<p>Separating frontend and backend theme.
+Don't reinvent the backend views!
+You could theme the backend, so for content editors and admins, but it looks fine, not needed.
+You should focus on the frontend layout for visitors.
+To use the default backend layout you can include <tt class="docutils literal"><span class="pre">backend.xml</span></tt> in your rules, with some conditions.</p>
+<p>Diazo is not for everything!
+If the backend markup differs from what you need, do not try to solve it with Diazo or XSLT.
+Instead, fix the backend templates directly, most likely with a <tt class="docutils literal"><span class="pre">z3c.jbot</span></tt> override.</p>
+<p>You can use <a class="reference" href="https://github.com/collective/collective.themefragments/">theme fragments</a> or browser views to add new templates.
+The theme fragments can also be used as tiles in Mosaic.</p>
+<p>I like using SASS mixins.
+Say you have a <tt class="docutils literal"><span class="pre">&lt;div</span> <span class="pre">class=&quot;main-wrapper</span> <span class="pre">container&quot;&gt;</span></tt>.
+Cleaner would be <tt class="docutils literal"><span class="pre">&lt;div</span> <span class="pre">class=&quot;main-wrapper&quot;&gt;</span></tt>.
+You can do this with mixins with <tt class="docutils literal"><span class="pre">&#64;include</span></tt> in your selector.</p>
+<p>For more information on Diazo, see <a class="reference" href="https://diazo.org">https://diazo.org</a>.</p>
+<div class="section" id="new-features-in-plone-6">
+<h3><a name="new-features-in-plone-6">New features in Plone 6</a></h3>
+<p>From the backend we get Bootstrap 5 compatible html.
+Result is that Bootstrap themes are easier to integrate in Plone 6.</p>
+<p>You have custom CSS in the theming control panel, for small changes.
+This actually sneaked into Plone 5.2.2 as well.</p>
+<p>We have simplified Diazo rules.</p>
+<p>Create a theme with plonecli:</p>
+<ul class="simple">
+<li>pip install plonecli</li>
+<li>plonecli create addon plonetheme.yourtheme</li>
+<li>cd plonetheme.yourtheme</li>
+<li>plonecli add theme</li>
+<li>plonecli build</li>
+</ul>
+<p>Theme from this presentation will be published as <a class="reference" href="https://github.com/collective/collective.bunapisicuto">collective.bunapisicuto</a> when it is ready for you to inspect.</p>
+</div>
+
+          ]]>
+      </content>
+
+
+
+      <author>
+        <name>Maurits van Rees</name>
+      </author>
+
+      <published>2020-12-10T22:16:11+00:00</published>
+
+      <updated>2020-12-10T22:16:11+00:00</updated>
+
+
+        <category term="plone" />
+
+
+        <category term="ploneconf2020" />
+
+
+    </entry>
+
+
+
+
+    <entry>
+
+      <title>Stefan Antonelli: Plone 6 Theming from Scratch</title>
+
+      <link rel="alternate" type="text/html"
+            href="https://maurits.vanrees.org/weblog/archive/2020/12/stefan-antonelli-plone-6-theming-from-scratch" />
+
+
+
+      <id>urn:syndication:d1f0f9b0e055800492dbadd973f3290e</id>
+
+
+
+
+
+
+      <content type="html"
+               xml:base="https://maurits.vanrees.org"
+               xml:lang="en-US" xml:space="preserve">
+          <![CDATA[
+          <p>How to create a theme for Plone 6.
+Quite easy, because the templates use Bootstrap 5 classes.
+We build a theme from scratch, no Barceloneta, no Diazo.</p>
+<p>First step is to create an empty plone_addon package with <tt class="docutils literal"><span class="pre">plonecli</span></tt> or <tt class="docutils literal"><span class="pre">mr.bob</span></tt>.
+For the questions you can answer: use Plone 5.2.1. We will switch later.
+My theme is <a class="reference" href="https://github.com/collective/plonetheme.munich">plonetheme.munich</a>.</p>
+<p>I recommend to cleanup the standard package a bit.
+I remove tests, constraints for Plone 4 and 5.
+Check it out in the commits.</p>
+<p>Now switch to <a class="reference" href="https://github.com/collective/plonetheme.munich/blob/master/buildout.cfg">extend Plone 6</a> and run the buildout.</p>
+<p>You can add theme structure with a bob template, but I prefer creating my own.</p>
+<p>Some interesting files:</p>
+<ul class="simple">
+<li><a class="reference" href="https://github.com/collective/plonetheme.munich/blob/master/package.json">package.json</a> lists various tasks, especially the <tt class="docutils literal"><span class="pre">watch</span></tt> task.</li>
+<li>In the theme <a class="reference" href="https://github.com/collective/plonetheme.munich/blob/master/src/plonetheme/munich/theme/manifest.cfg">manifest.cfg</a> we more or less disable Diazo by emptying the <tt class="docutils literal"><span class="pre">rules</span></tt> line.</li>
+<li>The compiled CSS and JavaScript are registered in <a class="reference" href="https://github.com/collective/plonetheme.munich/blob/master/src/plonetheme/munich/profiles/default/registry/main.xml">registry.xml</a>.</li>
+</ul>
+<p>You can compile SASS to CSS using npm or yarn.
+Do <tt class="docutils literal"><span class="pre">yarn</span> <span class="pre">install</span></tt> in the top of your package.
+Later, with <tt class="docutils literal"><span class="pre">yarn</span> <span class="pre">dist</span></tt> you make it ready for production.</p>
+<p>After these steps Plone is partially broken, or at least ugly.
+I do some <a class="reference" href="https://github.com/collective/plonetheme.munich/commit/000717fb336849facec17b8fbd7b75686ec6146b">basic fixes</a> and it looks better.</p>
+<p>For templates that you need to change you add <tt class="docutils literal"><span class="pre">z3c.jbot</span></tt> overrides.
+Personally I always kick out the &quot;search in section&quot; checkbox.</p>
+<p>I don't like columns, but for this example I kept them.
+In most cases I need just one column.
+Plus maybe a side bar for portlets, but portlets must die.</p>
+<p>With <tt class="docutils literal"><span class="pre">plonetheme.tokyo</span></tt> everything is Bootstrap, no columns, so no portlets, really fully responsive.
+This was the package where we built on Barceloneta Plone 5.2 and introduced lots of template overrides to put in Bootstrap.
+For Plone 6 we can just remove the overrides.</p>
+<p>What about the toolbar? Yes, we dropped it.
+We bring editing features and navigation together.
+This is now a few feature: <a class="reference" href="https://github.com/collective/collective.sidebar">collective.sidebar</a>.
+It is only one template to override.
+It works for Plone 5.2 at the moment, and I may work on it for Plone 6 during the sprints.</p>
+<p>Question: is TTW still a viable path?</p>
+<p>Answer: I like to concentrate on one path.
+I am not an expert in TTW theming.
+I switched to file system, except really small customizations.
+For small CSS customizations there is a field in the theming control panel.</p>
+
+          ]]>
+      </content>
+
+
+
+      <author>
+        <name>Maurits van Rees</name>
+      </author>
+
+      <published>2020-12-10T17:08:30+00:00</published>
+
+      <updated>2020-12-10T17:08:30+00:00</updated>
+
+
+        <category term="plone" />
+
+
+        <category term="ploneconf2020" />
+
+
+    </entry>
+
+
+
+
+    <entry>
+
+      <title>Stefan Antonelli and Peter Holzer: Modernize Plone’s Classic UI</title>
+
+      <link rel="alternate" type="text/html"
+            href="https://maurits.vanrees.org/weblog/archive/2020/12/stefan-antonelli-and-peter-holzer-modernize-plone2019s-classic-ui" />
+
+
+
+      <id>urn:syndication:468faba6197c93edadf910d668dac1c1</id>
+
+
+
+
+
+
+      <content type="html"
+               xml:base="https://maurits.vanrees.org"
+               xml:lang="en-US" xml:space="preserve">
+          <![CDATA[
+          <p>What was new in Plone 5?
+We had beautiful new theme: Barceloneta.
+Diazo theming by default.
+We switched to CSS compilation with <tt class="docutils literal"><span class="pre">less</span></tt>.</p>
+<p>During the Tokyo conference Stefan thought up Tokyo Theme.
+Clean responsive theme for Plone 5.
+Tons of overrides to tackle problems in Plone 5.
+Issue with navigation and editing on mobile we solved with collective.sidebar.</p>
+<p>We had community discussions, especially during several Plone events.
+Everyone tried to use Bootstrap (components).
+First idea: map variables from Barceloneta to Bootstrap, because they have similar ideas using different terms.</p>
+<p>We have PLIP to modernize markup in templates, and another PLIP to modernize the default theme: Barceloneta LTS.
+Forms using z3c.form are already using the new classes.</p>
+<p>Make things easier: UI, development.
+Creating a modern UI for the web is complex.
+You need to support different devices, responsiveness.
+In Bootstrap there are patterns for most useful things.</p>
+<p>Developer perspective: expect one way to do things.
+Developers should not have to worry about design.
+When busy in the backend, you should focus on Python, not on it looking nice and shiny.
+Don't think about markup, just use components.
+The good news: there is documentation. The Bootstrap documentation is our documentation.</p>
+<p>What is new in Plone 6?</p>
+<ul class="simple">
+<li>Volto is the default UI.</li>
+<li>There still is the Classic UI with Barceloneta look and feel, but updated.</li>
+<li>No TTW (through the web) theming.</li>
+<li>But there is a textarea to add some simple CSS (already in 5.2.3).</li>
+<li>Some CSS variables may be changeable TTW.</li>
+<li>Finally jQuery 3</li>
+</ul>
+<p>Bootstrap is still the most popular front-end framework.
+Well documented, tested and maintained.
+It is so easy to create stuff, I enjoy it a lot.</p>
+<p>What is new in Bootstrap 5?</p>
+<ul class="simple">
+<li>Improved overall look and feel.</li>
+<li>Updated and extended the color system</li>
+<li>Custom properties: css variables</li>
+<li>SVG Icon library</li>
+<li>Pure javascript</li>
+<li>Dropped IE10 and IE11 support</li>
+<li>Bootstrap 5 is currently alpha 3.</li>
+<li>See <a class="reference" href="https://v5.getbootstrap.com">https://v5.getbootstrap.com</a></li>
+</ul>
+<p>Features: what do we get from these changes?</p>
+<ul class="simple">
+<li>Core templates use Bootstrap 5 markup. Instead of overrides in <tt class="docutils literal"><span class="pre">plonetheme.tokyo</span></tt>, we have lots of branches for the actual packages.</li>
+<li>All major templates have been touched already.</li>
+<li>For the current state, see the unofficial demo at <a class="reference" href="https://classic.plone.de">https://classic.plone.de</a></li>
+<li>The <a class="reference" href="https://getbootstrap.com/docs/5.0/getting-started/introduction/">Bootstrap documentation</a> has lots of snippets than you can copy.</li>
+<li>You don't need much more CSS on top of it if you paste most examples. We added a little for own components, like navigation.</li>
+</ul>
+<p>Barceloneta appearance is fully customizable.
+It is basically on opinionated set of bootstrap variables.
+Every aspect can be changed with variables: colors, fonts, sizes, spacings, grid gutters, etc.
+There are overall properties, like shadowed, rounded, gradients. Just turn on or off.</p>
+<p>Theming workflow.
+<tt class="docutils literal"><span class="pre">plonetheme.barceloneta</span></tt> will also be published as <tt class="docutils literal"><span class="pre">npm</span></tt> package.
+<tt class="docutils literal"><span class="pre">bobtemplates.plone</span></tt> will have a template for the new theming workflow.
+You can do quick and dirty customizations through the CSS overrides field in the theme controlpanel.</p>
+<p>Diazo will still be there, will work as before.
+Some optimizations in the <tt class="docutils literal"><span class="pre">rules.xml</span></tt> to make content are customizations easier.</p>
+<p>How to deal with icons?
+What if you want to change the content type icons? Used to be hard.
+Now we come up with the idea of an icon resolver.
+We decided to use the <a class="reference" href="https://icons.getbootstrap.com">bootstrap icons</a>.
+Icons are registered via GenericSetup, for example with a record name <tt class="docutils literal"><span class="pre">plone.icon.alarm</span></tt> pointing to an SVG.
+You can then override this in your own GS profile.</p>
+<p>Example icon use:</p>
+<pre class="literal-block">
+&lt;tal:icon replace=&quot;structure python:icons.tag('love', tag_class='custom-class', tag_alt='foobar')&quot; /&gt;
+</pre>
+<p>You get get back an inline SVG or an image tag.</p>
+<p>Note: all z3c form widgets in Plone are now in <tt class="docutils literal"><span class="pre">plone.app.z3cform</span></tt>, and not scattered over lots of packages.</p>
+<p>We will restart our weekly Plone 6 Classic UI sprints, starting Januari 13 2021, 10:00 (UTC+1).</p>
+
+          ]]>
+      </content>
+
+
+
+      <author>
+        <name>Maurits van Rees</name>
+      </author>
+
+      <published>2020-12-10T16:02:29+00:00</published>
+
+      <updated>2020-12-10T16:02:29+00:00</updated>
+
+
+        <category term="plone" />
+
+
+        <category term="ploneconf2020" />
+
+
+    </entry>
+
+
+
+
+    <entry>
+
+      <title>Keynote: The User Experience - Editing Composite Pages in Plone 6 and Beyond</title>
+
+      <link rel="alternate" type="text/html"
+            href="https://maurits.vanrees.org/weblog/archive/2020/12/keynote-the-user-experience-editing-composite-pages-in-plone-6-and-beyond" />
+
+
+
+      <id>urn:syndication:e244a1928902dfa6b7ea77347437d2d9</id>
+
+
+
+
+
+
+      <content type="html"
+               xml:base="https://maurits.vanrees.org"
+               xml:lang="en-US" xml:space="preserve">
+          <![CDATA[
+          <p>It may be a surprise to non-technical people to learn that pages created in Volto are not currently interoperable with traditional Plone's page editing. If you think about it, the reason becomes obvious. Volto, like Mosaic, creates tiled layouts, and like Mosaic it stores page data in special fields for the individual blocks and their layout. Neither Volto nor Mosaic pages are editable in TinyMCE, which expects just one rich text field.</p>
+<p>Is this divergence between sites created in Volto and sites created in traditional Plone a problem? It does make it harder to describe what Plone is, and it might mean that there is no way to mix both approaches - for instance when part of a larger site is available as a Volto-based sub-site. Would it be possible to have one tool and one representation for tiled layouts so that we can avoid this divergence? Is there some other solution? Is it even a problem? Will Plone 6 be backwards compatible with Plone 5 and include a smooth upgrade path?</p>
+<p>We will tackle these questions in this strategic panel discussion, moderated by Sally Kleinfeldt. Panelists will include Paul Roeland, Philip Bauer, Timo Stollenwerk, Victor Fernandez de Alba, and Eric Steele.</p>
+<p>First, Philip has a message from Max Jacob who is very ill with pancreatic cancer and may not survive this weekend. He wants to thank the Plone community for what they allowed him to do: like organize the German Plone Konferenz. Thanks for all the friendships. Such a pity that this is happening now, he wanted to jump into only doing Plone for the next few years, due to changes at his job, and looked forward to that.</p>
+<div class="section" id="classic-mosaic-and-volto-pages">
+<h3><a name="classic-mosaic-and-volto-pages">Classic, Mosaic and Volto Pages</a></h3>
+<p>We have Classic, Mosaic and Volto Pages. They have different internal representations and are not compatible.
+Is this a problem? Is there a solution?
+Is one tool, one representation possible?
+If we really need three, how to position?</p>
+<p>Paul: for me as user this presents a problem. When do you switch over your site?
+We would like to not write 700 pages from scratch, again, like we did for previous composite pages.</p>
+<p>Timo: We migrated quite a few large projects from classic Plone to Volto.
+One of those had collective.cover (other composite page system).
+Problem in general with such systems, is that they are pretty specific.
+They solve specific use cases and come from different eras.
+After any migration, it will not look the same any more.
+Whatever you do: the page will initially look ugly.
+So you put a lot of effort into migration, but then have to put manual effort into every page anyway.
+It <em>can</em> help: you at least have a start.
+We created a system where we migrated overview pages, and editors could click to migrate other pages one at a time.</p>
+<p>Philip: We have code to migrate from non-folderish to folderish content types.
+There will be code to migrate to dexterity site root on Plone 6.
+We <em>can</em> make sure to migrate any standard content types.
+Mosaic is another story.
+So for pages you would at least have the text available. Maybe only visible for editors to pick and choose from.
+You may lose portlets, unless they get implemented in Volto.</p>
+<p>Timo: When you go to Plone 6 and do a redesign at the same time, then you can jump on Volto.
+Otherwise you could stay at Classic Plone for now.
+There will be an overlap period.</p>
+<p>Victor: For Mosaic you could dump all tiles into html and insert it in a block.</p>
+</div>
+<div class="section" id="how-to-have-a-big-classic-site-with-a-subsite-made-in-volto">
+<h3><a name="how-to-have-a-big-classic-site-with-a-subsite-made-in-volto">How to have a big Classic site with a subsite made in Volto?</a></h3>
+<p>Victor: Definitely doable, though we have not done this ourselves.</p>
+<p>Sally: But what happens when an editor in Classic goes to the Volto subsite? The Volto page would not be editable then, right?</p>
+<p>Philip: You should not offer this. I see no upside, no use case.
+Split them into separate applications, with shared authentication maybe.</p>
+<p>Paul: Use case: large site with several departments.
+The marketing department may want snazzy new Volto things.</p>
+<p>Timo: Just create another site then.</p>
+</div>
+<div class="section" id="cost-and-benefit-of-upgrading-big-classic-site-to-plone-6">
+<h3><a name="cost-and-benefit-of-upgrading-big-classic-site-to-plone-6">Cost and benefit of upgrading big Classic Site to Plone 6</a></h3>
+<p>So you just had a big migration to Plone5, and now what would you get for going to Plone 6.</p>
+<p>Philip: We have this discussion every major upgrade.
+Communicate every upgrade as a relaunch.
+The relaunch is the reason for the upgrade.
+&quot;There is a new version so you need to upgrade&quot; does not fly for my clients.</p>
+<p>Timo: We became a very developer oriented community, and every develop understands the need and benefits.
+We should really get back to giving more value at major releases, so clients really want to upgrade themselves.
+Plone releases should sell themselves.</p>
+<p>Eric: It looks like we think Plone 6 + Volto is a costly upgrade with lots of benefits.
+For Classic 5 to Classic 6 the upgrade is not costly.</p>
+</div>
+<div class="section" id="alex-limi-s-vision-for-deco-are-we-there-yet">
+<h3><a name="alex-limi-s-vision-for-deco-are-we-there-yet">Alex Limi's vision for Deco: are we there yet?</a></h3>
+<p>Was this fulfilled by Mosaic? Volto? Something still needed?</p>
+<p>Paul: Not quite, but slowly getting there.
+For me it would be Volto, plus some power features that Eau de Web (EEA) adds.</p>
+<p>Timo: I think we went beyond what Limi envisioned.</p>
+<p>Eric and Victor: What we have seen from Volto, is pretty close to what Alex wanted.</p>
+<p>Victor: We gave the users powerful tools, so beware of them.</p>
+<p>Philip: Partly yes. Volto is close, and it is for normal users.</p>
+<p>Now some questions from users.</p>
+</div>
+<div class="section" id="is-there-a-plan-for-volto-to-support-editing-the-existing-richtext-fields-of-documents-news-items">
+<h3><a name="is-there-a-plan-for-volto-to-support-editing-the-existing-richtext-fields-of-documents-news-items">Is there a plan for Volto to support editing the existing Richtext fields of Documents, News Items?</a></h3>
+<p>Philip: This should be doable.</p>
+</div>
+<div class="section" id="migrations">
+<h3><a name="migrations">Migrations</a></h3>
+<p>Philip: Plone 4 to 5.2 was three migrations in one.
+Plone 6 is less of a problem.</p>
+<p>Eric: 5.2 had a lot of backend migrations.
+A split between backend and frontend with plone.restapi in between makes things easier.</p>
+<p>[The question on multiple variations of Volto, especially editors, went a bit too fast for me to write intelligible notes down.]</p>
+</div>
+<div class="section" id="what-s-the-future-of-using-ct-s-behaviors-in-plone-to-design-information-architecture">
+<h3><a name="what-s-the-future-of-using-ct-s-behaviors-in-plone-to-design-information-architecture">What's the future of using CT's/behaviors in Plone to design information architecture?</a></h3>
+<blockquote>
+With Volto the trend seems mixing/adding 40 different blocks for every page.</blockquote>
+<p>Timo: Blocks are definitely the way to work.
+But the underlying power of content types and behaviors still exists.</p>
+<p>Philip: We need blocks that represent a field or a behavior. That is unavoidable.</p>
+</div>
+<div class="section" id="next-steps">
+<h3><a name="next-steps">Next steps</a></h3>
+<p>Timo: We plan to have an open space on page compositions and Volto, and want to sprint on it.</p>
+<p>Paul: Good if there is a longer term vision.
+I would rather have more power that a Site Admin can lock down, than having to choose between three different versions.
+I don't want choice stress.</p>
+</div>
+
+          ]]>
+      </content>
+
+
+
+      <author>
+        <name>Maurits van Rees</name>
+      </author>
+
+      <published>2020-12-10T14:55:55+00:00</published>
+
+      <updated>2020-12-10T14:55:55+00:00</updated>
+
+
+        <category term="plone" />
+
+
+        <category term="ploneconf2020" />
+
+
+    </entry>
+
+
+
+
+    <entry>
+
+      <title>Lightning Talks Wednesday</title>
+
+      <link rel="alternate" type="text/html"
+            href="https://maurits.vanrees.org/weblog/archive/2020/12/lightning-talks-wednesday" />
+
+
+
+      <id>urn:syndication:c478decef0cbf87b0b04ae96599134b3</id>
+
+
+
+
+
+
+      <content type="html"
+               xml:base="https://maurits.vanrees.org"
+               xml:lang="en-US" xml:space="preserve">
+          <![CDATA[
+          <div class="section" id="lukas-guziel-continuous-deployment">
+<h3><a name="lukas-guziel-continuous-deployment">Lukas Guziel: Continuous Deployment</a></h3>
+<p>CD means deploying code automatically.
+It saves time, reduces human error.
+It Gitlab you can add <tt class="docutils literal"><span class="pre">gitlib-ci.yml</span></tt> and configure it.
+Include a base template that you use in multiple projects.
+End result can be a site that the customer can test.</p>
+</div>
+<div class="section" id="erico-andrei-world-plone-day-2021">
+<h3><a name="erico-andrei-world-plone-day-2021">Erico Andrei: World Plone Day 2021</a></h3>
+<p>We are a global community.
+Almost 300 people from 36 countries are at this online conference.
+World Plone Day is an annual Plone event.
+Next year of course online. April 28th 2021.</p>
+<p>We want to stream 24 hours live on our YouTube channel.
+Showcase Plone. Technical talk, use cases, interviews, demo.</p>
+<p>It should not all be in English, please use your own language.
+Talk to your local community.</p>
+<p>Please help and join. See <a class="reference" href="https://plone.org/events/wpd">https://plone.org/events/wpd</a></p>
+</div>
+<div class="section" id="andreas-jung-collective-contentsync2">
+<h3><a name="andreas-jung-collective-contentsync2">Andreas Jung: collective.contentsync2</a></h3>
+<p>Syncing content between Plone sites through <tt class="docutils literal"><span class="pre">plone.restapi</span></tt>.
+It is a behavior.
+You have a source Plone site and one or more target Plone sites.
+You need Plone 5.2 under Python 3.</p>
+<ul class="simple">
+<li>Create a dedicated user account with global role Editor.</li>
+<li>Configure on the content sync control panel.</li>
+<li>Automatically creates two content rules to sync content when added or modified.</li>
+<li>You can enable it on all content types, also Folders.</li>
+</ul>
+<p>See <a class="reference" href="https://github.com/collective/collective.contentsync2">https://github.com/collective/collective.contentsync2</a></p>
+</div>
+<div class="section" id="philip-bauer-why-relations-are-weird">
+<h3><a name="philip-bauer-why-relations-are-weird">Philip Bauer: Why relations are weird</a></h3>
+<p>These packages have a part in relations:</p>
+<ul class="simple">
+<li>zc.relation: abstract relation catalog</li>
+<li>z3c.relationfield: fields and values on objects</li>
+<li>plone.app.relationfield: converters from field to widget and vv</li>
+<li>plone.app.z3cform: widgets</li>
+<li>mockup: actual widget UI</li>
+</ul>
+<p>In a schema use a RelationChoice field with vocabulary plone.app.vocabularies.Catalog, and set pattern directives.</p>
+<p>It is not straightforward.
+So I wrote <tt class="docutils literal"><span class="pre">collective.relationhelpers</span></tt>.</p>
+<p>See <a class="reference" href="https://github.com/collective/collective.relationhelpers">https://github.com/collective/collective.relationhelpers</a></p>
+<p>Maybe use uuid instead of all this code.</p>
+<p>[About ten people in the chat want to merge this package into plone.api. Actually, see <a class="reference" href="https://github.com/plone/plone.api/issues/223">this issue</a>.]</p>
+</div>
+<div class="section" id="christopher-lozinski-simple-json-schema-guis">
+<h3><a name="christopher-lozinski-simple-json-schema-guis">Christopher Lozinski: Simple JSON Schema GUIs</a></h3>
+<p>Create a JSON schema, automatically generate the UI.
+Search for basic JSON editor library.
+He shows JSON in ZODB, so you can browse it, if I understood correctly.🙂</p>
+</div>
+
+          ]]>
+      </content>
+
+
+
+      <author>
+        <name>Maurits van Rees</name>
+      </author>
+
+      <published>2020-12-09T18:21:14+00:00</published>
+
+      <updated>2020-12-09T18:21:14+00:00</updated>
+
+
+        <category term="plone" />
+
+
+        <category term="ploneconf2020" />
+
+
+    </entry>
+
+
+
+
+    <entry>
+
+      <title>Eric Brehault: Second Guessing the Single-Page-App Pattern</title>
+
+      <link rel="alternate" type="text/html"
+            href="https://maurits.vanrees.org/weblog/archive/2020/12/eric-brehault-second-guessing-the-single-page-app-pattern" />
+
+
+
+      <id>urn:syndication:8b678f3acfa36bff175e085791de850d</id>
+
+
+
+
+
+
+      <content type="html"
+               xml:base="https://maurits.vanrees.org"
+               xml:lang="en-US" xml:space="preserve">
+          <![CDATA[
+          <p>SPA (Single Page App) is about providing an entire app by exposing a single physical web page containing an enormous javascript bundle. It breaks the original web paradigm in many ways. Surprisingly enough, we invest a lot of efforts to mimic the regular web behaviour.</p>
+<p>Isn’t it time for modern frontend to reconsider the SPA approach?</p>
+<p>[Note: Eric presented by using a projector to show his slides on a black Plone conference T-shirt. :-)]</p>
+<p>Why are we doing this? Originally we always requested a whole page and this was considered slow. But we have good bandwidth now. And if you don't have good bandwidth, the super big bundle is not good either.</p>
+<p>With SPA we try very hard to bring back the original working of the page, especially the browser history, being able to browse and then share the link to the current page.</p>
+<p>To mitigate problems, we created an enormous stack. And we deny the complexity.  New tools create new problems, even when their individual creators does not see the complexity.</p>
+<p>&quot;SPA isn't stable or efficient.&quot;
+But there is no way back. For example, you cannot create Google Docs  with server side rendered pages.
+Web 2.0 is 15 years old. It is still about content.</p>
+<p>SPA is separation of concern, which is a good principle. But we mix the browser layer (how you get and view the page) and the content layer (the page content).</p>
+<p>It seems a take it or leave it situation: either use SPA or don't. What do we want? We want proportionate complexity. Do we need 100 percent SPA?</p>
+<p>You can use micro components, see for example the demo of Maik Derstappen in the lightning talks on Monday, using Svelte.
+Micro frontend is bigger than that.  It is a part of the application, that you develop separately. For example, you could do the Plone Sharing page like this.</p>
+<p>Can we compile each page separately? Then each page is an app.</p>
+<p>ES6 native support would be interesting. Combine with HTTP/2 and you need no bundles.
+Bundling is the most brutal thing ever. Horrible. Get rid of it.</p>
+<p>Respect the layers. SPAs are monolithic. Break them down.</p>
+<p>We should have a generic browser layer, common to many different use cases, for example for logging in.
+I don't want to code that, but plug it. Second step: push this layer to the browsers themselves.</p>
+
+          ]]>
+      </content>
+
+
+
+      <author>
+        <name>Maurits van Rees</name>
+      </author>
+
+      <published>2020-12-09T17:41:59+00:00</published>
+
+      <updated>2020-12-09T17:42:16+00:00</updated>
+
+
+        <category term="plone" />
+
+
+        <category term="ploneconf2020" />
+
+
+    </entry>
+
+
+
+
+    <entry>
+
+      <title>Asko Soukka: Deploying Plone and Volto, the Hard Way</title>
+
+      <link rel="alternate" type="text/html"
+            href="https://maurits.vanrees.org/weblog/archive/2020/12/asko-soukka-deploying-plone-and-volto-the-hard-way" />
+
+
+
+      <id>urn:syndication:7d213d4114be2f1ef8ed20a2e1983ed3</id>
+
+
+
+
+
+
+      <content type="html"
+               xml:base="https://maurits.vanrees.org"
+               xml:lang="en-US" xml:space="preserve">
+          <![CDATA[
+          <p>Here are the <a class="reference" href="https://datakurre.github.io/ploneconf2020/deploying-plone-and-volto-hard-way.pdf">slides</a>.</p>
+<p>How about building Plone without buildout? Running Plone on Python 3 without WSGI? Deploying Plone and Volto with containers without Docker? Building all this in re-usable and safe manner in sandbox with restricted network access with Nix? Welcome to hear about our hipster setup where we lock, build and configure Plone deployments with Nix, insist to keep ZServer running on Python 3 for the love's sake, build software deployments into standalone tarball archives, and run them with Nomad – the simple on-premises-friendly alternative for K8S.</p>
+<ul class="simple">
+<li>The easy, documented way: buildout, WSGI, Docker (if you need containers), Registry.</li>
+<li>Our way: pip, TxZServer, Nomad, Nix</li>
+</ul>
+<p>When you use a container infrastructure, you have multiple containers for running a Plone site, for example zeo clients, zeo servers, load balancer. Nomad helps there, and is much simpler than Kubernetes.
+We have one job file to rule them all: task groups, instance count, update policy, server resources, volumen mounts, tasks, consul services, vault secrets, environment variables, exec artifacts.</p>
+<p>Nomad has &quot;isolated fork / exec driver&quot;. No docker image needed. We have a Nix-built artifact, a tarball that we extract in the root of the container.</p>
+<p>With Nix, you get 100 percent reproducible artifacts. Production equals development. You have a full dependency graph. The result is a standalone tarball, perhaps 100 MB. Disadvantage is that there are no conventions, no metadata, no shared layers, no documentation. It needs learning and practice. Well, some documentation now: <a class="reference" href="https://nixos.org">https://nixos.org</a> and <a class="reference" href="https://nix.dev">https://nix.dev</a>, partially made by people that were using Plone previously.</p>
+<p>Some ugly parts from Nix:</p>
+<ul class="simple">
+<li>Every language has their own Nix-conventions</li>
+<li>dependency generator ecosystem is comples</li>
+<li>cyclic dependencies are not supported</li>
+<li>no storage device is big enough for <tt class="docutils literal"><span class="pre">/nix/store</span></tt></li>
+</ul>
+<p>Our (legacy) approach for Plone 5.2.1 without Buildout and with pip:</p>
+<ul class="simple">
+<li>generated requirements.txt with buildout</li>
+<li>create Python env with pip and nix</li>
+<li>use pip-branch of z3c.autoinclude</li>
+<li>disabled <tt class="docutils literal"><span class="pre">&lt;includeDependencies</span> <span class="pre">/&gt;</span></tt></li>
+<li>generate instance skeleton with nix</li>
+<li>forked plone.recipe.zope2instance</li>
+</ul>
+<p>Plone 6 without Buildout should be pip-installable out of the box, but that is hear-say.</p>
+<p>We use TxZServer in production, so ZServer using Twisted.</p>
+
+          ]]>
+      </content>
+
+
+
+      <author>
+        <name>Maurits van Rees</name>
+      </author>
+
+      <published>2020-12-09T16:22:15+00:00</published>
+
+      <updated>2020-12-09T16:22:15+00:00</updated>
+
+
+        <category term="plone" />
+
+
+        <category term="ploneconf2020" />
+
+
+    </entry>
+
+
+
+
+    <entry>
+
+      <title>Nicola Zambello: Theming Volto without SemanticUI: Is It Possible?</title>
+
+      <link rel="alternate" type="text/html"
+            href="https://maurits.vanrees.org/weblog/archive/2020/12/nicola-zambello-theming-volto-without-semanticui-is-it-possible" />
+
+
+
+      <id>urn:syndication:d96309ed215a2fec3c67f7f3e4d97885</id>
+
+
+
+
+
+
+      <content type="html"
+               xml:base="https://maurits.vanrees.org"
+               xml:lang="en-US" xml:space="preserve">
+          <![CDATA[
+          <p>We will walk through the process of building a product for Italian Public Administrations using a bootstrap-based theme.
+I'm presenting io-comune, RedTurtle's first product based on Volto and the strategies we used.
+We will see the possibilities in Volto for theming without SemanticUI, using bootstrap and sass and what are the next ideas we could work on.</p>
+<p>Scenario:</p>
+<ul class="simple">
+<li>We wanted to adopt Volto in our new project.</li>
+<li>We needed to include Bootstrap.</li>
+<li>Volto uses SemanticUI instead.</li>
+<li>Two such frameworks will conflict, for example fighting over the same selector.</li>
+</ul>
+<p>We tried. We tried harder.
+A cheap approach did not seem possible, so we looked for a sane one.</p>
+<p>A new theme: <tt class="docutils literal"><span class="pre">pastanaga-cms-ui</span></tt>. Load only the CSS needed for Volto admin UI, see <a class="reference" href="https://github.com/plone/volto/pull/970">Volto PR 970</a>.
+And <tt class="docutils literal"><span class="pre">public-ui</span></tt> for public pages.
+In your <tt class="docutils literal"><span class="pre">src/theme.js</span></tt> do not import the css/less from semantic-ui, but the <tt class="docutils literal"><span class="pre">pastanaga-cms-ui</span></tt>.
+In theme theme.config also use pastanaga-cms-ui.
+Also razzle-config.</p>
+<p>You should normalize your base style, for example:</p>
+<pre class="literal-block">
+body.cms-ui {
+  .public-ui {
+    font-size: 18px;
+  }
+}
+</pre>
+<p>and wrap your components with <tt class="docutils literal"><span class="pre">.public-ui</span></tt>.</p>
+<p>Building a product:</p>
+<ul class="simple">
+<li>Base common package for every customer: <a class="reference" href="https://github.com/RedTurtle/design-volto-theme">https://github.com/RedTurtle/design-volto-theme</a></li>
+<li>New intermediate layer for SemanticUI</li>
+<li>New config layer for razzle/customizations</li>
+<li>Template for actual projects: <tt class="docutils literal"><span class="pre">design-volto-kit</span></tt>, with a Yeoman generator: <tt class="docutils literal"><span class="pre">create-italia-volto-app</span></tt></li>
+</ul>
+
+          ]]>
+      </content>
+
+
+
+      <author>
+        <name>Maurits van Rees</name>
+      </author>
+
+      <published>2020-12-09T14:22:41+00:00</published>
+
+      <updated>2020-12-09T14:22:41+00:00</updated>
+
+
+        <category term="plone" />
+
+
+        <category term="ploneconf2020" />
+
+
+    </entry>
+
+
+
+
+    <entry>
+
+      <title>Alin Voinea: Volto Dexterity Schema and Layout Editor</title>
+
+      <link rel="alternate" type="text/html"
+            href="https://maurits.vanrees.org/weblog/archive/2020/12/alin-voinea-volto-dexterity-schema-and-layout-editor" />
+
+
+
+      <id>urn:syndication:e78a4c57d7c28e52be32a25b83f7c466</id>
+
+
+
+
+
+
+      <content type="html"
+               xml:base="https://maurits.vanrees.org"
+               xml:lang="en-US" xml:space="preserve">
+          <![CDATA[
+          <p>Through the Web Dexterity Content-Types with Schema Editor and Blocks Layout Editor</p>
+<p>How do we define content types schemas in Plone?</p>
+<ul class="simple">
+<li>TTW schema editor</li>
+<li>GenericSetup profile</li>
+<li>Behaviors, schemas in Python</li>
+</ul>
+<p>Why do we need them, we have Volto blocks, right?
+You still need metadata, a title, etcetera. Certainly for larger institutions you need a structure, a schema.
+Volto itself has schema-based components.</p>
+<p>Layout editor.
+Blocks have properties, like a placeholder, a position.
+You can type text in a block: &quot;Published on date by author&quot;.
+Then select &quot;date&quot; and link this text to the published date metadata,
+and select &quot;author&quot; and link it to the author.
+Save this as a layout for a content type.
+You can export this to a JSONField in a custom behavior, so you can save it in version control for production.</p>
+<p>List of add-ons and other packages that make Volto awesome:
+<a class="reference" href="https://github.com/collective/awesome-volto">https://github.com/collective/awesome-volto</a></p>
+
+          ]]>
+      </content>
+
+
+
+      <author>
+        <name>Maurits van Rees</name>
+      </author>
+
+      <published>2020-12-08T17:40:59+00:00</published>
+
+      <updated>2020-12-08T17:40:59+00:00</updated>
+
+
+        <category term="plone" />
+
+
+        <category term="ploneconf2020" />
+
+
+    </entry>
+
+
+
+
+    <entry>
+
+      <title>Jens Klein: Performance, Profiling, Power-Consumption</title>
+
+      <link rel="alternate" type="text/html"
+            href="https://maurits.vanrees.org/weblog/archive/2020/12/jens-klein-performance-profiling-power-consumption" />
+
+
+
+      <id>urn:syndication:8c53225f93c004d147e18d907160144d</id>
+
+
+
+
+
+
+      <content type="html"
+               xml:base="https://maurits.vanrees.org"
+               xml:lang="en-US" xml:space="preserve">
+          <![CDATA[
+          <p>I want to focus on Python performance, so not caching or database performance.</p>
+<p>Tools:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">py-spy</span></tt>: Overall mix of the whole live application, top-like.</li>
+<li><tt class="docutils literal"><span class="pre">repoze.profile</span></tt>: WSGI middleware, slows down application. Profile single request and analyse its call stack by count, call time, etc.</li>
+<li><tt class="docutils literal"><span class="pre">dis</span></tt>: disassembler for Python at the bytecode level.</li>
+</ul>
+<p>Improvements Plone 5.2.0-5.2.3:</p>
+<ul class="simple">
+<li>Avoided early <tt class="docutils literal"><span class="pre">providedBy</span></tt> calls</li>
+<li><tt class="docutils literal"><span class="pre">__getattr__</span></tt> early exit on common attributes</li>
+<li><tt class="docutils literal"><span class="pre">zope.interface</span></tt>: some functions are called hundreds of thousands of times when you reindex an index, so a tiny improvement helps a lot. I found various places that could use improvements, and that landed in the package, together with memory improvements by Jason Madden.</li>
+</ul>
+<p>Live demo. I call <tt class="docutils literal"><span class="pre">py-spy</span></tt> with <tt class="docutils literal"><span class="pre">sudo</span></tt> because I need to connect to an existing process id.</p>
+<p>Future Todo's:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">plone.restapi</span></tt> has optimization potential, all navigation related, but currently it still supports even Plone 4.3. This will likely wait for a 5.2-only or Python3-only branch.</li>
+<li><tt class="docutils literal"><span class="pre">plone.registry</span></tt> is called too often</li>
+<li>Use <tt class="docutils literal"><span class="pre">python:</span></tt> expressions in all page templates. They are way faster than standard Tales expressions.</li>
+<li>More introspection.</li>
+<li>Move more logic from page templates to Python code</li>
+</ul>
+<p>Advice: start introspecting the performance of your application.</p>
+
+          ]]>
+      </content>
+
+
+
+      <author>
+        <name>Maurits van Rees</name>
+      </author>
+
+      <published>2020-12-08T16:27:53+00:00</published>
+
+      <updated>2020-12-08T16:27:53+00:00</updated>
+
+
+        <category term="plone" />
+
+
+        <category term="ploneconf2020" />
+
+
+    </entry>
+
+
+
+
+    <entry>
+
+      <title>Alex Clark: The State of Pillow</title>
+
+      <link rel="alternate" type="text/html"
+            href="https://maurits.vanrees.org/weblog/archive/2020/12/alex-clark-the-state-of-pillow" />
+
+
+
+      <id>urn:syndication:e34819d893c83228742eda41c42063d6</id>
+
+
+
+
+
+
+      <content type="html"
+               xml:base="https://maurits.vanrees.org"
+               xml:lang="en-US" xml:space="preserve">
+          <![CDATA[
+          <p>The Plone Conference account tweeted that a State of Plone talk would be awesome and that the Plone community missed me. I miss the Plone community too, so I am here.</p>
+<p>I will state it clearly: Pillow would not exist if not for Plone.</p>
+<p>In July 2010 I announced Pillow as &quot;friendly&quot; fork of PIL. The <a class="reference" href="https://mail.python.org/pipermail/image-sig/2010-July/006423.html">mailing thread</a> and future answers are interesting to read.</p>
+<p>Some history:</p>
+<ul class="simple">
+<li>1991: Python 0.9.1</li>
+<li>1995: PIL started</li>
+<li>1998: Zope</li>
+<li>1999: Zope2</li>
+<li>2000: Python 2.0 with distutils</li>
+<li>2001: Plone</li>
+<li>2005: Buildout</li>
+<li>2006: I attended my first Plone Conference, in Washington</li>
+<li>2006: setuptools was born</li>
+</ul>
+<p>PIL had an issue, or Plone had an issue with PIL:</p>
+<ul class="simple">
+<li>PIL used distutils.</li>
+<li>Plone 3.2 used Buildout and setuptools</li>
+<li>PIL was not installable in Buildout and setuptools</li>
+<li>Specific problem: <tt class="docutils literal"><span class="pre">import</span> <span class="pre">Image</span></tt> could mean the Image module from PIL, or the Image module from Zope.</li>
+</ul>
+<p>Various ways of repackaging PIL started, for example <tt class="docutils literal"><span class="pre">PILwoTk</span></tt>. You can still find various PIL derivatives at <a class="reference" href="https://dist.plone.org/thirdparty/">https://dist.plone.org/thirdparty/</a></p>
+<p>PIL 1.1.6 from 2006 is still the last version on <a class="reference" href="https://pypi.org/project/PIL/#history">PyPI</a>. I got maintainership of this page this year, actually.
+Pillow 1.0 is basically the same, except that it uses <tt class="docutils literal"><span class="pre">setuptools</span></tt>.
+This worked in buildout.
+I was happy.</p>
+<p>Couple years, nothing really interesting happened.
+But some contributors came along.
+Pillow 2.0.0 in March 2013 had Python 3 support.</p>
+<p>An important milestone in 2015: we added release notes.</p>
+<p>Release schedule: in the beginning of every quarter.</p>
+<p>We get some money from Tidelift for maintenance.</p>
+
+          ]]>
+      </content>
+
+
+
+      <author>
+        <name>Maurits van Rees</name>
+      </author>
+
+      <published>2020-12-08T16:23:06+00:00</published>
+
+      <updated>2020-12-08T16:26:22+00:00</updated>
+
+
+        <category term="plone" />
+
+
+        <category term="ploneconf2020" />
+
+
+    </entry>
+
+
+
+
+    <entry>
+
+      <title>Lightning talks Monday</title>
+
+      <link rel="alternate" type="text/html"
+            href="https://maurits.vanrees.org/weblog/archive/2020/12/lightning-talks-monday" />
+
+
+
+      <id>urn:syndication:73d847717e4336392db709c0738ec383</id>
+
+
+
+
+
+
+      <content type="html"
+               xml:base="https://maurits.vanrees.org"
+               xml:lang="en-US" xml:space="preserve">
+          <![CDATA[
+          <div class="section" id="alec-mitchell-wysiwyg-problems-be-gone">
+<h3><a name="alec-mitchell-wysiwyg-problems-be-gone">Alec Mitchell: WYSIWYG problems be gone</a></h3>
+<p>A new add-on to vastly* improve your content editing experience.</p>
+<p>(* size of improvement may vary, no warranty implied. The following is (un)paid free software promotional content)</p>
+<p>Adding images to a document is so hard! At least nine steps! (Difficulty be exaggerated for marketing purposes).
+Why can't you drop an image in?
+You can, with our new, super special add-on <a class="reference" href="https://pypi.org/project/kcrw.tinymce-imagedrop/">krcw.tinymce_imagedrop</a>.</p>
+<p>Can you drop two?
+Yes!</p>
+<p>Can you drop more than two?
+No, because browsers are weird.</p>
+<p>But it fails gracefully.</p>
+</div>
+<div class="section" id="steve-piercy-deform-and-friends">
+<h3><a name="steve-piercy-deform-and-friends">Steve Piercy: Deform and friends</a></h3>
+<p>How I learned to stop worrying and love web forms.
+We must have a good interface, data structure, validation, security.
+Deform (form library), colander (de/serialization), peppercorn (data structure), bootstrap forms for design.
+We have a looooong list of widgets.
+In deform 3.0 we will use bootstrap 5.
+See <a class="reference" href="https://github.com/pylons/deform">https://github.com/pylons/deform</a></p>
+</div>
+<div class="section" id="christopher-lozinski-forest-wiki">
+<h3><a name="christopher-lozinski-forest-wiki">Christopher Lozinski: Forest Wiki</a></h3>
+<p>The <a class="reference" href="https://forestwiki.com/">Forest Wiki</a> is a modern version of Zope 2.
+Biggest difference: it uses Pyramid's security and views.
+Modern JavaScript enabled ZMI: reorder, sort, rename, etc.
+Both WYSIWYG and MarkDown pages.
+Advanced types like JSON, CoffeeScript, pug. Pug is the leading template engine for Node.</p>
+</div>
+<div class="section" id="jens-klein-relstorage">
+<h3><a name="jens-klein-relstorage">Jens Klein: RelStorage</a></h3>
+<p>Plone relational database backend storage.
+It is a drop-in replacement for FileStorage of ZEO.
+You can use PostgreSQL, MySQL, Oracle, SQLite.
+It has been around for about 13 years, grown old, but in recent years development has picked up, driven by Jason Madden, including Python 3 support. It is much more performant.
+Latest release 3.4.0 is form October 2020.</p>
+<p>PostgreSQL is the cloud database, kind of industry standard, well supported by all big cloud providers.
+Easy to install in Docker.</p>
+<p>Advantages of RelStorage: fast, parallel commits, better concurrency, shorter locks.
+Optimized per process caching.
+Blobs in database.
+Optionally you can use it in history free mode. You lose the Undo functionality, but you don't need to pack so often.</p>
+<p><tt class="docutils literal"><span class="pre">plone.recipe.zope2instance</span></tt> supports it with the <tt class="docutils literal"><span class="pre">rel-storage</span></tt> option.</p>
+<p>You can use additional client side caches, shared between all threads of a process.</p>
+<p>With the <tt class="docutils literal"><span class="pre">zodbconvert</span></tt> tool you convert from ZEO to RelStorage, or the other way around, including converting blobs if needed.</p>
+<p>ZODB keeps old transactions, so packing is needed, even in history free mode. RelStorage has a fast <tt class="docutils literal"><span class="pre">zodbpack</span></tt>.</p>
+<p>Blobs:</p>
+<ul>
+<li><p class="first">RelStorage 3.x is Python 3 only and runs with Plone 5.2+. Here, blobs should be stored in RelStorage.</p>
+</li>
+<li><p class="first">RelStorage 2.x is for Plone 5.0, 5.1, and blobs should <a href="#id1" name="id2"><span class="problematic" id="id2">**</span></a>not**&nbsp; be stored in the database, except for Oracle backends, otherwise you should still use a shared blobs filesystem directory.</p>
+<div class="system-message" id="id1">
+<p class="system-message-title">System Message: <a name="id1">WARNING/2</a> (<tt class="docutils">&lt;string&gt;</tt>, line 69); <em><a href="#id2">backlink</a></em></p>
+<p>Inline strong start-string without end-string.</p>
+</div>
+</li>
+</ul>
+<p>I use RelStorage today for all my live deployments. I have used it since version 1.6 with Plone 4.3 and never had problems. Always blazing fast. Dev/ops and sysadmins love it: it is a standard solution, nothing special, just works.</p>
+</div>
+<div class="section" id="maik-derstappen-add-on-catalog-for-plone">
+<h3><a name="maik-derstappen-add-on-catalog-for-plone">Maik Derstappen: Add-on catalog for Plone</a></h3>
+<p>We want to bring back an add-on catalog for Plone. You can look on PyPI, but it is hard to find packages.</p>
+<p>We worked on a tool for this. You can search on named, filter on Plone versions and add-on types.</p>
+<p>Components:</p>
+<ul class="simple">
+<li>The <a class="reference" href="https://github.com/collective/pyf.aggregator">Python Package Filter Aggregator</a> (<tt class="docutils literal"><span class="pre">pyf.aggregator</span></tt>) aggregates the meta information of all Python packages in the PyPI.</li>
+<li>an <a class="reference" href="https://github.com/collective/pyf.api">api</a> using elasticsearch</li>
+<li>a <a class="reference" href="https://github.com/collective/pyf-svelte-gui">prototype in Svelte</a></li>
+</ul>
+<p>We only aggregate packages that have classifier <tt class="docutils literal"><span class="pre">Plone</span> <span class="pre">::</span> <span class="pre">Framework</span></tt>.
+We will probably work on this during the sprints and are happy to onboard you.</p>
+</div>
+<div class="section" id="david-bain-plone-and-webflow">
+<h3><a name="david-bain-plone-and-webflow">David Bain: Plone and Webflow</a></h3>
+<p>Both platforms are for building websites, but they approach things in different ways.
+I hope this may inspire.
+Keep in mind the motivation of the two platforms, which may account for some strengths and weaknesses.</p>
+<p>Webflow is visual web design, less content management. Strong design tools.
+Designer friendly layout tools.
+You can design a page with what you could call blocks.</p>
+<p>Plone is enterprise content management, focus on security.
+Linking to an attachment is standard, where it is tricky in Webflow.
+Forms are way more flexible.</p>
+<p>We have also built a website in Webflow and based it on Plone.</p>
+</div>
+<div class="section" id="steve-piercy-pyramid-project-in-pycharm-professional">
+<h3><a name="steve-piercy-pyramid-project-in-pycharm-professional">Steve Piercy: Pyramid Project in PyCharm Professional</a></h3>
+<p>It is easy to create a such a project. Demo.
+See <a class="reference" href="https://stevepiercy.github.io/pppp/">https://stevepiercy.github.io/pppp/</a></p>
+</div>
+<div class="section" id="miu-razvan-volto-grid-block">
+<h3><a name="miu-razvan-volto-grid-block">Miu Razvan: Volto grid block</a></h3>
+<ul class="simple">
+<li>Created by Eau de Web team</li>
+<li>Dependencies: Volto blocks form</li>
+<li>Similar component: Volto columns block</li>
+<li>Use it to organize other blocks.</li>
+<li>Demo showing lots of configuration options, including for different screen sizes</li>
+<li>See <a class="reference" href="https://github.com/eea/volto-grid-block">https://github.com/eea/volto-grid-block</a></li>
+</ul>
+</div>
+<div class="section" id="maik-derstappen-custom-elements">
+<h3><a name="maik-derstappen-custom-elements">Maik Derstappen: Custom elements</a></h3>
+<p>Custom elements are an extension to normal native html elements, for example <tt class="docutils literal"><span class="pre">&lt;flag-icon&gt;</span></tt>.</p>
+<p>The promise of web components: write once, use anywhere.
+See <a class="reference" href="https://custom-elements-everywhere.com/">https://custom-elements-everywhere.com/</a></p>
+<p>How do you use this in Plone?
+Use <tt class="docutils literal"><span class="pre">plonecli</span> <span class="pre">add</span> <span class="pre">svelte_app</span></tt> to create a small app. Run <tt class="docutils literal"><span class="pre">yarn</span></tt>. Install in Plone add-ons control panel.
+Edit a page. Replace html source with <tt class="docutils literal"><span class="pre">&lt;my-svelte-app</span> <span class="pre">/&gt;</span></tt>.
+And your component is there and working.
+The size is less than five&nbsp; kilobytes.</p>
+</div>
+<div class="section" id="tiberiu-ichim-volto-slate">
+<h3><a name="tiberiu-ichim-volto-slate">Tiberiu Ichim: volto-slate</a></h3>
+<p><tt class="docutils literal"><span class="pre">volto-slate</span></tt> is a drop-in replacement for the standard rich text editor in Volto.
+Volto turns an HTML document into a modern document.</p>
+<p>Why another text editor instead of improving the existing one?</p>
+<ul class="simple">
+<li>With Slate we get a better plugin framework. Plugins are just wrappers around the editor. The standard Draft.js is meant to be integrated directly by an application, no concept of plugins out-of-the-box.</li>
+<li>Slate has simple DOM-like storage for its values, making it easier to render the ersult.</li>
+</ul>
+<p>Current status:</p>
+<ul class="simple">
+<li>No migrations of any kind.</li>
+<li>Right now not possible to completely remove or replace Draftjs out of Volto.</li>
+</ul>
+</div>
+
+          ]]>
+      </content>
+
+
+
+      <author>
+        <name>Maurits van Rees</name>
+      </author>
+
+      <published>2020-12-08T11:53:56+00:00</published>
+
+      <updated>2020-12-09T10:19:52+00:00</updated>
+
+
+        <category term="plone" />
+
+
+        <category term="ploneconf2020" />
+
+
+    </entry>
+
+
+
+
+    <entry>
+
+      <title>Fred van Dijk: collective.collectionfilter as a Light-weight Faceted Navigation or a 'compare' Console</title>
+
+      <link rel="alternate" type="text/html"
+            href="https://maurits.vanrees.org/weblog/archive/2020/12/fred-van-dijk-collective-collectionfilter-as-a-light-weight-faceted-navigation-or-a-compare-console" />
+
+
+
+      <id>urn:syndication:0a9da3a3170511af38154da7691da92a</id>
+
+
+
+
+
+
+      <content type="html"
+               xml:base="https://maurits.vanrees.org"
+               xml:lang="en-US" xml:space="preserve">
+          <![CDATA[
+          <p>I want to talk about some categorisation and classification options in Plone, next to the folder structure.</p>
+<p>Faceted navigation: drill down on 'facets' when you search for items. It was popularized by online shopping. Facets in Plone for developers is: whatever is in the ZCatalog, and for users: what you can search on in Collections.
+Gold standard is <a class="reference" href="https://github.com/eea/eea.facetednavigation">eea.facetednavigation</a>, developed for the European Environment Agency. Examples: <a class="reference" href="https://www.eea.europa.eu/highlights">EEA</a>,  and on two sites by Zest: <a class="reference" href="https://vaquums.eu/sensor-db">Vaquums</a> and <a class="reference" href="https://www.minaraad.be/zoeken">Minaraad</a>, where it replaces the standard search.</p>
+<p>collective.collectionfilter is a much leaner, meaner, but also more limited version of faceted navigation. Demo with standard Plone News Items with some tags (also known as categories, also known as Subject). Add a Collection that filters on News Items. Now add collection filter portlets.</p>
+<p>eea.facetednavigation takes over your complete page. In an action you enable or disable it.</p>
+<p>Now a demo of collectionfilter in SGBP, a documentation website for water management planning in Belgium/Flanders. The customer wanted to take some graphs and compare them. We did that with collectionfilter and collective.classifiers. With the last one we added structured categories: one for water basins and one for parameters of the graphs. Now we use collectionfilter to query a parameter and show the graphs for all water basins.</p>
+<p>You can adapt several things in the collectionfilter UI, for example change how search options are displayed. This is documented, but took me a while to get right.</p>
+<p>Collectionfilter also works with Mosaic, because the portlets are also mapped to tiles.</p>
+
+          ]]>
+      </content>
+
+
+
+      <author>
+        <name>Maurits van Rees</name>
+      </author>
+
+      <published>2020-12-07T21:10:20+00:00</published>
+
+      <updated>2020-12-07T21:10:20+00:00</updated>
+
+
+        <category term="plone" />
+
+
+        <category term="ploneconf2020" />
+
+
+    </entry>
+
+
+
+
+    <entry>
+
+      <title>Asko Soukka: Plone and Volto in a Jamstack project</title>
+
+      <link rel="alternate" type="text/html"
+            href="https://maurits.vanrees.org/weblog/archive/2020/12/asko-soukka-plone-and-volto-in-a-jamstack-project" />
+
+
+
+      <id>urn:syndication:a2b3ebe0e81fdf7ce953cb80333b0919</id>
+
+
+
+
+
+
+      <content type="html"
+               xml:base="https://maurits.vanrees.org"
+               xml:lang="en-US" xml:space="preserve">
+          <![CDATA[
+          <p>Here are the <a class="reference" href="https://datakurre.github.io/ploneconf2020/plone-and-volto-in-jamstack-project.pdf">slides</a>.</p>
+<p>I am a software architect at University of Jyväskylä. I have been using Plone since 2004 and GatsbyJS since 2018.
+The university wanted one student information management system to rule them all, but... every organisation shall do their own integrations, using granular REST API with deep JSON responses. And there should be branded study guides, which we crafted with GatsbyJS. But this was not enough for the Open University part. They really needed a CMS.</p>
+<p>We use Plone 5.2, Volto, GatsbyJS, and have 6000 html pages, times two languages, out of which 760 are Volto pages.
+With Plone we could extend content types without needing to do any coding, in the content types field editor. In volto we added auto-complete widgets with custom vocabularies. On the GatsbyJs side, we query the connected pages with GraphQL. We render Volto layouts with React components, rendering individual blocks.</p>
+<p>Why did we choose GatsbyJs? It is a ReactJS-based site generator. Being static, it is very fast. You can use multiple sources as input, using a plugin architecture. Data lookup is done with GraphQL. It is easy to get started, with comprehensive documentation.</p>
+<p>I mentored two Google Summer of Code projects for the <tt class="docutils literal"><span class="pre">gatsby-source-plone</span></tt> plugin. It supports default types and most TTW types, also Volto blocks. You can do incremental updates by modification date, so it is really fast.</p>
+<p>Not everything is easy. The full &quot;GatsbyJs experience&quot; requires practice. You want to replace inline images and links with GatsbyJs images and links, replace file links with direct downloads.</p>
+<p>Using <tt class="docutils literal"><span class="pre">&#64;plone/volto</span></tt> as dependency to render blocks seemed like a good idea, but it required webpack overrides to be impartable, and could not be used for images and links.</p>
+<p>The ugly parts of GatsbyJs:</p>
+<ul class="simple">
+<li>The GraphQL source plugin cannot cache.</li>
+<li>The build may take hours, and gigabytes of memory.</li>
+<li>The build result in readonly.</li>
+<li>For me it is hard to follow GatsbyJs development, especially individual plugins, because they use a monorepo.</li>
+</ul>
+<p>Editors can work on the site during the day, and then wee rebuild the result during the night</p>
+
+          ]]>
+      </content>
+
+
+
+      <author>
+        <name>Maurits van Rees</name>
+      </author>
+
+      <published>2020-12-07T17:54:09+00:00</published>
+
+      <updated>2020-12-07T17:54:09+00:00</updated>
+
+
+        <category term="plone" />
+
+
+        <category term="ploneconf2020" />
+
+
+    </entry>
+
+
+
+</feed>

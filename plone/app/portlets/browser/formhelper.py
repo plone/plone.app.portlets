@@ -1,26 +1,24 @@
-# -*- coding: utf-8 -*-
+from .. import PloneMessageFactory as _
+from ..browser.interfaces import IPortletAddForm
+from ..browser.interfaces import IPortletEditForm
+from ..interfaces import IPortletPermissionChecker
+from Acquisition import aq_base
+from Acquisition import aq_inner
+from Acquisition import aq_parent
+from Acquisition.interfaces import IAcquirer
+from plone.autoform.form import AutoExtensibleForm
+from Products.CMFCore.utils import getToolByName
+from Products.Five.browser import BrowserView
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from Products.statusmessages.interfaces import IStatusMessage
 from z3c.form import button
 from z3c.form import field
 from z3c.form import form
 from zope.component import getMultiAdapter
 from zope.interface import implementer
+
 import zope.event
 import zope.lifecycleevent
-
-from Products.CMFCore.utils import getToolByName
-from Products.Five.browser import BrowserView
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-
-from Acquisition import aq_parent, aq_inner, aq_base
-from Acquisition.interfaces import IAcquirer
-
-from plone.app.portlets import PloneMessageFactory as _
-from plone.app.portlets.browser.interfaces import IPortletAddForm
-from plone.app.portlets.browser.interfaces import IPortletEditForm
-from plone.app.portlets.interfaces import IPortletPermissionChecker
-from plone.autoform.form import AutoExtensibleForm
-
-from Products.statusmessages.interfaces import IStatusMessage
 
 
 @implementer(IPortletAddForm)
@@ -44,9 +42,9 @@ class AddForm(AutoExtensibleForm, form.AddForm):
             return MyAssignment()
     """
 
-    template = ViewPageTemplateFile('templates/z3cform-portlets-pageform.pt')
+    template = ViewPageTemplateFile("templates/z3cform-portlets-pageform.pt")
 
-    label = _(u"Configure portlet")
+    label = _("Configure portlet")
 
     def add(self, object):
         ob = self.context.add(object)
@@ -54,11 +52,11 @@ class AddForm(AutoExtensibleForm, form.AddForm):
         return ob
 
     def __call__(self):
-        self.request.set('disable_border', 1)
-        self.request.set('disable_plone.leftcolumn', 1)
-        self.request.set('disable_plone.rightcolumn', 1)
+        self.request.set("disable_border", 1)
+        self.request.set("disable_plone.leftcolumn", 1)
+        self.request.set("disable_plone.rightcolumn", 1)
         IPortletPermissionChecker(aq_parent(aq_inner(self.context)))()
-        return super(AddForm, self).__call__()
+        return super().__call__()
 
     def createAndAdd(self, data):
         # Filter away data values that does not come from the 'core' schema.
@@ -69,8 +67,7 @@ class AddForm(AutoExtensibleForm, form.AddForm):
         # Extender values are set by form.applyChanges below, via the usual
         # z3cform adapter lookups.
         schema_keys = field.Fields(self.schema).keys()
-        unextended_data = {key: data[key]
-                           for key in schema_keys if key in data}
+        unextended_data = {key: data[key] for key in schema_keys if key in data}
         obj = self.create(unextended_data)
 
         # Acquisition wrap temporarily to satisfy things like vocabularies
@@ -88,25 +85,24 @@ class AddForm(AutoExtensibleForm, form.AddForm):
 
     @property
     def referer(self):
-        return self.request.get('referer', '')
+        return self.request.get("referer", "")
 
     def nextURL(self):
-        urltool = getToolByName(self.context, 'portal_url')
+        urltool = getToolByName(self.context, "portal_url")
         if self.referer and urltool.isURLInPortal(self.referer):
             return self.referer
         addview = aq_parent(aq_inner(self.context))
         context = aq_parent(aq_inner(addview))
         try:
-            url = str(getMultiAdapter((context, self.request),
-                                      name=u"absolute_url"))
+            url = str(getMultiAdapter((context, self.request), name="absolute_url"))
         except (TypeError, AttributeError):
             # At least in tests we can get a TypeError: "There isn't enough
             # context to get URL information. This is probably due to a bug in
             # setting up location information."
             url = self.context.absolute_url()
-        return url + '/@@manage-portlets'
+        return url + "/@@manage-portlets"
 
-    @button.buttonAndHandler(_(u"label_save", default=u"Save"), name='add')
+    @button.buttonAndHandler(_("label_save", default="Save"), name="add")
     def handleAdd(self, action):
         data, errors = self.extractData()
         if errors:
@@ -117,13 +113,12 @@ class AddForm(AutoExtensibleForm, form.AddForm):
             # mark only as finished if we get the new object
             self._finishedAdd = True
 
-    @button.buttonAndHandler(_(u"label_cancel", default=u"Cancel"),
-                             name='cancel_add')
+    @button.buttonAndHandler(_("label_cancel", default="Cancel"), name="cancel_add")
     def handleCancel(self, action):
         nextURL = self.nextURL()
         if nextURL:
             self.request.response.redirect(nextURL)
-        return ''
+        return ""
 
 
 class NullAddForm(BrowserView):
@@ -143,25 +138,24 @@ class NullAddForm(BrowserView):
         nextURL = self.nextURL()
         if nextURL:
             self.request.response.redirect(self.nextURL())
-        return ''
+        return ""
 
     @property
     def referer(self):
-        return self.request.get('referer', '')
+        return self.request.get("referer", "")
 
     def nextURL(self):
-        urltool = getToolByName(self.context, 'portal_url')
+        urltool = getToolByName(self.context, "portal_url")
         if self.referer and urltool.isURLInPortal(self.referer):
             return self.referer
         else:
             addview = aq_parent(aq_inner(self.context))
             context = aq_parent(aq_inner(addview))
             try:
-                url = str(getMultiAdapter((context, self.request),
-                                          name=u"absolute_url"))
+                url = str(getMultiAdapter((context, self.request), name="absolute_url"))
             except (TypeError, AttributeError):
                 url = self.context.absolute_url()
-            return url + '/@@manage-portlets'
+            return url + "/@@manage-portlets"
 
     def create(self):
         raise NotImplementedError("concrete classes must implement create()")
@@ -169,38 +163,36 @@ class NullAddForm(BrowserView):
 
 @implementer(IPortletEditForm)
 class EditForm(AutoExtensibleForm, form.EditForm):
-    """An edit form for portlets.
-    """
+    """An edit form for portlets."""
 
-    template = ViewPageTemplateFile('templates/z3cform-portlets-pageform.pt')
+    template = ViewPageTemplateFile("templates/z3cform-portlets-pageform.pt")
 
-    label = _(u"Modify portlet")
+    label = _("Modify portlet")
 
     def __call__(self):
-        self.request.set('disable_border', 1)
-        self.request.set('disable_plone.leftcolumn', 1)
-        self.request.set('disable_plone.rightcolumn', 1)
+        self.request.set("disable_border", 1)
+        self.request.set("disable_plone.leftcolumn", 1)
+        self.request.set("disable_plone.rightcolumn", 1)
         IPortletPermissionChecker(aq_parent(aq_inner(self.context)))()
-        return super(EditForm, self).__call__()
+        return super().__call__()
 
     @property
     def referer(self):
-        return self.request.get('referer', '')
+        return self.request.get("referer", "")
 
     def nextURL(self):
-        urltool = getToolByName(self.context, 'portal_url')
+        urltool = getToolByName(self.context, "portal_url")
         if self.referer and urltool.isURLInPortal(self.referer):
             return self.referer
         editview = aq_parent(aq_inner(self.context))
         context = aq_parent(aq_inner(editview))
         try:
-            url = str(getMultiAdapter((context, self.request),
-                                      name=u"absolute_url"))
+            url = str(getMultiAdapter((context, self.request), name="absolute_url"))
         except (TypeError, AttributeError):
             url = self.context.absolute_url()
-        return url + '/@@manage-portlets'
+        return url + "/@@manage-portlets"
 
-    @button.buttonAndHandler(_(u"label_save", default=u"Save"), name='apply')
+    @button.buttonAndHandler(_("label_save", default="Save"), name="apply")
     def handleSave(self, action):
         data, errors = self.extractData()
         if errors:
@@ -209,22 +201,19 @@ class EditForm(AutoExtensibleForm, form.EditForm):
         changes = self.applyChanges(data)
         if changes:
             self.status = "Changes saved"
-            IStatusMessage(self.request).addStatusMessage(_(u"Changes saved"),
-                                                          "info")
+            IStatusMessage(self.request).addStatusMessage(_("Changes saved"), "info")
         else:
             self.status = "No changes"
-            IStatusMessage(self.request).addStatusMessage(_(u"No changes"),
-                                                          "info")
+            IStatusMessage(self.request).addStatusMessage(_("No changes"), "info")
 
         nextURL = self.nextURL()
         if nextURL:
             self.request.response.redirect(self.nextURL())
-        return ''
+        return ""
 
-    @button.buttonAndHandler(_(u"label_cancel", default=u"Cancel"),
-                             name='cancel_add')
+    @button.buttonAndHandler(_("label_cancel", default="Cancel"), name="cancel_add")
     def handleCancel(self, action):
         nextURL = self.nextURL()
         if nextURL:
             self.request.response.redirect(nextURL)
-        return ''
+        return ""

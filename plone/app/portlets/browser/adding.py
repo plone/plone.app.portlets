@@ -1,18 +1,15 @@
-# -*- coding: utf-8 -*-
-from warnings import warn
-
-from zope.interface import implementer
-from zope.component import getMultiAdapter
-
-from zope.container.interfaces import INameChooser
-
-from Acquisition import aq_inner, aq_base, aq_parent
+from ..interfaces import IPortletPermissionChecker
+from .interfaces import IPortletAdding
+from Acquisition import aq_base
+from Acquisition import aq_inner
+from Acquisition import aq_parent
 from OFS.SimpleItem import SimpleItem
 from Products.CMFCore.utils import getToolByName
 from Products.Five import BrowserView
-
-from plone.app.portlets.browser.interfaces import IPortletAdding
-from plone.app.portlets.interfaces import IPortletPermissionChecker
+from warnings import warn
+from zope.component import getMultiAdapter
+from zope.container.interfaces import INameChooser
+from zope.interface import implementer
 
 
 @implementer(IPortletAdding)
@@ -23,11 +20,10 @@ class PortletAdding(SimpleItem, BrowserView):
 
     # This is necessary so that context.absolute_url() works properly on the
     # add form, which in turn fixes the <base /> URL
-    id = '+'
+    id = "+"
 
     def add(self, content):
-        """Add the rule to the context
-        """
+        """Add the rule to the context"""
         context = aq_inner(self.context)
         manager = aq_base(context)
 
@@ -38,21 +34,23 @@ class PortletAdding(SimpleItem, BrowserView):
 
     @property
     def referer(self):
-        return self.request.get('referer', '')
+        return self.request.get("referer", "")
 
     def nextURL(self):
-        urltool = getToolByName(self.context, 'portal_url')
+        urltool = getToolByName(self.context, "portal_url")
         referer = self.referer
         if not referer or not urltool.isURLInPortal(referer):
             context = aq_parent(aq_inner(self.context))
-            url = str(getMultiAdapter((context, self.request),
-                                      name=u"absolute_url"))
-            referer = url + '/@@manage-portlets'
+            url = str(getMultiAdapter((context, self.request), name="absolute_url"))
+            referer = url + "/@@manage-portlets"
         return referer
 
     def renderAddButton(self):
-        warn("The renderAddButton method is deprecated, use nameAllowed",
-            DeprecationWarning, 2)
+        warn(
+            "The renderAddButton method is deprecated, use nameAllowed",
+            DeprecationWarning,
+            2,
+        )
 
     def namesAccepted(self):
         return False
