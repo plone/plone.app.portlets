@@ -61,6 +61,7 @@ class IRecentPortlet(IPortletDataProvider):
 class Assignment(base.Assignment):
     no_icons = False
     thumb_scale = None
+    no_thumbs = False
 
     def __init__(self, count=5, no_icons=False, thumb_scale=None, no_thumbs=False):
         self.count = count
