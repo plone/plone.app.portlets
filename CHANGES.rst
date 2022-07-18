@@ -4,14 +4,6 @@ Changelog
 2.5.7 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - Links in the portlet calendar were with ``&amp;`` which were not always interpreted by recent browsers.
