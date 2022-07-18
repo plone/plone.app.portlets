@@ -5,14 +5,6 @@ Changelog
 3.1.6 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - Fix portlet types from removed code breaking @@manage-portlets.
