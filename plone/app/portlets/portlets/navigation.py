@@ -352,7 +352,7 @@ class Renderer(base.Renderer):
             if not node['normalized_portal_type'] == 'file':
                 return None
             fileo = node['item'].getObject().file
-            portal_url = getNavigationRoot(self.context)
+            portal_url = self.urltool()
             mtt = getToolByName(self.context, 'mimetypes_registry')
             if fileo.contentType:
                 ctype = mtt.lookup(fileo.contentType)
