@@ -8,6 +8,17 @@ Changelog
 
 .. towncrier release notes start
 
+5.0.0b2 (2022-07-21)
+--------------------
+
+Bug fixes:
+
+
+- Fix Plone 5.2.4 migrating troubles [michaellaunay] (#157)
+- fix deprecation warnings from plone.base
+  [jensens] (#166)
+
+
 5.0.0b1 (2022-06-23)
 --------------------
 
