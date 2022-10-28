@@ -8,6 +8,16 @@ Changelog
 
 .. towncrier release notes start
 
+4.4.8 (2022-10-28)
+------------------
+
+Bug fixes:
+
+
+- Use the portal url to build the mimetype icon url
+  [erral] (#168)
+
+
 4.4.7 (2021-06-30)
 ------------------
 
