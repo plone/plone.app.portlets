@@ -75,7 +75,7 @@
           <div class="formControls">
             <input class="btn btn-primary"
                 type="submit"
-                name="submit"
+                name="buttons.login"
                 value="Log in"
                 title="Log in"
                 i18n:attributes="value label_log_in; title label_log_in;"/>
