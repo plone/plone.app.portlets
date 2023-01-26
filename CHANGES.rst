@@ -8,6 +8,15 @@ Changelog
 
 .. towncrier release notes start
 
+5.0.1 (2023-01-26)
+------------------
+
+Bug fixes:
+
+
+- Fix login button name.
+  [wkbkhard] (#132)
+
 
 5.0.0 (2022-11-30)
 ------------------
