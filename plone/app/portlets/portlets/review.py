@@ -1,6 +1,7 @@
 from .. import PloneMessageFactory as _
 from ..browser import formhelper
 from ..portlets import base
+from Acquisition import aq_base
 from Acquisition import aq_inner
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.memoize.instance import memoize
@@ -118,7 +119,7 @@ class Renderer(base.Renderer):
                 creator_name = creator.getProperty("fullname", "") or creator_id
             else:
                 creator_name = creator_id
-            hasImage = True if getattr(obj, "image", None) else False
+            hasImage = True if getattr(aq_base(obj), "image", None) else False
             images = obj.restrictedTraverse("@@images") if hasImage else None
             items.append(
                 dict(
