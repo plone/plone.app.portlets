@@ -8,6 +8,16 @@ Changelog
 
 .. towncrier release notes start
 
+5.0.2 (2023-03-14)
+------------------
+
+Bug fixes:
+
+
+- Avoid acquisition breaking the Review list portlet.
+  [frapell] (#171)
+
+
 5.0.1 (2023-01-26)
 ------------------
 
