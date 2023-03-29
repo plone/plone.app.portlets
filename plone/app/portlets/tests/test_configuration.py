@@ -32,23 +32,12 @@ from zope.interface import Interface
 import time
 
 
-# BBB Zope 2.12
-try:
-    from OFS import metaconfigure
-    from Zope2.App import zcml
-
-    zcml  # pyflakes
-    metaconfigure
-except ImportError:
-    from Products.Five import fiveconfigure as metaconfigure
-    from Products.Five import zcml
-
-
 class DummyView(BrowserView):
     pass
 
 
 # A sample portlet
+
 
 class ITestPortlet(IPortletDataProvider):
     test_text = schema.TextLine(title="Test")
