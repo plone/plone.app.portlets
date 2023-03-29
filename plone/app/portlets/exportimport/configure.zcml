@@ -1,7 +1,6 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
-    xmlns:zcml="http://namespaces.zope.org/zcml"
     i18n_domain="plone"
     >
 
@@ -30,14 +29,10 @@
       handler=".portlets.exportPortlets"
       />
 
-  <configure zcml:condition="not-installed Products.CMFCore.src">
-
-    <utility
-        factory=".portlets.Blacklist"
-        provides="Products.GenericSetup.interfaces.IComponentsHandlerBlacklist"
-        name="plone.app.portlets.exportimport"
-        />
-
-  </configure>
+  <utility
+      factory=".portlets.Blacklist"
+      provides="Products.GenericSetup.interfaces.IComponentsHandlerBlacklist"
+      name="plone.app.portlets.exportimport"
+      />
 
 </configure>
