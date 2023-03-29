@@ -5,7 +5,7 @@ from plone.portlets.constants import USER_CATEGORY
 from plone.portlets.interfaces import IPortletManager
 from plone.protect.authenticator import createToken
 from Products.CMFCore.utils import getToolByName
-from plone.base import PloneMessageFactory as _
+from .. import PloneMessageFactory as _
 from Products.Five.browser import BrowserView
 from Products.statusmessages.interfaces import IStatusMessage
 from zope.component import getUtility
