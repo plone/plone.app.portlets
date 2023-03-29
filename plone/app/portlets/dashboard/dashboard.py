@@ -1,3 +1,4 @@
+from .. import PloneMessageFactory as _
 from AccessControl import getSecurityManager
 from plone.memoize.instance import memoize
 from plone.portlets.constants import GROUP_CATEGORY
@@ -5,7 +6,6 @@ from plone.portlets.constants import USER_CATEGORY
 from plone.portlets.interfaces import IPortletManager
 from plone.protect.authenticator import createToken
 from Products.CMFCore.utils import getToolByName
-from .. import PloneMessageFactory as _
 from Products.Five.browser import BrowserView
 from Products.statusmessages.interfaces import IStatusMessage
 from zope.component import getUtility

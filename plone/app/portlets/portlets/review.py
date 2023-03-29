@@ -3,12 +3,12 @@ from ..browser import formhelper
 from ..portlets import base
 from Acquisition import aq_base
 from Acquisition import aq_inner
+from plone.base.interfaces.controlpanel import ISiteSchema
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.memoize.instance import memoize
 from plone.portlets.interfaces import IPortletDataProvider
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
-from plone.base.interfaces.controlpanel import ISiteSchema
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope import schema
 from zope.component import getMultiAdapter

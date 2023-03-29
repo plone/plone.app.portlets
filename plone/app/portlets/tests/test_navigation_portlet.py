@@ -6,13 +6,13 @@ from plone.app.portlets.storage import PortletAssignmentMapping
 from plone.app.portlets.tests.base import PortletsTestCase
 from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
+from plone.base.interfaces import INavigationSchema
 from plone.portlets.interfaces import IPortletAssignment
 from plone.portlets.interfaces import IPortletDataProvider
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPortletRenderer
 from plone.portlets.interfaces import IPortletType
 from plone.registry.interfaces import IRegistry
-from plone.base.interfaces import INavigationSchema
 from Products.CMFPlone.tests import dummy
 from Products.GenericSetup.utils import _getDottedName
 from zope.component import getMultiAdapter

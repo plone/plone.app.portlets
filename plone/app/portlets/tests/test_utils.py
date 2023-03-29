@@ -81,9 +81,7 @@ class TestRendering(PortletsTestCase):
             )
         )
         render_portlet_view = PortletUtilities(context, request)
-        rendered_portlet = render_portlet_view.render_portlet(
-            safe_text(portlet_hash)
-        )
+        rendered_portlet = render_portlet_view.render_portlet(safe_text(portlet_hash))
         self.assertIn("portletNews", rendered_portlet)
         self.assertIn("Test News", rendered_portlet)
 

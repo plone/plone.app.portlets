@@ -3,13 +3,13 @@ from ..cache import render_cachekey
 from ..portlets import base
 from Acquisition import aq_inner
 from plone.app.layout.navigation.root import getNavigationRoot
+from plone.base.interfaces.controlpanel import ISiteSchema
 from plone.memoize import ram
 from plone.memoize.compress import xhtml_compress
 from plone.memoize.instance import memoize
 from plone.portlets.interfaces import IPortletDataProvider
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
-from plone.base.interfaces.controlpanel import ISiteSchema
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.MimetypesRegistry.MimeTypeItem import guess_icon_path
 from zope import schema
