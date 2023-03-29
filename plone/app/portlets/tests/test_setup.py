@@ -9,6 +9,8 @@ from zope.component import getSiteManager
 from zope.component import getUtilitiesFor
 from zope.component import getUtility
 
+import unittest
+
 
 class TestProductInstall(PortletsTestCase):
     def testPortletManagersRegistered(self):
@@ -49,9 +51,6 @@ class TestProductInstall(PortletsTestCase):
 
 
 def test_suite():
-    from unittest import makeSuite
-    from unittest import TestSuite
-
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestProductInstall))
+    suite = unittest.TestSuite()
+    suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(TestProductInstall))
     return suite

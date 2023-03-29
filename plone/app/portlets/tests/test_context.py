@@ -4,6 +4,8 @@ from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.portlets.interfaces import IPortletContext
 
+import unittest
+
 
 class TestBasicContext(PortletsTestCase):
     def testParent(self):
@@ -106,10 +108,9 @@ class TestPortalRootContext(PortletsTestCase):
 
 
 def test_suite():
-    from unittest import makeSuite
-    from unittest import TestSuite
-
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestBasicContext))
-    suite.addTest(makeSuite(TestPortalRootContext))
+    suite = unittest.TestSuite()
+    suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(TestBasicContext))
+    suite.addTest(
+        unittest.defaultTestLoader.loadTestsFromTestCase(TestPortalRootContext)
+    )
     return suite

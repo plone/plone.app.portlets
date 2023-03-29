@@ -15,6 +15,8 @@ from zope.component import getUtility
 from zope.component import queryUtility
 from zope.i18nmessageid import Message
 
+import unittest
+
 
 class PortletsExportImportTestCase(PortletsTestCase):
     def afterSetUp(self):
@@ -248,14 +250,15 @@ class TestExportPortletManagers(PortletsExportImportTestCase):
 
 
 def test_suite():
-    from unittest import makeSuite
-    from unittest import TestSuite
-
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestImportPortlets))
-    suite.addTest(makeSuite(TestExportPortlets))
-    suite.addTest(makeSuite(TestImportPortletManagers))
-    suite.addTest(makeSuite(TestExportPortletManagers))
+    suite = unittest.TestSuite()
+    suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(TestImportPortlets))
+    suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(TestExportPortlets))
+    suite.addTest(
+        unittest.defaultTestLoader.loadTestsFromTestCase(TestImportPortletManagers)
+    )
+    suite.addTest(
+        unittest.defaultTestLoader.loadTestsFromTestCase(TestExportPortletManagers)
+    )
     return suite
 
 

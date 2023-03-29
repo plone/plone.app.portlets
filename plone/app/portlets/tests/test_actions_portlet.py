@@ -12,6 +12,8 @@ from Products.CMFCore.utils import getToolByName
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 
+import unittest
+
 
 class TestPortlet(PortletsTestCase):
     def afterSetUp(self):
@@ -239,3 +241,10 @@ class TestRenderer(PortletsTestCase):
         expected = {"Cut", "Copy", "Rename", "Delete"}
         got = {str(link["title"]) for link in output}
         self.assertTrue(expected.issubset(got))
+
+
+def test_suite():
+    suite = unittest.TestSuite()
+    suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(TestPortlet))
+    suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(TestRenderer))
+    return suite

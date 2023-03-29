@@ -14,6 +14,8 @@ from plone.portlets.interfaces import IPortletManager
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 
+import unittest
+
 
 class TestTraversal(PortletsTestCase):
     def _assertSameObject(self, a, b):
@@ -90,9 +92,6 @@ class TestTraversal(PortletsTestCase):
 
 
 def test_suite():
-    from unittest import makeSuite
-    from unittest import TestSuite
-
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestTraversal))
+    suite = unittest.TestSuite()
+    suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(TestTraversal))
     return suite

@@ -30,6 +30,7 @@ from zope.interface import implementer
 from zope.interface import Interface
 
 import time
+import unittest
 
 
 class DummyView(BrowserView):
@@ -582,10 +583,7 @@ class TestGenericSetup(PortletsTestCase):
 
 
 def test_suite():
-    from unittest import makeSuite
-    from unittest import TestSuite
-
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestZCML))
-    suite.addTest(makeSuite(TestGenericSetup))
+    suite = unittest.TestSuite()
+    suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(TestZCML))
+    suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(TestGenericSetup))
     return suite

@@ -20,10 +20,10 @@ from zope.interface import implementer
 from zope.interface import Interface
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 
+import unittest
+
 
 # A sample schemaextender:
-
-
 EXTENDER_PREFIX = "portletcssclass"
 
 
@@ -257,9 +257,6 @@ class TestSchemaExtender(PortletsTestCase):
 
 
 def test_suite():
-    from unittest import makeSuite
-    from unittest import TestSuite
-
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestSchemaExtender))
+    suite = unittest.TestSuite()
+    suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(TestSchemaExtender))
     return suite

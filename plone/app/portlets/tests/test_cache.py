@@ -2,6 +2,8 @@ from plone.app.portlets.cache import render_cachekey
 from plone.app.portlets.tests.base import PortletsTestCase
 from plone.app.testing import logout
 
+import unittest
+
 
 class MockBrain:
     def __init__(self, path="some/path", modified="2002-01-01"):
@@ -60,9 +62,6 @@ class TestCacheKey(PortletsTestCase):
 
 
 def test_suite():
-    from unittest import makeSuite
-    from unittest import TestSuite
-
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestCacheKey))
+    suite = unittest.TestSuite()
+    suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(TestCacheKey))
     return suite

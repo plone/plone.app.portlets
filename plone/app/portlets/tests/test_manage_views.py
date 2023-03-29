@@ -1,5 +1,7 @@
 from plone.app.portlets.tests.base import PortletsTestCase
 
+import unittest
+
 
 class TestManageAssignments(PortletsTestCase):
     def testMoveUp(self):
@@ -13,10 +15,7 @@ class TestManageAssignments(PortletsTestCase):
 
 
 def test_suite():
-    from unittest import TestSuite
-
-    # from unittest import makeSuite
-    suite = TestSuite()
+    suite = unittest.TestSuite()
     # TODO: Write tests that *pass*
-    # suite.addTest(makeSuite(TestManageAssignments))
+    # suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(TestManageAssignments))
     return suite

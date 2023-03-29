@@ -14,6 +14,8 @@ from plone.portlets.utils import hashPortletInfo
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 
+import unittest
+
 
 class TestAssignmentFromKey(PortletsTestCase):
     def afterSetUp(self):
@@ -87,10 +89,9 @@ class TestRendering(PortletsTestCase):
 
 
 def test_suite():
-    from unittest import makeSuite
-    from unittest import TestSuite
-
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestAssignmentFromKey))
-    suite.addTest(makeSuite(TestRendering))
+    suite = unittest.TestSuite()
+    suite.addTest(
+        unittest.defaultTestLoader.loadTestsFromTestCase(TestAssignmentFromKey)
+    )
+    suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(TestRendering))
     return suite
