@@ -425,7 +425,7 @@ class TestGenericSetup(PortletsTestCase):
 
     def testPurge(self):
         manager = queryUtility(IPortletManager, name="test.testcolumn")
-        self.assertNotEquals(None, manager)
+        self.assertNotEqual(None, manager)
 
         context = DummyImportContext(self.portal, purge=False)
         context._files[
@@ -441,7 +441,7 @@ class TestGenericSetup(PortletsTestCase):
 
     def testManagerRemove(self):
         manager = queryUtility(IPortletManager, name="test.testcolumn")
-        self.assertNotEquals(None, manager)
+        self.assertNotEqual(None, manager)
 
         context = DummyImportContext(self.portal, purge=False)
         context._files[

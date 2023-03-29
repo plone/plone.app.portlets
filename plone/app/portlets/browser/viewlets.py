@@ -12,10 +12,10 @@ class ManagePortletsFallbackViewlet(ViewletBase):
 
     def update(self):
         plonelayout = getMultiAdapter(
-            (self.context, self.request), name=u"plone_layout"
+            (self.context, self.request), name="plone_layout"
         )
         context_state = getMultiAdapter(
-            (self.context, self.request), name=u"plone_context_state"
+            (self.context, self.request), name="plone_context_state"
         )
 
         self.portlet_assignable = context_state.portlet_assignable()
@@ -36,7 +36,7 @@ class FooterViewlet(ViewletBase):
     index = ViewPageTemplateFile("templates/footer.pt")
 
     def update(self):
-        super(FooterViewlet, self).update()
+        super().update()
         self.year = date.today().year
 
     def render_footer_portlets(self):
