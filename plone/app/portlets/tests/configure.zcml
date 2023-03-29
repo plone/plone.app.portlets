@@ -1,26 +1,28 @@
-<configure xmlns="http://namespaces.zope.org/zope"
+<configure
+    xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser"
-    xmlns:plone="http://namespaces.plone.org/plone"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:plone="http://namespaces.plone.org/plone"
     package="plone.app.portlets"
-    i18n_domain="test">
+    i18n_domain="test"
+    >
 
-    <plone:portlet
-        name="portlets.test.Test"
-        interface="plone.app.portlets.tests.test_configuration.ITestPortlet"
-        assignment="plone.app.portlets.tests.test_configuration.TestAssignment"
-        renderer="plone.app.portlets.tests.test_configuration.TestRenderer"
-        addview="plone.app.portlets.tests.test_configuration.TestAddForm"
-        editview="plone.app.portlets.tests.test_configuration.TestEditForm"
-        />
+  <plone:portlet
+      name="portlets.test.Test"
+      interface="plone.app.portlets.tests.test_configuration.ITestPortlet"
+      assignment="plone.app.portlets.tests.test_configuration.TestAssignment"
+      renderer="plone.app.portlets.tests.test_configuration.TestRenderer"
+      addview="plone.app.portlets.tests.test_configuration.TestAddForm"
+      editview="plone.app.portlets.tests.test_configuration.TestEditForm"
+      />
 
-    <genericsetup:registerProfile
-        name="testing"
-        title="plone.app.portlets testing"
-        description="Used for testing only"
-        directory="tests/profiles/testing"
-        for="Products.CMFCore.interfaces.ISiteRoot"
-        provides="Products.GenericSetup.interfaces.EXTENSION"
-        />
+  <genericsetup:registerProfile
+      name="testing"
+      title="plone.app.portlets testing"
+      description="Used for testing only"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      directory="tests/profiles/testing"
+      />
 
 </configure>
