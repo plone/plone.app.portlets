@@ -3,3 +3,8 @@
 [meta]
 template = "default"
 commit-id = "65ae937a"
+
+[dependencies]
+mappings = [
+    "ExtensionClass = ['ComputedAttribute']",
+    ]
