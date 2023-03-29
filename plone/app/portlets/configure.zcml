@@ -2,7 +2,6 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:five="http://namespaces.zope.org/five"
-    xmlns:zcml="http://namespaces.zope.org/zcml"
     >
 
   <include package="plone.portlets" />
@@ -30,19 +29,12 @@
 
   <adapter factory=".dashboard.DefaultDashboard" />
 
-  <!-- Make the site root and any ATContentType a possible portlet manager -->
+  <!-- Make the site root a possible portlet manager -->
   <class class="Products.CMFPlone.Portal.PloneSite">
     <implements interface="plone.portlets.interfaces.ILocalPortletAssignable" />
   </class>
 
-  <class
-      class="Products.ATContentTypes.content.base.ATCTMixin"
-      zcml:condition="installed Products.ATContentTypes"
-      >
-    <implements interface="plone.portlets.interfaces.ILocalPortletAssignable" />
-  </class>
-
-  <!-- Make a Zope 2 safe traversal adapter for assignment mappings -->
+  <!-- Make a Zope safe traversal adapter for assignment mappings -->
   <adapter
       factory=".storage.PortletAssignmentMappingTraverser"
       provides="zope.publisher.interfaces.browser.IBrowserPublisher"
