@@ -20,7 +20,6 @@ from zope.interface import implementer
 
 
 class INewsPortlet(IPortletDataProvider):
-
     count = schema.Int(
         title=_("Number of items to display"),
         description=_("How many items to list."),
@@ -60,7 +59,6 @@ class INewsPortlet(IPortletDataProvider):
 
 @implementer(INewsPortlet)
 class Assignment(base.Assignment):
-
     thumb_scale = None
     no_thumbs = False
 
@@ -78,7 +76,6 @@ class Assignment(base.Assignment):
 
 
 class Renderer(base.Renderer):
-
     _template = ViewPageTemplateFile("news.pt")
 
     def __init__(self, *args):

@@ -150,7 +150,6 @@ class INavigationPortlet(IPortletDataProvider):
 
 @implementer(INavigationPortlet)
 class Assignment(base.Assignment):
-
     name = ""
     root = None
     root_uid = None

@@ -63,7 +63,6 @@ class ITestPortlet(IPortletDataProvider):
 
 @implementer(ITestPortlet)
 class TestAssignment(base.Assignment):
-
     test_text = None
     test_bool = None
     test_tuple = None

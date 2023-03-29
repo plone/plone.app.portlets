@@ -15,7 +15,6 @@ from zope.event import notify
 
 class TestDashboard(PortletsTestCase):
     def test_default_dashboard_created_for_new_user(self):
-
         col = getUtility(IPortletManager, name="plone.dashboard1")
         user_portlets = col[USER_CATEGORY]
         self.assertFalse("fakeuser" in user_portlets)
@@ -46,7 +45,6 @@ class TestDashboard(PortletsTestCase):
 
 
 def test_suite():
-
     suite = TestSuite()
     suite.addTest(makeSuite(TestDashboard))
     return suite

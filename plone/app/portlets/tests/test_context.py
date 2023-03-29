@@ -18,7 +18,6 @@ class TestBasicContext(PortletsTestCase):
         self.assertEqual(g[1], ("user", TEST_USER_ID))
 
     def testGlobalsWithSingleGroup(self):
-
         group = self.portal.portal_groups.getGroupById("Reviewers")
         setRoles(self.portal, TEST_USER_ID, ["Manager"])
         group.addMember(TEST_USER_ID)
@@ -32,7 +31,6 @@ class TestBasicContext(PortletsTestCase):
         self.assertEqual(g[3], ("group", "Reviewers"))
 
     def testGlobalsWithMultipleGroup(self):
-
         setRoles(self.portal, TEST_USER_ID, ["Manager"])
         group = self.portal.portal_groups.getGroupById("Reviewers")
         group.addMember(TEST_USER_ID)
@@ -70,7 +68,6 @@ class TestPortalRootContext(PortletsTestCase):
         self.assertEqual(g[1], ("user", TEST_USER_ID))
 
     def testGlobalsWithSingleGroup(self):
-
         group = self.portal.portal_groups.getGroupById("Reviewers")
         setRoles(self.portal, TEST_USER_ID, ["Manager"])
         group.addMember(TEST_USER_ID)
@@ -84,7 +81,6 @@ class TestPortalRootContext(PortletsTestCase):
         self.assertEqual(g[3], ("group", "Reviewers"))
 
     def testGlobalsWithMultipleGroup(self):
-
         setRoles(self.portal, TEST_USER_ID, ["Manager"])
         group = self.portal.portal_groups.getGroupById("Reviewers")
         group.addMember(TEST_USER_ID)

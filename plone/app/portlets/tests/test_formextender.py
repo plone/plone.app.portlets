@@ -149,7 +149,6 @@ class TestSchemaExtender(PortletsTestCase):
         self.assertEqual(settings.get("css_class"), "my-class")
 
     def test_editform_fields(self):
-
         schema_field_names = [k for k in field.Fields(news.INewsPortlet).keys()]
 
         mapping = PortletAssignmentMapping()

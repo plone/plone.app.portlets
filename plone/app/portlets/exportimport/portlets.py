@@ -802,7 +802,6 @@ def exportPortlets(context):
 
 
 class InvalidPortletForDefinition(Exception):
-
     message = """The following portlet definition is invalid: %s
 The 'for' attribute is not supported, use 'for' sub-elements instead.
 See http://plone.org/documentation/manual/upgrade-guide/version/\

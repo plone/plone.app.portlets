@@ -34,7 +34,6 @@ class Assignment(base.Assignment):
 
 
 class Renderer(base.Renderer):
-
     render = ViewPageTemplateFile("search.pt")
     action = "@@search"
     livesearch_action = "livesearch_reply"

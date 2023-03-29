@@ -13,7 +13,6 @@ class ILanguagePortlet(IPortletDataProvider):
 
 @implementer(ILanguagePortlet)
 class Assignment(base.Assignment):
-
     title = _("label_languages", default="Languages")
 
 

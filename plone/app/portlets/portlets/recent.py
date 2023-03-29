@@ -21,7 +21,6 @@ import os
 
 
 class IRecentPortlet(IPortletDataProvider):
-
     count = schema.Int(
         title=_("Number of items to display"),
         description=_("How many items to list."),

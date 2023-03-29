@@ -11,9 +11,7 @@ class ManagePortletsFallbackViewlet(ViewletBase):
     index = ViewPageTemplateFile("templates/manage_portlets_fallback.pt")
 
     def update(self):
-        plonelayout = getMultiAdapter(
-            (self.context, self.request), name="plone_layout"
-        )
+        plonelayout = getMultiAdapter((self.context, self.request), name="plone_layout")
         context_state = getMultiAdapter(
             (self.context, self.request), name="plone_context_state"
         )
@@ -31,6 +29,7 @@ class ManagePortletsFallbackViewlet(ViewletBase):
         if not has_manage_portlets_permission:
             return False
         return bool(not self.sl and not self.sr and self.portlet_assignable)
+
 
 class FooterViewlet(ViewletBase):
     index = ViewPageTemplateFile("templates/footer.pt")

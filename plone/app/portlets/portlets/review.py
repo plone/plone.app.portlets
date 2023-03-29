@@ -19,7 +19,6 @@ from zope.interface import Interface
 
 
 class IReviewPortlet(IPortletDataProvider):
-
     no_icons = schema.Bool(
         title=_("Suppress Icons"),
         description=_("If enabled, the portlet will not show document type icons"),
@@ -64,7 +63,6 @@ class Assignment(base.Assignment):
 
 
 class Renderer(base.Renderer):
-
     render = ViewPageTemplateFile("review.pt")
 
     title = _("box_review_list", default="Review List")

@@ -15,7 +15,6 @@ import doctest
 
 
 class PloneAppPortlets(PloneSandboxLayer):
-
     defaultBases = (PLONE_FIXTURE,)
 
     def setUpZope(self, app, configurationContext):

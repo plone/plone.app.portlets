@@ -147,7 +147,6 @@ def portletRendererDirective(
         raise TypeError("'template' and 'class' cannot be specified at the same time")
 
     if template is not None:
-
         # Look up the default renderer for this portlet
         base_class = _default_renderers.get(portlet, None)
         if base_class is None:

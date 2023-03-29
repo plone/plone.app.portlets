@@ -14,7 +14,6 @@ class ILoginPortlet(IPortletDataProvider):
 
 @implementer(ILoginPortlet)
 class Assignment(base.Assignment):
-
     title = _("label_log_in", default="Log in")
 
 
