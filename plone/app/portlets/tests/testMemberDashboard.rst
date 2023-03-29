@@ -16,7 +16,7 @@ bug: 11174: Portal Members can't add portlets to their dashboard
 ----------------------
 Login as the 'user1' user
 
-    >>> from plone.testing.z2 import Browser
+    >>> from plone.testing.zope import Browser
     >>> browser = Browser(layer['app'])
     >>> portalURL = portal.absolute_url()
 
