@@ -245,7 +245,7 @@ class PropertyPortletAssignmentExportImportHandler:
                     try:
                         value = tc(value)
                         break
-                    except:
+                    except Exception:
                         pass
         return value
 
@@ -651,12 +651,12 @@ class PortletsXMLAdapter(XMLAdapterBase):
                 child.setAttribute("location", "/")
 
                 status = assignable.getBlacklistStatus(category)
-                if status == True:
-                    child.setAttribute("status", "block")
-                elif status == False:
-                    child.setAttribute("status", "show")
-                else:
+                if status is None:
                     child.setAttribute("status", "acquire")
+                elif status:
+                    child.setAttribute("status", "block")
+                else:
+                    child.setAttribute("status", "show")
 
                 fragment.appendChild(child)
 

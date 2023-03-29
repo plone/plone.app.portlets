@@ -127,7 +127,7 @@ class RSSFeed:
             # check for regular update
             if self.needs_update:
                 return self._retrieveFeed()
-        except:
+        except Exception:
             self._failed = True
             logger.exception("failed to update RSS feed %s", self.url)
 

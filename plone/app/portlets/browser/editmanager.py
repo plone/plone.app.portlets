@@ -392,9 +392,10 @@ class ContextualEditPortletManagerRenderer(EditPortletManagerRenderer):
                 mapping = self.manager.get(category, None)
                 assignments = []
                 if mapping is not None:
-                    is_visible = lambda a: IPortletAssignmentSettings(a).get(
-                        "visible", True
-                    )
+
+                    def is_visible(a):
+                        return IPortletAssignmentSettings(a).get("visible", True)
+
                     assignments.extend(
                         [a for a in mapping.get(key, {}).values() if is_visible(a)]
                     )

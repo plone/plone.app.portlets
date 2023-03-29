@@ -2,6 +2,7 @@ from plone.app.portlets.browser.adding import PortletAdding
 from plone.app.portlets.exportimport.portlets import importPortlets
 from plone.app.portlets.interfaces import IColumn
 from plone.app.portlets.interfaces import IPortletTypeInterface
+from plone.app.portlets.portlets import base
 from plone.app.portlets.tests.base import PortletsTestCase
 from plone.app.portlets.utils import assignment_mapping_from_key
 from plone.portlets.constants import CONTENT_TYPE_CATEGORY
@@ -9,6 +10,7 @@ from plone.portlets.constants import CONTEXT_CATEGORY
 from plone.portlets.constants import GROUP_CATEGORY
 from plone.portlets.interfaces import ILocalPortletAssignmentManager
 from plone.portlets.interfaces import IPortletAssignmentSettings
+from plone.portlets.interfaces import IPortletDataProvider
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPortletRenderer
 from plone.portlets.interfaces import IPortletType
@@ -17,12 +19,14 @@ from Products.Five.browser import BrowserView
 from Products.GenericSetup.context import TarballExportContext
 from Products.GenericSetup.interfaces import IBody
 from Products.GenericSetup.tests.common import DummyImportContext
+from zope import schema
 from zope.component import getMultiAdapter
 from zope.component import getSiteManager
 from zope.component import getUtility
 from zope.component import queryUtility
 from zope.component.interfaces import IFactory
 from zope.i18nmessageid import Message
+from zope.interface import implementer
 from zope.interface import Interface
 
 import time
@@ -45,12 +49,6 @@ class DummyView(BrowserView):
 
 
 # A sample portlet
-
-from plone.app.portlets.portlets import base
-from plone.portlets.interfaces import IPortletDataProvider
-from zope import schema
-from zope.interface import implementer
-
 
 class ITestPortlet(IPortletDataProvider):
     test_text = schema.TextLine(title="Test")

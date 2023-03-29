@@ -15,7 +15,6 @@ from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.component import queryUtility
 from zope.interface import implementer
-from zope.interface import Interface
 
 
 class IReviewPortlet(IPortletDataProvider):

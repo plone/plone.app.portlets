@@ -52,8 +52,6 @@ class TestTraversal(PortletsTestCase):
         self.assertEqual("++groupdashboard++plone.dashboard1+Reviewers", mapping.id)
 
     def testGroupDashboardNamespaceChecker(self):
-        assignment = classic.Assignment()
-        manager = getUtility(IPortletManager, name="plone.dashboard1")
         mapping = self.portal.restrictedTraverse(
             "++groupdashboard++plone.dashboard1+Reviewers"
         )

@@ -9,7 +9,6 @@ from plone.portlets.constants import CONTEXT_CATEGORY
 from plone.portlets.constants import USER_CATEGORY
 from plone.portlets.interfaces import IPortletAssignmentMapping
 from plone.portlets.interfaces import IPortletManager
-from plone.portlets.interfaces import IPortletRenderer
 from plone.portlets.utils import hashPortletInfo
 from Products.CMFPlone.utils import safe_unicode
 from zope.component import getMultiAdapter
