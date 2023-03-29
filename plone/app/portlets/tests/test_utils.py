@@ -5,12 +5,12 @@ from plone.app.portlets.storage import PortletAssignmentMapping
 from plone.app.portlets.tests.base import PortletsTestCase
 from plone.app.portlets.utils import assignment_from_key
 from plone.app.testing import TEST_USER_ID
+from plone.base.utils import safe_text
 from plone.portlets.constants import CONTEXT_CATEGORY
 from plone.portlets.constants import USER_CATEGORY
 from plone.portlets.interfaces import IPortletAssignmentMapping
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.utils import hashPortletInfo
-from Products.CMFPlone.utils import safe_unicode
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 
@@ -82,7 +82,7 @@ class TestRendering(PortletsTestCase):
         )
         render_portlet_view = PortletUtilities(context, request)
         rendered_portlet = render_portlet_view.render_portlet(
-            safe_unicode(portlet_hash)
+            safe_text(portlet_hash)
         )
         self.assertIn("portletNews", rendered_portlet)
         self.assertIn("Test News", rendered_portlet)

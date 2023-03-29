@@ -5,11 +5,11 @@
 
   <!-- Some things do not make sense in the breadcrumbs. -->
   <class class="..portlets.base.Assignment">
-    <implements interface="Products.CMFPlone.interfaces.IHideFromBreadcrumbs" />
+    <implements interface="plone.base.interfaces.IHideFromBreadcrumbs" />
   </class>
 
   <class class="..storage.PortletAssignmentMapping">
-    <implements interface="Products.CMFPlone.interfaces.IHideFromBreadcrumbs" />
+    <implements interface="plone.base.interfaces.IHideFromBreadcrumbs" />
   </class>
 
   <!-- Make a special renderer for the columns so we can control them
