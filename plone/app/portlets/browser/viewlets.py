@@ -1,8 +1,8 @@
-from zope.component import getMultiAdapter
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from plone.app.layout.viewlets.common import ViewletBase
 from AccessControl import getSecurityManager
 from datetime import date
+from plone.app.layout.viewlets.common import ViewletBase
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from zope.component import getMultiAdapter
 
 
 class ManagePortletsFallbackViewlet(ViewletBase):

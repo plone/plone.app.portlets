@@ -1,6 +1,6 @@
-from plone.app.i18n.locales.browser.selector import LanguageSelector
 from .. import PloneMessageFactory as _
 from ..portlets import base
+from plone.app.i18n.locales.browser.selector import LanguageSelector
 from plone.portlets.interfaces import IPortletDataProvider
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.component import getMultiAdapter
