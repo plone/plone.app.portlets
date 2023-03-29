@@ -16,7 +16,7 @@
       A better way of doing this would probably be to use the Owner role
       against the assignment mappings and let Manage portlets be controlled
       by that, but managing those roles properly w.r.t. the namespace
-      traveral adapters and acquisition is not fun.
+      traversal adapters and acquisition is not fun.
      -->
 
   <permission

@@ -93,7 +93,7 @@ class DeferredRenderer(Renderer):
     def render(self):
         """render the portlet
 
-        the template gets choosen depending on the initialize state
+        the template gets chosen depending on the initialize state
         """
         if self.initializing:
             return self.render_preload()

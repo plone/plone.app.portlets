@@ -93,7 +93,7 @@ class EditPortletManagerRenderer(Explicit):
                     Unauthorized,
                 ):
                     logging.getLogger("plone.app.portlets.browser").debug(
-                        "Cant get view name for TTV %s" % self.__parent__
+                        "Can't get view name for TTW %s" % self.__parent__
                     )
         return name
 

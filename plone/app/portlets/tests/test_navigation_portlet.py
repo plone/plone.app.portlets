@@ -644,7 +644,7 @@ class TestRenderer(PortletsTestCase):
         )
 
     def testPortletsTitle(self):
-        """If portlet's name is not explicitely specified we show
+        """If portlet's name is not explicitly specified we show
         default fallback 'Navigation', translate it and hide it
         with CSS."""
         view = self.renderer(self.portal)

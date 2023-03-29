@@ -232,7 +232,7 @@ New features:
   version.
   [icemac]
 
-- Add python 3 compatability
+- Add python 3 compatibility
   [pbauer, ale-rt, jensens]
 
 Bug fixes:
@@ -271,7 +271,7 @@ Bug fixes:
 
 New features:
 
-- navigation-, news-, recent-,review-portlets: add options to supress icons,
+- navigation-, news-, recent-,review-portlets: add options to suppress icons,
   read thumb_scale from registry plus  option to override thumb_scale individually
   or suppress thumbs.
   Replace paper clip (fontello icon) with mimetype icon
@@ -527,7 +527,7 @@ Fixes:
 3.0.5 (2015-05-12)
 ------------------
 
-- Supress a ZopeTestCase warning.
+- Suppress a ZopeTestCase warning.
   This fixes https://github.com/plone/Products.CMFPlone/issues/501
   [gforcada]
 
@@ -582,7 +582,7 @@ Fixes:
 3.0.1 (2014-04-16)
 ------------------
 
-- Transfered pbauer's fix of #32 'removing group-portlets' of 2.4.x-branch to
+- Transferred pbauer's fix of #32 'removing group-portlets' of 2.4.x-branch to
   master. Also Tansfered changelogs of version 2.4.4 to 2.4.8.
   [ida27]
 
@@ -686,7 +686,7 @@ Fixes:
 2.4.6 (2013-09-14)
 ------------------
 
-- Use relative links for calender next and prev buttons since caching can cause these things to change the current page the user is viewing
+- Use relative links for calendar next and prev buttons since caching can cause these things to change the current page the user is viewing
   [vangheem]
 - Fix the removing of Group- and Typeportlets https://dev.plone.org/ticket/13659
   [pbauer]
@@ -860,7 +860,7 @@ Fixes:
   [seanupton]
 
 - Navigation portlet template renders a non-site navigation root content
-  item with its apporpriate content icon, reserving the Plone site icon
+  item with its appropriate content icon, reserving the Plone site icon
   CSS sprite for default use by a site only.
   [seanupton]
 
@@ -950,7 +950,7 @@ Fixes:
 
 2.2.1 - 2011-08-08
 ------------------
-- Imporove tests readability. Merged from branches/2.1
+- Improve tests readability. Merged from branches/2.1
   [gotcha]
 
 - 'placeholder' attribute for the search portlet's field instead of the custom

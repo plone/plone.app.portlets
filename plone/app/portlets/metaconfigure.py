@@ -14,7 +14,7 @@ from zope.publisher.interfaces.browser import IBrowserView
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 
 
-# Keep track of which renderers we've registered so that we can artifically
+# Keep track of which renderers we've registered so that we can artificially
 # subclass them in portletRendererDirective. Yes, this is evil.
 _default_renderers = {}
 
@@ -36,7 +36,7 @@ def portletDirective(
     base.Assignment, a renderer deriving from base.Renderer, an addview
     using z3c form and deriving from base.AddForm and an editview (optional)
     using z3c form and deriving from base.EditForm, can use this directive
-    to avoid having to regiter each of those components individually.
+    to avoid having to register each of those components individually.
 
     In addition, we register the portlet interface using IPortletTypeInterface
     and an IFactory utility, in order to help the GenericSetup handler and

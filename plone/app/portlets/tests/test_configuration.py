@@ -276,7 +276,7 @@ class TestGenericSetup(PortletsTestCase):
             key="/",
         )
 
-        # initally there should be no portlet7
+        # initially there should be no portlet7
         self.assertEqual(mapping.get("test.portlet7", None), None)
 
         # now we add one
@@ -338,7 +338,7 @@ class TestGenericSetup(PortletsTestCase):
         )
         self.assertEqual(1, len(mapping))
 
-        # and be purgable
+        # and be purgeable
         context = DummyImportContext(self.portal, purge=False)
         context._files[
             "portlets.xml"
@@ -372,7 +372,7 @@ class TestGenericSetup(PortletsTestCase):
         )
         self.assertEqual(2, len(mapping))
 
-        # and be purgable
+        # and be purgeable
         context = DummyImportContext(self.portal, purge=False)
         context._files[
             "portlets.xml"
