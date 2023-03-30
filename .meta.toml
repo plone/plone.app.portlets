@@ -2,9 +2,12 @@
 # https://github.com/plone/meta/tree/master/config/default
 [meta]
 template = "default"
-commit-id = "65ae937a"
+commit-id = "c79ab88f"
 
 [dependencies]
 mappings = [
     "ExtensionClass = ['ComputedAttribute']",
+    ]
+ignores = [
+    "Products.CMFPlone",
     ]
