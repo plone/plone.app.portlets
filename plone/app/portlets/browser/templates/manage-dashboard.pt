@@ -1,27 +1,29 @@
-<html
-    xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:tal="http://xml.zope.org/namespaces/tal"
-    xmlns:metal="http://xml.zope.org/namespaces/metal"
-    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-    xml:lang="en"
-    lang="en"
-    metal:use-macro="context/main_template/macros/master"
-    i18n:domain="plone">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      xml:lang="en"
+      i18n:domain="plone"
+>
 
   <head>
-    <metal:block
-        fill-slot="top_slot"
-        tal:define="dummy python:request.set('disable_border',1);
-                             disable_column_one python:request.set('disable_plone.leftcolumn',1);
-                             disable_column_two python:request.set('disable_plone.rightcolumn',1);" />
+    <metal:block fill-slot="top_slot"
+                 tal:define="
+                   dummy python:request.set('disable_border',1);
+                   disable_column_one python:request.set('disable_plone.leftcolumn',1);
+                   disable_column_two python:request.set('disable_plone.rightcolumn',1);
+                 "
+    />
   </head>
 
   <body>
 
     <metal:b fill-slot="content-title">
-      <h1
-          class="documentFirstHeading"
-          i18n:translate="title_edit_dashboard">
+      <h1 class="documentFirstHeading"
+          i18n:translate="title_edit_dashboard"
+      >
         Edit your dashboard
       </h1>
     </metal:b>
@@ -32,24 +34,32 @@
 
         <div class="autotabs">
           <nav class="autotoc-nav nav nav-tabs mb-3">
-              <a class="nav-link"
-                 href="${context/@@plone_portal_state/navigation_root_url}/dashboard"
-                 i18n:translate="label_dashboard">Dashboard</a>
-              <a class="active nav-link"
-                 href="${context/@@plone_portal_state/navigation_root_url}/@@manage-dashboard?_authenticator=${view/auth_token}"
-                 i18n:translate="label_edit">Edit</a>
+            <a class="nav-link"
+               href="${context/@@plone_portal_state/navigation_root_url}/dashboard"
+               i18n:translate="label_dashboard"
+            >Dashboard</a>
+            <a class="active nav-link"
+               href="${context/@@plone_portal_state/navigation_root_url}/@@manage-dashboard?_authenticator=${view/auth_token}"
+               i18n:translate="label_edit"
+            >Edit</a>
           </nav>
 
-          <div id="dashboard"
-              class="row row-cols-1 row-cols-md-2 gx-5 gy-5">
-            <div id="dashboard-portlets1" class=""
-              tal:content="structure provider:plone.dashboard1" />
+          <div class="row row-cols-1 row-cols-md-2 gx-5 gy-5"
+               id="dashboard"
+          >
+            <div class=""
+                 id="dashboard-portlets1"
+                 tal:content="structure provider:plone.dashboard1"
+            ></div>
             <div id="dashboard-portlets2"
-              tal:content="structure provider:plone.dashboard2" />
+                 tal:content="structure provider:plone.dashboard2"
+            ></div>
             <div id="dashboard-portlets3"
-              tal:content="structure provider:plone.dashboard3" />
+                 tal:content="structure provider:plone.dashboard3"
+            ></div>
             <div id="dashboard-portlets4"
-              tal:content="structure provider:plone.dashboard4" />
+                 tal:content="structure provider:plone.dashboard4"
+            ></div>
           </div>
         </div>
 

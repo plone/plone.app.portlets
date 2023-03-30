@@ -7,7 +7,6 @@ import unittest
 
 
 def test_suite():
-
     import plone.app.portlets.storage
 
     return unittest.TestSuite(

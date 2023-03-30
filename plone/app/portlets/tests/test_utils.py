@@ -5,15 +5,16 @@ from plone.app.portlets.storage import PortletAssignmentMapping
 from plone.app.portlets.tests.base import PortletsTestCase
 from plone.app.portlets.utils import assignment_from_key
 from plone.app.testing import TEST_USER_ID
+from plone.base.utils import safe_text
 from plone.portlets.constants import CONTEXT_CATEGORY
 from plone.portlets.constants import USER_CATEGORY
 from plone.portlets.interfaces import IPortletAssignmentMapping
 from plone.portlets.interfaces import IPortletManager
-from plone.portlets.interfaces import IPortletRenderer
 from plone.portlets.utils import hashPortletInfo
-from Products.CMFPlone.utils import safe_unicode
 from zope.component import getMultiAdapter
 from zope.component import getUtility
+
+import unittest
 
 
 class TestAssignmentFromKey(PortletsTestCase):
@@ -82,18 +83,15 @@ class TestRendering(PortletsTestCase):
             )
         )
         render_portlet_view = PortletUtilities(context, request)
-        rendered_portlet = render_portlet_view.render_portlet(
-            safe_unicode(portlet_hash)
-        )
+        rendered_portlet = render_portlet_view.render_portlet(safe_text(portlet_hash))
         self.assertIn("portletNews", rendered_portlet)
         self.assertIn("Test News", rendered_portlet)
 
 
 def test_suite():
-    from unittest import makeSuite
-    from unittest import TestSuite
-
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestAssignmentFromKey))
-    suite.addTest(makeSuite(TestRendering))
+    suite = unittest.TestSuite()
+    suite.addTest(
+        unittest.defaultTestLoader.loadTestsFromTestCase(TestAssignmentFromKey)
+    )
+    suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(TestRendering))
     return suite

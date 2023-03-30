@@ -120,7 +120,6 @@ class ManageContextualPortlets(BrowserView):
 
 @implementer(IManageDashboardPortletsView)
 class ManageDashboardPortlets(BrowserView):
-
     # IManagePortletsView implementation
 
     @property
@@ -212,7 +211,6 @@ class ManageGroupDashboardPortlets(BrowserView):
 
 @implementer(IManageGroupPortletsView)
 class ManageGroupPortlets(BrowserView):
-
     # IManagePortletsView implementation
 
     @property

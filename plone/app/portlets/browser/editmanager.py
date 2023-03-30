@@ -9,6 +9,7 @@ from Acquisition import aq_parent
 from Acquisition import Explicit
 from Acquisition.interfaces import IAcquirer
 from five.customerize.zpt import TTWViewTemplateRenderer
+from plone.base.interfaces import IPloneSiteRoot
 from plone.memoize.view import memoize
 from plone.portlets.constants import CONTENT_TYPE_CATEGORY
 from plone.portlets.constants import CONTEXT_CATEGORY
@@ -20,7 +21,6 @@ from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPortletManagerRenderer
 from plone.portlets.utils import hashPortletInfo
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.PythonScripts.standard import url_quote
@@ -93,7 +93,7 @@ class EditPortletManagerRenderer(Explicit):
                     Unauthorized,
                 ):
                     logging.getLogger("plone.app.portlets.browser").debug(
-                        "Cant get view name for TTV %s" % self.__parent__
+                        "Can't get view name for TTW %s" % self.__parent__
                     )
         return name
 
@@ -392,9 +392,10 @@ class ContextualEditPortletManagerRenderer(EditPortletManagerRenderer):
                 mapping = self.manager.get(category, None)
                 assignments = []
                 if mapping is not None:
-                    is_visible = lambda a: IPortletAssignmentSettings(a).get(
-                        "visible", True
-                    )
+
+                    def is_visible(a):
+                        return IPortletAssignmentSettings(a).get("visible", True)
+
                     assignments.extend(
                         [a for a in mapping.get(key, {}).values() if is_visible(a)]
                     )

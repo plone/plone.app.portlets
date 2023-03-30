@@ -1,7 +1,6 @@
 from Acquisition import aq_base
 from plone.app.event.portlets import portlet_calendar as calendar
 from plone.app.event.portlets import portlet_events as events
-from plone.app.portlets import HAS_PLONE_APP_EVENT
 from plone.app.portlets.interfaces import IPortletPermissionChecker
 from plone.app.portlets.portlets import classic
 from plone.app.portlets.portlets import login
@@ -81,8 +80,6 @@ def convert_legacy_portlets(context):
         "portlet_recent": recent.Assignment(count=5),
         "portlet_related": DONT_MIGRATE,
         "portlet_languages": DONT_MIGRATE,
-        "portlet_calendar": DONT_MIGRATE,
-        "portlet_events": DONT_MIGRATE,
         "portlet_calendar": calendar.Assignment(),
         "portlet_events": events.Assignment(count=5),
     }

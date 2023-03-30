@@ -45,7 +45,7 @@ class IManageDashboardPortletsView(IManagePortletsView):
 
 
 class IManageColumnPortletsView(IManagePortletsView):
-    """Base class for views that should display the edit fuctionality
+    """Base class for views that should display the edit functionality
     for column portlets.
 
     This allows us to register a generic portlet manager renderer for this

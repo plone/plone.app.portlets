@@ -4,6 +4,8 @@ from plone.app.portlets.browser.formhelper import AddForm
 from plone.app.portlets.browser.formhelper import EditForm
 from plone.app.portlets.tests.base import PortletsTestCase
 
+import unittest
+
 
 class TestRedirects(PortletsTestCase):
     _test_methods = [
@@ -47,9 +49,6 @@ def test_suite():
     # bin/test -s plone.app.portlets -m test_redirects
     # But the error *is* in this test_redirects.py file,
     # because it goes away when I delete this file.
-    from unittest import makeSuite
-    from unittest import TestSuite
-
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestRedirects))
+    suite = unittest.TestSuite()
+    suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(TestRedirects))
     return suite

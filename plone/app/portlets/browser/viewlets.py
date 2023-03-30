@@ -1,8 +1,8 @@
-from zope.component import getMultiAdapter
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from plone.app.layout.viewlets.common import ViewletBase
 from AccessControl import getSecurityManager
 from datetime import date
+from plone.app.layout.viewlets.common import ViewletBase
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from zope.component import getMultiAdapter
 
 
 class ManagePortletsFallbackViewlet(ViewletBase):
@@ -11,11 +11,9 @@ class ManagePortletsFallbackViewlet(ViewletBase):
     index = ViewPageTemplateFile("templates/manage_portlets_fallback.pt")
 
     def update(self):
-        plonelayout = getMultiAdapter(
-            (self.context, self.request), name=u"plone_layout"
-        )
+        plonelayout = getMultiAdapter((self.context, self.request), name="plone_layout")
         context_state = getMultiAdapter(
-            (self.context, self.request), name=u"plone_context_state"
+            (self.context, self.request), name="plone_context_state"
         )
 
         self.portlet_assignable = context_state.portlet_assignable()
@@ -32,11 +30,12 @@ class ManagePortletsFallbackViewlet(ViewletBase):
             return False
         return bool(not self.sl and not self.sr and self.portlet_assignable)
 
+
 class FooterViewlet(ViewletBase):
     index = ViewPageTemplateFile("templates/footer.pt")
 
     def update(self):
-        super(FooterViewlet, self).update()
+        super().update()
         self.year = date.today().year
 
     def render_footer_portlets(self):

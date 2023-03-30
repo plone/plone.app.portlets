@@ -140,10 +140,7 @@ class TestFunctional(unittest.TestCase):
 
 
 def test_suite():
-    from unittest import makeSuite
-    from unittest import TestSuite
-
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestPortlet))
-    suite.addTest(makeSuite(TestRenderer))
+    suite = unittest.TestSuite()
+    suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(TestPortlet))
+    suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(TestRenderer))
     return suite

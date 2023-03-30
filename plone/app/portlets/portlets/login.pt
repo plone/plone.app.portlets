@@ -1,125 +1,199 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      tal:omit-tag=""
       i18n:domain="plone"
-      tal:omit-tag="">
+>
 
   <tal:block condition="view/show">
 
-  <div class="card portlet portletLogin"
-      tal:condition="view/available">
+    <div class="card portlet portletLogin"
+         tal:condition="view/available"
+    >
 
-    <div class="card-header">
-      <a href="#"
-          class="tile"
-          tal:attributes="href view/login_form"
-          i18n:translate="box_sign_in">Log in</a>
-    </div>
+      <div class="card-header">
+        <a class="tile"
+           href="#"
+           tal:attributes="
+             href view/login_form;
+           "
+           i18n:translate="box_sign_in"
+        >Log in</a>
+      </div>
 
-    <div class="card-body">
-      <div tal:define="ac_name view/login_name;
-                        ac_password view/login_password">
-        <form action="login_form"
-            id="loginform"
-            method="post"
-            tal:attributes="action view/login_form">
-          <div>
-            <input type="hidden" name="form.submitted" value="1" />
-            <input type="hidden" name="came_from" value=""
-                tal:attributes="value context/@@plone_context_state/current_page_url" />
-            <input type="hidden" name="js_enabled" id="js_enabled" value="0" />
-            <input type="hidden" name="cookies_enabled" id="cookies_enabled" value="" />
-            <input type="hidden" name="login_name" id="login_name" value="" />
-            <input type="hidden" name="pwd_empty" id="pwd_empty" value="0" />
-          </div>
-          <div class="field"
-              tal:define="use_email_as_login python:context.portal_registry['plone.use_email_as_login'];">
-            <tal:loginname condition="not:use_email_as_login">
+      <div class="card-body">
+        <div tal:define="
+               ac_name view/login_name;
+               ac_password view/login_password;
+             ">
+          <form id="loginform"
+                action="login_form"
+                method="post"
+                tal:attributes="
+                  action view/login_form;
+                "
+          >
+            <div>
+              <input name="form.submitted"
+                     type="hidden"
+                     value="1"
+              />
+              <input name="came_from"
+                     type="hidden"
+                     value=""
+                     tal:attributes="
+                       value context/@@plone_context_state/current_page_url;
+                     "
+              />
+              <input id="js_enabled"
+                     name="js_enabled"
+                     type="hidden"
+                     value="0"
+              />
+              <input id="cookies_enabled"
+                     name="cookies_enabled"
+                     type="hidden"
+                     value=""
+              />
+              <input id="login_name"
+                     name="login_name"
+                     type="hidden"
+                     value=""
+              />
+              <input id="pwd_empty"
+                     name="pwd_empty"
+                     type="hidden"
+                     value="0"
+              />
+            </div>
+            <div class="field"
+                 tal:define="
+                   use_email_as_login python:context.portal_registry['plone.use_email_as_login'];
+                 "
+            >
+              <tal:loginname condition="not:use_email_as_login">
+                <label for=""
+                       tal:attributes="
+                         for ac_name;
+                       "
+                       i18n:translate="label_login_name"
+                >Login Name</label>
+                <br />
+                <input size="10"
+                       type="text"
+                       tal:attributes="
+                         name ac_name;
+                         id ac_name;
+                         value python:request.get(ac_name, '');
+                       "
+                />
+              </tal:loginname>
+              <tal:email condition="use_email_as_login">
+                <label for=""
+                       tal:attributes="
+                         for ac_name;
+                       "
+                       i18n:translate="label_email"
+                >Email</label>
+                <br />
+                <input size="10"
+                       type="text"
+                       tal:attributes="
+                         name ac_name;
+                         id ac_name;
+                         value python:request.get(ac_name, '');
+                       "
+                />
+              </tal:email>
+            </div>
+            <div class="field">
               <label for=""
-                  tal:attributes="for ac_name"
-                  i18n:translate="label_login_name">Login Name</label>
+                     tal:attributes="
+                       for ac_password;
+                     "
+                     i18n:translate="label_password"
+              >Password</label>
               <br />
-              <input type="text"
-                  size="10"
-                  tal:attributes="name ac_name; id ac_name;
-                                  value python:request.get(ac_name, '');" />
-            </tal:loginname>
-            <tal:email condition="use_email_as_login">
-              <label for=""
-                  tal:attributes="for ac_name"
-                  i18n:translate="label_email">Email</label>
-              <br />
-              <input type="text"
-                  size="10"
-                  tal:attributes="name ac_name; id ac_name;
-                                  value python:request.get(ac_name, '');" />
-            </tal:email>
-          </div>
-          <div class="field">
-            <label for=""
-                tal:attributes="for ac_password"
-                i18n:translate="label_password">Password</label>
-            <br />
-            <input type="password"
-                size="10"
-                tal:attributes="name ac_password; id ac_password;" />
-          </div>
-          <div class="cookiesMessage alert alert-warning"
-              style="display:none" role="alert">
-            <strong i18n:translate="">Warning</strong>
-            <span i18n:translate="enable_cookies_message_before_login">
+              <input size="10"
+                     type="password"
+                     tal:attributes="
+                       name ac_password;
+                       id ac_password;
+                     "
+              />
+            </div>
+            <div class="cookiesMessage alert alert-warning"
+                 role="alert"
+                 style="display:none"
+            >
+              <strong i18n:translate="">Warning</strong>
+              <span i18n:translate="enable_cookies_message_before_login">
               Cookies are not enabled. You must enable cookies before you
               can log in.
-            </span>
-          </div>
-          <div class="formControls">
-            <input class="btn btn-primary"
-                type="submit"
-                name="buttons.login"
-                value="Log in"
-                title="Log in"
-                i18n:attributes="value label_log_in; title label_log_in;"/>
-          </div>
-        </form>
+              </span>
+            </div>
+            <div class="formControls">
+              <input class="btn btn-primary"
+                     name="buttons.login"
+                     title="Log in"
+                     type="submit"
+                     value="Log in"
+                     i18n:attributes="value label_log_in; title label_log_in;"
+              />
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <div tal:condition="view/can_request_password">
+          <a class="tile"
+             href="mail_password_form"
+             tal:attributes="
+               href view/mail_password_form;
+             "
+          >
+            <tal:block replace="structure context/info_icon.png" />
+            <span tal:omit-tag=""
+                  i18n:translate="box_forgot_password_option"
+            >Forgot your password?</span>
+          </a>
+        </div>
+        <div tal:condition="view/can_register">
+          <a class="tile"
+             href=""
+             tal:attributes="
+               href view/join_action;
+             "
+          >
+            <tal:block replace="structure context/user.png" />
+            <span tal:omit-tag=""
+                  i18n:translate="box_new_user_option"
+            >New user?</span>
+          </a>
+        </div>
       </div>
     </div>
 
-    <div class="card-footer">
-      <div tal:condition="view/can_request_password">
-        <a href="mail_password_form"
-            class="tile"
-            tal:attributes="href view/mail_password_form">
-          <tal:block replace="structure context/info_icon.png"/>
-          <span tal:omit-tag="" i18n:translate="box_forgot_password_option">Forgot your password?</span>
-        </a>
+    <div class="card portlet portletLogin"
+         tal:condition="not:view/available"
+    >
+
+      <div class="card-header">
+        <a class="tile"
+           href="#"
+           i18n:translate="box_sign_in"
+        >Log in</a>
       </div>
-      <div tal:condition="view/can_register">
-        <a href=""
-            class="tile"
-            tal:attributes="href view/join_action">
-          <tal:block replace="structure context/user.png"/>
-          <span tal:omit-tag="" i18n:translate="box_new_user_option">New user?</span>
-        </a>
-      </div>
-    </div>
-  </div>
 
-  <div class="card portlet portletLogin"
-      tal:condition="not:view/available">
-
-    <div class="card-header">
-      <a href="#"
-          class="tile"
-          i18n:translate="box_sign_in">Log in</a>
-    </div>
-
-    <div class="card-body"
-        i18n:translate="login_portlet_disabled">
+      <div class="card-body"
+           i18n:translate="login_portlet_disabled"
+      >
       Cookie authentication is disabled.
       Login portlet not available.
-    </div>
+      </div>
 
-  </div>
+    </div>
 
   </tal:block>
 

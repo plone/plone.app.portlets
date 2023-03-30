@@ -4,6 +4,8 @@ from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.portlets.interfaces import IPortletContext
 
+import unittest
+
 
 class TestBasicContext(PortletsTestCase):
     def testParent(self):
@@ -18,7 +20,6 @@ class TestBasicContext(PortletsTestCase):
         self.assertEqual(g[1], ("user", TEST_USER_ID))
 
     def testGlobalsWithSingleGroup(self):
-
         group = self.portal.portal_groups.getGroupById("Reviewers")
         setRoles(self.portal, TEST_USER_ID, ["Manager"])
         group.addMember(TEST_USER_ID)
@@ -32,7 +33,6 @@ class TestBasicContext(PortletsTestCase):
         self.assertEqual(g[3], ("group", "Reviewers"))
 
     def testGlobalsWithMultipleGroup(self):
-
         setRoles(self.portal, TEST_USER_ID, ["Manager"])
         group = self.portal.portal_groups.getGroupById("Reviewers")
         group.addMember(TEST_USER_ID)
@@ -70,7 +70,6 @@ class TestPortalRootContext(PortletsTestCase):
         self.assertEqual(g[1], ("user", TEST_USER_ID))
 
     def testGlobalsWithSingleGroup(self):
-
         group = self.portal.portal_groups.getGroupById("Reviewers")
         setRoles(self.portal, TEST_USER_ID, ["Manager"])
         group.addMember(TEST_USER_ID)
@@ -84,7 +83,6 @@ class TestPortalRootContext(PortletsTestCase):
         self.assertEqual(g[3], ("group", "Reviewers"))
 
     def testGlobalsWithMultipleGroup(self):
-
         setRoles(self.portal, TEST_USER_ID, ["Manager"])
         group = self.portal.portal_groups.getGroupById("Reviewers")
         group.addMember(TEST_USER_ID)
@@ -110,10 +108,9 @@ class TestPortalRootContext(PortletsTestCase):
 
 
 def test_suite():
-    from unittest import makeSuite
-    from unittest import TestSuite
-
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestBasicContext))
-    suite.addTest(makeSuite(TestPortalRootContext))
+    suite = unittest.TestSuite()
+    suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(TestBasicContext))
+    suite.addTest(
+        unittest.defaultTestLoader.loadTestsFromTestCase(TestPortalRootContext)
+    )
     return suite

@@ -27,7 +27,6 @@ from Products.CMFDynamicViewFTI.interfaces import IBrowserDefault
 from Products.CMFPlone.browser.navtree import SitemapNavtreeStrategy
 from Products.CMFPlone.utils import typesToList
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from Products.MimetypesRegistry.MimeTypeItem import guess_icon_path
 from zExceptions import NotFound
 from zope import schema
 from zope.component import adapter
@@ -36,8 +35,6 @@ from zope.component import getUtility
 from zope.component import queryUtility
 from zope.interface import implementer
 from zope.interface import Interface
-
-import os
 
 
 class INavigationPortlet(IPortletDataProvider):
@@ -150,7 +147,6 @@ class INavigationPortlet(IPortletDataProvider):
 
 @implementer(INavigationPortlet)
 class Assignment(base.Assignment):
-
     name = ""
     root = None
     root_uid = None
@@ -484,13 +480,12 @@ class NavtreeStrategy(SitemapNavtreeStrategy):
 
     def subtreeFilter(self, node):
         sitemapDecision = SitemapNavtreeStrategy.subtreeFilter(self, node)
-        if sitemapDecision == False:
+        if not sitemapDecision:
             return False
         depth = node.get("depth", 0)
         if depth > 0 and self.bottomLevel > 0 and depth >= self.bottomLevel:
             return False
-        else:
-            return True
+        return True
 
 
 def getRootPath(context, currentFolderOnly, topLevel, root):
