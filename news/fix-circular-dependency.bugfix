@@ -1,2 +1,0 @@
-Fix circular dependency on `plone.app.event`.
-[@jensens]

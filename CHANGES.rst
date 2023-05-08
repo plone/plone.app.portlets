@@ -8,6 +8,16 @@ Changelog
 
 .. towncrier release notes start
 
+5.0.4 (2023-05-08)
+------------------
+
+Bug fixes:
+
+
+- Fix circular dependency on `plone.app.event`.
+  [@jensens] (fix-circular-dependency)
+
+
 5.0.3 (2023-04-14)
 ------------------
 
