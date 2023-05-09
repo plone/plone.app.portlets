@@ -1,24 +1,23 @@
 from .. import PloneMessageFactory as _
 from ..browser import formhelper
 from ..portlets import base
+from Acquisition import aq_base
 from Acquisition import aq_inner
+from plone.base.interfaces.controlpanel import ISiteSchema
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.memoize.instance import memoize
 from plone.portlets.interfaces import IPortletDataProvider
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.interfaces.controlpanel import ISiteSchema
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope import schema
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.component import queryUtility
 from zope.interface import implementer
-from zope.interface import Interface
 
 
 class IReviewPortlet(IPortletDataProvider):
-
     no_icons = schema.Bool(
         title=_("Suppress Icons"),
         description=_("If enabled, the portlet will not show document type icons"),
@@ -63,7 +62,6 @@ class Assignment(base.Assignment):
 
 
 class Renderer(base.Renderer):
-
     render = ViewPageTemplateFile("review.pt")
 
     title = _("box_review_list", default="Review List")
@@ -118,7 +116,7 @@ class Renderer(base.Renderer):
                 creator_name = creator.getProperty("fullname", "") or creator_id
             else:
                 creator_name = creator_id
-            hasImage = True if getattr(obj, "image", None) else False
+            hasImage = True if getattr(aq_base(obj), "image", None) else False
             images = obj.restrictedTraverse("@@images") if hasImage else None
             items.append(
                 dict(

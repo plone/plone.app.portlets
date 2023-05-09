@@ -7,7 +7,7 @@ from plone.app.testing import PloneSandboxLayer
 from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
-from plone.testing import z2
+from plone.testing import zope
 from Products.CMFCore.utils import getToolByName
 from zope.configuration import xmlconfig
 
@@ -15,11 +15,10 @@ import doctest
 
 
 class PloneAppPortlets(PloneSandboxLayer):
-
     defaultBases = (PLONE_FIXTURE,)
 
     def setUpZope(self, app, configurationContext):
-        z2.installProduct(app, "plone.app.portlets")
+        zope.installProduct(app, "plone.app.portlets")
 
         # Include testing profile
         import plone.app.portlets

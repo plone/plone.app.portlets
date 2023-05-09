@@ -6,19 +6,21 @@ from plone.app.portlets.storage import PortletAssignmentMapping
 from plone.app.portlets.tests.base import PortletsTestCase
 from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
+from plone.base.interfaces import INavigationSchema
 from plone.portlets.interfaces import IPortletAssignment
 from plone.portlets.interfaces import IPortletDataProvider
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPortletRenderer
 from plone.portlets.interfaces import IPortletType
 from plone.registry.interfaces import IRegistry
-from Products.CMFPlone.interfaces import INavigationSchema
 from Products.CMFPlone.tests import dummy
 from Products.GenericSetup.utils import _getDottedName
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.interface import directlyProvides
 from zope.intid.interfaces import IIntIds
+
+import unittest
 
 
 class TestPortlet(PortletsTestCase):
@@ -644,7 +646,7 @@ class TestRenderer(PortletsTestCase):
         )
 
     def testPortletsTitle(self):
-        """If portlet's name is not explicitely specified we show
+        """If portlet's name is not explicitly specified we show
         default fallback 'Navigation', translate it and hide it
         with CSS."""
         view = self.renderer(self.portal)
@@ -711,10 +713,7 @@ class TestRenderer(PortletsTestCase):
 
 
 def test_suite():
-    from unittest import makeSuite
-    from unittest import TestSuite
-
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestPortlet))
-    suite.addTest(makeSuite(TestRenderer))
+    suite = unittest.TestSuite()
+    suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(TestPortlet))
+    suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(TestRenderer))
     return suite

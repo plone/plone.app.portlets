@@ -1,59 +1,86 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:tal="http://xml.zope.org/namespaces/tal"
-      xmlns:metal="http://xml.zope.org/namespaces/metal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-      xml:lang="en" lang="en"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      lang="en"
       metal:use-macro="context/prefs_main_template/macros/master"
-      i18n:domain="plone">
+      xml:lang="en"
+      i18n:domain="plone"
+>
 
-<head>
+  <head>
     <metal:block fill-slot="top_slot"
-             tal:define="dummy python:request.set('disable_border',1)" />
+                 tal:define="
+                   dummy python:request.set('disable_border',1);
+                 "
+    />
 
-</head>
+  </head>
 
-<body>
+  <body>
 
-<metal:b fill-slot="prefs_configlet_main">
+    <metal:b fill-slot="prefs_configlet_main">
 
-    <header>
-      <h1 class="documentFirstHeading" i18n:translate="">Group: <span i18n:name="groupname" tal:content="view/group" tal:omit-tag=""/></h1>
-    </header>
+      <header>
+        <h1 class="documentFirstHeading"
+            i18n:translate=""
+        >Group:
+          <span tal:content="view/group"
+                tal:omit-tag=""
+                i18n:name="groupname"
+          ></span></h1>
+      </header>
 
-    <div metal:use-macro="context/global_statusmessage/macros/portal_message">
+      <div metal:use-macro="context/global_statusmessage/macros/portal_message">
         Portal status message
-    </div>
-
-    <div id="content-core" tal:define="token context/@@authenticator/token">
-      <div class="autotabs">
-        <nav class="autotoc-nav nav nav-tabs mb-3">
-          <a class="nav-link" href="${portal_url}/@@usergroup-groupmembership?groupname=${request/key}"
-             i18n:translate="label_group_members">Group Members</a>
-          <a class="nav-link" href="${portal_url}/@@usergroup-groupdetails?groupname=${request/key}"
-             i18n:translate="label_group_properties">Group Properties</a>
-          <a class="nav-link" href="${portal_url}/@@manage-group-portlets?key=${request/key}&_authenticator=${token}"
-             i18n:translate="label_group_portlets">Group Portlets</a>
-          <a class="active nav-link"
-             href="${portal_url}/@@manage-group-dashboard?key=${request/key}&_authenticator=${token}"
-             i18n:translate="label_group_dashboard">Group Dashboard</a>
-        </nav>
-
-        <div id="dashboard"
-            class="row row-cols-1 row-cols-md-2 gx-5 gy-5">
-            <div id="dashboard-portlets1"
-              tal:content="structure provider:plone.dashboard1" />
-            <div id="dashboard-portlets2"
-              tal:content="structure provider:plone.dashboard2" />
-            <div id="dashboard-portlets3"
-              tal:content="structure provider:plone.dashboard3" />
-            <div id="dashboard-portlets4"
-              tal:content="structure provider:plone.dashboard4" />
-        </div>
-        <div class="visualClear"><!-- --></div>
       </div>
-    </div>
 
-</metal:b>
+      <div id="content-core"
+           tal:define="
+             token context/@@authenticator/token;
+           "
+      >
+        <div class="autotabs">
+          <nav class="autotoc-nav nav nav-tabs mb-3">
+            <a class="nav-link"
+               href="${portal_url}/@@usergroup-groupmembership?groupname=${request/key}"
+               i18n:translate="label_group_members"
+            >Group Members</a>
+            <a class="nav-link"
+               href="${portal_url}/@@usergroup-groupdetails?groupname=${request/key}"
+               i18n:translate="label_group_properties"
+            >Group Properties</a>
+            <a class="nav-link"
+               href="${portal_url}/@@manage-group-portlets?key=${request/key}&_authenticator=${token}"
+               i18n:translate="label_group_portlets"
+            >Group Portlets</a>
+            <a class="active nav-link"
+               href="${portal_url}/@@manage-group-dashboard?key=${request/key}&_authenticator=${token}"
+               i18n:translate="label_group_dashboard"
+            >Group Dashboard</a>
+          </nav>
 
-</body>
+          <div class="row row-cols-1 row-cols-md-2 gx-5 gy-5"
+               id="dashboard"
+          >
+            <div id="dashboard-portlets1"
+                 tal:content="structure provider:plone.dashboard1"
+            ></div>
+            <div id="dashboard-portlets2"
+                 tal:content="structure provider:plone.dashboard2"
+            ></div>
+            <div id="dashboard-portlets3"
+                 tal:content="structure provider:plone.dashboard3"
+            ></div>
+            <div id="dashboard-portlets4"
+                 tal:content="structure provider:plone.dashboard4"
+            ></div>
+          </div>
+          <div class="visualClear"><!-- --></div>
+        </div>
+      </div>
+
+    </metal:b>
+
+  </body>
 </html>

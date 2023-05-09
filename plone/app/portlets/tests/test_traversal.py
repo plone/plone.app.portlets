@@ -14,6 +14,8 @@ from plone.portlets.interfaces import IPortletManager
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 
+import unittest
+
 
 class TestTraversal(PortletsTestCase):
     def _assertSameObject(self, a, b):
@@ -52,8 +54,6 @@ class TestTraversal(PortletsTestCase):
         self.assertEqual("++groupdashboard++plone.dashboard1+Reviewers", mapping.id)
 
     def testGroupDashboardNamespaceChecker(self):
-        assignment = classic.Assignment()
-        manager = getUtility(IPortletManager, name="plone.dashboard1")
         mapping = self.portal.restrictedTraverse(
             "++groupdashboard++plone.dashboard1+Reviewers"
         )
@@ -92,9 +92,6 @@ class TestTraversal(PortletsTestCase):
 
 
 def test_suite():
-    from unittest import makeSuite
-    from unittest import TestSuite
-
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestTraversal))
+    suite = unittest.TestSuite()
+    suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(TestTraversal))
     return suite

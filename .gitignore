@@ -2,7 +2,9 @@
 *.pyc
 *.pyo
 build
+dependencies.svg
 dist
 .project
 .pydevproject
 .settings
+.tox

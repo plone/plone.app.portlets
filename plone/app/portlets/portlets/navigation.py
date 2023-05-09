@@ -12,6 +12,11 @@ from plone.app.layout.navigation.root import getNavigationRoot
 from plone.app.layout.navigation.root import getNavigationRootObject
 from plone.app.uuid.utils import uuidToObject
 from plone.app.vocabularies.catalog import CatalogSource
+from plone.base.defaultpage import is_default_page
+from plone.base.interfaces import INavigationSchema
+from plone.base.interfaces import INonStructuralFolder
+from plone.base.interfaces import ISiteSchema
+from plone.base.utils import safe_callable
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.memoize.instance import memoize
 from plone.portlets.interfaces import IPortletDataProvider
@@ -19,14 +24,9 @@ from plone.registry.interfaces import IRegistry
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDynamicViewFTI.interfaces import IBrowserDefault
-from Products.CMFPlone import utils
 from Products.CMFPlone.browser.navtree import SitemapNavtreeStrategy
-from Products.CMFPlone.defaultpage import is_default_page
-from Products.CMFPlone.interfaces import INavigationSchema
-from Products.CMFPlone.interfaces import INonStructuralFolder
-from Products.CMFPlone.interfaces import ISiteSchema
+from Products.CMFPlone.utils import typesToList
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from Products.MimetypesRegistry.MimeTypeItem import guess_icon_path
 from zExceptions import NotFound
 from zope import schema
 from zope.component import adapter
@@ -35,8 +35,6 @@ from zope.component import getUtility
 from zope.component import queryUtility
 from zope.interface import implementer
 from zope.interface import Interface
-
-import os
 
 
 class INavigationPortlet(IPortletDataProvider):
@@ -149,7 +147,6 @@ class INavigationPortlet(IPortletDataProvider):
 
 @implementer(INavigationPortlet)
 class Assignment(base.Assignment):
-
     name = ""
     root = None
     root_uid = None
@@ -414,7 +411,7 @@ class QueryBuilder:
 
         # Acquire a custom nav query if available
         customQuery = getattr(context, "getCustomNavQuery", None)
-        if customQuery is not None and utils.safe_callable(customQuery):
+        if customQuery is not None and safe_callable(customQuery):
             query = customQuery()
         else:
             query = {}
@@ -444,7 +441,7 @@ class QueryBuilder:
         # seem to work with EPI.
 
         # Only list the applicable types
-        query["portal_type"] = utils.typesToList(context)
+        query["portal_type"] = typesToList(context)
 
         # Apply the desired sort
         sortAttribute = navtree_properties.getProperty("sortAttribute", None)
@@ -483,13 +480,12 @@ class NavtreeStrategy(SitemapNavtreeStrategy):
 
     def subtreeFilter(self, node):
         sitemapDecision = SitemapNavtreeStrategy.subtreeFilter(self, node)
-        if sitemapDecision == False:
+        if not sitemapDecision:
             return False
         depth = node.get("depth", 0)
         if depth > 0 and self.bottomLevel > 0 and depth >= self.bottomLevel:
             return False
-        else:
-            return True
+        return True
 
 
 def getRootPath(context, currentFolderOnly, topLevel, root):

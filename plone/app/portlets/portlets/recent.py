@@ -3,13 +3,13 @@ from ..cache import render_cachekey
 from ..portlets import base
 from Acquisition import aq_inner
 from plone.app.layout.navigation.root import getNavigationRoot
+from plone.base.interfaces.controlpanel import ISiteSchema
 from plone.memoize import ram
 from plone.memoize.compress import xhtml_compress
 from plone.memoize.instance import memoize
 from plone.portlets.interfaces import IPortletDataProvider
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.interfaces.controlpanel import ISiteSchema
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.MimetypesRegistry.MimeTypeItem import guess_icon_path
 from zope import schema
@@ -21,7 +21,6 @@ import os
 
 
 class IRecentPortlet(IPortletDataProvider):
-
     count = schema.Int(
         title=_("Number of items to display"),
         description=_("How many items to list."),
@@ -61,6 +60,7 @@ class IRecentPortlet(IPortletDataProvider):
 class Assignment(base.Assignment):
     no_icons = False
     thumb_scale = None
+    no_thumbs = False
 
     def __init__(self, count=5, no_icons=False, thumb_scale=None, no_thumbs=False):
         self.count = count

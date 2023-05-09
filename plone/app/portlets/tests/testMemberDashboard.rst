@@ -16,7 +16,7 @@ bug: 11174: Portal Members can't add portlets to their dashboard
 ----------------------
 Login as the 'user1' user
 
-    >>> from plone.testing.z2 import Browser
+    >>> from plone.testing.zope import Browser
     >>> browser = Browser(layer['app'])
     >>> portalURL = portal.absolute_url()
 
@@ -34,7 +34,7 @@ Go to the dashboard and check that portlets are addable here
 
 Let's try to add a Search portlet and then remove it
 
-    >>> bool(re.search('\<\/span\>\s+Search\s+\<\/div\>', browser.contents))
+    >>> bool(re.search(r'\<\/span\>\s+Search\s+\<\/div\>', browser.contents))
     False
     >>> browser.getControl(name=':action',index=0).value = ['/++dashboard++plone.dashboard1+user1/+/portlets.Search']
     >>> browser.getForm(index=1).submit()
@@ -73,7 +73,7 @@ Using the addview, let's see that we cannot add a portlet for another user
     >>> browser.getControl('Log in').click()
 
     >>> browser.open(portalURL+'/@@manage-dashboard?_authenticator=' + createToken())
-    >>> bool(re.search('\<\/span\>\s+Search\s+\<\/div\>', browser.contents))
+    >>> bool(re.search(r'\<\/span\>\s+Search\s+\<\/div\>', browser.contents))
     False
 
 Now, we try to open the @@manage-portlets view and also try to call the addview
@@ -94,7 +94,7 @@ those views
     >>> browser.open(portalURL+'/@@manage-portlets?_authenticator=' + createToken())
     >>> "Insufficient Privileges" in browser.contents
     False
-    >>> bool(re.search('\<\/span\>\s+Search\s+\<\/div\>', browser.contents))
+    >>> bool(re.search(r'\<\/span\>\s+Search\s+\<\/div\>', browser.contents))
     False
     >>> browser.open(portalURL + "/++contextportlets++plone.leftcolumn/+/portlets.Search")
     >>> "Insufficient Privileges" in browser.contents

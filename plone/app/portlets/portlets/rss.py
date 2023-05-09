@@ -127,7 +127,7 @@ class RSSFeed:
             # check for regular update
             if self.needs_update:
                 return self._retrieveFeed()
-        except:
+        except Exception:
             self._failed = True
             logger.exception("failed to update RSS feed %s", self.url)
 
@@ -235,7 +235,6 @@ class RSSFeed:
 
 
 class IRSSPortlet(IPortletDataProvider):
-
     portlet_title = schema.TextLine(
         title=_("Title"),
         description=_(
@@ -269,7 +268,6 @@ class IRSSPortlet(IPortletDataProvider):
 
 @implementer(IRSSPortlet)
 class Assignment(base.Assignment):
-
     portlet_title = ""
 
     @property
@@ -289,7 +287,6 @@ class Assignment(base.Assignment):
 
 
 class Renderer(base.DeferredRenderer):
-
     render_full = ZopeTwoPageTemplateFile("rss.pt")
 
     @property

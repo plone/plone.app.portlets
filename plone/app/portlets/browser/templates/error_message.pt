@@ -1,17 +1,20 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-      tal:omit-tag="">
-<section class="portlet portletError"
-    i18n:domain="plone">
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      tal:omit-tag=""
+>
+  <section class="portlet portletError"
+           i18n:domain="plone"
+  >
 
     <header class="portletHeader">
-        <a href="#"
-           class="tile"
-           i18n:translate="box_error">Error</a>
+      <a class="tile"
+         href="#"
+         i18n:translate="box_error"
+      >Error</a>
     </header>
     <section class="portletContent">
-        <p i18n:translate="text_error_rendering_portlet">There was an error while rendering the portlet.</p>
+      <p i18n:translate="text_error_rendering_portlet">There was an error while rendering the portlet.</p>
     </section>
-</section>
+  </section>
 </html>

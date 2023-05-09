@@ -14,7 +14,6 @@ from zope.interface import implementer
 
 @implementer(IPortletAdding)
 class PortletAdding(SimpleItem, BrowserView):
-
     context = None
     request = None
 

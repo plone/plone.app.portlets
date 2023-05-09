@@ -1,5 +1,7 @@
-<configure xmlns="http://namespaces.zope.org/zope"
-    i18n_domain="plone.app.portlets">
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    i18n_domain="plone.app.portlets"
+    >
 
   <!-- Note: These permissions are also set up in the rolemap.xml GenericSetup
              importer in CMFPlone.
@@ -14,23 +16,23 @@
       A better way of doing this would probably be to use the Owner role
       against the assignment mappings and let Manage portlets be controlled
       by that, but managing those roles properly w.r.t. the namespace
-      traveral adapters and acquisition is not fun.
+      traversal adapters and acquisition is not fun.
      -->
 
   <permission
-    id="plone.app.portlets.ManagePortlets"
-    title="Portlets: Manage portlets"
-    />
+      id="plone.app.portlets.ManagePortlets"
+      title="Portlets: Manage portlets"
+      />
 
   <permission
-    id="plone.app.portlets.ManageOwnPortlets"
-    title="Portlets: Manage own portlets"
-    />
+      id="plone.app.portlets.ManageOwnPortlets"
+      title="Portlets: Manage own portlets"
+      />
 
   <permission
-     id="plone.app.portlets.ViewDashboard"
-     title="Portlets: View dashboard"
-     />
+      id="plone.app.portlets.ViewDashboard"
+      title="Portlets: View dashboard"
+      />
 
   <adapter factory=".checker.DefaultPortletPermissionChecker" />
   <adapter factory=".checker.UserPortletPermissionChecker" />

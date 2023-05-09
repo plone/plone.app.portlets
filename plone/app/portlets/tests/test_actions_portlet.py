@@ -12,6 +12,8 @@ from Products.CMFCore.utils import getToolByName
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 
+import unittest
+
 
 class TestPortlet(PortletsTestCase):
     def afterSetUp(self):
@@ -19,7 +21,7 @@ class TestPortlet(PortletsTestCase):
 
     def test_portlet_type_registered(self):
         portlet = getUtility(IPortletType, name="portlets.Actions")
-        self.assertEquals(portlet.addview, "portlets.Actions")
+        self.assertEqual(portlet.addview, "portlets.Actions")
         return
 
     def test_interfaces(self):
@@ -40,7 +42,7 @@ class TestPortlet(PortletsTestCase):
         data = {"ptitle": "Actions", "category": "document", "show_icons": True}
         addview.createAndAdd(data=data)
 
-        self.assertEquals(len(mapping), 1)
+        self.assertEqual(len(mapping), 1)
         self.assertTrue(isinstance(mapping.values()[0], actions.Assignment))
         return
 
@@ -158,18 +160,18 @@ class TestRenderer(PortletsTestCase):
         links2 = r2.actionLinks()
 
         # check the portal_tabs links (portal_tabs is somehow special)
-        self.assertEquals(len(links1), 5)
-        self.assertEquals(links1[0]["title"], "Home")
+        self.assertEqual(len(links1), 5)
+        self.assertEqual(links1[0]["title"], "Home")
 
         # now check the site_actions links
         # this was failing until the caching of actionLinks method was fixed
         if int(migtool.getInstanceVersion()[0]) >= 4:
-            self.assertEquals(len(links2), 3)
+            self.assertEqual(len(links2), 3)
         else:
-            self.assertEquals(len(links2), 4)
-        self.assertEquals(links2[0]["title"], "Site Map")
-        self.assertEquals(links2[0]["url"], "http://nohost/plone/sitemap")
-        self.assertEquals(links2[0]["icon"], None)
+            self.assertEqual(len(links2), 4)
+        self.assertEqual(links2[0]["title"], "Site Map")
+        self.assertEqual(links2[0]["url"], "http://nohost/plone/sitemap")
+        self.assertEqual(links2[0]["icon"], None)
         return
 
     def test_portal_tabs(self):
@@ -239,3 +241,10 @@ class TestRenderer(PortletsTestCase):
         expected = {"Cut", "Copy", "Rename", "Delete"}
         got = {str(link["title"]) for link in output}
         self.assertTrue(expected.issubset(got))
+
+
+def test_suite():
+    suite = unittest.TestSuite()
+    suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(TestPortlet))
+    suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(TestRenderer))
+    return suite

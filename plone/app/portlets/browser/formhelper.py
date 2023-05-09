@@ -30,7 +30,7 @@ class AddForm(AutoExtensibleForm, form.AddForm):
 
     Sub-classes should define create() and set the form_fields class variable.
 
-    Notice the suble difference between AddForm and NullAddform in that the
+    Notice the subtle difference between AddForm and NullAddform in that the
     create template method for AddForm takes as a parameter a dict 'data':
 
         def create(self, data):

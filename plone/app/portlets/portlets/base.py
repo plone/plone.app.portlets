@@ -1,6 +1,6 @@
-from ..browser.formhelper import AddForm
-from ..browser.formhelper import EditForm
-from ..browser.formhelper import NullAddForm
+from ..browser.formhelper import AddForm  # noqa F401 imported but unused
+from ..browser.formhelper import EditForm  # noqa F401 imported but unused
+from ..browser.formhelper import NullAddForm  # noqa F401 imported but unused
 from OFS.SimpleItem import SimpleItem
 from plone.app.portlets.interfaces import IDeferredPortletRenderer
 from plone.portlets.interfaces import IPortletAssignment
@@ -86,14 +86,14 @@ class DeferredRenderer(Renderer):
     render_preload = ViewPageTemplateFile("deferred_portlet.pt")
 
     def render_full(self):
-        raise NotImplemented(
+        raise NotImplementedError(
             "You must implement 'render_full' as a method or page template file attribute"
         )
 
     def render(self):
         """render the portlet
 
-        the template gets choosen depending on the initialize state
+        the template gets chosen depending on the initialize state
         """
         if self.initializing:
             return self.render_preload()

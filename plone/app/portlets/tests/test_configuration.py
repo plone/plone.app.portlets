@@ -2,6 +2,7 @@ from plone.app.portlets.browser.adding import PortletAdding
 from plone.app.portlets.exportimport.portlets import importPortlets
 from plone.app.portlets.interfaces import IColumn
 from plone.app.portlets.interfaces import IPortletTypeInterface
+from plone.app.portlets.portlets import base
 from plone.app.portlets.tests.base import PortletsTestCase
 from plone.app.portlets.utils import assignment_mapping_from_key
 from plone.portlets.constants import CONTENT_TYPE_CATEGORY
@@ -9,6 +10,7 @@ from plone.portlets.constants import CONTEXT_CATEGORY
 from plone.portlets.constants import GROUP_CATEGORY
 from plone.portlets.interfaces import ILocalPortletAssignmentManager
 from plone.portlets.interfaces import IPortletAssignmentSettings
+from plone.portlets.interfaces import IPortletDataProvider
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPortletRenderer
 from plone.portlets.interfaces import IPortletType
@@ -17,27 +19,18 @@ from Products.Five.browser import BrowserView
 from Products.GenericSetup.context import TarballExportContext
 from Products.GenericSetup.interfaces import IBody
 from Products.GenericSetup.tests.common import DummyImportContext
+from zope import schema
 from zope.component import getMultiAdapter
 from zope.component import getSiteManager
 from zope.component import getUtility
 from zope.component import queryUtility
 from zope.component.interfaces import IFactory
 from zope.i18nmessageid import Message
+from zope.interface import implementer
 from zope.interface import Interface
 
 import time
-
-
-# BBB Zope 2.12
-try:
-    from OFS import metaconfigure
-    from Zope2.App import zcml
-
-    zcml  # pyflakes
-    metaconfigure
-except ImportError:
-    from Products.Five import fiveconfigure as metaconfigure
-    from Products.Five import zcml
+import unittest
 
 
 class DummyView(BrowserView):
@@ -45,11 +38,6 @@ class DummyView(BrowserView):
 
 
 # A sample portlet
-
-from plone.app.portlets.portlets import base
-from plone.portlets.interfaces import IPortletDataProvider
-from zope import schema
-from zope.interface import implementer
 
 
 class ITestPortlet(IPortletDataProvider):
@@ -63,7 +51,6 @@ class ITestPortlet(IPortletDataProvider):
 
 @implementer(ITestPortlet)
 class TestAssignment(base.Assignment):
-
     test_text = None
     test_bool = None
     test_tuple = None
@@ -279,7 +266,7 @@ class TestGenericSetup(PortletsTestCase):
             key="/",
         )
 
-        # initally there should be no portlet7
+        # initially there should be no portlet7
         self.assertEqual(mapping.get("test.portlet7", None), None)
 
         # now we add one
@@ -341,7 +328,7 @@ class TestGenericSetup(PortletsTestCase):
         )
         self.assertEqual(1, len(mapping))
 
-        # and be purgable
+        # and be purgeable
         context = DummyImportContext(self.portal, purge=False)
         context._files[
             "portlets.xml"
@@ -375,7 +362,7 @@ class TestGenericSetup(PortletsTestCase):
         )
         self.assertEqual(2, len(mapping))
 
-        # and be purgable
+        # and be purgeable
         context = DummyImportContext(self.portal, purge=False)
         context._files[
             "portlets.xml"
@@ -425,7 +412,7 @@ class TestGenericSetup(PortletsTestCase):
 
     def testPurge(self):
         manager = queryUtility(IPortletManager, name="test.testcolumn")
-        self.assertNotEquals(None, manager)
+        self.assertNotEqual(None, manager)
 
         context = DummyImportContext(self.portal, purge=False)
         context._files[
@@ -441,7 +428,7 @@ class TestGenericSetup(PortletsTestCase):
 
     def testManagerRemove(self):
         manager = queryUtility(IPortletManager, name="test.testcolumn")
-        self.assertNotEquals(None, manager)
+        self.assertNotEqual(None, manager)
 
         context = DummyImportContext(self.portal, purge=False)
         context._files[
@@ -596,10 +583,7 @@ class TestGenericSetup(PortletsTestCase):
 
 
 def test_suite():
-    from unittest import makeSuite
-    from unittest import TestSuite
-
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestZCML))
-    suite.addTest(makeSuite(TestGenericSetup))
+    suite = unittest.TestSuite()
+    suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(TestZCML))
+    suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(TestGenericSetup))
     return suite

@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+from .. import PloneMessageFactory as _
 from AccessControl import getSecurityManager
 from plone.memoize.instance import memoize
 from plone.portlets.constants import GROUP_CATEGORY
@@ -6,7 +6,6 @@ from plone.portlets.constants import USER_CATEGORY
 from plone.portlets.interfaces import IPortletManager
 from plone.protect.authenticator import createToken
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import PloneMessageFactory as _
 from Products.Five.browser import BrowserView
 from Products.statusmessages.interfaces import IStatusMessage
 from zope.component import getUtility
@@ -28,8 +27,8 @@ class DashboardView(BrowserView):
         self.request.set("disable_plone.rightcolumn", 1)
         if self.can_edit() and self.empty():
             message = _(
-                u"info_empty_dashboard",
-                default=u"Your dashboard is currently empty. Click the"
+                "info_empty_dashboard",
+                default="Your dashboard is currently empty. Click the"
                 " <em>edit</em> tab to assign some personal"
                 " portlets.",
             )

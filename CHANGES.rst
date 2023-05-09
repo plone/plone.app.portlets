@@ -8,6 +8,67 @@ Changelog
 
 .. towncrier release notes start
 
+5.0.4 (2023-05-08)
+------------------
+
+Bug fixes:
+
+
+- Fix circular dependency on `plone.app.event`.
+  [@jensens] (fix-circular-dependency)
+
+
+5.0.3 (2023-04-14)
+------------------
+
+Internal:
+
+
+- Update configuration files, declare dependencies.
+  [plone devs] (65ae937a)
+
+
+5.0.2 (2023-03-14)
+------------------
+
+Bug fixes:
+
+
+- Avoid acquisition breaking the Review list portlet.
+  [frapell] (#171)
+
+
+5.0.1 (2023-01-26)
+------------------
+
+Bug fixes:
+
+
+- Fix login button name.
+  [wkbkhard] (#132)
+
+
+5.0.0 (2022-11-30)
+------------------
+
+Bug fixes:
+
+
+- Final release.
+  [gforcada] (#600)
+
+
+5.0.0b2 (2022-07-21)
+--------------------
+
+Bug fixes:
+
+
+- Fix Plone 5.2.4 migrating troubles [michaellaunay] (#157)
+- fix deprecation warnings from plone.base
+  [jensens] (#166)
+
+
 5.0.0b1 (2022-06-23)
 --------------------
 
@@ -191,7 +252,7 @@ New features:
   version.
   [icemac]
 
-- Add python 3 compatability
+- Add python 3 compatibility
   [pbauer, ale-rt, jensens]
 
 Bug fixes:
@@ -230,7 +291,7 @@ Bug fixes:
 
 New features:
 
-- navigation-, news-, recent-,review-portlets: add options to supress icons,
+- navigation-, news-, recent-,review-portlets: add options to suppress icons,
   read thumb_scale from registry plus  option to override thumb_scale individually
   or suppress thumbs.
   Replace paper clip (fontello icon) with mimetype icon
@@ -486,7 +547,7 @@ Fixes:
 3.0.5 (2015-05-12)
 ------------------
 
-- Supress a ZopeTestCase warning.
+- Suppress a ZopeTestCase warning.
   This fixes https://github.com/plone/Products.CMFPlone/issues/501
   [gforcada]
 
@@ -541,7 +602,7 @@ Fixes:
 3.0.1 (2014-04-16)
 ------------------
 
-- Transfered pbauer's fix of #32 'removing group-portlets' of 2.4.x-branch to
+- Transferred pbauer's fix of #32 'removing group-portlets' of 2.4.x-branch to
   master. Also Tansfered changelogs of version 2.4.4 to 2.4.8.
   [ida27]
 
@@ -645,7 +706,7 @@ Fixes:
 2.4.6 (2013-09-14)
 ------------------
 
-- Use relative links for calender next and prev buttons since caching can cause these things to change the current page the user is viewing
+- Use relative links for calendar next and prev buttons since caching can cause these things to change the current page the user is viewing
   [vangheem]
 - Fix the removing of Group- and Typeportlets https://dev.plone.org/ticket/13659
   [pbauer]
@@ -819,7 +880,7 @@ Fixes:
   [seanupton]
 
 - Navigation portlet template renders a non-site navigation root content
-  item with its apporpriate content icon, reserving the Plone site icon
+  item with its appropriate content icon, reserving the Plone site icon
   CSS sprite for default use by a site only.
   [seanupton]
 
@@ -909,7 +970,7 @@ Fixes:
 
 2.2.1 - 2011-08-08
 ------------------
-- Imporove tests readability. Merged from branches/2.1
+- Improve tests readability. Merged from branches/2.1
   [gotcha]
 
 - 'placeholder' attribute for the search portlet's field instead of the custom

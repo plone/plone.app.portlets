@@ -1,58 +1,82 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:tal="http://xml.zope.org/namespaces/tal"
-      xmlns:metal="http://xml.zope.org/namespaces/metal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-      xml:lang="en" lang="en"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      lang="en"
       metal:use-macro="here/main_template/macros/master"
-      i18n:domain="plone">
+      xml:lang="en"
+      i18n:domain="plone"
+>
 
-<head>
+  <head>
     <metal:block fill-slot="top_slot"
-             tal:define="dummy python:request.set('disable_border',1)" />
-</head>
+                 tal:define="
+                   dummy python:request.set('disable_border',1);
+                 "
+    />
+  </head>
 
-<body>
+  <body>
 
-<metal:b fill-slot="content-title">
-  <a href=""
-       class="link-parent"
-       tal:attributes="href string:$portal_url/@@usergroup-groupprefs"
-       i18n:translate="label_up_to_groups_overview">
+    <metal:b fill-slot="content-title">
+      <a class="link-parent"
+         href=""
+         tal:attributes="
+           href string:$portal_url/@@usergroup-groupprefs;
+         "
+         i18n:translate="label_up_to_groups_overview"
+      >
     Up to Groups Overview
-  </a>
+      </a>
 
-  <h1 class="documentFirstHeading" i18n:translate="">Group: <span i18n:name="groupname" tal:content="view/group" tal:omit-tag=""/></h1>
-</metal:b>
+      <h1 class="documentFirstHeading"
+          i18n:translate=""
+      >Group:
+        <span tal:content="view/group"
+              tal:omit-tag=""
+              i18n:name="groupname"
+        ></span></h1>
+    </metal:b>
 
-<metal:b fill-slot="content-core">
-  <metal:b metal:define-macro="props" tal:omit-tag="">
+    <metal:b fill-slot="content-core">
+      <metal:b metal:define-macro="props"
+               tal:omit-tag=""
+      >
 
-    <div class="autotabs" tal:define="token context/@@authenticator/token">
-      <nav class="autotoc-nav">
-        <a href="${portal_url}/@@usergroup-groupmembership?groupname=${request/key}"
-           i18n:translate="label_group_members">Group Members</a>
-        <a href="${portal_url}/@@usergroup-groupdetails?groupname=${request/key}"
-           i18n:translate="label_group_properties">Group Properties</a>
-        <a class="active"
-           href="${portal_url}/@@manage-group-portlets?key=${request/key}&_authenticator=${token}"
-           i18n:translate="label_group_portlets">Group Portlets</a>
-        <a href="${portal_url}/@@manage-group-dashboard?key=${request/key}&_authenticator=${token}"
-           i18n:translate="label_group_dashboard">Group Dashboard</a>
-      </nav>
+        <div class="autotabs"
+             tal:define="
+               token context/@@authenticator/token;
+             "
+        >
+          <nav class="autotoc-nav">
+            <a href="${portal_url}/@@usergroup-groupmembership?groupname=${request/key}"
+               i18n:translate="label_group_members"
+            >Group Members</a>
+            <a href="${portal_url}/@@usergroup-groupdetails?groupname=${request/key}"
+               i18n:translate="label_group_properties"
+            >Group Properties</a>
+            <a class="active"
+               href="${portal_url}/@@manage-group-portlets?key=${request/key}&_authenticator=${token}"
+               i18n:translate="label_group_portlets"
+            >Group Portlets</a>
+            <a href="${portal_url}/@@manage-group-dashboard?key=${request/key}&_authenticator=${token}"
+               i18n:translate="label_group_dashboard"
+            >Group Dashboard</a>
+          </nav>
 
-      <p i18n:translate="description_manage_group_portlets">
+          <p i18n:translate="description_manage_group_portlets">
         The left and right portlet slots will now display only those portlets
         assigned to this group. Use the up, down, delete and edit links
         to manage user portlets. Use the drop-down list to add new portlets.
-      </p>
+          </p>
 
-      <p i18n:translate="description_group_portlets_below">
+          <p i18n:translate="description_group_portlets_below">
         Note that group portlets are normally rendered below context portlets.
-      </p>
-    </div>
+          </p>
+        </div>
 
-  </metal:b>
-</metal:b>
+      </metal:b>
+    </metal:b>
 
-</body>
+  </body>
 </html>

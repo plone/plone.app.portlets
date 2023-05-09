@@ -14,6 +14,8 @@ from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.component import queryMultiAdapter
 
+import unittest
+
 
 class TestPortlet(PortletsTestCase):
     def afterSetUp(self):
@@ -140,10 +142,7 @@ class TestRenderer(PortletsTestCase):
 
 
 def test_suite():
-    from unittest import makeSuite
-    from unittest import TestSuite
-
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestPortlet))
-    suite.addTest(makeSuite(TestRenderer))
+    suite = unittest.TestSuite()
+    suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(TestPortlet))
+    suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(TestRenderer))
     return suite

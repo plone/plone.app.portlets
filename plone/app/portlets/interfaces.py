@@ -26,7 +26,7 @@ class IPortletPermissionChecker(Interface):
     """
 
     def __call__():
-        """Check the adapted assignment manager. Will raise Unathorized if
+        """Check the adapted assignment manager. Will raise Unauthorized if
         something fishy is going on.
         """
 

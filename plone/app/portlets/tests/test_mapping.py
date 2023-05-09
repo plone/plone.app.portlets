@@ -11,6 +11,8 @@ from zope.container.interfaces import INameChooser
 from zope.publisher.interfaces import NotFound
 from zope.publisher.interfaces.browser import IBrowserPublisher
 
+import unittest
+
 
 class TestNameChooser(PortletsTestCase):
     def testNameChooser(self):
@@ -72,11 +74,8 @@ class TestTraverser(PortletsTestCase):
 
 
 def test_suite():
-    from unittest import makeSuite
-    from unittest import TestSuite
-
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestContextMapping))
-    suite.addTest(makeSuite(TestTraverser))
-    suite.addTest(makeSuite(TestNameChooser))
+    suite = unittest.TestSuite()
+    suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(TestContextMapping))
+    suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(TestTraverser))
+    suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(TestNameChooser))
     return suite
