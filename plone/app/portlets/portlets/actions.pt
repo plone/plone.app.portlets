@@ -26,7 +26,7 @@
             class string:actions-${view/category};
           ">
         <tal:loop tal:repeat="link view/actionLinks">
-          <li class="portletItem"
+          <li class="portletItem action-item-${python:link['id']}"
               tal:define="
                 icon nocall:link/icon;
               "
