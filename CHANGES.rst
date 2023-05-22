@@ -8,6 +8,16 @@ Changelog
 
 .. towncrier release notes start
 
+5.0.5 (2023-05-22)
+------------------
+
+Bug fixes:
+
+
+- Add css-class to better style actions.
+  [pbauer] (#127)
+
+
 5.0.4 (2023-05-08)
 ------------------
 
