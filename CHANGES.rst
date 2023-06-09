@@ -8,6 +8,15 @@ Changelog
 
 .. towncrier release notes start
 
+5.0.6 (2023-06-09)
+------------------
+
+Bug fixes:
+
+
+- Fix error on `@@manage-content-type-portlets` view. @davisagli (#177)
+
+
 5.0.5 (2023-05-22)
 ------------------
 
