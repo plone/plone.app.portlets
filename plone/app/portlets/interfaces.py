@@ -115,7 +115,7 @@ class IDefaultDashboard(Interface):
         """Create and return dashboard portlet assignments. Should be a
         mapping of dashboard column names ('plone.dashboard1',
         'plone.dashboard2', 'plone.dashboard3' and/or 'plone.dashboard4')
-        and a list of portlet assignmen instances.
+        and a list of portlet assignment instances.
         """
 
 
