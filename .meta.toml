@@ -5,10 +5,10 @@
 template = "default"
 commit-id = "7723aeaf"
 
-[dependencies]
-mappings = [
+[pyproject]
+dependencies_mappings = [
     "ExtensionClass = ['ComputedAttribute']",
     ]
-ignores = [
+dependencies_ignores = [
     "Products.CMFPlone",
     ]
