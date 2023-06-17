@@ -92,7 +92,7 @@ Zope = [
   'Products.CMFCore', 'Products.CMFDynamicViewFTI',
 ]
 python-dateutil = ['dateutil']
-ignore-packages = ['Products.CMFPlone']
+ignore-packages = ['Products.CMFPlone', 'plone.app.event', ]
 ExtensionClass = ['ComputedAttribute']
 
 ##

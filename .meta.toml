@@ -9,6 +9,4 @@ commit-id = "7723aeaf"
 dependencies_mappings = [
     "ExtensionClass = ['ComputedAttribute']",
     ]
-dependencies_ignores = [
-    "Products.CMFPlone",
-    ]
+dependencies_ignores = "['Products.CMFPlone', 'plone.app.event', ]"
