@@ -1,6 +1,4 @@
 from Acquisition import aq_base
-from plone.app.event.portlets import portlet_calendar as calendar
-from plone.app.event.portlets import portlet_events as events
 from plone.app.portlets.interfaces import IPortletPermissionChecker
 from plone.app.portlets.portlets import classic
 from plone.app.portlets.portlets import login
@@ -71,6 +69,8 @@ def convert_legacy_portlets(context):
     """Convert legacy portlets (left_slots, right_slots) in the given
     context to new-style portlets.
     """
+    from plone.app.event.portlets import portlet_calendar as calendar
+    from plone.app.event.portlets import portlet_events as events
 
     portletsMapping = {
         "portlet_login": login.Assignment(),

@@ -51,11 +51,11 @@
                i18n:translate="label_group_properties"
             >Group Properties</a>
             <a class="nav-link"
-               href="${portal_url}/@@manage-group-portlets?key=${request/key}&_authenticator=${token}"
+               href="${portal_url}/@@manage-group-portlets?key=${request/key}&amp;_authenticator=${token}"
                i18n:translate="label_group_portlets"
             >Group Portlets</a>
             <a class="active nav-link"
-               href="${portal_url}/@@manage-group-dashboard?key=${request/key}&_authenticator=${token}"
+               href="${portal_url}/@@manage-group-dashboard?key=${request/key}&amp;_authenticator=${token}"
                i18n:translate="label_group_dashboard"
             >Group Dashboard</a>
           </nav>
