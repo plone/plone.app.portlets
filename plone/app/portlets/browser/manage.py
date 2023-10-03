@@ -396,7 +396,7 @@ class TopbarManagePortlets(ManageContextualPortlets):
         self.manager_name = "plone.leftcolumn"
 
     def publishTraverse(self, request, name):
-        """Get the portlet manager via traversal so that we can re-use
+        """Get the portlet manager via traversal so that we can reuse
         the portlet machinery without overriding it all here.
         """
         self.manager_name = name
