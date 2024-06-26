@@ -8,6 +8,24 @@ Changelog
 
 .. towncrier release notes start
 
+6.0.0 (2024-06-26)
+------------------
+
+Breaking changes:
+
+
+- Remove use of portal_properties.
+  Theoretically we were using this for sorting the navigation portlet.
+  [maurits] (#125)
+
+
+Internal:
+
+
+- Update configuration files.
+  [plone devs] (6e36bcc4)
+
+
 5.0.7 (2024-01-19)
 ------------------
 

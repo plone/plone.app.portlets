@@ -1,3 +1,0 @@
-Remove use of portal_properties.
-Theoretically we were using this for sorting the navigation portlet.
-[maurits]
