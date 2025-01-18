@@ -2,8 +2,8 @@ from .. import PloneMessageFactory as _
 from ..cache import render_cachekey
 from ..portlets import base
 from Acquisition import aq_inner
-from plone.app.layout.navigation.root import getNavigationRoot
 from plone.base.interfaces.controlpanel import ISiteSchema
+from plone.base.navigationroot import get_navigation_root
 from plone.memoize import ram
 from plone.memoize.compress import xhtml_compress
 from plone.memoize.instance import memoize
@@ -145,7 +145,7 @@ class Renderer(base.Renderer):
 
     def getMimeTypeIcon(self, obj):
         fileo = obj.getObject().file
-        portal_url = getNavigationRoot(self.context)
+        portal_url = get_navigation_root(self.context)
         mtt = getToolByName(self.context, "mimetypes_registry")
         if fileo.contentType:
             ctype = mtt.lookup(fileo.contentType)

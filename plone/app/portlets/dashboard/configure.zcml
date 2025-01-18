@@ -5,7 +5,7 @@
 
   <browser:page
       name="dashboard"
-      for="plone.app.layout.navigation.interfaces.INavigationRoot"
+      for="plone.base.interfaces.INavigationRoot"
       class=".dashboard.DashboardView"
       template="dashboard.pt"
       permission="plone.app.portlets.ViewDashboard"
@@ -15,7 +15,7 @@
     It has been placed here to be near the personal bar code -->
   <browser:page
       name="useractions"
-      for="plone.app.layout.navigation.interfaces.INavigationRoot"
+      for="plone.base.interfaces.INavigationRoot"
       class=".user_actions.UserActionsView"
       template="user_actions.pt"
       permission="zope2.View"
