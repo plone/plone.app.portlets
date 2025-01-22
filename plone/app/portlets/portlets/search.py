@@ -1,6 +1,6 @@
 from .. import PloneMessageFactory as _
 from ..portlets import base
-from plone.app.layout.navigation.root import getNavigationRoot
+from plone.base.navigationroot import get_navigation_root
 from plone.portlets.interfaces import IPortletDataProvider
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope import schema
@@ -51,7 +51,7 @@ class Renderer(base.Renderer):
         return f"{self.navigation_root_url}/{self.action}"
 
     def navigation_root_url(self):
-        return getNavigationRoot(self.context)
+        return get_navigation_root(self.context)
 
 
 class AddForm(base.AddForm):

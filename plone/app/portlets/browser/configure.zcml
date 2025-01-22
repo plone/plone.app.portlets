@@ -91,7 +91,7 @@
 
   <browser:page
       name="manage-dashboard"
-      for="plone.app.layout.navigation.interfaces.INavigationRoot"
+      for="plone.base.interfaces.INavigationRoot"
       class=".manage.ManageDashboardPortlets"
       template="templates/manage-dashboard.pt"
       permission="plone.app.portlets.ManageOwnPortlets"

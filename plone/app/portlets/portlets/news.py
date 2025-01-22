@@ -2,10 +2,9 @@ from .. import PloneMessageFactory as _
 from ..cache import render_cachekey
 from ..portlets import base
 from Acquisition import aq_inner
-from plone.app.layout.navigation.root import getNavigationRootObject
-from plone.app.z3cform.widget import SelectFieldWidget
 from plone.autoform.directives import widget
 from plone.base.interfaces import ISiteSchema
+from plone.base.navigationroot import get_navigation_root_object
 from plone.memoize import ram
 from plone.memoize.compress import xhtml_compress
 from plone.memoize.instance import memoize
@@ -19,6 +18,13 @@ from zope.component import getUtility
 from zope.interface import implementer
 
 
+try:
+    from plone.app.z3cform.widgets.select import Select2FieldWidget
+except ImportError:
+    # BBB Plone 6.0
+    from plone.app.z3cform.widget import SelectFieldWidget as Select2FieldWidget
+
+
 class INewsPortlet(IPortletDataProvider):
     count = schema.Int(
         title=_("Number of items to display"),
@@ -28,7 +34,7 @@ class INewsPortlet(IPortletDataProvider):
         min=1,
     )
 
-    widget(state=SelectFieldWidget)
+    widget(state=Select2FieldWidget)
     state = schema.Tuple(
         title=_("Workflow state"),
         description=_("Items in which workflow state to show."),
@@ -98,7 +104,7 @@ class Renderer(base.Renderer):
             (context, self.request), name="plone_portal_state"
         )
         portal = portal_state.portal()
-        if "news" in getNavigationRootObject(context, portal).objectIds():
+        if "news" in get_navigation_root_object(context, portal).objectIds():
             return "%s/news" % portal_state.navigation_root_url()
         return None
 

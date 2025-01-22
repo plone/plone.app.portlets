@@ -5,17 +5,17 @@ from Acquisition import aq_inner
 from Acquisition import aq_parent
 from ComputedAttribute import ComputedAttribute
 from plone.app.layout.navigation.interfaces import INavigationQueryBuilder
-from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.app.layout.navigation.interfaces import INavtreeStrategy
 from plone.app.layout.navigation.navtree import buildFolderTree
-from plone.app.layout.navigation.root import getNavigationRoot
-from plone.app.layout.navigation.root import getNavigationRootObject
 from plone.app.uuid.utils import uuidToObject
 from plone.app.vocabularies.catalog import CatalogSource
 from plone.base.defaultpage import is_default_page
+from plone.base.interfaces import INavigationRoot
 from plone.base.interfaces import INavigationSchema
 from plone.base.interfaces import INonStructuralFolder
 from plone.base.interfaces import ISiteSchema
+from plone.base.navigationroot import get_navigation_root
+from plone.base.navigationroot import get_navigation_root_object
 from plone.base.utils import safe_callable
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.memoize.instance import memoize
@@ -197,7 +197,7 @@ class Assignment(base.Assignment):
         if not root:
             return None
         portal = getToolByName(self, "portal_url").getPortalObject()
-        navroot = getNavigationRootObject(self, portal)
+        navroot = get_navigation_root_object(self, portal)
         try:
             root = navroot.unrestrictedTraverse(root.lstrip("/"))
         except (AttributeError, KeyError, TypeError, NotFound):
@@ -418,7 +418,7 @@ class QueryBuilder:
         if root is not None:
             rootPath = "/".join(root.getPhysicalPath())
         else:
-            rootPath = getNavigationRoot(context)
+            rootPath = get_navigation_root(context)
         currentPath = "/".join(context.getPhysicalPath())
 
         # If we are above the navigation root, a navtree query would return
@@ -500,7 +500,7 @@ def getRootPath(context, currentFolderOnly, topLevel, root):
     if root is not None:
         rootPath = "/".join(root.getPhysicalPath())
     else:
-        rootPath = getNavigationRoot(context)
+        rootPath = get_navigation_root(context)
 
     # Adjust for topLevel
     if topLevel > 0:
