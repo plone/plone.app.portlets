@@ -35,6 +35,8 @@ class ManageContextualPortlets(BrowserView):
     def __init__(self, context, request):
         super().__init__(context, request)
         self.request.set("disable_border", True)
+        # Disable the ajax main template for special response handling.
+        self.request.set("ajax_load", False)
 
     # IManagePortletsView implementation
 
@@ -228,6 +230,8 @@ class ManageGroupPortlets(BrowserView):
     def __init__(self, context, request):
         super().__init__(context, request)
         self.request.set("disable_border", True)
+        # Disable the ajax main template for special response handling.
+        self.request.set("ajax_load", False)
 
     def getAssignmentMappingUrl(self, manager):
         baseUrl = str(
@@ -258,6 +262,8 @@ class ManageContentTypePortlets(BrowserView):
     def __init__(self, context, request):
         super().__init__(context, request)
         self.request.set("disable_border", True)
+        # Disable the ajax main template for special response handling.
+        self.request.set("ajax_load", False)
 
     # IManagePortletsView implementation
 
