@@ -8,6 +8,15 @@ Changelog
 
 .. towncrier release notes start
 
+6.0.2 (2025-06-19)
+------------------
+
+Bug fixes:
+
+
+- Disable the use of the ajax main template for manage portlet views due to some special response parsing.
+
+
 6.0.1 (2025-01-24)
 ------------------
 
