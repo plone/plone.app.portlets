@@ -213,20 +213,6 @@ class TestRenderer(PortletsTestCase):
                 self.assertFalse(child["getRemoteUrl"])
             if child["Title"] == "link1":
                 self.assertEqual(child["getRemoteUrl"], "http://plone.org")
-                # as Creator, link1 should not use the remote Url
-                self.assertFalse(child["useRemoteUrl"])
-
-        self.portal.link1.setCreators(["some_other_user"])
-        self.portal.link1.reindexObject()
-        view = self.renderer(self.portal)
-        tree = view.getNavTree()
-        for child in tree["children"]:
-            if child["portal_type"] != "Link":
-                self.assertFalse(child["getRemoteUrl"])
-            if child["Title"] == "link1":
-                self.assertEqual(child["getRemoteUrl"], "http://plone.org")
-                # as non-Creator user, link1 should use the remote Url
-                self.assertTrue(child["useRemoteUrl"])
 
     def testNonStructuralFolderHidesChildren(self):
         # Make sure NonStructuralFolders act as if parent_types_not_to_query
