@@ -1,0 +1,3 @@
+Do not test the value of ``useRemoteUrl`` in the navigation portlet.
+We no longer want to use this.
+[maurits]
