@@ -8,6 +8,17 @@ Changelog
 
 .. towncrier release notes start
 
+7.0.0a2 (2026-02-23)
+--------------------
+
+Tests:
+
+
+- Do not test the value of ``useRemoteUrl`` in the navigation portlet.
+  We no longer want to use this.
+  [maurits] (#4269)
+
+
 7.0.0a1 (2025-11-19)
 --------------------
 
