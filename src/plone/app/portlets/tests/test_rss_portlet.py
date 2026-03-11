@@ -17,7 +17,6 @@ import os
 import transaction
 import unittest
 
-
 # Take a sample feed.  In this case an atom feed instead of RSS.
 # Taken from https://maurits.vanrees.org/weblog/topics/plone/@@atom.xml
 here = os.path.dirname(__file__)

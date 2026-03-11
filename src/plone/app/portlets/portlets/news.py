@@ -17,7 +17,6 @@ from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.interface import implementer
 
-
 try:
     from plone.app.z3cform.widgets.select import Select2FieldWidget
 except ImportError:
