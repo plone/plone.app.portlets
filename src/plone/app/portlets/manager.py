@@ -9,6 +9,7 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from ZODB.POSException import ConflictError
 from zope.component import adapter
 from zope.component import getMultiAdapter
+from zope.component import queryMultiAdapter
 from zope.interface import Interface
 from zope.publisher.interfaces.browser import IBrowserView
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
@@ -26,7 +27,7 @@ class PortletManagerRenderer(BasePortletManagerRenderer, Explicit):
         """Helper method to get the correct IPortletRenderer for the given
         data object.
         """
-        portlet = getMultiAdapter(
+        portlet = queryMultiAdapter(
             (
                 self.context,
                 self.request,
