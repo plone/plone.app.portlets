@@ -1,0 +1,2 @@
+Use ``queryMultiAdapter`` instead of ``getMultiAdapter`` in ``_dataToPortlet`` so a missing portlet renderer no longer crashes the page.
+@jensens
