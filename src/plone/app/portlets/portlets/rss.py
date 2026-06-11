@@ -3,6 +3,7 @@ from ..portlets import base
 from DateTime import DateTime
 from DateTime.interfaces import DateTimeError
 from html import unescape
+from io import BytesIO
 from logging import getLogger
 from plone.portlets.interfaces import IPortletDataProvider
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
@@ -13,6 +14,8 @@ from zope.interface import Interface
 from zope.interface import Invalid
 
 import feedparser
+import os
+import requests
 import time
 
 # Accept these bozo_exceptions encountered by feedparser when parsing
@@ -21,6 +24,9 @@ ACCEPTED_FEEDPARSER_EXCEPTIONS = (feedparser.CharacterEncodingOverride,)
 
 # store the feeds here (which means in RAM)
 FEED_DATA = {}  # url: ({date, title, url, itemlist})
+
+# Try downloading at most this amount of bytes:
+MAXIMUM_RSS_FEED_SIZE_BYTES = int(os.getenv("MAXIMUM_RSS_FEED_SIZE_BYTES", 100000))
 
 logger = getLogger(__name__)
 
@@ -135,6 +141,52 @@ def _rss_feed_url_validator(value):
     return True
 
 
+def _download_feed_and_headers(url, limit=MAXIMUM_RSS_FEED_SIZE_BYTES):
+    """Download an RSS feed from a url.
+
+    The url is trusted: you should have already validated this with the
+    _rss_feed_url_validator function.
+
+    We add a timeout and limit the maximum data we read, to avoid requesting
+    a 2 GB file.
+
+    This function may raise exceptions from the requests library, or raise its
+    own ValueErrors.  The caller should catch and handle this, if wanted.
+
+    For testing, you could create a 10 MB file: `truncate -s 10M 10m.txt`.
+    Then run `python -m http.server [optional port]` to serve it.
+
+    For testing if streaming connections are handled correctly, just upload
+    a file to Plone (possibly in a separate instance) and use its download
+    url.  You can edit `plone.namedfile.utils/__init__.py` function
+    `filestream_range_iterator`  and add some logging or a `time.sleep`
+    in its `read` method.
+
+    The function returns the contents of the feed, and the response headers.
+    """
+    if limit <= 0:
+        raise ValueError("You must pass a limit for the number of bytes.")
+    # Don't allow redirects.  Otherwise that could circumvent our url validator.
+    # A connect and read timeout of slightly more than 3 seconds is recommended.
+    # See https://docs.python-requests.org/en/latest/user/advanced/#timeouts
+    response = requests.get(url, stream=True, allow_redirects=False, timeout=3.5)
+    response.raise_for_status()
+
+    # Check the content length header, if it exists.
+    length = response.headers.get("Content-Length")
+    if length and int(length) > limit:
+        raise ValueError("Content-Length header too large")
+
+    # Try to read at most until limit plus 1 bytes.  We may get less, which
+    # is fine.  If we get more than the limit, then we refuse: we don't want
+    # to load a multi Gigabyte file.  Note that internally this may very
+    # well use multiple chunked requests.
+    for chunk in response.iter_content(limit + 1):
+        if len(chunk) > limit:
+            raise ValueError("Downloaded too much content.")
+    return chunk, response.headers
+
+
 class IFeed(Interface):
     def __init__(url, timeout):
         """initialize the feed with the given url. will not automatically load it
@@ -246,6 +298,12 @@ class RSSFeed:
 
     def _buildItemDict(self, item):
         link = item.links[0]["href"]
+        try:
+            link = _normal_url_validator(link)
+        except Invalid:
+            # We don't want JavaScript links in here.
+            logger.warning("Refusing to use link from RSS item %r", link)
+            link = ""
         itemdict = {
             "title": item.title,
             "url": link,
@@ -280,7 +338,23 @@ class RSSFeed:
                 kwargs["modified"] = self._last_modified
             if self._etag:
                 kwargs["etag"] = self._etag
-            d = feedparser.parse(url, **kwargs)
+            # Initially we simply passed the url, but that can be a method
+            # of attack, especially if this points to a very large file.
+            # So we first download it ourselves, then pass the contents.
+            # TODO pass those kwargs to our requests function.
+            # TODO Then check for 304, to replace what we do a few lines down.
+            contents, headers = _download_feed_and_headers(url)
+            download = BytesIO(contents)
+            # `feedparser.parse`` says: When a URL is not passed, the feed
+            # location to use in relative URL resolution should be passed
+            # in the `Content-Location` response header.
+            # kwargs["response_headers"] = {"Content-Location": url}
+            # But the `Content-Type` header is also required.
+            # Let's pass all of them.
+            # lowercase all of the HTTP headers for comparisons per RFC 2616
+            # That is what feedparser does when it loads a url.
+            response_headers = {k.lower(): v for k, v in headers.items()}
+            d = feedparser.parse(download, response_headers=response_headers)
             if getattr(d, "bozo", 0) == 1 and not isinstance(
                 d.get("bozo_exception"), ACCEPTED_FEEDPARSER_EXCEPTIONS
             ):
