@@ -2,13 +2,15 @@ from .. import PloneMessageFactory as _
 from ..portlets import base
 from DateTime import DateTime
 from DateTime.interfaces import DateTimeError
+from html import unescape
 from logging import getLogger
 from plone.portlets.interfaces import IPortletDataProvider
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
-from urllib.parse import urlparse
+from urllib.parse import urlsplit
 from zope import schema
 from zope.interface import implementer
 from zope.interface import Interface
+from zope.interface import Invalid
 
 import feedparser
 import time
@@ -21,6 +23,116 @@ ACCEPTED_FEEDPARSER_EXCEPTIONS = (feedparser.CharacterEncodingOverride,)
 FEED_DATA = {}  # url: ({date, title, url, itemlist})
 
 logger = getLogger(__name__)
+
+
+def _normal_url_validator(value):
+    """Validate that this is a 'normal', external url.
+
+    It should be safe for a visitor to click on.  Of course it could lead to
+    a malicious site: we have no way of checking that.
+    But at least this must be no javascript url, file url, etc.
+
+    This is used by the '_rss_feed_url_validator' function below,
+    which needs to be stricter than this one.
+
+    This function either returns True, or raises Invalid.
+
+    We only return True if the value is good to be used unchanged.
+    For example if the value might be fine but there is a space in front:
+    we raise Invalid.
+
+    We will probably put a version of this function in plone.base.
+    """
+    if not value:
+        # nothing to validate
+        return True
+    if value != value.strip():
+        raise Invalid(_("URL not accepted"))
+    if len(value.splitlines()) > 1:
+        raise Invalid(_("URL not accepted"))
+
+    # lowercase for easier checking
+    url = value.lower()
+    parsed = urlsplit(url)
+    scheme = parsed.scheme
+    domain = parsed.netloc
+    if not scheme:
+        # We don't support relative urls, and we don't need to support
+        # //example.org
+        raise Invalid(_("URL not accepted"))
+    if scheme not in ("https", "http"):
+        raise Invalid(_("URL not accepted"))
+
+    if not domain:
+        # Example: https:example.org
+        # When we redirect to this, some browsers fail,
+        # others happily go to example.org.
+        raise Invalid(_("URL not accepted"))
+
+    # Someone may be doing tricks with escaped html code.
+    unescaped_url = unescape(url)
+    if unescaped_url != url:
+        # Check the unescaped url, then continue checking the current url.
+        _normal_url_validator(unescaped_url)
+
+    return True
+
+
+def _rss_feed_url_validator(value):
+    """Validator for RSS feed urls.
+
+    We do not want file:// urls.
+    This opens up security issues.
+    There are actually more possible problems, so we take over some logic
+    from Products.isurlinportal.
+
+    Really this is a validator that we should use for any url that the Plone
+    Site itself may make a request to.
+    We will probably put a version of this function in plone.base.
+    """
+    if not value:
+        # nothing to validate
+        return True
+    # lowercase for easier checking
+    url = value.lower()
+
+    # The normal url validator already does some basic checks.
+    _normal_url_validator(url)
+
+    # We want to go further than that.
+    domain = urlsplit(url).netloc
+
+    # We don't want to be used as a port checker.
+    if ":" in domain:
+        raise Invalid(_("URL not accepted"))
+
+    # We don't want to allow an external visitor to indirectly request
+    # content from localhost, or similar, like backend.
+    if "." not in domain:
+        raise Invalid(_("URL not accepted"))
+    if "host.docker.internal" in domain:
+        raise Invalid(_("URL not accepted"))
+
+    # Only proper domain names, not IP addresses.
+    # We don't want to allow access to private IP addresses.  We could
+    # explicitly check the defined ranges, but really it should be fine
+    # to only allow proper domain names.
+    try:
+        [int(part) for part in domain.split(".")]
+    except ValueError:
+        # At least one part is not an integer.
+        pass
+    else:
+        # All parts are integers.
+        raise Invalid(_("URL not accepted"))
+
+    # Someone may be doing tricks with escaped html code.
+    unescaped_url = unescape(url)
+    if unescaped_url != url:
+        # Check the unescaped url, then continue checking the current url.
+        _rss_feed_url_validator(unescaped_url)
+
+    return True
 
 
 class IFeed(Interface):
@@ -154,11 +266,11 @@ class RSSFeed:
         """do the actual work and try to retrieve the feed"""
         url = self.url
         if url:
-            if len(url.splitlines()) > 1:
-                # More than one line in a url: probably a hacker.
-                url = ""
-            elif urlparse(url).scheme not in ("https", "http"):
-                # Mostly: prevent loading local file: urls.
+            # Prevent loading local file: urls and other possible hacks.
+            try:
+                _rss_feed_url_validator(url)
+            except Invalid:
+                logger.warning("Refusing to load stored RSS url %r", url)
                 url = ""
         if url != "":
             self._last_update_time_in_minutes = time.time() / 60
@@ -254,6 +366,7 @@ class IRSSPortlet(IPortletDataProvider):
         title=_("URL of RSS feed"),
         description=_("Link of the RSS feed to display."),
         required=True,
+        constraint=_rss_feed_url_validator,
         default="",
     )
 
