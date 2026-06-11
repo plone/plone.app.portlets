@@ -26,7 +26,7 @@ ACCEPTED_FEEDPARSER_EXCEPTIONS = (feedparser.CharacterEncodingOverride,)
 FEED_DATA = {}  # url: ({date, title, url, itemlist})
 
 # Try downloading at most this amount of bytes:
-MAXIMUM_RSS_FEED_SIZE_BYTES = int(os.getenv("MAXIMUM_RSS_FEED_SIZE_BYTES", 100000))
+MAXIMUM_RSS_FEED_SIZE_BYTES = int(os.getenv("MAXIMUM_RSS_FEED_SIZE_BYTES", 1000000))
 
 logger = getLogger(__name__)
 
