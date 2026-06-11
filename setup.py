@@ -70,6 +70,7 @@ setup(
         "Products.PluggableAuthService",
         "Products.PythonScripts",
         "Products.statusmessages",
+        "requests",
         "z3c.form",
         "zope.annotation",
         "zope.browser",
