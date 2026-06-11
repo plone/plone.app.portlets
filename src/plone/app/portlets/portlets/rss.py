@@ -141,7 +141,7 @@ def _rss_feed_url_validator(value):
     return True
 
 
-def _download_feed_and_headers(url, limit=MAXIMUM_RSS_FEED_SIZE_BYTES):
+def _download_feed_and_response(url, limit=MAXIMUM_RSS_FEED_SIZE_BYTES, headers=None):
     """Download an RSS feed from a url.
 
     The url is trusted: you should have already validated this with the
@@ -162,15 +162,22 @@ def _download_feed_and_headers(url, limit=MAXIMUM_RSS_FEED_SIZE_BYTES):
     `filestream_range_iterator`  and add some logging or a `time.sleep`
     in its `read` method.
 
-    The function returns the contents of the feed, and the response headers.
+    The function returns the contents of the feed, and the full response.
+    Then the caller can still do something based on the response.
     """
     if limit <= 0:
         raise ValueError("You must pass a limit for the number of bytes.")
     # Don't allow redirects.  Otherwise that could circumvent our url validator.
     # A connect and read timeout of slightly more than 3 seconds is recommended.
     # See https://docs.python-requests.org/en/latest/user/advanced/#timeouts
-    response = requests.get(url, stream=True, allow_redirects=False, timeout=3.5)
+    response = requests.get(
+        url, stream=True, allow_redirects=False, timeout=3.5, headers=headers
+    )
     response.raise_for_status()
+    chunk = b""
+    if response.status_code == 304:
+        # not modified
+        return chunk, response
 
     # Check the content length header, if it exists.
     length = response.headers.get("Content-Length")
@@ -184,7 +191,7 @@ def _download_feed_and_headers(url, limit=MAXIMUM_RSS_FEED_SIZE_BYTES):
     for chunk in response.iter_content(limit + 1):
         if len(chunk) > limit:
             raise ValueError("Downloaded too much content.")
-    return chunk, response.headers
+    return chunk, response
 
 
 class IFeed(Interface):
@@ -299,11 +306,11 @@ class RSSFeed:
     def _buildItemDict(self, item):
         link = item.links[0]["href"]
         try:
-            link = _normal_url_validator(link)
+            _normal_url_validator(link)
         except Invalid:
             # We don't want JavaScript links in here.
             logger.warning("Refusing to use link from RSS item %r", link)
-            link = ""
+            link = "#"
         itemdict = {
             "title": item.title,
             "url": link,
@@ -333,43 +340,40 @@ class RSSFeed:
         if url != "":
             self._last_update_time_in_minutes = time.time() / 60
             self._last_update_time = DateTime()
-            kwargs = {}
+            headers = {}
             if self._modified:
-                kwargs["modified"] = self._modified
+                headers["If-Modified-Since"] = self._modified
             if self._etag:
-                kwargs["etag"] = self._etag
+                headers["If-None-Match"] = self._etag
             # Initially we simply passed the url, but that can be a method
             # of attack, especially if this points to a very large file.
             # So we first download it ourselves, then pass the contents.
-            # TODO pass those kwargs to our requests function.
-            # TODO Then check for 304, to replace what we do a few lines down.
-            contents, headers = _download_feed_and_headers(url)
-            download = BytesIO(contents)
-            # `feedparser.parse`` says: When a URL is not passed, the feed
-            # location to use in relative URL resolution should be passed
-            # in the `Content-Location` response header.
-            # kwargs["response_headers"] = {"Content-Location": url}
-            # But the `Content-Type` header is also required.
-            # Let's pass all of them.
-            # lowercase all of the HTTP headers for comparisons per RFC 2616
-            # That is what feedparser does when it loads a url.
-            response_headers = {k.lower(): v for k, v in headers.items()}
-            d = feedparser.parse(download, response_headers=response_headers)
-            if getattr(d, "bozo", 0) == 1 and not isinstance(
-                d.get("bozo_exception"), ACCEPTED_FEEDPARSER_EXCEPTIONS
-            ):
-                self._loaded = True  # we tried at least but have a failed load
-                self._failed = True
-                logger.info(
-                    "failed to update RSS feed %s", d.get("bozo_exception", None)
-                )
-                return False
+            contents, response = _download_feed_and_response(url, headers=headers)
+            # If the response was 304, nothing changed!
+            # So we don't even need to ask feedparser to parse the contents.
+            if response.status_code != 304:
+                download = BytesIO(contents)
+                # `feedparser.parse`` says: When a URL is not passed, the feed
+                # location to use in relative URL resolution should be passed
+                # in the `Content-Location` response header.
+                # But the `Content-Type` header is also required.
+                # Let's pass all of them.
+                # lowercase all of the HTTP headers for comparisons per RFC 2616
+                # That is what feedparser does when it loads a url.
+                response_headers = {k.lower(): v for k, v in response.headers.items()}
+                d = feedparser.parse(download, response_headers=response_headers)
+                if getattr(d, "bozo", 0) == 1 and not isinstance(
+                    d.get("bozo_exception"), ACCEPTED_FEEDPARSER_EXCEPTIONS
+                ):
+                    self._loaded = True  # we tried at least but have a failed load
+                    self._failed = True
+                    logger.info(
+                        "failed to update RSS feed %s", d.get("bozo_exception", None)
+                    )
+                    return False
 
-            #  If the response was 304, nothing changed!
-            #  Don't change anything...
-            if d.status != 304:
-                self._etag = getattr(d, "etag", None)
-                self._modified = getattr(d, "modified", None)
+                self._etag = response.headers.get("etag", None)
+                self._modified = response.headers.get("last-modified", None)
 
                 try:
                     self._title = d.feed.title
