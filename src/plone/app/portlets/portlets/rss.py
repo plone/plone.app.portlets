@@ -245,7 +245,7 @@ class RSSFeed:
         self._last_update_time_in_minutes = 0  # when was the feed last updated?
         self._last_update_time = None  # time as DateTime or Nonw
         self._etag = None
-        self._last_modified = None
+        self._modified = None
 
     @property
     def last_update_time_in_minutes(self):
@@ -334,8 +334,8 @@ class RSSFeed:
             self._last_update_time_in_minutes = time.time() / 60
             self._last_update_time = DateTime()
             kwargs = {}
-            if self._last_modified:
-                kwargs["modified"] = self._last_modified
+            if self._modified:
+                kwargs["modified"] = self._modified
             if self._etag:
                 kwargs["etag"] = self._etag
             # Initially we simply passed the url, but that can be a method
