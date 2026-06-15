@@ -8,6 +8,18 @@ Changelog
 
 .. towncrier release notes start
 
+7.0.1 (2026-06-15)
+------------------
+
+Documentation:
+
+
+- Document the @@render-portlet view.
+  Documentation about the @@render-portlet view, which can be used to reload a
+  portlet via AJAX.
+  @thet
+
+
 7.0.0 (2026-05-07)
 ------------------
 
