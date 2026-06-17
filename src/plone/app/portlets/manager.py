@@ -16,7 +16,6 @@ from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 import logging
 import sys
 
-
 logger = logging.getLogger("portlets")
 
 

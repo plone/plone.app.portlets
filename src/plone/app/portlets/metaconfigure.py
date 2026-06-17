@@ -13,7 +13,6 @@ from zope.interface import Interface
 from zope.publisher.interfaces.browser import IBrowserView
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 
-
 # Keep track of which renderers we've registered so that we can artificially
 # subclass them in portletRendererDirective. Yes, this is evil.
 _default_renderers = {}
