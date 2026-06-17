@@ -18,7 +18,6 @@ from zope.interface import implementer
 from zope.publisher.interfaces.browser import IBrowserPublisher
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 
-
 ATTEMPTS = 10000
 
 category_to_name = {
