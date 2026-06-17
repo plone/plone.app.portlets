@@ -219,9 +219,7 @@ class TestGenericSetup(PortletsTestCase):
         self.assertEqual(0, len(mapping))
 
         context = DummyImportContext(self.portal, purge=False)
-        context._files[
-            "portlets.xml"
-        ] = """<?xml version="1.0"?>
+        context._files["portlets.xml"] = """<?xml version="1.0"?>
             <portlets>
                 <assignment
                     manager="test.testcolumn"
@@ -296,9 +294,7 @@ class TestGenericSetup(PortletsTestCase):
         self.assertEqual(3, len(mapping))
 
         context = DummyImportContext(self.portal, purge=False)
-        context._files[
-            "portlets.xml"
-        ] = """<?xml version="1.0"?>
+        context._files["portlets.xml"] = """<?xml version="1.0"?>
             <portlets>
                 <assignment
                     manager="test.testcolumn"
@@ -330,9 +326,7 @@ class TestGenericSetup(PortletsTestCase):
 
         # and be purgeable
         context = DummyImportContext(self.portal, purge=False)
-        context._files[
-            "portlets.xml"
-        ] = """<?xml version="1.0"?>
+        context._files["portlets.xml"] = """<?xml version="1.0"?>
             <portlets>
                 <assignment
                     manager="test.testcolumn"
@@ -364,9 +358,7 @@ class TestGenericSetup(PortletsTestCase):
 
         # and be purgeable
         context = DummyImportContext(self.portal, purge=False)
-        context._files[
-            "portlets.xml"
-        ] = """<?xml version="1.0"?>
+        context._files["portlets.xml"] = """<?xml version="1.0"?>
             <portlets>
                 <assignment
                     manager="test.testcolumn"
@@ -415,9 +407,7 @@ class TestGenericSetup(PortletsTestCase):
         self.assertNotEqual(None, manager)
 
         context = DummyImportContext(self.portal, purge=False)
-        context._files[
-            "portlets.xml"
-        ] = """<?xml version="1.0"?>
+        context._files["portlets.xml"] = """<?xml version="1.0"?>
             <portlets purge="True">
             </portlets>
         """
@@ -431,9 +421,7 @@ class TestGenericSetup(PortletsTestCase):
         self.assertNotEqual(None, manager)
 
         context = DummyImportContext(self.portal, purge=False)
-        context._files[
-            "portlets.xml"
-        ] = """<?xml version="1.0"?>
+        context._files["portlets.xml"] = """<?xml version="1.0"?>
             <portlets>
                 <portletmanager
                     name="test.testcolumn"
@@ -448,9 +436,7 @@ class TestGenericSetup(PortletsTestCase):
 
     def testManagerPurge(self):
         context = DummyImportContext(self.portal, purge=False)
-        context._files[
-            "portlets.xml"
-        ] = """<?xml version="1.0"?>
+        context._files["portlets.xml"] = """<?xml version="1.0"?>
             <portlets>
                 <portletmanager
                     name="test.testcolumn"
