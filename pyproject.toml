@@ -122,7 +122,7 @@ Zope = [
 ]
 python-dateutil = ['dateutil']
 pytest-plone = ['pytest', 'zope.pytestlayer', 'plone.testing', 'plone.app.testing']
-ignore-packages = ['Products.CMFPlone', 'plone.app.event', ]
+ignore-packages = ['Products.CMFPlone', 'plone.app.event', 'setuptools']
 ExtensionClass = ['ComputedAttribute']
 
 ##

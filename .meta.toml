@@ -9,7 +9,7 @@ commit-id = "2.9.1.dev0"
 dependencies_mappings = [
     "ExtensionClass = ['ComputedAttribute']",
     ]
-dependencies_ignores = "['Products.CMFPlone', 'plone.app.event', ]"
+dependencies_ignores = "['Products.CMFPlone', 'plone.app.event', 'setuptools']"
 
 [tox]
 test_matrix = { "6.1" = ["*"] }
