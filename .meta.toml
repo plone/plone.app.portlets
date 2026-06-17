@@ -1,12 +1,30 @@
 # Generated from:
-# https://github.com/plone/meta/tree/main/config/default
+# https://github.com/plone/meta/tree/2.x/src/plone/meta/default
 # See the inline comments on how to expand/tweak this configuration file
 [meta]
 template = "default"
-commit-id = "a89af8f2"
+commit-id = "2.9.1.dev0"
 
 [pyproject]
 dependencies_mappings = [
     "ExtensionClass = ['ComputedAttribute']",
     ]
-dependencies_ignores = "['Products.CMFPlone', 'plone.app.event', ]"
+dependencies_ignores = "['Products.CMFPlone', 'plone.app.event', 'setuptools']"
+
+[github]
+jobs = [
+   "qa",
+   "coverage",
+   "dependencies",
+   "release_ready",
+# no circular on 6.0
+   ]
+
+[tox]
+test_matrix = { "6.0" = ["*"] }
+envlist_lines = """
+# Add envs to prevent python-check-versions to complain,
+# which would force us to set requires_python to 3.9+,
+# which I don't want to do in a bugfix release.
+    py38-plone60
+"""

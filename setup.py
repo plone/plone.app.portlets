@@ -1,7 +1,6 @@
 from setuptools import find_packages
 from setuptools import setup
 
-
 version = "5.0.8.dev0"
 
 setup(
@@ -23,6 +22,8 @@ setup(
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
     ],
     keywords="portlets viewlets plone",
     author="Plone Foundation",
