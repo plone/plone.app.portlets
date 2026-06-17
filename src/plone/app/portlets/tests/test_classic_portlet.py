@@ -119,6 +119,32 @@ class TestRenderer(PortletsTestCase):
         )
         r.render()
 
+    def testRejectTalesInjection(self):
+        # A TALES injection payload in the template field must not be turned
+        # into a TALES expression. path_expression() rejects the illegal name
+        # and render() raises rather than executing the payload.
+        payload = "x | python:'RCE-START'+'RCE-END'"
+        r = self.renderer(
+            assignment=classic.Assignment(template=payload, macro=None)
+        )
+        from zope.schema import ValidationError
+
+        self.assertRaises(ValidationError, r.path_expression)
+        try:
+            output = r.render()
+        except Exception:
+            output = ""
+        self.assertNotIn("RCE-START", output)
+
+    def testConstraintRejectsMetacharacters(self):
+        from zope.schema import ValidationError
+
+        field = classic.IClassicPortlet["template"]
+        self.assertRaises(ValidationError, field.validate, "x | python:'pwn'")
+        # legitimate names validate fine
+        field.validate("portlet_recent")
+        field.validate("@@view")
+
 
 def test_suite():
     suite = unittest.TestSuite()
