@@ -7,7 +7,6 @@ from zope.interface import implementer
 
 import re
 
-
 # Legitimate Classic-portlet template/macro names are plain traversal steps
 # (e.g. "portlet_recent", "@@view", "content-core"). They must never contain
 # TALES metacharacters such as "|", ":" (python:/string:), whitespace or

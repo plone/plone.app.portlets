@@ -124,9 +124,7 @@ class TestRenderer(PortletsTestCase):
         # into a TALES expression. path_expression() rejects the illegal name
         # and render() raises rather than executing the payload.
         payload = "x | python:'RCE-START'+'RCE-END'"
-        r = self.renderer(
-            assignment=classic.Assignment(template=payload, macro=None)
-        )
+        r = self.renderer(assignment=classic.Assignment(template=payload, macro=None))
         from zope.schema import ValidationError
 
         self.assertRaises(ValidationError, r.path_expression)
