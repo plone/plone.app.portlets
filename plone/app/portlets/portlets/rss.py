@@ -13,7 +13,6 @@ from zope.interface import Interface
 import feedparser
 import time
 
-
 # Accept these bozo_exceptions encountered by feedparser when parsing
 # the feed:
 ACCEPTED_FEEDPARSER_EXCEPTIONS = (feedparser.CharacterEncodingOverride,)

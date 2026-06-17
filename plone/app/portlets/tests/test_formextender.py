@@ -22,7 +22,6 @@ from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 
 import unittest
 
-
 # A sample schemaextender:
 EXTENDER_PREFIX = "portletcssclass"
 
