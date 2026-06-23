@@ -2,15 +2,20 @@ from .. import PloneMessageFactory as _
 from ..portlets import base
 from DateTime import DateTime
 from DateTime.interfaces import DateTimeError
+from html import unescape
+from io import BytesIO
 from logging import getLogger
 from plone.portlets.interfaces import IPortletDataProvider
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
-from urllib.parse import urlparse
+from urllib.parse import urlsplit
 from zope import schema
 from zope.interface import implementer
 from zope.interface import Interface
+from zope.interface import Invalid
 
 import feedparser
+import os
+import requests
 import time
 
 # Accept these bozo_exceptions encountered by feedparser when parsing
@@ -20,7 +25,173 @@ ACCEPTED_FEEDPARSER_EXCEPTIONS = (feedparser.CharacterEncodingOverride,)
 # store the feeds here (which means in RAM)
 FEED_DATA = {}  # url: ({date, title, url, itemlist})
 
+# Try downloading at most this amount of bytes:
+MAXIMUM_RSS_FEED_SIZE_BYTES = int(os.getenv("MAXIMUM_RSS_FEED_SIZE_BYTES", 1000000))
+
 logger = getLogger(__name__)
+
+
+def _normal_url_validator(value):
+    """Validate that this is a 'normal', external url.
+
+    It should be safe for a visitor to click on.  Of course it could lead to
+    a malicious site: we have no way of checking that.
+    But at least this must be no javascript url, file url, etc.
+
+    This is used by the '_rss_feed_url_validator' function below,
+    which needs to be stricter than this one.
+
+    This function either returns True, or raises Invalid.
+
+    We only return True if the value is good to be used unchanged.
+    For example if the value might be fine but there is a space in front:
+    we raise Invalid.
+
+    We will probably put a version of this function in plone.base.
+    """
+    if not value:
+        # nothing to validate
+        return True
+    if value != value.strip():
+        raise Invalid(_("URL not accepted"))
+    if len(value.splitlines()) > 1:
+        raise Invalid(_("URL not accepted"))
+
+    # lowercase for easier checking
+    url = value.lower()
+    parsed = urlsplit(url)
+    scheme = parsed.scheme
+    domain = parsed.netloc
+    if not scheme:
+        # We don't support relative urls, and we don't need to support
+        # //example.org
+        raise Invalid(_("URL not accepted"))
+    if scheme not in ("https", "http"):
+        raise Invalid(_("URL not accepted"))
+
+    if not domain:
+        # Example: https:example.org
+        # When we redirect to this, some browsers fail,
+        # others happily go to example.org.
+        raise Invalid(_("URL not accepted"))
+
+    # Someone may be doing tricks with escaped html code.
+    unescaped_url = unescape(url)
+    if unescaped_url != url:
+        # Check the unescaped url, then continue checking the current url.
+        _normal_url_validator(unescaped_url)
+
+    return True
+
+
+def _rss_feed_url_validator(value):
+    """Validator for RSS feed urls.
+
+    We do not want file:// urls.
+    This opens up security issues.
+    There are actually more possible problems, so we take over some logic
+    from Products.isurlinportal.
+
+    Really this is a validator that we should use for any url that the Plone
+    Site itself may make a request to.
+    We will probably put a version of this function in plone.base.
+    """
+    if not value:
+        # nothing to validate
+        return True
+    # lowercase for easier checking
+    url = value.lower()
+
+    # The normal url validator already does some basic checks.
+    _normal_url_validator(url)
+
+    # We want to go further than that.
+    domain = urlsplit(url).netloc
+
+    # We don't want to be used as a port checker.
+    if ":" in domain:
+        raise Invalid(_("URL not accepted"))
+
+    # We don't want to allow an external visitor to indirectly request
+    # content from localhost, or similar, like backend.
+    if "." not in domain:
+        raise Invalid(_("URL not accepted"))
+    if "host.docker.internal" in domain:
+        raise Invalid(_("URL not accepted"))
+
+    # Only proper domain names, not IP addresses.
+    # We don't want to allow access to private IP addresses.  We could
+    # explicitly check the defined ranges, but really it should be fine
+    # to only allow proper domain names.
+    try:
+        [int(part) for part in domain.split(".")]
+    except ValueError:
+        # At least one part is not an integer.
+        pass
+    else:
+        # All parts are integers.
+        raise Invalid(_("URL not accepted"))
+
+    # Someone may be doing tricks with escaped html code.
+    unescaped_url = unescape(url)
+    if unescaped_url != url:
+        # Check the unescaped url, then continue checking the current url.
+        _rss_feed_url_validator(unescaped_url)
+
+    return True
+
+
+def _download_feed_and_response(url, limit=MAXIMUM_RSS_FEED_SIZE_BYTES, headers=None):
+    """Download an RSS feed from a url.
+
+    The url is trusted: you should have already validated this with the
+    _rss_feed_url_validator function.
+
+    We add a timeout and limit the maximum data we read, to avoid requesting
+    a 2 GB file.
+
+    This function may raise exceptions from the requests library, or raise its
+    own ValueErrors.  The caller should catch and handle this, if wanted.
+
+    For testing, you could create a 10 MB file: `truncate -s 10M 10m.txt`.
+    Then run `python -m http.server [optional port]` to serve it.
+
+    For testing if streaming connections are handled correctly, just upload
+    a file to Plone (possibly in a separate instance) and use its download
+    url.  You can edit `plone.namedfile.utils/__init__.py` function
+    `filestream_range_iterator`  and add some logging or a `time.sleep`
+    in its `read` method.
+
+    The function returns the contents of the feed, and the full response.
+    Then the caller can still do something based on the response.
+    """
+    if limit <= 0:
+        raise ValueError("You must pass a limit for the number of bytes.")
+    # Don't allow redirects.  Otherwise that could circumvent our url validator.
+    # A connect and read timeout of slightly more than 3 seconds is recommended.
+    # See https://docs.python-requests.org/en/latest/user/advanced/#timeouts
+    response = requests.get(
+        url, stream=True, allow_redirects=False, timeout=3.5, headers=headers
+    )
+    response.raise_for_status()
+    chunk = b""
+    if response.status_code == 304:
+        # not modified
+        return chunk, response
+
+    # Check the content length header, if it exists.
+    length = response.headers.get("Content-Length")
+    if length and int(length) > limit:
+        raise ValueError("Content-Length header too large")
+
+    # Try to read at most until limit plus 1 bytes.  We may get less, which
+    # is fine.  If we get more than the limit, then we refuse: we don't want
+    # to load a multi Gigabyte file.  Note that internally this may very
+    # well use multiple chunked requests.
+    for chunk in response.iter_content(limit + 1):
+        if len(chunk) > limit:
+            raise ValueError("Downloaded too much content.")
+    return chunk, response
 
 
 class IFeed(Interface):
@@ -81,7 +252,7 @@ class RSSFeed:
         self._last_update_time_in_minutes = 0  # when was the feed last updated?
         self._last_update_time = None  # time as DateTime or Nonw
         self._etag = None
-        self._last_modified = None
+        self._modified = None
 
     @property
     def last_update_time_in_minutes(self):
@@ -134,6 +305,12 @@ class RSSFeed:
 
     def _buildItemDict(self, item):
         link = item.links[0]["href"]
+        try:
+            _normal_url_validator(link)
+        except Invalid:
+            # We don't want JavaScript links in here.
+            logger.warning("Refusing to use link from RSS item %r", link)
+            link = "#"
         itemdict = {
             "title": item.title,
             "url": link,
@@ -154,36 +331,49 @@ class RSSFeed:
         """do the actual work and try to retrieve the feed"""
         url = self.url
         if url:
-            if len(url.splitlines()) > 1:
-                # More than one line in a url: probably a hacker.
-                url = ""
-            elif urlparse(url).scheme not in ("https", "http"):
-                # Mostly: prevent loading local file: urls.
+            # Prevent loading local file: urls and other possible hacks.
+            try:
+                _rss_feed_url_validator(url)
+            except Invalid:
+                logger.warning("Refusing to load stored RSS url %r", url)
                 url = ""
         if url != "":
             self._last_update_time_in_minutes = time.time() / 60
             self._last_update_time = DateTime()
-            kwargs = {}
-            if self._last_modified:
-                kwargs["modified"] = self._last_modified
+            headers = {}
+            if self._modified:
+                headers["If-Modified-Since"] = self._modified
             if self._etag:
-                kwargs["etag"] = self._etag
-            d = feedparser.parse(url, **kwargs)
-            if getattr(d, "bozo", 0) == 1 and not isinstance(
-                d.get("bozo_exception"), ACCEPTED_FEEDPARSER_EXCEPTIONS
-            ):
-                self._loaded = True  # we tried at least but have a failed load
-                self._failed = True
-                logger.info(
-                    "failed to update RSS feed %s", d.get("bozo_exception", None)
-                )
-                return False
+                headers["If-None-Match"] = self._etag
+            # Initially we simply passed the url, but that can be a method
+            # of attack, especially if this points to a very large file.
+            # So we first download it ourselves, then pass the contents.
+            contents, response = _download_feed_and_response(url, headers=headers)
+            # If the response was 304, nothing changed!
+            # So we don't even need to ask feedparser to parse the contents.
+            if response.status_code != 304:
+                download = BytesIO(contents)
+                # `feedparser.parse`` says: When a URL is not passed, the feed
+                # location to use in relative URL resolution should be passed
+                # in the `Content-Location` response header.
+                # But the `Content-Type` header is also required.
+                # Let's pass all of them.
+                # lowercase all of the HTTP headers for comparisons per RFC 2616
+                # That is what feedparser does when it loads a url.
+                response_headers = {k.lower(): v for k, v in response.headers.items()}
+                d = feedparser.parse(download, response_headers=response_headers)
+                if getattr(d, "bozo", 0) == 1 and not isinstance(
+                    d.get("bozo_exception"), ACCEPTED_FEEDPARSER_EXCEPTIONS
+                ):
+                    self._loaded = True  # we tried at least but have a failed load
+                    self._failed = True
+                    logger.info(
+                        "failed to update RSS feed %s", d.get("bozo_exception", None)
+                    )
+                    return False
 
-            #  If the response was 304, nothing changed!
-            #  Don't change anything...
-            if d.status != 304:
-                self._etag = getattr(d, "etag", None)
-                self._modified = getattr(d, "modified", None)
+                self._etag = response.headers.get("etag", None)
+                self._modified = response.headers.get("last-modified", None)
 
                 try:
                     self._title = d.feed.title
@@ -254,6 +444,7 @@ class IRSSPortlet(IPortletDataProvider):
         title=_("URL of RSS feed"),
         description=_("Link of the RSS feed to display."),
         required=True,
+        constraint=_rss_feed_url_validator,
         default="",
     )
 
