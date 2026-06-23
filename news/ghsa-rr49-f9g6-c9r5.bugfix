@@ -1,0 +1,8 @@
+Fix TALES expression injection (remote code execution) in the Classic portlet.
+The user-supplied ``template`` and ``macro`` fields are now validated against a
+strict whitelist that forbids TALES metacharacters (notably ``:`` and ``|``),
+so they can no longer be turned into a TALES expression with a ``python:`` type
+or a ``|`` fallback chain when passed to the TAL ``path()`` helper. Validation
+is enforced both on the add/edit form fields and again at render time (for
+assignments created programmatically). Reported by Giuseppe Caruso (giuseppe.caruso@betrusted.it)
+(GHSA-rr49-f9g6-c9r5).
