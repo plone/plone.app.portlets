@@ -8,6 +8,33 @@ Changelog
 
 .. towncrier release notes start
 
+7.0.2 (2026-06-23)
+------------------
+
+Bug fixes:
+
+
+- Fix TALES expression injection (remote code execution) in the Classic portlet.
+  The user-supplied ``template`` and ``macro`` fields are now validated against a
+  strict whitelist that forbids TALES metacharacters (notably ``:`` and ``|``),
+  so they can no longer be turned into a TALES expression with a ``python:`` type
+  or a ``|`` fallback chain when passed to the TAL ``path()`` helper. Validation
+  is enforced both on the add/edit form fields and again at render time (for
+  assignments created programmatically). Reported by Giuseppe Caruso (giuseppe.caruso@betrusted.it)
+  (GHSA-rr49-f9g6-c9r5). (ghsa-rr49-f9g6-c9r5)
+- RSS portlet: fix passing last modified header.  [maurits]
+- Security fixes in RSS portlet.
+
+  - Be strict in which RSS feed urls we accept in the RSS portlet.
+    Only http/https urls.  Refuse internal IP addresses, single word domains, and port numbers, to avoid abuse as port scanner.
+  - Refuse downloading gigantic RSS feeds, to avoid denial of service attack.
+    You can influence this by setting environment variable ``MAXIMUM_RSS_FEED_SIZE_BYTES``.
+    Default maximum is 1 million.
+
+  See `security advisory <https://github.com/plone/plone.app.portlets/security/advisories/GHSA-x5g3-w747-2h8q>`_.
+  [maurits]
+
+
 7.0.1 (2026-06-15)
 ------------------
 
