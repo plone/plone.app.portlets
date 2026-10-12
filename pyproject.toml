@@ -25,6 +25,11 @@ classifiers = [
 # would be a valid but code-less combination.
 dependencies = ["plone.portlets>=5.0.0.dev0"]
 
+[project.optional-dependencies]
+# Keeps requirements like "plone.app.portlets[test]" working (buildout fails on
+# unknown extras).
+test = ["plone.portlets[test]"]
+
 [project.urls]
 Source = "https://github.com/plone/plone.portlets"
 Issues = "https://github.com/plone/Products.CMFPlone/issues"
