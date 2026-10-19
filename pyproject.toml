@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "plone.app.portlets"
-version = "8.0.0a1.dev0"
+version = "8.0.0a1"
 description = "Empty transitional package, the code moved to plone.portlets. Formerly: Plone-specific portlet user interface and the standard portlets of Plone."
 readme = "README.rst"
 license = "GPL-2.0-only"

@@ -1,4 +1,0 @@
-This distribution is now empty and only depends on ``plone.portlets``, which contains the code since Plone 6.3.
-Import paths do not change.
-See `PLIP 4137 <https://github.com/plone/Products.CMFPlone/issues/4137>`_.
-@jensens
