@@ -2,7 +2,7 @@ plone.app.portlets
 ==================
 
 **This distribution is empty.**
-Since Plone 6.3 its code is part of the
+Since Plone 6.3 (``plone.app.portlets`` 8.0.0) its code is part of the
 `plone.portlets <https://pypi.org/project/plone.portlets/>`_ distribution,
 see `PLIP 4137 <https://github.com/plone/Products.CMFPlone/issues/4137>`_.
 
