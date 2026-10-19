@@ -23,7 +23,7 @@ classifiers = [
 ]
 # The lower bound is essential: without it this stub and plone.portlets 4.x
 # would be a valid but code-less combination.
-dependencies = ["plone.portlets>=5.0.0.dev0"]
+dependencies = ["plone.portlets>=5.0.0a1"]
 
 [project.optional-dependencies]
 # Keeps requirements like "plone.app.portlets[test]" working (buildout fails on
